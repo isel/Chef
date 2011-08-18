@@ -1,0 +1,5 @@
+= Description
+A collection of Chef cookbooks for linux (mostly Ubuntu).  Used to configure EC2 server instances through RightScale
+
+= TODO
+
