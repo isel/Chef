@@ -5,7 +5,7 @@ description      "Deploys the UGF software to the environment"
 long_description ""
 version          "0.0.1"
 
-supports "windows"
+supports "ubuntu"
 
 recipe "deploy::build_scripts", "Deploys the build scripts"
 
