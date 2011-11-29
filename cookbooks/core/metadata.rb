@@ -7,5 +7,5 @@ version          "0.0.1"
 
 supports "ubuntu"
 
-recipe "core::gems", "Installs ruby gems"
+recipe "core::install_gems", "Installs ruby gems"
 
