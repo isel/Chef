@@ -1,7 +1,8 @@
 revision = node[:deploy][:revision]
+message = "revision: #{revision}"
 
-puts "revision: #{revision}"
+Chef::Log.info(message)
 
-File.open('~/test', 'w') do |f|
-  f.puts("revision: #{revision}")
+File.open('/test', 'w') do |f|
+  f.puts(message)
 end
