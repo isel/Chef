@@ -26,7 +26,7 @@
       "description": "Revision to install",
       "required": "required",
       "recipes": [
-        "deploy::build_scripts"
+        "deploy::sarmus"
       ],
       "choice": [
 

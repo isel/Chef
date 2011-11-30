@@ -14,6 +14,6 @@ attribute "deploy/revision",
   :display_name => "Revision",
   :description => "Revision to install",
   :required => "required",
-  :recipes => ["deploy::build_scripts"]
+  :recipes => ["deploy::sarmus"]
 
 
