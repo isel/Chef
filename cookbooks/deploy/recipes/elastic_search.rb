@@ -9,7 +9,7 @@ rm --recursive --force /opt/Indexer
 mkdir /opt/Indexer
 
 echo 'updating indexer code'
-cp /DeployScripts/ElasticSearch /opt/Indexer
+cp /DeployScripts/ElasticSearch/* /opt/Indexer
 
 echo 'fixing permissions'
 chmod 755 /opt/Indexer/*
