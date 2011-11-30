@@ -5,11 +5,14 @@ script "sarmus" do
   code <<-EOH
     echo 'deploying sarmus'
     sarmus_root='/opt/sarmus'
+
+    if [ -e $sarmus_root ]; then
+      service sarmus_service stop
+      rm -r $sarmus_root/current
+    fi
+
     mkdir --parents $sarmus_root/#{revision}/bin
 
-    service sarmus_service stop
-
-    rm -r $sarmus_root/current
     ln -s $sarmus_root/#{revision} $sarmus_root/current
     cp /DeployScripts/sarmus/sarmus_service /etc/init.d
     chmod 755 /etc/init.d/sarmus_service
