@@ -62,7 +62,6 @@
   "groupings": {
   },
   "recipes": {
-    "deploy::build_scripts": "Deploys the build scripts",
     "deploy::elastic_search": "Deploys ElasticSearch"
   },
   "version": "0.0.1"

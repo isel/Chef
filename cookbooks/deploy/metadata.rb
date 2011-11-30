@@ -7,7 +7,6 @@ version          "0.0.1"
 
 supports "ubuntu"
 
-recipe "deploy::build_scripts", "Deploys the build scripts"
 recipe "deploy::elastic_search", "Deploys ElasticSearch"
 
 attribute "deploy/revision",
