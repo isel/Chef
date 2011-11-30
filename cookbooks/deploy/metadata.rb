@@ -8,6 +8,7 @@ version          "0.0.1"
 supports "ubuntu"
 
 recipe "deploy::elastic_search", "Deploys ElasticSearch"
+recipe "deploy::sarmus", "Deploys sarmus"
 
 attribute "deploy/revision",
   :display_name => "Revision",
@@ -15,13 +16,4 @@ attribute "deploy/revision",
   :required => "required",
   :recipes => ["deploy::build_scripts"]
 
-attribute "deploy/access_key_id",
-  :display_name => "AWS access key id",
-  :required => "required",
-  :recipes => ["deploy::build_scripts"]
-
-attribute "deploy/secret_access_key",
-  :display_name => "AWS secret access key",
-  :required => "required",
-  :recipes => ["deploy::build_scripts"]
 

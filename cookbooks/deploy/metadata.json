@@ -33,36 +33,13 @@
       ],
       "calculated": false,
       "type": "string"
-    },
-    "deploy/access_key_id": {
-      "display_name": "AWS access key id",
-      "required": "required",
-      "recipes": [
-        "deploy::build_scripts"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/secret_access_key": {
-      "display_name": "AWS secret access key",
-      "required": "required",
-      "recipes": [
-        "deploy::build_scripts"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
     }
   },
   "groupings": {
   },
   "recipes": {
-    "deploy::elastic_search": "Deploys ElasticSearch"
+    "deploy::elastic_search": "Deploys ElasticSearch",
+    "deploy::sarmus": "Deploys sarmus"
   },
   "version": "0.0.1"
 }
