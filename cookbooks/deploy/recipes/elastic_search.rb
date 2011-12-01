@@ -1,6 +1,8 @@
+Chef::Log.info "deploy::elastic_search - Start"
+
 script "elastic_search" do
   interpreter "bash"
-  code <<-EOH
+  code <<-EOF
     echo 'deploying elastic search'
     service elasticsearch restart
 
@@ -17,5 +19,5 @@ script "elastic_search" do
     echo 'issue reindex command'
     cd /opt/Indexer
     ./indexOnData new
-  EOH
+  EOF
 end

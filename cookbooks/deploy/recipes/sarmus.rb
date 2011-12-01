@@ -4,7 +4,7 @@ Chef::Log.info "deploy::sarmus - Start"
 
 script "sarmus" do
   interpreter "bash"
-  code <<-EOH
+  code <<-EOF
     echo 'deploying sarmus'
     sarmus_root='/opt/sarmus'
 
@@ -24,7 +24,5 @@ script "sarmus" do
 
     update-rc.d sarmus_service defaults
     service sarmus_service start
-  EOH
+  EOF
 end
-
-Chef::Log.info "deploy::sarmus - Completed"
