@@ -1,5 +1,7 @@
 revision = node[:deploy][:revision]
 
+Chef::Log.info "deploy::sarmus - Start"
+
 script "sarmus" do
   interpreter "bash"
   code <<-EOH
@@ -24,3 +26,5 @@ script "sarmus" do
     service sarmus_service start
   EOH
 end
+
+Chef::Log.info "deploy::sarmus - Completed"
