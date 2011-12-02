@@ -1,3 +1,5 @@
+require 'rake/clean'
+
 bash 'Deploying websites' do
   code <<-EOF
     rm --recursive --force /var/www/JSPR
@@ -7,11 +9,10 @@ bash 'Deploying websites' do
   EOF
 end
 
-jspr_revision = '42'
 template '/var/www/Compass/settings.js' do
-    source 'compass_settings.erb'
-    variables(
-      :revision => jspr_revision,
-      :host => node[:deploy][:app_server_host_name]
-    )
-  end
+  source 'compass_settings.erb'
+  variables(
+    :revision => FileList['/DeployScripts/JSPR/JSPR/ver*'][0].split('ver')[1],
+    :host => node[:deploy][:app_server_host_name]
+  )
+end
