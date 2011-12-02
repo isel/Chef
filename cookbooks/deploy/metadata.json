@@ -74,6 +74,7 @@
   },
   "recipes": {
     "deploy::elastic_search": "Deploys ElasticSearch",
+    "deploy::jspr": "Deploys the web server websites",
     "deploy::mongo": "Deploys mongodb",
     "deploy::sarmus": "Deploys sarmus"
   },

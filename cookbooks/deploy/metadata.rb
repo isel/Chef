@@ -8,6 +8,7 @@ version          "0.0.1"
 supports "ubuntu"
 
 recipe "deploy::elastic_search", "Deploys ElasticSearch"
+recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::sarmus", "Deploys sarmus"
 
