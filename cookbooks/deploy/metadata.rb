@@ -32,8 +32,8 @@ attribute "deploy/elastic_search_version",
   :required => "required",
   :recipes => ["deploy::elastic_search"]
 
-attribute "deploy/jspr_revision",
-  :display_name => "JSPR Revision",
+attribute "deploy/app_server_host_name",
+  :display_name => "App Server host name",
   :required => "required",
   :recipes => ["deploy::jspr"]
 

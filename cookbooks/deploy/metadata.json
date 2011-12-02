@@ -69,8 +69,8 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/jspr_revision": {
-      "display_name": "JSPR Revision",
+    "deploy/app_server_host_name": {
+      "display_name": "App Server host name",
       "required": "required",
       "recipes": [
         "deploy::jspr"

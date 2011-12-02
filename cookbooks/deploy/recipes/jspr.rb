@@ -12,6 +12,6 @@ template '/var/www/Compass/settings.js' do
     source 'compass_settings.erb'
     variables(
       :revision => jspr_revision,
-      :host => node[:deploy][:app_server_private_ip]
+      :host => node[:deploy][:app_server_host_name]
     )
   end
