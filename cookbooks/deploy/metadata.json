@@ -23,7 +23,6 @@
   "attributes": {
     "deploy/revision": {
       "display_name": "Revision",
-      "description": "Revision to install",
       "required": "required",
       "recipes": [
         "deploy::sarmus"
@@ -36,7 +35,6 @@
     },
     "deploy/mongo_port": {
       "display_name": "Mongo Port",
-      "description": "Port where mongodb will be listening",
       "required": "required",
       "recipes": [
         "deploy::mongo"
@@ -52,6 +50,18 @@
       "required": "required",
       "recipes": [
         "deploy::mongo"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/elastic_search_version": {
+      "display_name": "Elastic Search Version",
+      "required": "required",
+      "recipes": [
+        "deploy::elastic_search"
       ],
       "choice": [
 

@@ -13,13 +13,11 @@ recipe "deploy::sarmus", "Deploys sarmus"
 
 attribute "deploy/revision",
   :display_name => "Revision",
-  :description => "Revision to install",
   :required => "required",
   :recipes => ["deploy::sarmus"]
 
 attribute "deploy/mongo_port",
   :display_name => "Mongo Port",
-  :description => "Port where mongodb will be listening",
   :required => "required",
   :recipes => ["deploy::mongo"]
 
@@ -27,4 +25,10 @@ attribute "deploy/mongo_version",
   :display_name => "Mongo Version",
   :required => "required",
   :recipes => ["deploy::mongo"]
+
+attribute "deploy/elastic_search_version",
+  :display_name => "Elastic Search Version",
+  :required => "required",
+  :recipes => ["deploy::elastic_search"]
+
 
