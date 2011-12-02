@@ -23,3 +23,8 @@ attribute "deploy/mongo_port",
   :required => "required",
   :recipes => ["deploy::mongo"]
 
+attribute "deploy/mongo_version",
+  :display_name => "Mongo Version",
+  :required => "required",
+  :recipes => ["deploy::mongo"]
+
