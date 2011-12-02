@@ -39,6 +39,7 @@
   },
   "recipes": {
     "deploy::elastic_search": "Deploys ElasticSearch",
+    "deploy::mongo": "Deploys mongodb",
     "deploy::sarmus": "Deploys sarmus"
   },
   "version": "0.0.1"
