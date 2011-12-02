@@ -1,5 +1,5 @@
 if !File.exists?('/opt/ElasticSearch')
-  install_dir = "elasticsearch-#{node[:deploy][elastic_search_version]}"
+  install_dir = "elasticsearch-#{node[:deploy][:elastic_search_version]}"
   bash 'install elastic search' do
     code <<-EOF
       echo 'Installing prerequisites'
