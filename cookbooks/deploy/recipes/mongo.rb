@@ -1,4 +1,4 @@
-if !Dir.exists?('/opt/Mongo')
+if !File.exists?('/opt/Mongo')
   version = [:deploy][:mongo_version]
   bash 'Installing Mongo' do
     code <<-EOF
