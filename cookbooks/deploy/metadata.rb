@@ -32,4 +32,9 @@ attribute "deploy/elastic_search_version",
   :required => "required",
   :recipes => ["deploy::elastic_search"]
 
+attribute "deploy/jspr_revision",
+  :display_name => "JSPR Revision",
+  :required => "required",
+  :recipes => ["deploy::jspr"]
+
 

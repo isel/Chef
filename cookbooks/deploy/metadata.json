@@ -68,6 +68,18 @@
       ],
       "calculated": false,
       "type": "string"
+    },
+    "deploy/jspr_revision": {
+      "display_name": "JSPR Revision",
+      "required": "required",
+      "recipes": [
+        "deploy::jspr"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
     }
   },
   "groupings": {
