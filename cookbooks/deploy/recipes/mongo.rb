@@ -1,5 +1,5 @@
 if !File.exists?('/opt/Mongo')
-  version = [:deploy][:mongo_version]
+  version = node[:deploy][:mongo_version]
   bash 'Installing Mongo' do
     code <<-EOF
       mkdir --parents /opt/Mongo
