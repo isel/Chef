@@ -17,4 +17,9 @@ attribute "deploy/revision",
   :required => "required",
   :recipes => ["deploy::sarmus"]
 
+attribute "deploy/mongo_port",
+  :display_name => "Mongo Port",
+  :description => "Port where mongodb will be listening",
+  :required => "required",
+  :recipes => ["deploy::mongo"]
 

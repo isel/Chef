@@ -33,6 +33,19 @@
       ],
       "calculated": false,
       "type": "string"
+    },
+    "deploy/mongo_port": {
+      "display_name": "Mongo Port",
+      "description": "Port where mongodb will be listening",
+      "required": "required",
+      "recipes": [
+        "deploy::mongo"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
     }
   },
   "groupings": {

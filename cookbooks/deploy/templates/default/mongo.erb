@@ -1,1 +1,81 @@
-this is a test file
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          mongo
+# Required-Start:    
+# Required-Stop:     
+# Default-Start:     S
+# Default-Stop:      0 6
+# Short-Description: Start/stop the MongoDB service
+# Description:       This script starts/stops the MongoDB servce
+### END INIT INFO
+
+
+MONGO_BIN=/opt/Mongo/current/bin
+MONGO_START="$MONGO_BIN/mongod --fork --port <%= @port %> -vvvvv --logpath /data/db/log --cpu"
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+
+. /lib/init/vars.sh
+
+START_LOG=/opt/Mongo/current/START.log
+echo "Starting Mongo: runlevel=$RUNLEVEL param=$1"  >> $START_LOG
+date    >> $START_LOG
+who -r  >> $START_LOG
+
+getPID () {
+    ps -ef | grep '[ \/]mongod ' | grep -v grep | awk '{print $2}'
+}
+
+case "$1" in
+  start|"")
+	[ "$VERBOSE" = no ] || log_action_begin_msg "Initializing MongoDB"
+        pid=`getPID`
+        echo "PID=$pid"
+        if [ $pid ]
+        then
+            echo "Mongo already running with pid=$pid"
+        else
+            echo "run $MONGO_BIN/mongod"
+            export TZ=UTC
+            $MONGO_START&
+            
+            # populate the out of memory adjustment so 
+            # mongo won't be perceived as a hog and killed
+            sleep 1
+            pid=`getPID`
+            echo "-17" > /proc/$pid/oom_adj
+        fi
+	;;
+  stop)
+	# Carry a random seed from shut-down to start-up;
+	# see documentation in linux/drivers/char/random.c
+	[ "$VERBOSE" = no ] || log_action_begin_msg "Stopping MongoDB"
+        pid=`getPID`
+        if [ $pid ]
+        then
+            echo "Stopping Mongo with pid=$pid"
+            kill -2 $pid
+        else
+            echo "Mongo is not running"
+        fi
+	;;
+  status)
+        pid=`getPID`
+        if [ $pid ]
+        then
+            echo "Mongo is running with pid=$pid"
+        else
+            echo "Mongo is not running"
+        fi
+	exit $?
+	;;
+  restart|reload|force-reload)
+	echo "Error: argument '$1' not supported" >&2
+	exit 3
+	;;
+  *)
+	echo "Usage: mongo start|stop" >&2
+	exit 3
+	;;
+esac
+
+:
