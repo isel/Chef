@@ -26,12 +26,10 @@ install_files.each do |f|
   File.open("#{deploy_folder}/#{f}.zip", 'wb') do |local_file|
     local_file.write(file.body)
   end
-  <%=
-    if node[:platform] == 'ubuntu'
+  <% if node[:platform] == 'ubuntu' -%>
       `unzip -d #{deploy_folder}/#{f} #{deploy_folder}/#{f}.zip`
-    else
+  <% else -%>
       `"#{ENV['ProgramFiles(x86)']}\\7-Zip\\7z.exe" x -y -o#{deploy_folder}/#{f} -r #{deploy_folder}/#{f}.zip`
-    end
-  %>
+  <% end -%>
 
 end
