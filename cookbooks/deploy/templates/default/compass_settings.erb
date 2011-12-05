@@ -1,10 +1,11 @@
 <%
-   def rev
-      versioned_folder = FileList['/DeployScripts/JSPR/JSPR/ver*'][0]
-      rev = versioned_folder.split('ver')[1] unless versioned_folder.nil?
-      rev ||= '42'
-      rev
+  def rev
+    begin
+      FileList['/DeployScripts/JSPR/JSPR/ver*'][0].split('ver')[1]
+    rescue
+      raise "Error getting JSPR revision: #{$!}"
     end
+  end
 %>
 var __JSPR_ROOT = "/JSPR/";;
 var __BASE = __JSPR_ROOT + \"ver<%= rev %>/build/\";

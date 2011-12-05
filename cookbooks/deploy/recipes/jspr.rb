@@ -15,13 +15,3 @@ template '/var/www/Compass/settings.js' do
     :host => node[:deploy][:app_server_host_name]
   )
 end
-
-template '/root/try_ruby.rb' do
-  source 'try_ruby.erb'
-end
-
-bash "install_something" do
-  code <<-EOF
-    ruby '/root/try_ruby.rb' > /root/ruby_version
-  EOF
-end
