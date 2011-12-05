@@ -9,9 +9,12 @@ bash 'Deploying websites' do
   EOF
 end
 
-versioned_folder = FileList['/DeployScripts/JSPR/JSPR/ver*'][0]
-rev = versioned_folder.split('ver')[1] unless versioned_folder.nil?
-rev ||= '42'
+def rev
+  versioned_folder = FileList['/DeployScripts/JSPR/JSPR/ver*'][0]
+  rev = versioned_folder.split('ver')[1] unless versioned_folder.nil?
+  rev ||= '42'
+  rev
+end
 
 template '/var/www/Compass/settings.js' do
   source 'compass_settings.erb'
@@ -19,4 +22,8 @@ template '/var/www/Compass/settings.js' do
     :revision => rev,
     :host => node[:deploy][:app_server_host_name]
   )
+end
+
+ruby 'test ruby version' do
+  puts "RUBY_VERSION = #{RUBY_VERSION}"
 end
