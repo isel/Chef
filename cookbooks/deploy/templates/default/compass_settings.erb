@@ -1,3 +1,11 @@
+<%
+   def rev
+      versioned_folder = FileList['/DeployScripts/JSPR/JSPR/ver*'][0]
+      rev = versioned_folder.split('ver')[1] unless versioned_folder.nil?
+      rev ||= '42'
+      rev
+    end
+%>
 var __JSPR_ROOT = "/JSPR/";;
 var __BASE = __JSPR_ROOT + \"ver<%= @revision %>/build/\";
 var __FILTER = "";
