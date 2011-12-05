@@ -1,5 +1,5 @@
 ruby_scripts_dir = '/RubyScripts'
-Dir.mkdir(ruby_scripts_dir) unless Dir.exist? ruby_scripts_dir
+Dir.mkdir(ruby_scripts_dir) unless File.exist? ruby_scripts_dir
 
 template "#{ruby_scripts_dir}/download_artifacts.rb" do
   source 'download_artifacts.erb'
