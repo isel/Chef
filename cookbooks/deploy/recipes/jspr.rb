@@ -9,10 +9,13 @@ bash 'Deploying websites' do
   EOF
 end
 
+versioned_folder = FileList['/DeployScripts/JSPR/JSPR/ver*'][0]
+rev = versioned_folder.split('ver')[1] || '42'
+
 template '/var/www/Compass/settings.js' do
   source 'compass_settings.erb'
   variables(
-    :revision => FileList['/DeployScripts/JSPR/JSPR/ver*'][0].split('ver')[1],
+    :revision => rev,
     :host => node[:deploy][:app_server_host_name]
   )
 end
