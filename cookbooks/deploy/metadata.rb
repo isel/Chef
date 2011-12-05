@@ -7,33 +7,44 @@ version          "0.0.1"
 
 supports "ubuntu"
 
+recipe "deploy::download_artifacts", "Downloads artifacts"
 recipe "deploy::elastic_search", "Deploys ElasticSearch"
 recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::sarmus", "Deploys sarmus"
 
 attribute "deploy/revision",
-  :display_name => "Revision",
+  :display_name => "revision",
   :required => "required",
   :recipes => ["deploy::sarmus"]
 
+attribute "deploy/aws_access_key_id",
+  :display_name => "aws access key id",
+  :required => "required",
+  :recipes => ["deploy::download_artifacts"]
+
+attribute "deploy/aws_secret_access_key",
+  :display_name => "aws secret access key",
+  :required => "required",
+  :recipes => ["deploy::download_artifacts"]
+
 attribute "deploy/mongo_port",
-  :display_name => "Mongo Port",
+  :display_name => "mongo port",
   :required => "required",
   :recipes => ["deploy::mongo"]
 
 attribute "deploy/mongo_version",
-  :display_name => "Mongo Version",
+  :display_name => "mongo version",
   :required => "required",
   :recipes => ["deploy::mongo"]
 
 attribute "deploy/elastic_search_version",
-  :display_name => "Elastic Search Version",
+  :display_name => "elastic search version",
   :required => "required",
   :recipes => ["deploy::elastic_search"]
 
 attribute "deploy/app_server_host_name",
-  :display_name => "App Server host name",
+  :display_name => "app server host name",
   :required => "required",
   :recipes => ["deploy::jspr"]
 

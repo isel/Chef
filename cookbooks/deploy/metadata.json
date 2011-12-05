@@ -22,7 +22,7 @@
   },
   "attributes": {
     "deploy/revision": {
-      "display_name": "Revision",
+      "display_name": "revision",
       "required": "required",
       "recipes": [
         "deploy::sarmus"
@@ -33,8 +33,32 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/aws_access_key_id": {
+      "display_name": "aws access key id",
+      "required": "required",
+      "recipes": [
+        "deploy::download_artifacts"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/aws_secret_access_key": {
+      "display_name": "aws secret access key",
+      "required": "required",
+      "recipes": [
+        "deploy::download_artifacts"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/mongo_port": {
-      "display_name": "Mongo Port",
+      "display_name": "mongo port",
       "required": "required",
       "recipes": [
         "deploy::mongo"
@@ -46,7 +70,7 @@
       "type": "string"
     },
     "deploy/mongo_version": {
-      "display_name": "Mongo Version",
+      "display_name": "mongo version",
       "required": "required",
       "recipes": [
         "deploy::mongo"
@@ -58,7 +82,7 @@
       "type": "string"
     },
     "deploy/elastic_search_version": {
-      "display_name": "Elastic Search Version",
+      "display_name": "elastic search version",
       "required": "required",
       "recipes": [
         "deploy::elastic_search"
@@ -70,7 +94,7 @@
       "type": "string"
     },
     "deploy/app_server_host_name": {
-      "display_name": "App Server host name",
+      "display_name": "app server host name",
       "required": "required",
       "recipes": [
         "deploy::jspr"
@@ -85,6 +109,7 @@
   "groupings": {
   },
   "recipes": {
+    "deploy::download_artifacts": "Downloads artifacts",
     "deploy::elastic_search": "Deploys ElasticSearch",
     "deploy::jspr": "Deploys the web server websites",
     "deploy::mongo": "Deploys mongodb",
