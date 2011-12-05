@@ -16,6 +16,9 @@ template '/var/www/Compass/settings.js' do
   )
 end
 
-ruby 'test ruby version' do
-  puts "RUBY_VERSION = #{RUBY_VERSION}"
+script "install_something" do
+  interpreter "ruby"
+  code <<-EOF
+    puts "RUBY_VERSION = #{RUBY_VERSION}"
+  EOF
 end
