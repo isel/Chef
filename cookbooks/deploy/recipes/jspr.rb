@@ -22,6 +22,6 @@ end
 
 bash "install_something" do
   code <<-EOF
-    ruby '/root/try_ruby.rb'
+    ruby '/root/try_ruby.rb' > /root/ruby_version
   EOF
 end
