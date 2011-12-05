@@ -16,9 +16,12 @@ template '/var/www/Compass/settings.js' do
   )
 end
 
-script "install_something" do
-  interpreter "ruby"
+template '/root/try_ruby.rb' do
+  source 'try_ruby.erb'
+end
+
+bash "install_something" do
   code <<-EOF
-    puts "RUBY_VERSION = #{RUBY_VERSION}"
+    ruby '/root/try_ruby.rb'
   EOF
 end
