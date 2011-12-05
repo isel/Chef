@@ -7,7 +7,7 @@ template '/RubyScripts/download_artifacts.rb' do
   )
 end
 
-bash "Downloading artifacts" do
+powershell "Downloading artifacts" do
   code <<-EOF
     ruby '/RubyScripts/download_artifacts.rb'
   EOF
