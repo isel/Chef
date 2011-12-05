@@ -1,6 +1,6 @@
 
 template '/RubyScripts/download_artifacts.rb' do
-  source 'scripts/download_artifacts.erb'
+  source 'download_artifacts.erb'
 end
 
 bash "Downloading artifacts" do
