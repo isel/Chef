@@ -1,15 +1,16 @@
 require 'fog'
 require 'fileutils'
 
-revision = <%= @revision %>
+revision = '<%= @revision %>'
 message = "pulling build scripts from revision: #{revision}"
 
 puts message
 
 storage = Fog::Storage.new(
   :provider => 'AWS',
-  :aws_access_key_id => <%= @access_key_id %>,
-  :aws_secret_access_key => <%= @secret_access_key %>)
+  :aws_access_key_id => '<%= @access_key_id %>',
+  :aws_secret_access_key => '<%= @secret_access_key %>'
+)
 
 bucket = storage.directories.find { |d| d.key == 'ugfartifacts' }
 s3_files = bucket.files

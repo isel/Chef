@@ -16,7 +16,7 @@ recipe "deploy::sarmus", "Deploys sarmus"
 attribute "deploy/revision",
   :display_name => "revision",
   :required => "required",
-  :recipes => ["deploy::sarmus"]
+  :recipes => ["deploy::sarmus", "deploy::download_artifacts"]
 
 attribute "deploy/aws_access_key_id",
   :display_name => "aws access key id",

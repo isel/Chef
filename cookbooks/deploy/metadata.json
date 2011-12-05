@@ -25,7 +25,8 @@
       "display_name": "revision",
       "required": "required",
       "recipes": [
-        "deploy::sarmus"
+        "deploy::sarmus",
+        "deploy::download_artifacts"
       ],
       "choice": [
 
