@@ -8,7 +8,5 @@ template '/RubyScripts/download_artifacts.rb' do
 end
 
 powershell "Downloading artifacts" do
-  code <<-EOF
-    ruby '/RubyScripts/download_artifacts.rb'
-  EOF
+  source('ruby /RubyScripts/download_artifacts.rb')
 end
