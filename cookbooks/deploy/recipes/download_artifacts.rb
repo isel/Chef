@@ -14,7 +14,7 @@ end
 if node[:platform] == "ubuntu"
   bash 'Downloading artifacts' do
     code <<-EOF
-      "ruby #{ruby_scripts_dir}/download_artifacts.rb"
+      ruby #{ruby_scripts_dir}/download_artifacts.rb
     EOF
   end
 else
