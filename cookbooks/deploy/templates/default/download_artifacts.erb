@@ -15,7 +15,7 @@ storage = Fog::Storage.new(
 bucket = storage.directories.find { |d| d.key == 'ugfartifacts' }
 s3_files = bucket.files
 
-install_files = ['CI', 'AppServer', 'Models']
+install_files = '<%= @artifacts %>'.split(',')
 
 deploy_folder = '/DeployScripts'
 FileUtils.remove_dir(deploy_folder, true) if Dir.exist? deploy_folder

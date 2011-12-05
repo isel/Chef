@@ -18,6 +18,11 @@ attribute "deploy/revision",
   :required => "required",
   :recipes => ["deploy::sarmus", "deploy::download_artifacts"]
 
+attribute "deploy/artifacts",
+  :display_name => "artifacts",
+  :required => "required",
+  :recipes => ["deploy::download_artifacts"]
+
 attribute "deploy/aws_access_key_id",
   :display_name => "aws access key id",
   :required => "required",

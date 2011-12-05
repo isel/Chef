@@ -34,6 +34,18 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/artifacts": {
+      "display_name": "artifacts",
+      "required": "required",
+      "recipes": [
+        "deploy::download_artifacts"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/aws_access_key_id": {
       "display_name": "aws access key id",
       "required": "required",
