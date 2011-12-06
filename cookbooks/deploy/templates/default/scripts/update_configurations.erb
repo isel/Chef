@@ -1,5 +1,10 @@
 require 'rake'
-require '/DeployScripts/CI/BuildScripts/Helpers/configuration.rb'
+require '/DeployScripts/CI/BuildScripts/Helpers/configuration'
+require '/DeployScripts/CI/BuildScripts/Helpers/io_utils'
+
+def get_thumbprint
+   `powershell -Command "((dir cert:\localmachine\Root -rec | where-object {$_.Subject -eq \"CN=localhost\"}) | select-object thumbprint).thumbprint"`
+end
 
 configs = FileList['/Websites/**/*.config']
 puts "found #{configs.count} config files"
@@ -8,3 +13,7 @@ Helpers::change_all_app_settings(configs, "SigningCertificateName", "CN=localhos
 Helpers::change_all_app_settings(configs, "ConnectionString", "Server=<%= @db_server %>:<%= @sarmus_port %>")
 Helpers::change_all_app_settings(configs, "SearchUri", "http://<%= @db_server %>:<%= @elastic_search_port %>/ugf/viabot/_search")
 
+thumbprint = get_thumbprint
+puts thumbprint
+
+IOUtils::replace_text_in_files(configs, 'F0C92080457571AAA70CE209C8CDFABCD38F87CC', thumbprint)
