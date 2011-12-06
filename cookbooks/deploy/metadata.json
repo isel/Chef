@@ -117,18 +117,6 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/log_directory": {
-      "display_name": "log directory",
-      "required": "required",
-      "recipes": [
-        "deploy::foundation_services"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
     "deploy/mongo_port": {
       "display_name": "mongo port",
       "required": "required",
