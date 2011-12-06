@@ -3,7 +3,8 @@ require 'rake'
 ['ActiveSTS', 'Models', 'Services', 'Services.Help'].each do |dir|
   directory "/Websites/#{dir}" do
     recursive true
-    action :delete, :create
+    action :delete
+    action :create
   end
 end
 
