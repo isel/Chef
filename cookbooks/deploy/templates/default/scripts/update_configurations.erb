@@ -30,8 +30,8 @@ xs = XmlSimple.new({
   RootName: 'configuration',
   XmlDeclaration: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
 })
-#ref = xs.xml_in(file)
-#logging = ref["system.serviceModel"][0]["behaviors"][0]["serviceBehaviors"][0]["behavior"][0]["serviceAuthorization"]
-#logging[0]["serviceAuthorizationManagerType"] = type
+ref = xs.xml_in(file)
+logging = ref["system.serviceModel"][0]["behaviors"][0]["serviceBehaviors"][0]["behavior"][0]["serviceAuthorization"]
+logging[0]["serviceAuthorizationManagerType"] = type
 #File.open(file, 'w+') { |file| file.puts xs.xml_out(ref) }
 
