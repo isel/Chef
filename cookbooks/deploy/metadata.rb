@@ -34,6 +34,11 @@ attribute "deploy/aws_secret_access_key",
   :required => "required",
   :recipes => ["deploy::download_artifacts"]
 
+attribute "deploy/cache_server",
+  :display_name => "cache server",
+  :required => "required",
+  :recipes => ["deploy::foundation_services"]
+
 attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
@@ -48,6 +53,11 @@ attribute "deploy/elastic_search_version",
   :display_name => "elastic search version",
   :required => "required",
   :recipes => ["deploy::elastic_search"]
+
+attribute "deploy/log_directory",
+  :display_name => "log directory",
+  :required => "required",
+  :recipes => ["deploy::foundation_services"]
 
 attribute "deploy/mongo_port",
   :display_name => "mongo port",
