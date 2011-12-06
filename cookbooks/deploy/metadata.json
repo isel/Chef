@@ -69,6 +69,18 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/cache_server": {
+      "display_name": "cache server",
+      "required": "required",
+      "recipes": [
+        "deploy::foundation_services"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/db_server": {
       "display_name": "db server",
       "required": "required",
@@ -98,6 +110,18 @@
       "required": "required",
       "recipes": [
         "deploy::elastic_search"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/log_directory": {
+      "display_name": "log directory",
+      "required": "required",
+      "recipes": [
+        "deploy::foundation_services"
       ],
       "choice": [
 
