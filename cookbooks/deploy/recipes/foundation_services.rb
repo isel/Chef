@@ -13,9 +13,11 @@ ruby_scripts_dir = '/RubyScripts'
 
 template "#{ruby_scripts_dir}/update_configurations.rb" do
   source 'scripts/update_configurations.erb'
-  #variables(
-  #  :db_port => node[:deploy][:revision]
-  #)
+  variables(
+    :db_server => node[:deploy][:db_server],
+    :elastic_search_port => node[:deploy][:elastic_search_port],
+    :sarmus_port => node[:deploy][:sarmus_port]
+  )
 end
 
 powershell "Updating configurations" do

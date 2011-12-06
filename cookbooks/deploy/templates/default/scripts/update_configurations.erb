@@ -4,11 +4,7 @@ require '/DeployScripts/CI/BuildScripts/Helpers/configuration.rb'
 configs = FileList['/Websites/**/*.config']
 puts "found #{configs.count} config files"
 
-db_server = 'isel'
-db_port = '42'
-elastic_search_port = '43'
-
 Helpers::change_all_app_settings(configs, "SigningCertificateName", "CN=localhost")
-Helpers::change_all_app_settings(configs, "ConnectionString", "Server=#{db_server}:#{db_port}")
-Helpers::change_all_app_settings(configs, "SearchUri", "http://#{db_server}:#{elastic_search_port}/ugf/viabot/_search")
+Helpers::change_all_app_settings(configs, "ConnectionString", "Server=#{@db_server}:#{@sarmus_port}")
+Helpers::change_all_app_settings(configs, "SearchUri", "http://#{@db_server}:#{@elastic_search_port}/ugf/viabot/_search")
 

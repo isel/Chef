@@ -14,10 +14,10 @@ recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::sarmus", "Deploys sarmus"
 
-attribute "deploy/revision",
-  :display_name => "revision",
+attribute "deploy/app_server_host_name",
+  :display_name => "app server host name",
   :required => "required",
-  :recipes => ["deploy::sarmus", "deploy::download_artifacts"]
+  :recipes => ["deploy::jspr"]
 
 attribute "deploy/artifacts",
   :display_name => "artifacts",
@@ -34,6 +34,21 @@ attribute "deploy/aws_secret_access_key",
   :required => "required",
   :recipes => ["deploy::download_artifacts"]
 
+attribute "deploy/db_server",
+  :display_name => "db server",
+  :required => "required",
+  :recipes => ["deploy::foundation_services"]
+
+attribute "deploy/elastic_search_port",
+  :display_name => "elastic search port",
+  :required => "required",
+  :recipes => ["deploy::foundation_services"]
+
+attribute "deploy/elastic_search_version",
+  :display_name => "elastic search version",
+  :required => "required",
+  :recipes => ["deploy::elastic_search"]
+
 attribute "deploy/mongo_port",
   :display_name => "mongo port",
   :required => "required",
@@ -44,14 +59,14 @@ attribute "deploy/mongo_version",
   :required => "required",
   :recipes => ["deploy::mongo"]
 
-attribute "deploy/elastic_search_version",
-  :display_name => "elastic search version",
+attribute "deploy/revision",
+  :display_name => "revision",
   :required => "required",
-  :recipes => ["deploy::elastic_search"]
+  :recipes => ["deploy::sarmus", "deploy::download_artifacts"]
 
-attribute "deploy/app_server_host_name",
-  :display_name => "app server host name",
+attribute "deploy/sarmus_port",
+  :display_name => "sarmus port",
   :required => "required",
-  :recipes => ["deploy::jspr"]
+  :recipes => ["deploy::foundation_services"]
 
 

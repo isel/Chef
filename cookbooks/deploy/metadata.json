@@ -21,12 +21,11 @@
   "replacing": {
   },
   "attributes": {
-    "deploy/revision": {
-      "display_name": "revision",
+    "deploy/app_server_host_name": {
+      "display_name": "app server host name",
       "required": "required",
       "recipes": [
-        "deploy::sarmus",
-        "deploy::download_artifacts"
+        "deploy::jspr"
       ],
       "choice": [
 
@@ -70,6 +69,42 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/db_server": {
+      "display_name": "db server",
+      "required": "required",
+      "recipes": [
+        "deploy::foundation_services"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/elastic_search_port": {
+      "display_name": "elastic search port",
+      "required": "required",
+      "recipes": [
+        "deploy::foundation_services"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/elastic_search_version": {
+      "display_name": "elastic search version",
+      "required": "required",
+      "recipes": [
+        "deploy::elastic_search"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/mongo_port": {
       "display_name": "mongo port",
       "required": "required",
@@ -94,11 +129,12 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/elastic_search_version": {
-      "display_name": "elastic search version",
+    "deploy/revision": {
+      "display_name": "revision",
       "required": "required",
       "recipes": [
-        "deploy::elastic_search"
+        "deploy::sarmus",
+        "deploy::download_artifacts"
       ],
       "choice": [
 
@@ -106,11 +142,11 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/app_server_host_name": {
-      "display_name": "app server host name",
+    "deploy/sarmus_port": {
+      "display_name": "sarmus port",
       "required": "required",
       "recipes": [
-        "deploy::jspr"
+        "deploy::foundation_services"
       ],
       "choice": [
 
