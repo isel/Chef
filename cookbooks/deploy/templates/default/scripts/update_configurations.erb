@@ -23,6 +23,15 @@ active_sts = '/Websites/ActiveSTS/configuration/ActiveSTS.config'
 IOUtils::replace_text_in_file(active_sts, /localhost:2702/, 'localhost:81')
 IOUtils::replace_text_in_file(active_sts, /:81\/sts/, ':81/')
 
-Helpers::change_service_authorization_type(
-  '/Websites/UltimateSoftware.Help.Services/Web.config',
-  "UltimateSoftware.Foundation.IdentityModel.Contracts.WebRequests.USWebRequestDevAuthorizationManager, UltimateSoftware.Foundation.IdentityModel.Contracts")
+file = '/Websites/UltimateSoftware.Help.Services/Web.config'
+type = "UltimateSoftware.Foundation.IdentityModel.Contracts.WebRequests.USWebRequestDevAuthorizationManager, UltimateSoftware.Foundation.IdentityModel.Contracts"
+puts "changing service authorization to type=#{type} in file=#{file}"
+xs = XmlSimple.new({
+  RootName: 'configuration',
+  XmlDeclaration: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
+})
+ref = xs.xml_in(file)
+logging = ref["system.serviceModel"][0]["behaviors"][0]["serviceBehaviors"][0]["behavior"][0]["serviceAuthorization"]
+logging[0]["serviceAuthorizationManagerType"] = type
+File.open(file, 'w+') { |file| file.puts xs.xml_out(ref) }
+
