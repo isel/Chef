@@ -3,7 +3,7 @@ require '/DeployScripts/CI/BuildScripts/Helpers/configuration'
 require '/DeployScripts/CI/BuildScripts/Helpers/io_utils'
 
 def get_thumbprint
-   `powershell -Command "((dir cert:\localmachine\Root -rec | where-object {$_.Subject -eq \"CN=localhost\"}) | select-object thumbprint).thumbprint"`
+   `powershell -Command "((dir cert:\localmachine\Root -rec | where-object {$_.Subject -eq 'CN=localhost'}) | select-object thumbprint).thumbprint"`
 end
 
 configs = FileList['/Websites/**/*.config']
