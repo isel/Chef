@@ -9,6 +9,7 @@ supports "ubuntu"
 
 recipe "deploy::download_artifacts", "Downloads artifacts"
 recipe "deploy::elastic_search", "Deploys ElasticSearch"
+recipe "deploy::foundation_services", "Deploys the foundation rest services"
 recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::sarmus", "Deploys sarmus"
