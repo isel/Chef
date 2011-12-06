@@ -2,7 +2,7 @@ ruby_scripts_dir = '/RubyScripts'
 Dir.mkdir(ruby_scripts_dir) unless File.exist? ruby_scripts_dir
 
 template "#{ruby_scripts_dir}/download_artifacts.rb" do
-  source 'download_artifacts.erb'
+  source 'scripts/download_artifacts.erb'
   variables(
     :revision => node[:deploy][:revision],
     :access_key_id => node[:deploy][:aws_access_key_id],
