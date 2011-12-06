@@ -24,8 +24,6 @@ Helpers::change_app_setting(active_config, "EntityFramework.ModelFolder", "C:\\W
 IOUtils::replace_text_in_file(active_sts, /localhost:2702/, "localhost:81")
 IOUtils::replace_text_in_file(active_sts, /:81\/sts/, ':81/')
 
-IOUtils::replace_text_in_file(active_sts_tracing, /initializeData="d:\\logs\\ActiveSTS\\/, "initializeData=\"<%= @log_directory %>")
-
 IOUtils::replace_text_in_file(active_config, /<%= '<host name="localhost"' %>/, "<%= '<host name=\"' %><%= @cache_server %>\"")
 IOUtils::replace_text_in_file(active_config, /<\/hosts>/, '</hosts><securityProperties mode="None" protectionLevel="None"/>')
 

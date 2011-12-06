@@ -54,11 +54,6 @@ attribute "deploy/elastic_search_version",
   :required => "required",
   :recipes => ["deploy::elastic_search"]
 
-attribute "deploy/log_directory",
-  :display_name => "log directory",
-  :required => "required",
-  :recipes => ["deploy::foundation_services"]
-
 attribute "deploy/mongo_port",
   :display_name => "mongo port",
   :required => "required",

@@ -17,7 +17,6 @@ template "#{ruby_scripts_dir}/update_configurations.rb" do
     :cache_server => node[:deploy][:cache_server],
     :db_server => node[:deploy][:db_server],
     :elastic_search_port => node[:deploy][:elastic_search_port],
-    :log_directory => node[:deploy][:log_directory],
     :sarmus_port => node[:deploy][:sarmus_port]
   )
 end
