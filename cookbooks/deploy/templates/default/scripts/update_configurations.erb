@@ -8,7 +8,7 @@ puts "found #{configs.count} config files"
 Helpers::change_all_app_settings(configs, 'SigningCertificateName', 'CN=localhost')
 Helpers::change_all_app_settings(configs, 'ConnectionString', "Server=<%= @db_server %>:<%= @sarmus_port %>")
 Helpers::change_all_app_settings(configs, 'SearchUri', "http://<%= @db_server %>:<%= @elastic_search_port %>/ugf/viabot/_search")
-Helpers::change_all_app_settings(configs, 'EntityFramework.ModelFolder', 'C:\WebSites\Models\')
+Helpers::change_all_app_settings(configs, 'EntityFramework.ModelFolder', "C:\\WebSites\\Models\")
 
 def thumbprint
    puts `powershell -Command "((dir cert:\\localmachine\\Root -rec | where-object {$_.Subject -eq 'CN=localhost'}) | select-object thumbprint).thumbprint"`.strip
