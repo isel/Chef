@@ -11,7 +11,7 @@ end
 
 IOUtils::replace_text_in_files(configs, 'F0C92080457571AAA70CE209C8CDFABCD38F87CC', thumbprint)
 
-#Helpers::change_all_app_settings(configs, "SigningCertificateName", "CN=localhost")
+Helpers::change_all_app_settings(configs, "SigningCertificateName", "CN=localhost")
 #Helpers::change_all_app_settings(configs, "ConnectionString", "Server=<%= @db_server %>:<%= @sarmus_port %>")
 #Helpers::change_all_app_settings(configs, "SearchUri", "http://<%= @db_server %>:<%= @elastic_search_port %>/ugf/viabot/_search")
 #Helpers::change_all_app_settings(configs, "EntityFramework.ModelFolder", "C:\\WebSites\\Models\\")
