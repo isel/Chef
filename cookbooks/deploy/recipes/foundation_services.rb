@@ -7,5 +7,5 @@ require 'rake'
   end
 end
 
-FileUtils.cp_r('/DeployScripts/Models', '/Websites')
-FileUtils.cp_r('/DeployScripts/AppServer/.', '/Websites')
+FileUtils.cp_r('/DeployScripts/AppServer/Models', '/Websites')
+FileUtils.cp_r('/DeployScripts/AppServer/Websites/.', '/Websites')
