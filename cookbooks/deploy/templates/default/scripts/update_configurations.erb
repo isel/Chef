@@ -5,25 +5,24 @@ require '/DeployScripts/CI/BuildScripts/Helpers/io_utils'
 configs = FileList['/Websites/**/*.config']
 puts "found #{configs.count} config files"
 
-Helpers::change_all_app_settings(configs, "SigningCertificateName", "CN=localhost")
-Helpers::change_all_app_settings(configs, "ConnectionString", "Server=<%= @db_server %>:<%= @sarmus_port %>")
-Helpers::change_all_app_settings(configs, "SearchUri", "http://<%= @db_server %>:<%= @elastic_search_port %>/ugf/viabot/_search")
+Helpers::change_all_app_settings(configs, 'SigningCertificateName', 'CN=localhost')
+Helpers::change_all_app_settings(configs, 'ConnectionString', "Server=<%= @db_server %>:<%= @sarmus_port %>")
+Helpers::change_all_app_settings(configs, 'SearchUri', "http://<%= @db_server %>:<%= @elastic_search_port %>/ugf/viabot/_search")
+Helpers::change_all_app_settings(configs, 'EntityFramework.ModelFolder', 'C:\WebSites\Models\')
 
 def thumbprint
    puts `powershell -Command "((dir cert:\\localmachine\\Root -rec | where-object {$_.Subject -eq 'CN=localhost'}) | select-object thumbprint).thumbprint"`.strip
 end
 
 IOUtils::replace_text_in_files(configs, 'F0C92080457571AAA70CE209C8CDFABCD38F87CC', thumbprint)
+IOUtils::replace_text_in_files(configs, '<%= '<host name="localhost"' %>', "<%= '<host name=\"' %><%= @cache_server %>\"")
+IOUtils::replace_text_in_files(configs, '<\/hosts>', '</hosts><securityProperties mode="None" protectionLevel="None"/>')
 
-active_config = "/Websites/ActiveSTS/Web.config"
-active_sts = "/Websites/ActiveSTS/configuration/ActiveSTS.config"
-active_sts_tracing = "/Websites/ActiveSTS/configuration/ActiveSTSTracing.config"
-
-Helpers::change_app_setting(active_config, "EntityFramework.ModelFolder", "C:\\WebSites\\Models\\")
-
-IOUtils::replace_text_in_file(active_sts, /localhost:2702/, "localhost:81")
+active_sts = '/Websites/ActiveSTS/configuration/ActiveSTS.config'
+IOUtils::replace_text_in_file(active_sts, /localhost:2702/, 'localhost:81')
 IOUtils::replace_text_in_file(active_sts, /:81\/sts/, ':81/')
 
-IOUtils::replace_text_in_file(active_config, /<%= '<host name="localhost"' %>/, "<%= '<host name=\"' %><%= @cache_server %>\"")
-IOUtils::replace_text_in_file(active_config, /<\/hosts>/, '</hosts><securityProperties mode="None" protectionLevel="None"/>')
+Helpers::change_service_authorization_type(
+  '/Websites/UltimateSoftware.Help.Services/Web.config',
+  'UltimateSoftware.Foundation.IdentityModel.Contracts.WebRequests.USWebRequestDevAuthorizationManager, UltimateSoftware.Foundation.IdentityModel.Contracts')
 
