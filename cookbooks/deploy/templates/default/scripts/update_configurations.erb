@@ -19,11 +19,11 @@ Helpers::change_all_app_settings(configs, "EntityFramework.ModelFolder", "C:\\We
 IOUtils::replace_text_in_files(configs, '<%= '<host name="localhost"' %>', "<%= '<host name=\"' %><%= @cache_server %>\"")
 IOUtils::replace_text_in_files(configs, '<\/hosts>', '</hosts><securityProperties mode="None" protectionLevel="None"/>')
 
-#active_sts = '/Websites/ActiveSTS/configuration/ActiveSTS.config'
-#IOUtils::replace_text_in_file(active_sts, /localhost:2702/, 'localhost:81')
-#IOUtils::replace_text_in_file(active_sts, /:81\/sts/, ':81/')
+active_sts = '/Websites/ActiveSTS/configuration/ActiveSTS.config'
+IOUtils::replace_text_in_file(active_sts, /localhost:2702/, 'localhost:81')
+IOUtils::replace_text_in_file(active_sts, /:81\/sts/, ':81/')
 
-#Helpers::change_service_authorization_type(
-#  '/Websites/UltimateSoftware.Help.Services/Web.config',
-#  'UltimateSoftware.Foundation.IdentityModel.Contracts.WebRequests.USWebRequestDevAuthorizationManager, UltimateSoftware.Foundation.IdentityModel.Contracts'
-#)
+Helpers::change_service_authorization_type(
+  '/Websites/UltimateSoftware.Help.Services/Web.config',
+  'UltimateSoftware.Foundation.IdentityModel.Contracts.WebRequests.USWebRequestDevAuthorizationManager, UltimateSoftware.Foundation.IdentityModel.Contracts'
+)
