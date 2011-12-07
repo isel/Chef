@@ -1,5 +1,6 @@
 require 'rake'
 require '/DeployScripts/CI/BuildScripts/Helpers/configuration'
+require '/DeployScripts/CI/BuildScripts/Helpers/io_utils'
 
 exe = '/Provision/bin/UltimateSoftware.Provisioning.Runner.exe'
 config = "#{exe}.config"
@@ -15,6 +16,8 @@ FileUtils.cp_r('/DeployScripts/uiml', '/Provision')
 
 Helpers::change_app_setting(config, "ConnectionString", "Server=<%= @db_server %>:<%= @sarmus_port %>")
 Helpers::change_app_setting(config, "EntityFramework.ModelFolder", "C:\\WebSites\\Models\\")
+IOUtils::replace_text_in_file(config, '<%= '<host name="localhost"' %>', "<%= '<host name=\"' %><%= @cache_server %>\"")
+IOUtils::replace_text_in_file(config, '<\/hosts>', '</hosts><securityProperties mode="None" protectionLevel="None"/>')
 
 Dir.chdir('/Provision/bin')
 
