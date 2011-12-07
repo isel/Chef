@@ -9,6 +9,7 @@ config = "#{exe}.config"
 
 FileUtils.remove_dir('/Provision', true)
 FileUtils.mkdir_p('/Provision')
+FileUtils.mkdir_p('/Provision/Workflow.Activities.Compass')
 
 FileUtils.cp_r('/DeployScripts/Provision/.', '/Provision/bin')
 FileUtils.cp_r('/DeployScripts/ProvisionData/.', '/Provision/bin')
