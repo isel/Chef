@@ -29,8 +29,9 @@ Dir.chdir('/Provision/bin')
     'importer' => 'c:\Provision\bin\Models.xlsx',
     'importer' => 'c:\Provision\bin\VGC - SHARED.xlsx',
     'VGC' => 'c:\Provision\bin\VGC - HCM.xlsx',
-}.each do |tenant,input_file|
+}.each do |tenant, input_file|
 
+  puts "running provisioning for model: #{model} tenant: #{tenant} input file: #{input_file}"
   success = system "#{exe} -model #{model} -tenant #{tenant} -data \"#{input_file}\""
   exit_code = $?
   puts "provisioning exit code: #{exit_code}"
