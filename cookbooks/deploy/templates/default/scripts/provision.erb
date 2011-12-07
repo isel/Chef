@@ -7,6 +7,11 @@ require '/DeployScripts/CI/BuildScripts/Helpers/mongo'
 exe = '/Provision/bin/UltimateSoftware.Provisioning.Runner.exe'
 config = "#{exe}.config"
 
+if Dir.exist?('/Provision')
+  puts 'Server has already been provisioned'
+  exit
+end
+
 FileUtils.remove_dir('/Provision', true)
 FileUtils.mkdir_p('/Provision')
 
