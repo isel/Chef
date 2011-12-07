@@ -12,6 +12,7 @@ recipe "deploy::elastic_search", "Deploys ElasticSearch"
 recipe "deploy::foundation_services", "Deploys the foundation rest services"
 recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::mongo", "Deploys mongodb"
+recipe "deploy::provision", "Provisions basic system data"
 recipe "deploy::sarmus", "Deploys sarmus"
 
 attribute "deploy/app_server_host_name",
@@ -42,7 +43,7 @@ attribute "deploy/cache_server",
 attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
-  :recipes => ["deploy::foundation_services"]
+  :recipes => ["deploy::foundation_services", "deploy::provision"]
 
 attribute "deploy/elastic_search_port",
   :display_name => "elastic search port",
@@ -72,6 +73,6 @@ attribute "deploy/revision",
 attribute "deploy/sarmus_port",
   :display_name => "sarmus port",
   :required => "required",
-  :recipes => ["deploy::foundation_services"]
+  :recipes => ["deploy::foundation_services", "deploy::provision"]
 
 

@@ -1,0 +1,10 @@
+require 'rake'
+
+FileList['/Provision/**'].each do |f|
+  FileUtils.remove_entry(f, true)
+end
+
+FileUtils.cp_r('/DeployScripts/Provision/.', '/Provision/bin')
+FileUtils.cp_r('/DeployScripts/ProvisionData/.', '/Provision/bin')
+FileUtils.cp_r('/DeployScripts/Images', '/Provision')
+FileUtils.cp_r('/DeployScripts/uiml', '/Provision')
