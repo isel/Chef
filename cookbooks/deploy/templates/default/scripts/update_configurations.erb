@@ -23,7 +23,7 @@ active_sts = '/Websites/ActiveSTS/configuration/ActiveSTS.config'
 IOUtils::replace_text_in_file(active_sts, /localhost:2702/, 'localhost:81')
 IOUtils::replace_text_in_file(active_sts, /:81\/sts/, ':81/')
 
-Helpers::change_service_authorization_type("/Websites/UltimateSoftware.Help.Services/Web.config",
+Helpers::change_service_authorization_type("c:/Websites/UltimateSoftware.Help.Services/Web.config",
   "UltimateSoftware.Foundation.IdentityModel.Contracts.WebRequests.USWebRequestDevAuthorizationManager, UltimateSoftware.Foundation.IdentityModel.Contracts")
 
 
