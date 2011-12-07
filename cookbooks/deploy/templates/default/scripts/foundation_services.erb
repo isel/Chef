@@ -2,6 +2,16 @@ require 'rake'
 require '/DeployScripts/CI/BuildScripts/Helpers/configuration'
 require '/DeployScripts/CI/BuildScripts/Helpers/io_utils'
 
+FileList['/Websites/**'].each do |f|
+  FileUtils.remove_entry(f, true)
+end
+
+FileUtils.cp_r('/DeployScripts/AppServer/Models', '/Websites')
+FileUtils.cp_r('/DeployScripts/AppServer/Websites/UltimateSoftware.Gateway.Active/.', '/Websites/ActiveSTS')
+FileUtils.cp_r('/DeployScripts/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services')
+FileUtils.cp_r('/DeployScripts/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services.Help')
+
+
 configs = FileList['/Websites/**/*.config']
 puts "found #{configs.count} config files"
 

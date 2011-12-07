@@ -1,22 +1,9 @@
 require 'rake'
 
-ruby 'Deploy binaries' do
-  source <<-EOF
-    FileList['/Websites/**'].each do |f|
-      FileUtils.remove_entry(f, true)
-    end
-
-    FileUtils.cp_r('/DeployScripts/AppServer/Models', '/Websites')
-    FileUtils.cp_r('/DeployScripts/AppServer/Websites/UltimateSoftware.Gateway.Active/.', '/Websites/ActiveSTS')
-    FileUtils.cp_r('/DeployScripts/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services')
-    FileUtils.cp_r('/DeployScripts/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services.Help')
-  EOF
-end
-
 ruby_scripts_dir = '/RubyScripts'
 
-template "#{ruby_scripts_dir}/update_configurations.rb" do
-  source 'scripts/update_configurations.erb'
+template "#{ruby_scripts_dir}/foundation_services.rb" do
+  source 'scripts/foundation_services.erb'
   variables(
     :cache_server => node[:deploy][:cache_server],
     :db_server => node[:deploy][:db_server],
@@ -25,6 +12,6 @@ template "#{ruby_scripts_dir}/update_configurations.rb" do
   )
 end
 
-powershell "Updating configurations" do
-  source("ruby #{ruby_scripts_dir}/update_configurations.rb")
+powershell "Updating foundation services" do
+  source("ruby #{ruby_scripts_dir}/foundation_services.rb")
 end
