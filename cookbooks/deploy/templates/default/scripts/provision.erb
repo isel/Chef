@@ -1,4 +1,9 @@
 require 'rake'
+require '/DeployScripts/CI/BuildScripts/Helpers/configuration'
+
+exe = '/Provision/bin/UltimateSoftware.Provisioning.Runner.exe'
+config = "#{exe}.config"
+model = 'ultipro2'
 
 FileUtils.remove_dir('/Provision', true)
 FileUtils.mkdir_p('/Provision')
@@ -7,3 +12,25 @@ FileUtils.cp_r('/DeployScripts/Provision/.', '/Provision/bin')
 FileUtils.cp_r('/DeployScripts/ProvisionData/.', '/Provision/bin')
 FileUtils.cp_r('/DeployScripts/Images', '/Provision')
 FileUtils.cp_r('/DeployScripts/uiml', '/Provision')
+
+Helpers::change_app_setting(config, "ConnectionString", "Server=<%= @db_server %>:<%= @sarmus_port %>")
+Helpers::change_app_setting(config, "EntityFramework.ModelFolder", "C:\\WebSites\\Models\\")
+
+Dir.chdir('/Provision/bin')
+
+{
+    'importer' => '/Provision/bin/Models.xlsx',
+    'importer' => '/Provision/bin/VGC - SHARED.xlsx',
+    'VGC' => '/Provision/bin/VGC - HCM.xlsx',
+}.each do |tenant,input_file|
+
+  success = system "#{exe} -model #{model} -tenant #{tenant} -data \"#{input_file}\""
+  exit_code = $?
+  puts "provisioning exit code: #{exit_code}"
+  if success
+    puts "provisioning #{File.basename(input_file)} successful"
+  else
+    raise "Error provisioning #{File.basename(input_file)}. Exit code: #{exit_code}"
+  end
+end
+
