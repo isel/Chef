@@ -1,7 +1,7 @@
 require 'rake'
 
 ruby 'Deploy binaries' do
-  code <<-EOF
+  source <<-EOF
     FileList['/Websites/**'].each do |f|
       FileUtils.remove_entry(f, true)
     end
