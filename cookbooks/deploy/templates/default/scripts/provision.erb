@@ -1,6 +1,8 @@
 require 'rake'
 require '/DeployScripts/CI/BuildScripts/Helpers/configuration'
 require '/DeployScripts/CI/BuildScripts/Helpers/io_utils'
+require '/DeployScripts/CI/BuildScripts/Helpers/mongo'
+
 
 exe = '/Provision/bin/UltimateSoftware.Provisioning.Runner.exe'
 config = "#{exe}.config"
@@ -19,12 +21,14 @@ Helpers::change_app_setting(config, "EntityFramework.ModelFolder", "C:\\WebSites
 IOUtils::replace_text_in_file(config, '<%= '<host name="localhost"' %>', "<%= '<host name=\"' %><%= @cache_server %>\"")
 IOUtils::replace_text_in_file(config, '<\/hosts>', '</hosts><securityProperties mode="None" protectionLevel="None"/>')
 
+Helpers::drop_all_databases("<%= @db_server %>", "<%= @sarmus_port %>")
+
 Dir.chdir('/Provision/bin')
 
 {
-    'importer' => '/Provision/bin/Models.xlsx',
-    'importer' => '/Provision/bin/VGC - SHARED.xlsx',
-    'VGC' => '/Provision/bin/VGC - HCM.xlsx',
+    'importer' => 'c:\Provision\bin\Models.xlsx',
+    'importer' => 'c:\Provision\bin\VGC - SHARED.xlsx',
+    'VGC' => 'c:\Provision\bin\VGC - HCM.xlsx',
 }.each do |tenant,input_file|
 
   success = system "#{exe} -model #{model} -tenant #{tenant} -data \"#{input_file}\""
