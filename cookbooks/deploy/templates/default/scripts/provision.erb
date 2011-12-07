@@ -25,12 +25,7 @@ Helpers::drop_all_databases("<%= @db_server %>", "<%= @sarmus_port %>")
 
 Dir.chdir('/Provision/bin')
 
-{
-    'importer' => 'c:\Provision\bin\Models.xlsx',
-    'importer' => 'c:\Provision\bin\VGC - SHARED.xlsx',
-    'VGC' => 'c:\Provision\bin\VGC - HCM.xlsx',
-}.each do |tenant, input_file|
-
+def import_data(tenant, input_file)
   puts "running provisioning for model: #{model} tenant: #{tenant} input file: #{input_file}"
   success = system "#{exe} -model #{model} -tenant #{tenant} -data \"#{input_file}\""
   exit_code = $?
@@ -42,3 +37,6 @@ Dir.chdir('/Provision/bin')
   end
 end
 
+import_data('importer', 'c:\Provision\bin\Models.xlsx')
+import_data('importer', 'c:\Provision\bin\VGC - SHARED.xlsx')
+import_data('VGC', 'c:\Provision\bin\VGC - HCM.xlsx')
