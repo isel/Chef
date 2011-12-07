@@ -1,13 +1,17 @@
 require 'rake'
 
-FileList['/Websites/**'].each do |f|
-  FileUtils.remove_entry(f, true)
-end
+ruby 'Deploy binaries' do
+  code <<-EOF
+    FileList['/Websites/**'].each do |f|
+      FileUtils.remove_entry(f, true)
+    end
 
-FileUtils.cp_r('/DeployScripts/AppServer/Models', '/Websites')
-FileUtils.cp_r('/DeployScripts/AppServer/Websites/UltimateSoftware.Gateway.Active/.', '/Websites/ActiveSTS')
-FileUtils.cp_r('/DeployScripts/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services')
-FileUtils.cp_r('/DeployScripts/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services.Help')
+    FileUtils.cp_r('/DeployScripts/AppServer/Models', '/Websites')
+    FileUtils.cp_r('/DeployScripts/AppServer/Websites/UltimateSoftware.Gateway.Active/.', '/Websites/ActiveSTS')
+    FileUtils.cp_r('/DeployScripts/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services')
+    FileUtils.cp_r('/DeployScripts/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services.Help')
+  EOF
+end
 
 ruby_scripts_dir = '/RubyScripts'
 
