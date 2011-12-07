@@ -14,9 +14,11 @@ FileUtils.cp_r('/DeployScripts/Provision/.', '/Provision/bin')
 FileUtils.cp_r('/DeployScripts/ProvisionData/.', '/Provision/bin')
 FileUtils.cp_r('/DeployScripts/Images', '/Provision')
 FileUtils.cp_r('/DeployScripts/uiml', '/Provision')
+FileUtils.cp_r('/DeployScripts/Workflow.Activities.Compass/OrgChart/.', '/Provision/Workflow.Activities.Compass/OrgChart')
 
 Helpers::change_app_setting(config, "ConnectionString", "Server=<%= @db_server %>:<%= @sarmus_port %>")
 Helpers::change_app_setting(config, "EntityFramework.ModelFolder", "C:\\WebSites\\Models\\")
+Helpers::change_app_setting(config, "ImportFlowRoot ", "C:\\Provision\\Workflow.Activities.Compass\\")
 IOUtils::replace_text_in_file(config, '<%= '<host name="localhost"' %>', "<%= '<host name=\"' %><%= @cache_server %>\"")
 IOUtils::replace_text_in_file(config, '<\/hosts>', '</hosts><securityProperties mode="None" protectionLevel="None"/>')
 
