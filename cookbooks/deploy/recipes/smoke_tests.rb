@@ -8,5 +8,5 @@ template "#{ruby_scripts_dir}/smoke_tests.rb" do
 end
 
 powershell "Running smoke tests" do
-  source("ruby #{ruby_scripts_dir}/smoke_tests.rb")
+  source("rake --rakefile #{ruby_scripts_dir}/smoke_tests.rb")
 end
