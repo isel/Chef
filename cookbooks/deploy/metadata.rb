@@ -14,6 +14,7 @@ recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::provision", "Provisions basic system data"
 recipe "deploy::sarmus", "Deploys sarmus"
+recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
 
 attribute "deploy/app_server_host_name",
   :display_name => "app server host name",
@@ -68,7 +69,7 @@ attribute "deploy/mongo_version",
 attribute "deploy/revision",
   :display_name => "revision",
   :required => "required",
-  :recipes => ["deploy::sarmus", "deploy::download_artifacts"]
+  :recipes => ["deploy::sarmus", "deploy::download_artifacts", "deploy::tag_data_version"]
 
 attribute "deploy/sarmus_port",
   :display_name => "sarmus port",

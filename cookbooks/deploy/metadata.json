@@ -148,7 +148,8 @@
       "required": "required",
       "recipes": [
         "deploy::sarmus",
-        "deploy::download_artifacts"
+        "deploy::download_artifacts",
+        "deploy::tag_data_version"
       ],
       "choice": [
 
@@ -179,7 +180,8 @@
     "deploy::jspr": "Deploys the web server websites",
     "deploy::mongo": "Deploys mongodb",
     "deploy::provision": "Provisions basic system data",
-    "deploy::sarmus": "Deploys sarmus"
+    "deploy::sarmus": "Deploys sarmus",
+    "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server"
   },
   "version": "0.0.1"
 }
