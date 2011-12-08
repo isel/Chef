@@ -4,7 +4,7 @@ deployment = Cloud::Deployment.new
 servers = deployment.discover_servers('<%= @deployment_name %>')
 
 servers.each_value do |server|
-  if server.private_ip = '<%= @private_ip %>'
+  if server.private_ip == '<%= @private_ip %>'
     puts "tags: #{server.tags}"
   end
 end
