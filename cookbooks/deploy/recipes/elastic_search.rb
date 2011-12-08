@@ -45,8 +45,7 @@ end
 
 ruby 'waiting for data to be provisioned' do
   code <<-EOF
-    result = `rs_tag --list`
-    puts "tags: #{result}"
+    puts `rs_tag --list`
   EOF
 end
 
