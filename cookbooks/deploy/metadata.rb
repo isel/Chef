@@ -15,6 +15,7 @@ recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::provision", "Provisions basic system data"
 recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
 recipe "deploy::sarmus", "Deploys sarmus"
+recipe "deploy::smoke_tests", "Runs smoke tests"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
 
 attribute "deploy/app_server_host_name",
@@ -46,6 +47,11 @@ attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
   :recipes => ["deploy::foundation_services", "deploy::provision"]
+
+attribute "deploy/deployment_name",
+  :display_name => "deployment name",
+  :required => "required",
+  :recipes => ["deploy::smoke_tests"]
 
 attribute "deploy/elastic_search_port",
   :display_name => "elastic search port",

@@ -95,6 +95,18 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/deployment_name": {
+      "display_name": "deployment name",
+      "required": "required",
+      "recipes": [
+        "deploy::smoke_tests"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/elastic_search_port": {
       "display_name": "elastic search port",
       "required": "required",
@@ -182,6 +194,7 @@
     "deploy::provision": "Provisions basic system data",
     "deploy::reindex_elastic_search": "Reindexes ElasticSearch (should be going away)",
     "deploy::sarmus": "Deploys sarmus",
+    "deploy::smoke_tests": "Runs smoke tests",
     "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server"
   },
   "version": "0.0.1"
