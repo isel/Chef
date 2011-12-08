@@ -1,8 +1,11 @@
-require '/DeployScripts/CI/BuildScripts/Cloud/RightScale/server'
+require '/DeployScripts/CI/BuildScripts/Cloud/deployment'
 
-puts "env INSTANCE_ID: #{ENV['INSTANCE_ID']}"
-puts "env RS_INSTANCE_UUID: #{ENV['RS_INSTANCE_UUID']}"
+deployment = Cloud::Deployment.new
+servers = deployment.discover_servers('<%= @deployment_name %>')
 
-puts RightScale::Server.new(nil, nil, '<%= @instance_id %>').tags
+servers.each do |server|
+  if server.private_ip = '<%= @private_ip %>'
+    puts "tags: #{server.tags}"
+  end
+end
 
-puts ENV

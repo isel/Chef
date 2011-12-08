@@ -46,6 +46,11 @@ attribute "deploy/db_server",
   :required => "required",
   :recipes => ["deploy::foundation_services", "deploy::provision"]
 
+attribute "deploy/deployment_name",
+  :display_name => "rightscale deployment name",
+  :required => "required",
+  :recipes => ["deploy::elastic_search"]
+
 attribute "deploy/elastic_search_port",
   :display_name => "elastic search port",
   :required => "required",
@@ -53,11 +58,6 @@ attribute "deploy/elastic_search_port",
 
 attribute "deploy/elastic_search_version",
   :display_name => "elastic search version",
-  :required => "required",
-  :recipes => ["deploy::elastic_search"]
-
-attribute "deploy/instance_id",
-  :display_name => "aws instance id",
   :required => "required",
   :recipes => ["deploy::elastic_search"]
 
@@ -70,6 +70,11 @@ attribute "deploy/mongo_version",
   :display_name => "mongo version",
   :required => "required",
   :recipes => ["deploy::mongo"]
+
+attribute "deploy/private_ip",
+  :display_name => "private ip",
+  :required => "required",
+  :recipes => ["deploy::elastic_search"]
 
 attribute "deploy/revision",
   :display_name => "revision",

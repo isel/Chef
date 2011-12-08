@@ -2,7 +2,8 @@ ruby_scripts_dir = '/RubyScripts'
 template "#{ruby_scripts_dir}/wait_for_tag.rb" do
   source 'scripts/wait_for_tag.erb'
   variables(
-    :instance_id => node[:deploy][:instance_id],
+    :deployment_name => node[:deploy][:deployment_name],
+    :private_ip => node[:deploy][:private_ip],
     :timeout => 60 * 60
   )
 end

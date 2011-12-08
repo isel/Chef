@@ -95,6 +95,18 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/deployment_name": {
+      "display_name": "rightscale deployment name",
+      "required": "required",
+      "recipes": [
+        "deploy::elastic_search"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/elastic_search_port": {
       "display_name": "elastic search port",
       "required": "required",
@@ -109,18 +121,6 @@
     },
     "deploy/elastic_search_version": {
       "display_name": "elastic search version",
-      "required": "required",
-      "recipes": [
-        "deploy::elastic_search"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/instance_id": {
-      "display_name": "aws instance id",
       "required": "required",
       "recipes": [
         "deploy::elastic_search"
@@ -148,6 +148,18 @@
       "required": "required",
       "recipes": [
         "deploy::mongo"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/private_ip": {
+      "display_name": "private ip",
+      "required": "required",
+      "recipes": [
+        "deploy::elastic_search"
       ],
       "choice": [
 
