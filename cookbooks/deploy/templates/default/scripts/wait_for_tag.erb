@@ -1,0 +1,5 @@
+require '/DeployScripts/CI/BuildScripts/Cloud/RightScale/server'
+
+puts Server.new(nil, nil, <%= @instance_id %>).tags
+
+puts "env: #{ENV['INSTANCE_ID']}"

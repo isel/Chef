@@ -119,6 +119,18 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/instance_id": {
+      "display_name": "aws instance id",
+      "required": "required",
+      "recipes": [
+        "deploy::elastic_search"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/mongo_port": {
       "display_name": "mongo port",
       "required": "required",

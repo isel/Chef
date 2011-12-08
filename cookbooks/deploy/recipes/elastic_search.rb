@@ -1,3 +1,13 @@
+ruby_scripts_dir = '/RubyScripts'
+template "#{ruby_scripts_dir}/wait_for_tag.rb" do
+  source 'scripts/wait_for_tag.erb'
+  variables(
+    :instance_id => node[:deploy][:instance_id],
+    :timeout => 60 * 60
+  )
+end
+
+
 if !File.exists?('/opt/ElasticSearch')
   install_dir = "elasticsearch-#{node[:deploy][:elastic_search_version]}"
   bash 'install elastic search' do
@@ -43,9 +53,9 @@ else
   Chef::Log.info('Elastic Search is already installed.')
 end
 
-ruby 'waiting for data to be provisioned' do
+bash 'Waiting for data to be provisioned' do
   code <<-EOF
-    puts `rs_tag --list`
+    ruby #{ruby_scripts_dir}/wait_for_tag.rb
   EOF
 end
 

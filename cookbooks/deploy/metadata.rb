@@ -56,6 +56,11 @@ attribute "deploy/elastic_search_version",
   :required => "required",
   :recipes => ["deploy::elastic_search"]
 
+attribute "deploy/instance_id",
+  :display_name => "aws instance id",
+  :required => "required",
+  :recipes => ["deploy::elastic_search"]
+
 attribute "deploy/mongo_port",
   :display_name => "mongo port",
   :required => "required",
