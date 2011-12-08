@@ -43,6 +43,9 @@ else
   Chef::Log.info('Elastic Search is already installed.')
 end
 
+result = `rs_tag --list`
+puts result
+
 bash 'deploy elastic search' do
   code <<-EOF
     echo 'deploying elastic search'
