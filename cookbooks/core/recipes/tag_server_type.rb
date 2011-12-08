@@ -1,0 +1,1 @@
+right_link_tag "server:type=#{node[:core][:server_type]}"

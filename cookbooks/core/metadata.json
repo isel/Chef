@@ -21,11 +21,25 @@
   "replacing": {
   },
   "attributes": {
+    "core/server_type": {
+      "display_name": "server type",
+      "description": "eg: db, app, web, cache",
+      "required": "required",
+      "recipes": [
+        "core::tag_server_type"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    }
   },
   "groupings": {
   },
   "recipes": {
-    "core::install_gems": "Installs ruby gems"
+    "core::install_gems": "Installs ruby gems",
+    "core::tag_server_type": "Tags the server type"
   },
   "version": "0.0.1"
 }
