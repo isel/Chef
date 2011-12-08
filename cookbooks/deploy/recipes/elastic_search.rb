@@ -1,14 +1,3 @@
-ruby_scripts_dir = '/RubyScripts'
-template "#{ruby_scripts_dir}/wait_for_tag.rb" do
-  source 'scripts/wait_for_tag.erb'
-  variables(
-    :deployment_name => node[:deploy][:deployment_name],
-    :private_ip => node[:deploy][:private_ip],
-    :timeout => 60 * 60
-  )
-end
-
-
 if !File.exists?('/opt/ElasticSearch')
   install_dir = "elasticsearch-#{node[:deploy][:elastic_search_version]}"
   bash 'install elastic search' do
@@ -54,29 +43,3 @@ else
   Chef::Log.info('Elastic Search is already installed.')
 end
 
-bash 'Waiting for data to be provisioned' do
-  code <<-EOF
-    ruby #{ruby_scripts_dir}/wait_for_tag.rb
-  EOF
-end
-
-#bash 'deploy elastic search' do
-#  code <<-EOF
-#    echo 'deploying elastic search'
-#    service elasticsearch restart
-#
-#    echo 'recreate /opt/Indexer directory'
-#    rm --recursive --force /opt/Indexer
-#    mkdir /opt/Indexer
-#
-#    echo 'updating indexer code'
-#    cp /DeployScripts/ElasticSearch/* /opt/Indexer
-#
-#    echo 'fixing permissions'
-#    chmod 755 /opt/Indexer/*
-#
-#    echo 'issue reindex command'
-#    cd /opt/Indexer
-#    ./indexOnData new
-#  EOF
-#end

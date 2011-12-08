@@ -13,6 +13,7 @@ recipe "deploy::foundation_services", "Deploys the foundation rest services"
 recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::provision", "Provisions basic system data"
+recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
 recipe "deploy::sarmus", "Deploys sarmus"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
 
@@ -46,11 +47,6 @@ attribute "deploy/db_server",
   :required => "required",
   :recipes => ["deploy::foundation_services", "deploy::provision"]
 
-attribute "deploy/deployment_name",
-  :display_name => "rightscale deployment name",
-  :required => "required",
-  :recipes => ["deploy::elastic_search"]
-
 attribute "deploy/elastic_search_port",
   :display_name => "elastic search port",
   :required => "required",
@@ -70,11 +66,6 @@ attribute "deploy/mongo_version",
   :display_name => "mongo version",
   :required => "required",
   :recipes => ["deploy::mongo"]
-
-attribute "deploy/private_ip",
-  :display_name => "private ip",
-  :required => "required",
-  :recipes => ["deploy::elastic_search"]
 
 attribute "deploy/revision",
   :display_name => "revision",

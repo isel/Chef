@@ -95,18 +95,6 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/deployment_name": {
-      "display_name": "rightscale deployment name",
-      "required": "required",
-      "recipes": [
-        "deploy::elastic_search"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
     "deploy/elastic_search_port": {
       "display_name": "elastic search port",
       "required": "required",
@@ -155,18 +143,6 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/private_ip": {
-      "display_name": "private ip",
-      "required": "required",
-      "recipes": [
-        "deploy::elastic_search"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
     "deploy/revision": {
       "display_name": "revision",
       "required": "required",
@@ -204,6 +180,7 @@
     "deploy::jspr": "Deploys the web server websites",
     "deploy::mongo": "Deploys mongodb",
     "deploy::provision": "Provisions basic system data",
+    "deploy::reindex_elastic_search": "Reindexes ElasticSearch (should be going away)",
     "deploy::sarmus": "Deploys sarmus",
     "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server"
   },
