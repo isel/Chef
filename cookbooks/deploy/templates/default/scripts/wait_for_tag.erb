@@ -1,11 +1,15 @@
 require '/DeployScripts/CI/BuildScripts/Cloud/deployment'
+require '/DeployScripts/CI/BuildScripts/Helpers/process'
 
 deployment = Cloud::Deployment.new
 servers = deployment.discover_servers('<%= @deployment_name %>')
 
 servers.each_value do |server|
   if server.private_ip == '<%= @private_ip %>'
-    puts "tags: #{server.tags}"
+    Helpers::Process.new(5000).run('waiting for the data version to be tagged', <%= @timeout %>) do
+      server.tags.has_key?('data:version')
+    end
+    break
   end
 end
 
