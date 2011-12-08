@@ -43,26 +43,30 @@ else
   Chef::Log.info('Elastic Search is already installed.')
 end
 
-result = `rs_tag --list`
-puts result
-
-bash 'deploy elastic search' do
+ruby 'waiting for data to be provisioned' do
   code <<-EOF
-    echo 'deploying elastic search'
-    service elasticsearch restart
-
-    echo 'recreate /opt/Indexer directory'
-    rm --recursive --force /opt/Indexer
-    mkdir /opt/Indexer
-
-    echo 'updating indexer code'
-    cp /DeployScripts/ElasticSearch/* /opt/Indexer
-
-    echo 'fixing permissions'
-    chmod 755 /opt/Indexer/*
-
-    echo 'issue reindex command'
-    cd /opt/Indexer
-    ./indexOnData new
+    result = `rs_tag --list`
+    puts "tags: #{result}"
   EOF
 end
+
+#bash 'deploy elastic search' do
+#  code <<-EOF
+#    echo 'deploying elastic search'
+#    service elasticsearch restart
+#
+#    echo 'recreate /opt/Indexer directory'
+#    rm --recursive --force /opt/Indexer
+#    mkdir /opt/Indexer
+#
+#    echo 'updating indexer code'
+#    cp /DeployScripts/ElasticSearch/* /opt/Indexer
+#
+#    echo 'fixing permissions'
+#    chmod 755 /opt/Indexer/*
+#
+#    echo 'issue reindex command'
+#    cd /opt/Indexer
+#    ./indexOnData new
+#  EOF
+#end
