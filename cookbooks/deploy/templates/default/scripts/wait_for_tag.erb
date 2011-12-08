@@ -5,3 +5,4 @@ puts "env RS_INSTANCE_UUID: #{ENV['RS_INSTANCE_UUID']}"
 
 puts RightScale::Server.new(nil, nil, '<%= @instance_id %>').tags
 
+puts ENV
