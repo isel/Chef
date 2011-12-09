@@ -47,7 +47,7 @@ attribute "deploy/cache_server",
 attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
-  :recipes => ["deploy::foundation_services", "deploy::provision"]
+  :recipes => ["deploy::foundation_services", "deploy::provision", "deploy::smoke_tests_local"]
 
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
@@ -82,7 +82,7 @@ attribute "deploy/revision",
 attribute "deploy/sarmus_port",
   :display_name => "sarmus port",
   :required => "required",
-  :recipes => ["deploy::foundation_services", "deploy::provision"]
+  :recipes => ["deploy::foundation_services", "deploy::provision", "deploy::smoke_tests_local"]
 
 ### attributes used from other cookbooks
 attribute "core/server_type",
