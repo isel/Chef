@@ -2,7 +2,6 @@ require 'rake'
 require 'rspec/core/rake_task'
 
 ENV['deployment.name'] = '<%= @deployment_name %>'
-ENV['app_server'] = '<%= @app_server %>'
 ENV['domain.name'] = ''
 
 RSpec::Core::RakeTask.new(:spec) do |t|
