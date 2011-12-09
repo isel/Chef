@@ -8,6 +8,14 @@ template "#{ruby_scripts_dir}/smoke_tests_local.rb" do
   )
 end
 
-powershell "Running local smoke tests" do
-  source("rake --rakefile #{ruby_scripts_dir}/smoke_tests_local.rb")
+if node[:platform] == "ubuntu"
+  bash 'Running local smoke tests' do
+    code <<-EOF
+      rake --rakefile #{ruby_scripts_dir}/smoke_tests_local.rb
+    EOF
+  end
+else
+  powershell "Running local smoke tests" do
+    source("rake --rakefile #{ruby_scripts_dir}/smoke_tests_local.rb")
+  end
 end
