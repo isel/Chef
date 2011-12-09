@@ -27,7 +27,7 @@ Helpers::change_app_setting(config, "EntityFramework.ModelFolder", "C:\\Provisio
 Helpers::change_app_setting(config, "ImportFlowRoot", "C:\\Provision\\Workflow.Activities.Compass\\")
 
 #IOUtils::replace_text_in_file(config, '<%= '<host name="localhost"' %>', "<%= '<host name=\"' %><%= @cache_server %>\"")
-#IOUtils::replace_text_in_file(config, '<\/hosts>', '</hosts><securityProperties mode="None" protectionLevel="None"/>')
+IOUtils::replace_text_in_file(config, '<\/hosts>', '</hosts><securityProperties mode="None" protectionLevel="None"/>')
 
 Helpers::drop_all_databases("<%= @db_server %>", "<%= @sarmus_port %>")
 
