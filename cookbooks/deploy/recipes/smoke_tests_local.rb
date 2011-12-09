@@ -6,10 +6,8 @@ template "#{ruby_scripts_dir}/smoke_tests_local.rb" do
     :app_server => node[:deploy][:app_server],
     :server_type => node[:core][:server_type]
   )
-  only_if { ['web'].include?(node[:core][:server_type]) }
 end
 
 powershell "Running local smoke tests" do
   source("rake --rakefile #{ruby_scripts_dir}/smoke_tests_local.rb")
-  only_if { ['web'].include?(node[:core][:server_type]) }
 end
