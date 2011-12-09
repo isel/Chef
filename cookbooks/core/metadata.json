@@ -26,8 +26,7 @@
       "description": "eg: db, app, web, cache",
       "required": "required",
       "recipes": [
-        "core::tag_server_type",
-        "deploy::smoke_tests"
+        "core::tag_server_type"
       ],
       "choice": [
 

@@ -14,6 +14,6 @@ attribute "core/server_type",
   :display_name => "server type",
   :description => "eg: db, app, web, cache",
   :required => "required",
-  :recipes => ["core::tag_server_type", "deploy::smoke_tests"]
+  :recipes => ["core::tag_server_type"]
 
 
