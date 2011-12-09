@@ -42,7 +42,7 @@ attribute "deploy/aws_secret_access_key",
 attribute "deploy/cache_server",
   :display_name => "cache server",
   :required => "required",
-  :recipes => ["deploy::foundation_services", "deploy::provision"]
+  :recipes => ["deploy::foundation_services"]
 
 attribute "deploy/db_server",
   :display_name => "db server",

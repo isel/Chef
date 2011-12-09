@@ -3,7 +3,7 @@ ruby_scripts_dir = '/RubyScripts'
 template "#{ruby_scripts_dir}/provision.rb" do
   source 'scripts/provision.erb'
   variables(
-    :cache_server => node[:deploy][:cache_server],
+    #:cache_server => node[:deploy][:cache_server],
     :db_server => node[:deploy][:db_server],
     :sarmus_port => node[:deploy][:sarmus_port]
   )
