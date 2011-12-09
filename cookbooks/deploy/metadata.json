@@ -26,6 +26,7 @@
       "required": "required",
       "recipes": [
         "deploy::jspr",
+        "deploy::smoke_tests_global",
         "deploy::smoke_tests_local"
       ],
       "choice": [
@@ -89,19 +90,8 @@
       "recipes": [
         "deploy::foundation_services",
         "deploy::provision",
+        "deploy::smoke_tests_global",
         "deploy::smoke_tests_local"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/deployment_name": {
-      "display_name": "deployment name",
-      "required": "required",
-      "recipes": [
-        "deploy::smoke_tests_global"
       ],
       "choice": [
 
@@ -177,6 +167,7 @@
       "recipes": [
         "deploy::foundation_services",
         "deploy::provision",
+        "deploy::smoke_tests_global",
         "deploy::smoke_tests_local"
       ],
       "choice": [

@@ -1,7 +1,6 @@
 require 'rake'
 require 'rspec/core/rake_task'
 
-ENV['deployment.name'] = '<%= @deployment_name %>'
 ENV['domain.name'] = ''
 ENV['app_server'] = '<%= @app_server %>'
 ENV['db_server'] = '<%= @db_server %>'

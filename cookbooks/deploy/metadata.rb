@@ -22,7 +22,7 @@ recipe "deploy::tag_data_version", "Writes a tag denoting what data version has 
 attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
-  :recipes => ["deploy::jspr", "deploy::smoke_tests_local"]
+  :recipes => ["deploy::jspr", "deploy::smoke_tests_global", "deploy::smoke_tests_local"]
 
 attribute "deploy/artifacts",
   :display_name => "artifacts",
@@ -47,12 +47,7 @@ attribute "deploy/cache_server",
 attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
-  :recipes => ["deploy::foundation_services", "deploy::provision", "deploy::smoke_tests_local"]
-
-attribute "deploy/deployment_name",
-  :display_name => "deployment name",
-  :required => "required",
-  :recipes => ["deploy::smoke_tests_global"]
+  :recipes => ["deploy::foundation_services", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local"]
 
 attribute "deploy/elastic_search_port",
   :display_name => "elastic search port",
@@ -82,7 +77,7 @@ attribute "deploy/revision",
 attribute "deploy/sarmus_port",
   :display_name => "sarmus port",
   :required => "required",
-  :recipes => ["deploy::foundation_services", "deploy::provision", "deploy::smoke_tests_local"]
+  :recipes => ["deploy::foundation_services", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local"]
 
 ### attributes used from other cookbooks
 attribute "core/server_type",
