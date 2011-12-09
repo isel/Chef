@@ -208,7 +208,8 @@
     "deploy::provision": "Provisions basic system data",
     "deploy::reindex_elastic_search": "Reindexes ElasticSearch (should be going away)",
     "deploy::sarmus": "Deploys sarmus",
-    "deploy::smoke_tests": "Runs smoke tests",
+    "deploy::smoke_tests_global": "Runs global smoke tests",
+    "deploy::smoke_tests_local": "Runs local smoke tests",
     "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server"
   },
   "version": "0.0.1"

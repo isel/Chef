@@ -15,7 +15,8 @@ recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::provision", "Provisions basic system data"
 recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
 recipe "deploy::sarmus", "Deploys sarmus"
-recipe "deploy::smoke_tests", "Runs smoke tests"
+recipe "deploy::smoke_tests_global", "Runs global smoke tests"
+recipe "deploy::smoke_tests_local", "Runs local smoke tests"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
 
 attribute "deploy/app_server",
