@@ -181,6 +181,19 @@
       ],
       "calculated": false,
       "type": "string"
+    },
+    "core/server_type": {
+      "display_name": "server type",
+      "description": "eg: db, app, web, cache",
+      "required": "required",
+      "recipes": [
+        "deploy::smoke_tests"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
     }
   },
   "groupings": {

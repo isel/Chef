@@ -2,6 +2,7 @@ require 'rake'
 require 'rspec/core/rake_task'
 
 puts "server type = <%= @server_type %>"
+puts "ip address = <%= node['ipaddress'] %>"
 
 ENV['deployment.name'] = '<%= @deployment_name %>'
 ENV['domain.name'] = ''
