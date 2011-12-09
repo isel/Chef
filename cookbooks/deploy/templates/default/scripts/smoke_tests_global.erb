@@ -1,15 +1,12 @@
 require 'rake'
 require 'rspec/core/rake_task'
 
-puts "server type = <%= @server_type %>"
-puts "ip address = <%= node['ipaddress'] %>"
-
 ENV['deployment.name'] = '<%= @deployment_name %>'
+ENV['app_server'] = '<%= @app_server %>'
 ENV['domain.name'] = ''
-#ENV['web_revision'] = ''
 
 RSpec::Core::RakeTask.new(:spec) do |t|
-  t.pattern = '/DeployScripts/CI/spec/Smoke/deploy_spec.rb'
+  t.pattern = '/DeployScripts/CI/spec/Smoke/deploy_global_spec.rb'
 end
 
 task :default => [:spec]

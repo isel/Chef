@@ -18,10 +18,10 @@ recipe "deploy::sarmus", "Deploys sarmus"
 recipe "deploy::smoke_tests", "Runs smoke tests"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
 
-attribute "deploy/app_server_host_name",
-  :display_name => "app server host name",
+attribute "deploy/app_server",
+  :display_name => "app server",
   :required => "required",
-  :recipes => ["deploy::jspr"]
+  :recipes => ["deploy::jspr", "deploy::smoke_tests_local"]
 
 attribute "deploy/artifacts",
   :display_name => "artifacts",
@@ -51,7 +51,7 @@ attribute "deploy/db_server",
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
   :required => "required",
-  :recipes => ["deploy::smoke_tests"]
+  :recipes => ["deploy::smoke_tests_global"]
 
 attribute "deploy/elastic_search_port",
   :display_name => "elastic search port",
@@ -88,7 +88,7 @@ attribute "core/server_type",
   :display_name => "server type",
   :description => "eg: db, app, web, cache",
   :required => "required",
-  :recipes => ["deploy::smoke_tests"]
+  :recipes => ["deploy::smoke_tests_local"]
 
 
 

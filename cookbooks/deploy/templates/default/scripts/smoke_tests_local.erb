@@ -1,0 +1,12 @@
+require 'rake'
+require 'rspec/core/rake_task'
+
+ENV['deployment.name'] = '<%= @deployment_name %>'
+ENV['domain.name'] = ''
+ENV['web_revision'] = FileList['/DeployScripts/JSPR/JSPR/ver*'][0].split('ver')[1] if '<%= @server_type %>' == 'web'
+
+RSpec::Core::RakeTask.new(:spec) do |t|
+  t.pattern = '/DeployScripts/CI/spec/Smoke/deploy_<%= @server_type %>_spec.rb'
+end
+
+task :default => [:spec]

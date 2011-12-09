@@ -5,7 +5,7 @@ deployment = Cloud::Deployment.new
 servers = deployment.discover_servers('<%= @deployment_name %>')
 
 servers.each_value do |server|
-  if server.private_ip == '<%= @private_ip %>'
+  if server.private_ip == '<%= node['ipaddress'] %>'
     Helpers::Process.new(15).run('waiting for the data version to be tagged', <%= @timeout %>) do
       current_tags = server.tags
       puts current_tags

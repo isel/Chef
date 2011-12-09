@@ -21,11 +21,12 @@
   "replacing": {
   },
   "attributes": {
-    "deploy/app_server_host_name": {
-      "display_name": "app server host name",
+    "deploy/app_server": {
+      "display_name": "app server",
       "required": "required",
       "recipes": [
-        "deploy::jspr"
+        "deploy::jspr",
+        "deploy::smoke_tests_local"
       ],
       "choice": [
 
@@ -99,7 +100,7 @@
       "display_name": "deployment name",
       "required": "required",
       "recipes": [
-        "deploy::smoke_tests"
+        "deploy::smoke_tests_global"
       ],
       "choice": [
 
@@ -187,7 +188,7 @@
       "description": "eg: db, app, web, cache",
       "required": "required",
       "recipes": [
-        "deploy::smoke_tests"
+        "deploy::smoke_tests_local"
       ],
       "choice": [
 
