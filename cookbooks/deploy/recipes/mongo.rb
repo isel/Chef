@@ -14,7 +14,7 @@ if !File.exists?('/opt/Mongo')
     EOF
   end
 else
-  Chef::Log.info('Mongo already installed.')
+  log 'Mongo already installed.'
 end
 
 if !File.exists?('/etc/init.d/mongo')
@@ -32,7 +32,7 @@ if !File.exists?('/etc/init.d/mongo')
     EOF
   end
 else
-  Chef::Log.info('Mongo service is already registered.')
+  log 'Mongo service is already registered.'
 end
 
 bash 'Starting mongo service' do

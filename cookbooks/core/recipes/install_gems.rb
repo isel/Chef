@@ -1,4 +1,4 @@
-Chef::Log.info(`gem update --system`)
+log `gem update --system`
 
 ['fog'].each do |gem|
   gem_package gem do

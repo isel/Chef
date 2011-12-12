@@ -1,4 +1,4 @@
-ruby_scripts_dir = '/RubyScripts'
+ruby_scripts_dir = node['ruby_scripts_dir']
 Dir.mkdir(ruby_scripts_dir) unless File.exist? ruby_scripts_dir
 
 template "#{ruby_scripts_dir}/download_artifacts.rb" do

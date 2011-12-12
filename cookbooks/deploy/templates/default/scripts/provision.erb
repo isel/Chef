@@ -1,7 +1,7 @@
 require 'rake'
-require '/DeployScripts/CI/BuildScripts/Helpers/configuration'
-require '/DeployScripts/CI/BuildScripts/Helpers/io_utils'
-require '/DeployScripts/CI/BuildScripts/Helpers/mongo'
+require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Helpers/configuration'
+require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Helpers/io_utils'
+require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Helpers/mongo'
 
 
 exe = '/Provision/bin/UltimateSoftware.Provisioning.Runner.exe'
@@ -15,12 +15,12 @@ end
 FileUtils.remove_dir('/Provision', true)
 FileUtils.mkdir_p('/Provision')
 
-FileUtils.cp_r('/DeployScripts/Provision/.', '/Provision/bin')
-FileUtils.cp_r('/DeployScripts/ProvisionData/.', '/Provision/bin')
-FileUtils.cp_r('/DeployScripts/Models', '/Provision')
-FileUtils.cp_r('/DeployScripts/Images', '/Provision')
-FileUtils.cp_r('/DeployScripts/uiml', '/Provision')
-FileUtils.cp_r('/DeployScripts/Workflow.Activities.Compass', '/Provision')
+FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Provision/.', '/Provision/bin')
+FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/ProvisionData/.', '/Provision/bin')
+FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Models', '/Provision')
+FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Images', '/Provision')
+FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/uiml', '/Provision')
+FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Workflow.Activities.Compass', '/Provision')
 
 Helpers::change_app_setting(config, "ConnectionString", "Server=<%= @db_server %>:<%= @sarmus_port %>")
 Helpers::change_app_setting(config, "EntityFramework.ModelFolder", "C:\\Provision\\Models\\")

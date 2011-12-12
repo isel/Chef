@@ -8,7 +8,7 @@ bash 'deploy elastic search' do
     mkdir /opt/Indexer
 
     echo 'updating indexer code'
-    cp /DeployScripts/ElasticSearch/* /opt/Indexer
+    cp #{node['deploy_scripts_dir']}/ElasticSearch/* /opt/Indexer
 
     echo 'fixing permissions'
     chmod 755 /opt/Indexer/*

@@ -6,10 +6,10 @@ ENV['app_server'] = '<%= @app_server %>'
 ENV['db_server'] = '<%= @db_server %>'
 ENV['sarmus_port'] = '<%= @sarmus_port %>'
 
-ENV['web_revision'] = FileList['/DeployScripts/JSPR/JSPR/ver*'][0].split('ver')[1] if '<%= @server_type %>' == 'web'
+ENV['web_revision'] = FileList['<%= node['deploy_scripts_dir'] %>/JSPR/JSPR/ver*'][0].split('ver')[1] if '<%= @server_type %>' == 'web'
 
 RSpec::Core::RakeTask.new(:spec) do |t|
-  t.pattern = '/DeployScripts/CI/spec/Smoke/deploy_<%= @server_type %>_spec.rb'
+  t.pattern = '<%= node['deploy_scripts_dir'] %>/CI/spec/Smoke/deploy_<%= @server_type %>_spec.rb'
 end
 
 task :default => [:spec]

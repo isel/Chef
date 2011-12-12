@@ -1,6 +1,6 @@
 require 'rake'
 
-ruby_scripts_dir = '/RubyScripts'
+ruby_scripts_dir = node['ruby_scripts_dir']
 
 template "#{ruby_scripts_dir}/foundation_services.rb" do
   source 'scripts/foundation_services.erb'

@@ -1,7 +1,7 @@
 <%
   def rev
     begin
-      FileList['/DeployScripts/JSPR/JSPR/ver*'][0].split('ver')[1]
+      FileList["#{node['deploy_scripts_dir']}/JSPR/JSPR/ver*"][0].split('ver')[1]
     rescue
       raise "Error getting JSPR revision: #{$!}"
     end

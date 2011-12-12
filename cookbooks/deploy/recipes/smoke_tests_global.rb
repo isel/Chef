@@ -1,4 +1,4 @@
-ruby_scripts_dir = '/RubyScripts'
+ruby_scripts_dir = node['ruby_scripts_dir']
 
 template "#{ruby_scripts_dir}/smoke_tests_global.rb" do
   source 'scripts/smoke_tests_global.erb'

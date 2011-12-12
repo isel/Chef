@@ -40,6 +40,6 @@ if !File.exists?('/opt/ElasticSearch')
     EOF
   end
 else
-  Chef::Log.info('Elastic Search is already installed.')
+  log 'Elastic Search is already installed.'
 end
 

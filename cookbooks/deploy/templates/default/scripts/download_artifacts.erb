@@ -17,7 +17,7 @@ s3_files = bucket.files
 
 install_files = '<%= @artifacts %>'.split(',')
 
-deploy_folder = '/DeployScripts'
+deploy_folder = '<%= node['deploy_scripts_dir'] %>'
 FileUtils.remove_dir(deploy_folder, true) if Dir.exist? deploy_folder
 Dir.mkdir(deploy_folder)
 

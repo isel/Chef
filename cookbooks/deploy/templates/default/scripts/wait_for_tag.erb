@@ -1,5 +1,5 @@
-require '/DeployScripts/CI/BuildScripts/Cloud/deployment'
-require '/DeployScripts/CI/BuildScripts/Helpers/process'
+require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Cloud/deployment'
+require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Helpers/process'
 
 deployment = Cloud::Deployment.new
 servers = deployment.discover_servers('<%= @deployment_name %>')
