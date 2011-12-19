@@ -7,9 +7,11 @@ require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Helpers/mongo'
 exe = '/Provision/bin/UltimateSoftware.Provisioning.Runner.exe'
 config = "#{exe}.config"
 
-if Dir.exist?('/Provision')
-  puts 'Server has already been provisioned'
+if Dir.exist?('/Provision') && <%= node['force_provision'] %> != 'true'
+  puts 'Deployment has already been provisioned'
   exit
+else
+  puts 'Provisioning deployment'
 end
 
 FileUtils.remove_dir('/Provision', true)

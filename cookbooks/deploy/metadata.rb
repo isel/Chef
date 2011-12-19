@@ -59,6 +59,11 @@ attribute "deploy/elastic_search_version",
   :required => "required",
   :recipes => ["deploy::elastic_search"]
 
+attribute "deploy/force_provision",
+  :display_name => "force provision",
+  :required => "required",
+  :recipes => ["deploy::provision"]
+
 attribute "deploy/mongo_port",
   :display_name => "mongo port",
   :required => "required",
