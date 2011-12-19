@@ -19,7 +19,8 @@ def thumbprint
    `powershell -Command "((dir cert:\\localmachine\\Root -rec | where-object {$_.Subject -eq 'CN=localhost'}) | select-object thumbprint).thumbprint"`.strip
 end
 
-Helpers::add_thumbprint("/Websites/Services/Web.config", thumbprint)
+Helpers::add_services_thumbprint("/Websites/Services/Web.config", thumbprint)
+Helpers::change_cert_repo_thumbprint("/Websites/ActiveSTS/configuration/CertificateRepository.config", thumbprint)
 
 Helpers::change_all_app_settings(configs, "SigningCertificateName", "CN=localhost")
 Helpers::change_all_app_settings(configs, "ConnectionString", "Server=<%= @db_server %>:<%= @sarmus_port %>")
