@@ -19,7 +19,7 @@ def thumbprint
    `powershell -Command "((dir cert:\\localmachine\\Root -rec | where-object {$_.Subject -eq 'CN=localhost'}) | select-object thumbprint).thumbprint"`.strip
 end
 
-IOUtils::replace_text_in_files(configs, 'F0C92080457571AAA70CE209C8CDFABCD38F87CC', thumbprint)
+Helpers::add_thumbprint("/Websites/Services/Web.config", thumbprint)
 
 Helpers::change_all_app_settings(configs, "SigningCertificateName", "CN=localhost")
 Helpers::change_all_app_settings(configs, "ConnectionString", "Server=<%= @db_server %>:<%= @sarmus_port %>")
