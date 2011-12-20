@@ -22,7 +22,7 @@ recipe "deploy::tag_data_version", "Writes a tag denoting what data version has 
 attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
-  :recipes => ["deploy::jspr", "deploy::smoke_tests_global", "deploy::smoke_tests_local"]
+  :recipes => ["deploy::jspr", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local"]
 
 attribute "deploy/artifacts",
   :display_name => "artifacts",
@@ -87,7 +87,7 @@ attribute "deploy/sarmus_port",
 attribute "deploy/tenant",
   :display_name => "tenant",
   :required => "required",
-  :recipes => ["deploy::provision"]
+  :recipes => ["deploy::provision", "deploy::smoke_tests_global"]
 
 ### attributes used from other cookbooks
 attribute "core/server_type",

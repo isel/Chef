@@ -2,6 +2,7 @@ require 'rake'
 require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Helpers/configuration'
 require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Helpers/io_utils'
 require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Helpers/mongo'
+require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Helpers/PIMPublisher'
 
 
 exe = '/Provision/bin/UltimateSoftware.Provisioning.Runner.exe'
@@ -35,8 +36,7 @@ Helpers::drop_all_databases("<%= @db_server %>", "<%= @sarmus_port %>")
 
 Dir.chdir('/Provision/bin')
 
-def import_data(exe, tenant, input_file)
-  model = 'ultipro2'
+def import_data(exe, tenant, input_file, model)
   puts "running provisioning for model: #{model} tenant: #{tenant} input file: #{input_file}"
   success = system "#{exe} -model #{model} -tenant #{tenant} -data \"#{input_file}\""
   exit_code = $?
@@ -50,6 +50,17 @@ end
 
 tenant = <%= @tenant %>
 
-import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
-import_data(exe, 'importer', 'c:\Provision\bin\VGC - SHARED.xlsx')
-import_data(exe, 'VGC', 'c:\Provision\bin\VGC - HCM.xlsx')
+if tenant == 'VGC'
+  import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx', 'ultipro2')
+  import_data(exe, 'importer', 'c:\Provision\bin\VGC - SHARED.xlsx', 'ultipro2')
+  import_data(exe, 'VGC', 'c:\Provision\bin\VGC - HCM.xlsx', 'ultipro2')
+else
+  import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx', 'HCM')
+  import_data(exe, 'importer', 'c:\Provision\PayrollProvision\files\PayrollEngine.xlsx', 'HCM')
+
+  paycheck_PIM = File.read('c:/Provision/PayrollProvision/entities/HCM.entity_json')
+  Helpers::PIMPublisher.new.publish_entity('<%= @app_server %>', paycheck_PIM)
+
+  import_data(exe, 'PENG', 'c:\Provision\PayrollProvision\files\Paycheck.xlsx', 'HCM')
+  import_data(exe, 'PENG', 'c:\Provision\PayrollProvision\files\Rules.xlsx', 'HCM')
+end

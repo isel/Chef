@@ -26,6 +26,7 @@
       "required": "required",
       "recipes": [
         "deploy::jspr",
+        "deploy::provision",
         "deploy::smoke_tests_global",
         "deploy::smoke_tests_local"
       ],
@@ -191,7 +192,8 @@
       "display_name": "tenant",
       "required": "required",
       "recipes": [
-        "deploy::provision"
+        "deploy::provision",
+        "deploy::smoke_tests_global"
       ],
       "choice": [
 
