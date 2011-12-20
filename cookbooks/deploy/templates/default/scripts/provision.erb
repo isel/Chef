@@ -48,7 +48,7 @@ def import_data(exe, tenant, input_file, model)
   end
 end
 
-tenant = <%= @tenant %>
+tenant = '<%= @tenant %>'
 
 if tenant == 'VGC'
   import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx', 'ultipro2')
