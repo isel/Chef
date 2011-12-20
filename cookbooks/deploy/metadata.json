@@ -191,7 +191,7 @@
       "display_name": "tenant",
       "required": "required",
       "recipes": [
-        "deploy::tenant"
+        "deploy::provision"
       ],
       "choice": [
 
