@@ -84,6 +84,11 @@ attribute "deploy/sarmus_port",
   :required => "required",
   :recipes => ["deploy::foundation_services", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local"]
 
+attribute "deploy/tenant",
+  :display_name => "tenant",
+  :required => "required",
+  :recipes => ["deploy::tenant"]
+
 ### attributes used from other cookbooks
 attribute "core/server_type",
   :display_name => "server type",

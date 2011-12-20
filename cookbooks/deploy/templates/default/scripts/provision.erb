@@ -7,7 +7,7 @@ require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Helpers/mongo'
 exe = '/Provision/bin/UltimateSoftware.Provisioning.Runner.exe'
 config = "#{exe}.config"
 
-if Dir.exist?('/Provision') && <%= node['force_provision'] %> != 'true'
+if Dir.exist?('/Provision') && '<%= @force_provision %>' != 'true'
   puts 'Deployment has already been provisioned'
   exit
 else
@@ -19,6 +19,7 @@ FileUtils.mkdir_p('/Provision')
 
 FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Provision/.', '/Provision/bin')
 FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/ProvisionData/.', '/Provision/bin')
+FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/PayrollProvision', '/Provision')
 FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Models', '/Provision')
 FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Images', '/Provision')
 FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/uiml', '/Provision')
@@ -28,7 +29,6 @@ Helpers::change_app_setting(config, "ConnectionString", "Server=<%= @db_server %
 Helpers::change_app_setting(config, "EntityFramework.ModelFolder", "C:\\Provision\\Models\\")
 Helpers::change_app_setting(config, "ImportFlowRoot", "C:\\Provision\\Workflow.Activities.Compass\\")
 
-#IOUtils::replace_text_in_file(config, '<%= '<host name="localhost"' %>', "<%= '<host name=\"' %><%= @cache_server %>\"")
 IOUtils::replace_text_in_file(config, '<\/hosts>', '</hosts><securityProperties mode="None" protectionLevel="None"/>')
 
 Helpers::drop_all_databases("<%= @db_server %>", "<%= @sarmus_port %>")
@@ -47,6 +47,8 @@ def import_data(exe, tenant, input_file)
     raise "Error provisioning #{File.basename(input_file)}. Exit code: #{exit_code}"
   end
 end
+
+tenant = <%= @tenant %>
 
 import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
 import_data(exe, 'importer', 'c:\Provision\bin\VGC - SHARED.xlsx')

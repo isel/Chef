@@ -6,7 +6,9 @@ template "#{ruby_scripts_dir}/provision.rb" do
   source 'scripts/provision.erb'
   variables(
     :db_server => node[:deploy][:db_server],
-    :sarmus_port => node[:deploy][:sarmus_port]
+    :sarmus_port => node[:deploy][:sarmus_port],
+    :force_provision => node[:deploy][:force_provision],
+    :tenant => node[:deploy][:tenant]
   )
 end
 

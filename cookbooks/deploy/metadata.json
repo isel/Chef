@@ -187,6 +187,18 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/tenant": {
+      "display_name": "tenant",
+      "required": "required",
+      "recipes": [
+        "deploy::tenant"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "core/server_type": {
       "display_name": "server type",
       "description": "eg: db, app, web, cache",
