@@ -9,7 +9,7 @@ bash 'Deploying websites' do
   EOF
 end
 
-bash 'Deploying websites' do
+bash 'Deploying prios' do
   code <<-EOF
     cp -r #{node['deploy_scripts_dir']}/Prios/* /var/www/Compass
   EOF
