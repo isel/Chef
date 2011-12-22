@@ -13,7 +13,7 @@ bash 'Deploying websites' do
   code <<-EOF
     cp -r #{node['deploy_scripts_dir']}/Prios/* /var/www/Compass
   EOF
-  only_if { File.exists?('/var/www/Compass/Prios.ipa') }
+  only_if { File.exists?("#{node['deploy_scripts_dir']}/Prios") }
 end
 
 template '/var/www/Compass/settings.js' do
