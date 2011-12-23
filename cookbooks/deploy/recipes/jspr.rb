@@ -39,27 +39,27 @@ bash 'Deploying websites' do
   EOF
 end
 
-bash 'Deploying prios' do
-  code <<-EOF
-    cp -r #{node['deploy_scripts_dir']}/Prios/* /var/www/Prios
-  EOF
-  only_if { File.exists?("#{node['deploy_scripts_dir']}/Prios") }
-end
-
-template '/var/www/Compass/settings.js' do
-  source 'compass_settings.erb'
-  variables(
-    :host => node[:deploy][:app_server]
-  )
-end
-
-template '/var/www/Prios/Prios.plist' do
-  mode "0644"
-  source 'prios_plist.erb'
-end
-
-template '/var/www/Prios/index.html' do
-  mode "0644"
-  source 'prios_html.erb'
-end
-
+#bash 'Deploying prios' do
+#  code <<-EOF
+#    cp -r #{node['deploy_scripts_dir']}/Prios/* /var/www/Prios
+#  EOF
+#  only_if { File.exists?("#{node['deploy_scripts_dir']}/Prios") }
+#end
+#
+#template '/var/www/Compass/settings.js' do
+#  source 'compass_settings.erb'
+#  variables(
+#    :host => node[:deploy][:app_server]
+#  )
+#end
+#
+#template '/var/www/Prios/Prios.plist' do
+#  mode "0644"
+#  source 'prios_plist.erb'
+#end
+#
+#template '/var/www/Prios/index.html' do
+#  mode "0644"
+#  source 'prios_html.erb'
+#end
+#
