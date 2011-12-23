@@ -17,7 +17,6 @@ end
 bash 'Set document root' do
   code <<-EOF
     mkdir --parents /var/www/Compass
-    mkdir --parents /var/www/Prios
 
     if grep -q DocumentRoot /etc/apache2/apache2.conf; then
         echo "document root already set"
@@ -41,7 +40,8 @@ end
 
 bash 'Deploying prios' do
   code <<-EOF
-    cp -r #{node['deploy_scripts_dir']}/Prios/* /var/www/Prios/
+    mkdir --parents /var/www/Prios
+    cp -r #{node['deploy_scripts_dir']}/Prios/* /var/www/Prios
   EOF
   only_if { File.exists?("#{node['deploy_scripts_dir']}/Prios") }
 end
