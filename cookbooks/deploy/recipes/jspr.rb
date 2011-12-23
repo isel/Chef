@@ -40,8 +40,9 @@ end
 
 bash 'Deploying prios' do
   code <<-EOF
-    mkdir --parents /var/www/Prios
+    mkdir --parents /var/www/Prios/Tests
     cp -r #{node['deploy_scripts_dir']}/Prios/* /var/www/Prios
+    cp -r #{node['deploy_scripts_dir']}/PriosUIAutomation/* /var/www/Prios/Tests
   EOF
   only_if { File.exists?("#{node['deploy_scripts_dir']}/Prios") }
 end
