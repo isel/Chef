@@ -16,13 +16,14 @@ end
 
 bash 'Set document root' do
   code <<-EOF
-    if ! grep -q DocumentRoot /etc/apache2/apache2.conf; then
+    if grep -q DocumentRoot /etc/apache2/apache2.conf; then
         echo "document root already set"
         exit 0
     fi
 
     echo "setting document root"
     mkdir --parents /var/www/Compass
+    mkdir --parents /var/www/Prios
     echo DocumentRoot "/var/www/Compass" >> /etc/apache2/apache2.conf
   EOF
 end
