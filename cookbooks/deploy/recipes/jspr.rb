@@ -14,20 +14,21 @@ bash 'Configuring apache' do
   EOF
 end
 
-#bash 'Set document root' do
-#  code <<-EOF
-#    if grep -q DocumentRoot /etc/apache2/apache2.conf; then
-#        echo "document root already set"
-#        exit 0
-#    fi
-#
-#    echo "setting document root"
-#    mkdir --parents /var/www/Compass
-#    mkdir --parents /var/www/Prios
-#    echo DocumentRoot "/var/www/Compass" >> /etc/apache2/apache2.conf
-#  EOF
-#end
-#
+bash 'Set document root' do
+  code <<-EOF
+    mkdir --parents /var/www/Compass
+    mkdir --parents /var/www/Prios
+
+    if grep -q DocumentRoot /etc/apache2/apache2.conf; then
+        echo "document root already set"
+        exit 0
+    fi
+
+    echo "setting document root"
+    echo DocumentRoot "/var/www/Compass" >> /etc/apache2/apache2.conf
+  EOF
+end
+
 #bash 'Deploying websites' do
 #  code <<-EOF
 #    rm --recursive --force /var/www/JSPR
