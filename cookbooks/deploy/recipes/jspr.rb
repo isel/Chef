@@ -1,9 +1,37 @@
 require 'rake/clean'
 
+template '/etc/apache2/conf.d/status.conf' do
+  source 'status_conf.erb'
+end
+
+bash 'Configuring apache' do
+  code <<-EOF
+    echo "load the caching expiration module..."
+    a2enmod expires
+
+    echo "bouncing apache..."
+    service apache2 restart
+  EOF
+end
+
+bash 'Set document root' do
+  code <<-EOF
+    if ! grep -q DocumentRoot /etc/apache2/apache2.conf; then
+        echo "document root already set"
+        exit 0
+    fi
+
+    echo "setting document root"
+    mkdir --parents /var/www/Compass
+    echo DocumentRoot "/var/www/Compass" >> /etc/apache2/apache2.conf
+  EOF
+end
+
 bash 'Deploying websites' do
   code <<-EOF
     rm --recursive --force /var/www/JSPR
     rm --recursive --force /var/www/Compass
+    rm --recursive --force /var/www/Prios
     cp -r #{node['deploy_scripts_dir']}/JSPR/* /var/www
     ln -s /var/www/JSPR /var/www/Compass/JSPR
   EOF
@@ -11,7 +39,7 @@ end
 
 bash 'Deploying prios' do
   code <<-EOF
-    cp -r #{node['deploy_scripts_dir']}/Prios/* /var/www/Compass
+    cp -r #{node['deploy_scripts_dir']}/Prios/* /var/www/Prios
   EOF
   only_if { File.exists?("#{node['deploy_scripts_dir']}/Prios") }
 end
@@ -23,12 +51,12 @@ template '/var/www/Compass/settings.js' do
   )
 end
 
-template '/var/www/Compass/Prios.plist' do
+template '/var/www/Prios/Prios.plist' do
   mode "0644"
   source 'prios_plist.erb'
 end
 
-template '/var/www/Compass/Prios.html' do
+template '/var/www/Prios/index.html' do
   mode "0644"
   source 'prios_html.erb'
 end

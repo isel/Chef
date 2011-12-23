@@ -1,0 +1,52 @@
+ExtendedStatus On
+<Location /server-status>
+    SetHandler server-status
+    Order deny,allow
+    Deny from all
+    Allow from localhost
+</Location>
+
+AddCharset UTF-8 .html
+AddCharset UTF-8 .js
+AddCharset UTF-8 .css
+AddCharset UTF-8 .xml
+
+Alias JSPR /var/www/JSPR
+<Directory /var/www/JSPR>
+        Options FollowSymLinks
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+</Directory>
+
+Alias Compass /var/www/Compass
+<Directory /var/www/Compass>
+        DirectoryIndex index.html
+        Options FollowSymLinks
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+</Directory>
+
+Alias Compass /var/www/Prios
+<Directory /var/www/Prios>
+        DirectoryIndex index.html
+        Options FollowSymLinks
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+</Directory>
+
+<Directory /var/www/Compass/JSPR>
+  <IfModule expires_module>
+        ExpiresActive On
+        FileETag None
+        <FilesMatch "\.(gif|jpe?g|js|css)$">
+          ExpiresDefault "access plus 1 year"
+        </FilesMatch>
+  </IfModule>
+</Directory>
+
+
+
+
