@@ -28,6 +28,7 @@ template '/var/www/Compass/Prios.plist' do
 end
 
 template '/var/www/Compass/Prios.html' do
+  mode "0644"
   source 'prios_html.erb'
 end
 
