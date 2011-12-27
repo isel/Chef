@@ -54,15 +54,13 @@ template '/var/www/Compass/settings.js' do
   )
 end
 
-template '/var/www/Prios/Prios.plist' do
-  mode "0644"
-  source 'prios_plist.erb'
-  only_if { File.exists?("#{node['deploy_scripts_dir']}/Prios") }
-end
-
-template '/var/www/Prios/index.html' do
-  mode "0644"
-  source 'prios_html.erb'
-  only_if { File.exists?("#{node['deploy_scripts_dir']}/Prios") }
-end
+#template '/var/www/Prios/Prios.plist' do
+#  mode "0644"
+#  source 'prios_plist.erb'
+#end
+#
+#template '/var/www/Prios/index.html' do
+#  mode "0644"
+#  source 'prios_html.erb'
+#end
 
