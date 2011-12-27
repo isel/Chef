@@ -25,6 +25,9 @@ bash 'Set document root' do
 
     echo "setting document root"
     echo DocumentRoot "/var/www/Compass" >> /etc/apache2/apache2.conf
+
+    echo "bouncing apache..."
+    service apache2 restart
   EOF
 end
 
