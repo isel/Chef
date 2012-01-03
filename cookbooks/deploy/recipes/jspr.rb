@@ -57,6 +57,13 @@ template '/var/www/Compass/settings.js' do
   )
 end
 
+template '/var/www/Prios/Tests/settings.js' do
+  source 'compass_settings.erb'
+  variables(
+    :host => node[:deploy][:app_server]
+  )
+end
+
 template '/var/www/Prios/Prios.plist' do
   mode "0644"
   source 'prios_plist.erb'
