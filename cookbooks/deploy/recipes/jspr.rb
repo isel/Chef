@@ -60,7 +60,7 @@ end
 template '/var/www/Prios/Tests/settings.js' do
   source 'compass_settings.erb'
   variables(
-    :host => node[:deploy][:app_server]
+    :host => 'localhost/Prios/Tests'
   )
 end
 
