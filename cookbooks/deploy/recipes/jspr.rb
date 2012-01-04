@@ -50,6 +50,9 @@ bash 'Deploying prios' do
     mkdir --parents /var/www/Prios/Tests
     cp -r #{node['deploy_scripts_dir']}/Prios/* /var/www/Prios
     cp -r #{node['deploy_scripts_dir']}/PriosUIAutomation/* /var/www/Prios/Tests
+    ls #{node['deploy_scripts_dir']}/JSPR/JSPR* > /var/www/Prios/Tests/jspr_version
+    version=`cat /var/www/Prios/Tests/jspr_version`
+    sed -i "s@/JSPR/ver1/@/JSPR/$version/@" /var/www/Prios/Tests/jstestload.html
   EOF
   only_if { File.exists?("#{node['deploy_scripts_dir']}/Prios") }
 end
