@@ -51,7 +51,6 @@ attribute "deploy/db_server",
 
 attribute "deploy/domain",
   :display_name => "domain",
-  :required => "required",
   :recipes => ["deploy::jspr"]
 
 attribute "deploy/elastic_search_port",
