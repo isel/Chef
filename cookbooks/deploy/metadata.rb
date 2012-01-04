@@ -49,6 +49,11 @@ attribute "deploy/db_server",
   :required => "required",
   :recipes => ["deploy::foundation_services", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local"]
 
+attribute "deploy/domain",
+  :display_name => "domain",
+  :required => "required",
+  :recipes => ["deploy::jspr"]
+
 attribute "deploy/elastic_search_port",
   :display_name => "elastic search port",
   :required => "required",
