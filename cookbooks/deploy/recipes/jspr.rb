@@ -9,6 +9,10 @@ bash 'Configuring apache' do
     echo "load the caching expiration module..."
     a2enmod expires
 
+    echo "installing php..."
+    apt-get install -y php5 libapache2-mod-php5
+    a2enmod php5
+
     echo "bouncing apache..."
     service apache2 restart
   EOF
