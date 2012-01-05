@@ -58,6 +58,7 @@ bash 'Deploying prios' do
 end
 
 template '/var/www/Compass/settings.js' do
+  mode "0644"
   source 'compass_settings.erb'
   variables(
     :host => node[:deploy][:app_server]
@@ -65,6 +66,7 @@ template '/var/www/Compass/settings.js' do
 end
 
 template '/var/www/Prios/Tests/settings.js' do
+  mode "0644"
   source 'compass_settings.erb'
   variables(
     :host => "#{ node[:deploy][:domain].nil? ? node[:ipaddress] : "www.#{node[:deploy][:domain]}" }/Prios/Tests"
