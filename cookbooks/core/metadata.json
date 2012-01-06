@@ -39,6 +39,7 @@
   },
   "recipes": {
     "core::install_gems": "Installs ruby gems",
+    "core::tag_server_hostname": "Tags the server host name",
     "core::tag_server_type": "Tags the server type"
   },
   "version": "0.0.1"
