@@ -76,7 +76,8 @@
       "display_name": "cache server",
       "required": "required",
       "recipes": [
-        "deploy::foundation_services"
+        "deploy::foundation_services",
+        "deploy::register_cache_hostname"
       ],
       "choice": [
 
