@@ -3,11 +3,17 @@ require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Cloud/deployment'
 
 Host_File = 'C:/Windows/System32/drivers/etc/hosts'
 
+puts 'deployment = <%= @deployment_name %>, cache = <%= @cache_server %>'
+
 servers = Cloud::Deployment.new.discover_servers('<%= @deployment_name %>')
 servers.each_value do |server|
   if server.private_ip == '<%= @cache_server %>'
+    puts 'found cache server'
+    puts "tags = #{server.tags}"
     cache_hostname = server.tags['server:hostname']
+    puts "hostname = #{cache_hostname}"
     line = "<%= @cache_server %> #{cache_hostname}"
+    puts "line = #{line}"
     File.open(Host_File, 'a+') { |file| file.puts line } unless File.read(Host_File).include?(line)
   end
 end
