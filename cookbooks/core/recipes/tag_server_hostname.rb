@@ -1,1 +1,1 @@
-right_link_tag "server:type=#{node[:hostname]}"
+right_link_tag "server:hostname=#{node[:hostname]}"
