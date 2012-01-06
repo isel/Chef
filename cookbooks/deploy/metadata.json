@@ -252,6 +252,7 @@
     "deploy::sarmus": "Deploys sarmus",
     "deploy::smoke_tests_global": "Runs global smoke tests",
     "deploy::smoke_tests_local": "Runs local smoke tests",
+    "deploy::register_cache_hostname": "Registers the cache hostname and ip in the hosts file",
     "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server"
   },
   "version": "0.0.1"

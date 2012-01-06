@@ -17,6 +17,7 @@ recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be goi
 recipe "deploy::sarmus", "Deploys sarmus"
 recipe "deploy::smoke_tests_global", "Runs global smoke tests"
 recipe "deploy::smoke_tests_local", "Runs local smoke tests"
+recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
 
 attribute "deploy/app_server",
