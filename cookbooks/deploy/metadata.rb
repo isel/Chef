@@ -49,6 +49,11 @@ attribute "deploy/db_server",
   :required => "required",
   :recipes => ["deploy::foundation_services", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local"]
 
+attribute "deploy/deployment_name",
+  :display_name => "deployment name",
+  :required => "required",
+  :recipes => ["deploy::register_cache_hostname"]
+
 attribute "deploy/domain",
   :display_name => "domain",
   :recipes => ["deploy::jspr"]

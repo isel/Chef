@@ -99,6 +99,18 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/deployment_name": {
+      "display_name": "deployment name",
+      "required": "required",
+      "recipes": [
+        "deploy::register_cache_hostname"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/domain": {
       "display_name": "domain",
       "recipes": [
