@@ -23,6 +23,7 @@ if s3_files.get("GlobalIncite/#{revision}/")
     File.open("#{deploy_folder}/#{f}.zip", 'wb') do |local_file|
       local_file.write(file.body)
     end
+  end
   <% if node[:platform] == 'ubuntu' -%>
     `unzip -d #{deploy_folder}/#{f} #{deploy_folder}/#{f}.zip`
   <% else -%>
@@ -30,7 +31,4 @@ if s3_files.get("GlobalIncite/#{revision}/")
   <% end -%>
 else
   puts "cannot find revision #{revision} in S3..."
-end
-
-
 end
