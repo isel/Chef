@@ -26,15 +26,14 @@ if s3_files.get("ElasticSearch/#{version}/")
     File.open("#{deploy_folder}/#{f}.tar.gz", 'wb') do |local_file|
       local_file.write(file.body)
     end
-#    `tar xvf #{f}.tar.gz`
+    `tar xvf #{f}.tar.gz`
   end
 
-#  `ln -s elasticsearch current`
-#  `rm elasticsearch.tar.gz`
+  `ln -s #{install_dir} current`
+  `rm elasticsearch.tar.gz`
 
-#  `mv servicewrapper/service current/bin/`
-#  `rm -Rf servicewrapper`
-#  `rm servicewrapper.tar.gz`
+  `mv *servicewrapper*/service current/bin/`
+  `rm -Rf *servicewrapper*`
 else
   puts "cannot find version #{version} in S3..."
 end
