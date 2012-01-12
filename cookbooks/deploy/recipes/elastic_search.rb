@@ -1,15 +1,35 @@
+ruby_scripts_dir = node['ruby_scripts_dir']
+
 if !File.exists?('/opt/ElasticSearch')
   install_dir = "elasticsearch-#{node[:deploy][:elastic_search_version]}"
-  bash 'install elastic search' do
+  bash 'install elastic search prerequisites' do
     code <<-EOF
-      echo 'Installing prerequisites'
       apt-get -y install openjdk-6-jre
       apt-get -y install python-dev
       apt-get -y install python-setuptools
       easy_install -U setuptools
       easy_install pymongo
+      EOF
+  end
 
-      echo 'Install Elastic Search'
+  template "#{ruby_scripts_dir}/download_elastic_search.rb" do
+    source 'scripts/download_elastic_search.erb'
+    variables(
+      :install_dir => install_dir,
+      :version => node[:deploy][:elastic_search_version],
+      :aws_access_key_id => node[:deploy][:aws_access_key_id],
+      :aws_secret_access_key => node[:deploy][:aws_secret_access_key]
+    )
+  end
+
+  bash 'Downloading artifacts' do
+    code <<-EOF
+      ruby #{ruby_scripts_dir}/download_elastic_search.rb
+    EOF
+  end
+
+  bash 'download elastic search' do
+    code <<-EOF
       mkdir /opt/ElasticSearch
       cd /opt/ElasticSearch
 
@@ -24,8 +44,11 @@ if !File.exists?('/opt/ElasticSearch')
       mv *servicewrapper*/service current/bin/
       rm -Rf *servicewrapper*
       rm master
+    EOF
+  end
 
-      echo 'Setup Elastic Search as a service'
+  bash 'setup Elastic Search as a service' do
+    code <<-EOF
       current/bin/service/elasticsearch install
 
       echo 'Set up rcelasticsearch as a shortcut to the service wrapper'
