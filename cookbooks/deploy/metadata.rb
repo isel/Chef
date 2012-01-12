@@ -33,12 +33,12 @@ attribute "deploy/artifacts",
 attribute "deploy/aws_access_key_id",
   :display_name => "aws access key id",
   :required => "required",
-  :recipes => ["deploy::download_artifacts"]
+  :recipes => ["deploy::download_artifacts", "deploy:elastic_search"]
 
 attribute "deploy/aws_secret_access_key",
   :display_name => "aws secret access key",
   :required => "required",
-  :recipes => ["deploy::download_artifacts"]
+  :recipes => ["deploy::download_artifacts", "deploy:elastic_search"]
 
 attribute "deploy/cache_server",
   :display_name => "cache server",

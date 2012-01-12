@@ -52,7 +52,8 @@
       "display_name": "aws access key id",
       "required": "required",
       "recipes": [
-        "deploy::download_artifacts"
+        "deploy::download_artifacts",
+        "deploy:elastic_search"
       ],
       "choice": [
 
@@ -64,7 +65,8 @@
       "display_name": "aws secret access key",
       "required": "required",
       "recipes": [
-        "deploy::download_artifacts"
+        "deploy::download_artifacts",
+        "deploy:elastic_search"
       ],
       "choice": [
 
