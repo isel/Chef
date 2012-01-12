@@ -30,6 +30,7 @@ if !File.exists?('/opt/ElasticSearch')
 
   bash 'setup Elastic Search as a service' do
     code <<-EOF
+      cd /opt/ElasticSearch
       current/bin/service/elasticsearch install
 
       echo 'Set up rcelasticsearch as a shortcut to the service wrapper'
