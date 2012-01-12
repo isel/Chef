@@ -14,7 +14,7 @@ storage = Fog::Storage.new(
 bucket = storage.directories.find { |d| d.key == 'ugfinfrastructure' }
 s3_files = bucket.files
 
-if s3_files.get("ElasticSeach/#{version}/")
+if s3_files.get("ElasticSearch/#{version}/")
   install_files = ['elasticsearch', 'servicewrapper']
 
   deploy_folder = '/opt/ElasticSearch/'
@@ -22,7 +22,7 @@ if s3_files.get("ElasticSeach/#{version}/")
   Dir.chdir(deploy_folder)
 
   install_files.each do |f|
-    file = s3_files.get("ElasticSeach/#{version}/#{f}.tar.gz")
+    file = s3_files.get("ElasticSearch/#{version}/#{f}.tar.gz")
     File.open("#{deploy_folder}/#{f}.tar.gz", 'wb') do |local_file|
       local_file.write(file.body)
     end
