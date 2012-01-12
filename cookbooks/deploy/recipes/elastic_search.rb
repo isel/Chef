@@ -28,25 +28,6 @@ if !File.exists?('/opt/ElasticSearch')
     EOF
   end
 
-  bash 'download elastic search' do
-    code <<-EOF
-      mkdir /opt/ElasticSearch
-      cd /opt/ElasticSearch
-
-      wget https://github.com/downloads/elasticsearch/elasticsearch/#{install_dir}.tar.gz
-      tar xvf #{install_dir}.tar.gz
-      ln -s #{install_dir} current
-      rm #{install_dir}.tar.gz
-
-      echo 'Setup Service environment'
-      wget http://github.com/elasticsearch/elasticsearch-servicewrapper/tarball/master
-      tar -xvf master
-      mv *servicewrapper*/service current/bin/
-      rm -Rf *servicewrapper*
-      rm master
-    EOF
-  end
-
   bash 'setup Elastic Search as a service' do
     code <<-EOF
       current/bin/service/elasticsearch install
