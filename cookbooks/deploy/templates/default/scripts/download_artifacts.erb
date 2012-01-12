@@ -15,20 +15,22 @@ s3_files = bucket.files
 
 if s3_files.get("GlobalIncite/#{revision}/")
   install_files = '<%= @artifacts %>'.split(',')
+
   deploy_folder = '<%= node['deploy_scripts_dir'] %>'
   FileUtils.remove_dir(deploy_folder, true) if Dir.exist? deploy_folder
   Dir.mkdir(deploy_folder)
+
   install_files.each do |f|
     file = s3_files.get("GlobalIncite/#{revision}/#{f}.zip")
     File.open("#{deploy_folder}/#{f}.zip", 'wb') do |local_file|
       local_file.write(file.body)
     end
+    <% if node[:platform] == 'ubuntu' -%>
+      `unzip -d #{deploy_folder}/#{f} #{deploy_folder}/#{f}.zip`
+    <% else -%>
+      `"#{ENV['ProgramFiles(x86)']}\\7-Zip\\7z.exe" x -y -o#{deploy_folder}/#{f} -r #{deploy_folder}/#{f}.zip`
+    <% end -%>
   end
-  <% if node[:platform] == 'ubuntu' -%>
-    `unzip -d #{deploy_folder}/#{f} #{deploy_folder}/#{f}.zip`
-  <% else -%>
-    `"#{ENV['ProgramFiles(x86)']}\\7-Zip\\7z.exe" x -y -o#{deploy_folder}/#{f} -r #{deploy_folder}/#{f}.zip`
-  <% end -%>
 else
   puts "cannot find revision #{revision} in S3..."
 end
