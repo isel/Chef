@@ -1,4 +1,5 @@
 require 'rake'
+require 'fileutils'
 
 ruby_scripts_dir = node['ruby_scripts_dir']
 
@@ -12,6 +13,16 @@ template "#{ruby_scripts_dir}/foundation_services.rb" do
   )
 end
 
+template "#{deploy_scripts_dir}/AppServer/Websites/UltimateSoftware.Gateway.Active/HealthCheck.html" do
+  source 'health_check.erb'
+end
+
+template "#{deploy_scripts_dir}/AppServer/Websites/UltimateSoftware.Services/HealthCheck.html" do
+  source 'health_check.erb'
+end
+
 powershell "Updating foundation services" do
   source("ruby #{ruby_scripts_dir}/foundation_services.rb")
 end
+
+
