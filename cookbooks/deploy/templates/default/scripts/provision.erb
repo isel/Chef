@@ -62,9 +62,8 @@ else
   import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx', 'HCM')
   import_data(exe, 'importer', 'c:\Provision\PayrollProvision\files\PayrollEngine.xlsx', 'HCM')
 
-  paycheck_PIM = File.read('c:/Provision/PayrollProvision/entities/HCM.entity_json')
-  Helpers::PIMPublisher.new.publish_entity('<%= @app_server %>', paycheck_PIM)
+  engine_PIM = File.read('c:/Provision/PayrollProvision/entities/HCM.entity_json')
+  Helpers::PIMPublisher.new.publish_entity('<%= @app_server %>', engine_PIM)
 
-  import_data(exe, 'PENG', 'c:\Provision\PayrollProvision\files\Paycheck.xlsx', 'HCM')
   import_data(exe, 'PENG', 'c:\Provision\PayrollProvision\files\Rules.xlsx', 'HCM')
 end
