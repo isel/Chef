@@ -50,10 +50,6 @@ end
 
 tenant = '<%= @tenant %>'
 
-# When the server is first coming up, it appears the cache is not yet ready.  Give it a minute.
-puts "Waiting for the cache server..."
-sleep(120)
-
 if tenant == 'VGC'
   import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx', 'ultipro2')
   import_data(exe, 'importer', 'c:\Provision\bin\VGC - SHARED.xlsx', 'ultipro2')
