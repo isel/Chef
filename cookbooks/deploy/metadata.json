@@ -28,7 +28,8 @@
         "deploy::jspr",
         "deploy::provision",
         "deploy::smoke_tests_global",
-        "deploy::smoke_tests_local"
+        "deploy::smoke_tests_local_app",
+        "deploy::smoke_tests_local_web"
       ],
       "choice": [
 
@@ -94,7 +95,7 @@
         "deploy::foundation_services",
         "deploy::provision",
         "deploy::smoke_tests_global",
-        "deploy::smoke_tests_local"
+        "deploy::smoke_tests_local_app"
       ],
       "choice": [
 
@@ -130,7 +131,8 @@
       "display_name": "elastic search port",
       "required": "required",
       "recipes": [
-        "deploy::foundation_services"
+        "deploy::foundation_services",
+        "deploy::smoke_tests_local_app"
       ],
       "choice": [
 
@@ -207,7 +209,7 @@
         "deploy::foundation_services",
         "deploy::provision",
         "deploy::smoke_tests_global",
-        "deploy::smoke_tests_local"
+        "deploy::smoke_tests_local_app"
       ],
       "choice": [
 
@@ -233,7 +235,10 @@
       "description": "eg: db, app, web, cache",
       "required": "required",
       "recipes": [
-        "deploy::smoke_tests_local"
+        "deploy::smoke_tests_local_app",
+        "deploy::smoke_tests_local_cache",
+        "deploy::smoke_tests_local_db",
+        "deploy::smoke_tests_local_web"
       ],
       "choice": [
 
@@ -254,7 +259,10 @@
     "deploy::reindex_elastic_search": "Reindexes ElasticSearch (should be going away)",
     "deploy::sarmus": "Deploys sarmus",
     "deploy::smoke_tests_global": "Runs global smoke tests",
-    "deploy::smoke_tests_local": "Runs local smoke tests",
+    "deploy::smoke_tests_local_app": "Runs local app server smoke tests",
+    "deploy::smoke_tests_local_cache": "Runs local cache server smoke tests",
+    "deploy::smoke_tests_local_db": "Runs local db server smoke tests",
+    "deploy::smoke_tests_local_web": "Runs local web server smoke tests",
     "deploy::register_cache_hostname": "Registers the cache hostname and ip in the hosts file",
     "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server"
   },

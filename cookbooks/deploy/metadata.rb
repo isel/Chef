@@ -16,14 +16,17 @@ recipe "deploy::provision", "Provisions basic system data"
 recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
 recipe "deploy::sarmus", "Deploys sarmus"
 recipe "deploy::smoke_tests_global", "Runs global smoke tests"
-recipe "deploy::smoke_tests_local", "Runs local smoke tests"
+recipe "deploy::smoke_tests_local_app", "Runs local app server smoke tests"
+recipe "deploy::smoke_tests_local_cache", "Runs local cache server smoke tests"
+recipe "deploy::smoke_tests_local_db", "Runs local db server smoke tests"
+recipe "deploy::smoke_tests_local_web", "Runs local web server smoke tests"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
 
 attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
-  :recipes => ["deploy::jspr", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local"]
+  :recipes => ["deploy::jspr", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local_app", "deploy::smoke_tests_local_web"]
 
 attribute "deploy/artifacts",
   :display_name => "artifacts",
@@ -48,7 +51,7 @@ attribute "deploy/cache_server",
 attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
-  :recipes => ["deploy::foundation_services", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local"]
+  :recipes => ["deploy::foundation_services", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local_app"]
 
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
@@ -62,7 +65,7 @@ attribute "deploy/domain",
 attribute "deploy/elastic_search_port",
   :display_name => "elastic search port",
   :required => "required",
-  :recipes => ["deploy::foundation_services"]
+  :recipes => ["deploy::foundation_services", "deploy::smoke_tests_local_app"]
 
 attribute "deploy/elastic_search_version",
   :display_name => "elastic search version",
@@ -92,7 +95,7 @@ attribute "deploy/revision",
 attribute "deploy/sarmus_port",
   :display_name => "sarmus port",
   :required => "required",
-  :recipes => ["deploy::foundation_services", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local"]
+  :recipes => ["deploy::foundation_services", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local_app"]
 
 attribute "deploy/tenant",
   :display_name => "tenant",
@@ -104,7 +107,7 @@ attribute "core/server_type",
   :display_name => "server type",
   :description => "eg: db, app, web, cache",
   :required => "required",
-  :recipes => ["deploy::smoke_tests_local"]
+  :recipes => ["deploy::smoke_tests_local_app", "deploy::smoke_tests_local_cache", "deploy::smoke_tests_local_db", "deploy::smoke_tests_local_web"]
 
 
 
