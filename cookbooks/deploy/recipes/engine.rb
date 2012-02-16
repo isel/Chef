@@ -26,6 +26,7 @@ end
 
 bash 'start tomcat' do
   code <<-EOF
+    export JAVA_OPTS=-DappServer=#{node[:deploy][:app_server]}
     /etc/init.d/tomcat6 start
   EOF
 end
