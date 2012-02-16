@@ -9,6 +9,7 @@ supports "ubuntu"
 
 recipe "deploy::download_artifacts", "Downloads artifacts"
 recipe "deploy::elastic_search", "Deploys ElasticSearch"
+recipe "deploy::engine", "Deploys Engine"
 recipe "deploy::foundation_services", "Deploys the foundation rest services"
 recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::mongo", "Deploys mongodb"
@@ -26,7 +27,7 @@ recipe "deploy::tag_data_version", "Writes a tag denoting what data version has 
 attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
-  :recipes => ["deploy::jspr", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local_app", "deploy::smoke_tests_local_web"]
+  :recipes => ["deploy::engine", "deploy::jspr", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local_app", "deploy::smoke_tests_local_web"]
 
 attribute "deploy/artifacts",
   :display_name => "artifacts",
