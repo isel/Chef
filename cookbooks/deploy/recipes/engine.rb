@@ -1,7 +1,7 @@
 ruby_scripts_dir = node['ruby_scripts_dir']
 deploy_scripts_dir = node['deploy_scripts_dir']
 
-war = 'engine-1.0-SNAPSHOT'
+war = 'engine'
 
 bash 'stop tomcat' do
   code <<-EOF
@@ -15,12 +15,6 @@ bash 'copy war file' do
     rm -f -r #{war}
     cp #{deploy_scripts_dir}/Engine/#{war}.war .
     popd
-  EOF
-end
-
-bash 'set app server' do
-  code <<-EOF
-    export JAVA_OPTS=-DappServer=#{node[:deploy][:app_server]}
   EOF
 end
 
