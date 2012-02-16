@@ -30,6 +30,7 @@
         "deploy::provision",
         "deploy::smoke_tests_global",
         "deploy::smoke_tests_local_app",
+        "deploy::smoke_tests_local_engine",
         "deploy::smoke_tests_local_web"
       ],
       "choice": [
@@ -153,6 +154,18 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/engine_server": {
+      "display_name": "engine server",
+      "required": "required",
+      "recipes": [
+        "deploy::smoke_tests_global"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/force_provision": {
       "display_name": "force provision",
       "required": "required",
@@ -264,6 +277,7 @@
     "deploy::smoke_tests_local_app": "Runs local app server smoke tests",
     "deploy::smoke_tests_local_cache": "Runs local cache server smoke tests",
     "deploy::smoke_tests_local_db": "Runs local db server smoke tests",
+    "deploy::smoke_tests_local_engine": "Runs local engine server smoke tests",
     "deploy::smoke_tests_local_web": "Runs local web server smoke tests",
     "deploy::register_cache_hostname": "Registers the cache hostname and ip in the hosts file",
     "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server"

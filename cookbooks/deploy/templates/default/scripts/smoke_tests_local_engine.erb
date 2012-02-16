@@ -1,0 +1,10 @@
+require 'rake'
+require 'rspec/core/rake_task'
+
+ENV['app_server'] = '<%= @app_server %>'
+
+RSpec::Core::RakeTask.new(:spec) do |t|
+  t.pattern = '<%= node['deploy_scripts_dir'] %>/CI/spec/Smoke/deploy_<%= @server_type %>_spec.rb'
+end
+
+task :default => [:spec]

@@ -20,6 +20,7 @@ recipe "deploy::smoke_tests_global", "Runs global smoke tests"
 recipe "deploy::smoke_tests_local_app", "Runs local app server smoke tests"
 recipe "deploy::smoke_tests_local_cache", "Runs local cache server smoke tests"
 recipe "deploy::smoke_tests_local_db", "Runs local db server smoke tests"
+recipe "deploy::smoke_tests_local_engine", "Runs local engine server smoke tests"
 recipe "deploy::smoke_tests_local_web", "Runs local web server smoke tests"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
@@ -27,7 +28,9 @@ recipe "deploy::tag_data_version", "Writes a tag denoting what data version has 
 attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
-  :recipes => ["deploy::engine", "deploy::jspr", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local_app", "deploy::smoke_tests_local_web"]
+  :recipes => ["deploy::engine", "deploy::jspr", "deploy::provision",
+     "deploy::smoke_tests_global", "deploy::smoke_tests_local_app",
+     "deploy::smoke_tests_local_engine", "deploy::smoke_tests_local_web"]
 
 attribute "deploy/artifacts",
   :display_name => "artifacts",
@@ -72,6 +75,11 @@ attribute "deploy/elastic_search_version",
   :display_name => "elastic search version",
   :required => "required",
   :recipes => ["deploy::elastic_search"]
+
+attribute "deploy/engine_server",
+  :display_name => "engine server",
+  :required => "required",
+  :recipes => ["deploy::smoke_tests_global"]
 
 attribute "deploy/force_provision",
   :display_name => "force provision",
