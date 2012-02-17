@@ -9,16 +9,26 @@ storage = Fog::Storage.new(
   :aws_access_key_id => '<%= @aws_access_key_id %>',
   :aws_secret_access_key => '<%= @aws_secret_access_key %>'
 )
-
+                  -
 bucket = storage.directories.find { |d| d.key == 'ugfartifacts' }
 s3_files = bucket.files
 
 install_files = '<%= @artifacts %>'.split(',')
 
 deploy_folder = '<%= node['deploy_scripts_dir'] %>'
-FileUtils.remove_dir(deploy_folder, true) if Dir.exist? deploy_folder
-Dir.mkdir(deploy_folder)
+revision_marker_file = File.join(deploy_folder,"#{revision}.txt")
 
+if Dir.exist? deploy_folder
+   old_revision =  File.exists revision_marker_file ? File.read(revision_marker_file).chomp : nil
+   if old_revision == revision
+       puts "Found the revision #{revision} already on the system"
+       exit 0
+   else
+       FileUtils.remove_dir(deploy_folder, true)
+   end
+end
+
+Dir.mkdir(deploy_folder)
 missing_files = []
 
 install_files.each do |f|
@@ -38,3 +48,5 @@ install_files.each do |f|
 end
 
 raise "could not find the following files: #{missing_files}" unless missing_files.empty?
+
+File.open(revision_marker_file, 'w') { |file| file.puts(revision) }
