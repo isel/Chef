@@ -16,7 +16,7 @@ s3_files = bucket.files
 install_files = '<%= @artifacts %>'.split(',')
 
 deploy_folder = '<%= node['deploy_scripts_dir'] %>'
-revision_marker_file = File.join(deploy_folder,"#{revision}.txt")
+revision_marker_file = File.join(deploy_folder,'revision.txt')
 
 if Dir.exist? deploy_folder
    old_revision =  File.exists revision_marker_file ? File.read(revision_marker_file).chomp : nil
