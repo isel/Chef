@@ -19,7 +19,7 @@ deploy_folder = '<%= node['deploy_scripts_dir'] %>'
 revision_marker_file = File.join(deploy_folder,'revision.txt')
 
 if Dir.exist? deploy_folder
-   old_revision =  File.exists revision_marker_file ? File.read(revision_marker_file).chomp : nil
+   old_revision =  File.exists?(revision_marker_file) ? File.read(revision_marker_file).chomp : nil
    if old_revision == revision
        puts "Found the revision #{revision} already on the system"
        exit 0
