@@ -9,7 +9,7 @@ storage = Fog::Storage.new(
   :aws_access_key_id => '<%= @aws_access_key_id %>',
   :aws_secret_access_key => '<%= @aws_secret_access_key %>'
 )
-                  -
+
 bucket = storage.directories.find { |d| d.key == 'ugfartifacts' }
 s3_files = bucket.files
 
