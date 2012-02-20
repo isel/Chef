@@ -1,6 +1,6 @@
 
 powershell "Running local appfabric cache tests" do
-  code <<-EOF
+  powershell_script = <<'POWERSHELL_SCRIPT'
 import-module HelpCache/AppfabricPS
 import-module DistributedCacheAdministration
 use-cachecluster
@@ -37,8 +37,8 @@ function ensure_is_up([string]$cache) {
 foreach ($cache in $cache_array) {
   ensure_is_up($cache)
 }
-EOF
-
+POWERSHELL_SCRIPT
+   source(powershell_script)
 end
 
 
