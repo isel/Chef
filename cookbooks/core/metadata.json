@@ -40,7 +40,8 @@
   "recipes": {
     "core::install_gems": "Installs ruby gems",
     "core::tag_server_hostname": "Tags the server host name",
-    "core::tag_server_type": "Tags the server type"
+    "core::tag_server_type": "Tags the server type",
+    "core::setup_powershell_runtimes": "Allows up the poweshell to run multiple runtimes"
   },
   "version": "0.0.1"
 }
