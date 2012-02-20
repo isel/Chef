@@ -31,6 +31,8 @@ function ensure_is_up([string]$cache) {
     if (!$finished) {
         write-host "Could not add/remove items the cache $cache after $tries retries"
         exit 1
+    } else {
+        $Error.clear()
     }
 }
 
