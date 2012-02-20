@@ -11,7 +11,7 @@ $sleep_seconds = 15
 function ensure_is_up([string]$cache) {
     $tries = 1
     $finished = $false
-    write-output "cache: $cache ($(get-date))"
+    write-host "cache: $cache ($(get-date))"
     do {
         try {
             Add-CacheItem -CacheName $cache -ItemKey "1" -ItemValue "value" -SecurityMode "None" -Server "localhost" -Port 22233
@@ -22,14 +22,14 @@ function ensure_is_up([string]$cache) {
         }
         catch {
             $tries += 1
-            write-output "Error with cache $cache, retrying again in $sleep_seconds seconds ($(get-date))"
+            write-host "Error with cache $cache, retrying again in $sleep_seconds seconds ($(get-date))"
             start-sleep -s $sleep_seconds
         }
     }
     until ($finished -or $tries -gt 5)
 
     if (!$finished) {
-        write-output "Could not add/remove items the cache $cache after $tries retries"
+        write-host "Could not add/remove items the cache $cache after $tries retries"
         exit 1
     }
 }
