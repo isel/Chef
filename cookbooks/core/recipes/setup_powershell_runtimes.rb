@@ -1,18 +1,10 @@
 ruby_scripts_dir = node['ruby_scripts_dir']
 Dir.mkdir(ruby_scripts_dir) unless File.exist? ruby_scripts_dir
 
-template "/Windows/sysnative/WindowsPowerShell/v1.0/powershell.exe.config" do
-  source 'powershell.erb'
-end
-
-template "/Windows/system32/WindowsPowerShell/v1.0/powershell.exe.config" do
-  source 'powershell.erb'
-end
-
-template "/Windows/sysnative/WindowsPowerShell/v1.0/powershell_ise.exe.config" do
-  source 'powershell.erb'
-end
-
-template "/Windows/system32/WindowsPowerShell/v1.0/powershell_ise.exe.config" do
-  source 'powershell.erb'
+["#{node["core"][powershell_x32_dir]}", "#{node["core"][powershell_x64_dir]}"].each do |dir|
+  ['powershell', 'powershell_ise'].each do |app|
+    template "#{dir}/#{app}.exe.config" do
+      source "#{app}.erb"
+    end
+  end
 end
