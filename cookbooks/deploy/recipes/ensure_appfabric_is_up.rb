@@ -1,7 +1,7 @@
 
 powershell "Running local appfabric cache tests" do
   powershell_script = <<'POWERSHELL_SCRIPT'
-import-module HelpCache/AppfabricPS
+import-module AppFabricPowershell
 import-module DistributedCacheAdministration
 use-cachecluster
 
