@@ -21,6 +21,18 @@
   "replacing": {
   },
   "attributes": {
+    "deploy/appfabric_shared_folder": {
+      "display_name": "app fabric shared folder",
+      "required": "required",
+      "recipes": [
+        "deploy::appfabric_configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/app_server": {
       "display_name": "app server",
       "required": "required",
@@ -264,11 +276,12 @@
   "groupings": {
   },
   "recipes": {
+    "deploy::appfabric_configure": "Configures AppFabric",
     "deploy::appfabric_powershell": "Deploys AppFabric Powershell cmdlets",
+    "deploy::appfabric_ensure_is_up": "Ensures AppFabric cache are working",
     "deploy::download_artifacts": "Downloads artifacts",
     "deploy::elastic_search": "Deploys ElasticSearch",
     "deploy::engine": "Deploys Engine",
-    "deploy::ensure_appfabric_is_up": "Ensures appfabric cache are working",
     "deploy::foundation_services": "Deploys the foundation rest services",
     "deploy::jspr": "Deploys the web server websites",
     "deploy::mongo": "Deploys mongodb",

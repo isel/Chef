@@ -1,5 +1,5 @@
 
-powershell "Running local appfabric cache tests" do
+powershell "Ensuring AppFabric caches are available" do
   powershell_script = <<'POWERSHELL_SCRIPT'
 import-module AppFabricPowershell
 import-module DistributedCacheAdministration

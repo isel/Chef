@@ -7,11 +7,12 @@ version          "0.0.1"
 
 supports "ubuntu"
 
+recipe "deploy::appfabric_configure", "Configures AppFabric"
 recipe "deploy::appfabric_powershell", "Deploys AppFabric Powershell cmdlets"
+recipe "deploy::appfabric_ensure_is_up", "Ensures AppFabric cache are working"
 recipe "deploy::download_artifacts", "Downloads artifacts"
 recipe "deploy::elastic_search", "Deploys ElasticSearch"
 recipe "deploy::engine", "Deploys Engine"
-recipe "deploy::ensure_appfabric_is_up", "Ensures appfabric cache are working"
 recipe "deploy::foundation_services", "Deploys the foundation rest services"
 recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::mongo", "Deploys mongodb"
@@ -27,6 +28,10 @@ recipe "deploy::smoke_tests_local_web", "Runs local web server smoke tests"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
 
+attribute "deploy/appfabric_shared_folder",
+  :display_name => "app fabric shared folder",
+  :required => "required",
+  :recipes => ["deploy::appfabric_configure"]
 
 attribute "deploy/app_server",
   :display_name => "app server",
