@@ -1,11 +1,8 @@
 require 'rake'
 
-powershell_x32_dir = '/Windows/system32/WindowsPowerShell/v1.0'
-powershell_x64_dir = '/Windows/sysnative/WindowsPowerShell/v1.0'
-
 destination_dirs = [
-  "#{node["core"][powershell_x32_dir]}/Modules/AppFabricPowershell",
-  "#{node["core"][powershell_x64_dir]}/Modules/AppFabricPowershell"
+  "#{node['core']['powershell_x32_dir']}/Modules/AppFabricPowershell",
+  "#{node['core']['powershell_x64_dir']}/Modules/AppFabricPowershell"
 ]
 
 destination_dirs.each do |dir|
