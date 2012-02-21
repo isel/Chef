@@ -1,7 +1,5 @@
 ruby_scripts_dir = node['ruby_scripts_dir']
 
-log "ruby scripts dir: #{ruby_scripts_dir}"
-
 template "#{ruby_scripts_dir}/provision.rb" do
   source 'scripts/provision.erb'
   variables(
