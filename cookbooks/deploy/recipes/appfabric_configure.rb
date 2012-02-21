@@ -1,6 +1,6 @@
 
 powershell "Configuring AppFabric" do
-  powershell_script = <<'POWERSHELL_SCRIPT'
+  powershell_script = <<"POWERSHELL_SCRIPT"
 if (Test-Path #{node[:deploy]['appfabric_shared_folder']}\ClusterConfig.xml)
 {
   Write-Output 'AppFabric already configured'

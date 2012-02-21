@@ -29,7 +29,7 @@ recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip i
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
 
 attribute "deploy/appfabric_shared_folder",
-  :display_name => "app fabric shared folder",
+  :display_name => "appfabric shared folder",
   :required => "required",
   :recipes => ["deploy::appfabric_configure"]
 

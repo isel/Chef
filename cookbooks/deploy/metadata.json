@@ -22,7 +22,7 @@
   },
   "attributes": {
     "deploy/appfabric_shared_folder": {
-      "display_name": "app fabric shared folder",
+      "display_name": "appfabric shared folder",
       "required": "required",
       "recipes": [
         "deploy::appfabric_configure"
