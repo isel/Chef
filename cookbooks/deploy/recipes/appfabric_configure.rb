@@ -4,8 +4,8 @@ powershell "Install AppFabric" do
       'APPFABRIC_SHARED_FOLDER' => node[:deploy][:appfabric_shared_folder]
     }
   )
-  powershell_script = <<POWERSHELL_SCRIPT
-if (Test-Path $env:APPFABRIC_SHARED_FOLDER\ClusterConfig.xml)
+  powershell_script = <<'POWERSHELL_SCRIPT'
+if (Test-Path "$env:APPFABRIC_SHARED_FOLDER\ClusterConfig.xml")
 {
   Write-Output 'AppFabric already installed'
   exit 0
@@ -30,7 +30,7 @@ powershell "Setup AppFabric shared folder" do
       'APPFABRIC_SHARED_FOLDER' => node[:deploy][:appfabric_shared_folder]
     }
   )
-  powershell_script = <<POWERSHELL_SCRIPT
+  powershell_script = <<'POWERSHELL_SCRIPT'
 cd "$env:RS_ATTACH_DIR"
 
 if (Test-Path $env:APPFABRIC_SHARED_FOLDER)
@@ -81,7 +81,7 @@ powershell "Configure AppFabric" do
       'APPFABRIC_SHARED_FOLDER' => node[:deploy][:appfabric_shared_folder]
     }
   )
-  powershell_script = <<POWERSHELL_SCRIPT
+  powershell_script = <<'POWERSHELL_SCRIPT'
 if (Test-Path "$env:APPFABRIC_SHARED_FOLDER\ClusterConfig.xml")
 {
   Write-Output 'AppFabric already configured'
