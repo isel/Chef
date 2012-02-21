@@ -28,6 +28,31 @@ recipe "deploy::smoke_tests_local_web", "Runs local web server smoke tests"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
 
+attribute "deploy/appfabric_caches",
+  :display_name => "appfabric caches",
+  :required => "required",
+  :recipes => ["deploy::appfabric_configure", "deploy::appfabric_ensure_is_up"]
+
+attribute "deploy/appfabric_security",
+  :display_name => "appfabric security",
+  :required => "required",
+  :recipes => ["deploy::appfabric_configure"]
+
+attribute "deploy/appfabric_service_user",
+  :display_name => "appfabric service user",
+  :required => "required",
+  :recipes => ["deploy::appfabric_configure"]
+
+attribute "deploy/appfabric_service_password",
+  :display_name => "appfabric service password",
+  :required => "required",
+  :recipes => ["deploy::appfabric_configure"]
+
+attribute "deploy/appfabric_shared_drive",
+  :display_name => "appfabric shared drive",
+  :required => "required",
+  :recipes => ["deploy::appfabric_configure"]
+
 attribute "deploy/appfabric_shared_folder",
   :display_name => "appfabric shared folder",
   :required => "required",

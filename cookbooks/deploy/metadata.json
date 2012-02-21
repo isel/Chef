@@ -21,6 +21,67 @@
   "replacing": {
   },
   "attributes": {
+    "deploy/appfabric_caches": {
+      "display_name": "appfabric caches",
+      "required": "required",
+      "recipes": [
+        "deploy::appfabric_configure",
+        "deploy::appfabric_ensure_is_up"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/appfabric_security": {
+      "display_name": "appfabric security",
+      "required": "required",
+      "recipes": [
+        "deploy::appfabric_configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/appfabric_service_user": {
+      "display_name": "appfabric service user",
+      "required": "required",
+      "recipes": [
+        "deploy::appfabric_configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/appfabric_service_password": {
+      "display_name": "appfabric service password",
+      "required": "required",
+      "recipes": [
+        "deploy::appfabric_configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/appfabric_shared_drive": {
+      "display_name": "appfabric shared drive",
+      "required": "required",
+      "recipes": [
+        "deploy::appfabric_configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/appfabric_shared_folder": {
       "display_name": "appfabric shared folder",
       "required": "required",

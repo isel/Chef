@@ -1,11 +1,66 @@
-
-powershell "Configuring AppFabric" do
-  parameters(
+powershell "Setup AppFabric shared folder" do
+  parameters (
     {
+      'APPFABRIC_SECURITY' => node[:deploy][:appfabric_security],
+      'APPFABRIC_SERVICE_USER' => node[:deploy][:appfabric_service_user],
+      'APPFABRIC_SERVICE_PASSWORD' => node[:deploy][:appfabric_service_password],
+      'APPFABRIC_SHARED_DRIVE' => node[:deploy][:appfabric_shared_drive],
       'APPFABRIC_SHARED_FOLDER' => node[:deploy][:appfabric_shared_folder]
     }
   )
-  powershell_script = <<'POWERSHELL_SCRIPT'
+  powershell_script = <<POWERSHELL_SCRIPT
+cd "$env:RS_ATTACH_DIR"
+
+if (Test-Path $env:APPFABRIC_SHARED_FOLDER)
+{
+  Write-Output 'AppFabric shared folder already configured'
+  exit 0
+}
+
+$host_name = $env:computername
+$service_account = "$env:computername\$env:APPFABRIC_SERVICE_USER"
+
+Write-Output "setup appfabric user"
+cmd /c "net user $env:APPFABRIC_SERVICE_USER $env:APPFABRIC_SERVICE_PASSWORD /add /expires:never"
+cmd /c "set_password_to_not_expire_for $env:APPFABRIC_SERVICE_USER"
+cmd /c "ntrights +r SeServiceLogonRight -u $env:APPFABRIC_SERVICE_USER"
+cmd /c "ntrights +r SeAuditPrivilege -u $env:APPFABRIC_SERVICE_USER"
+
+Write-Output "setup shared drive"
+New-Item $env:APPFABRIC_SHARED_FOLDER -type directory
+
+cmd /c "net share $env:APPFABRIC_SHARED_DRIVE=$env:APPFABRIC_SHARED_FOLDER /Grant:everyone,FULL /Grant:$env:APPFABRIC_SERVICE_USER,FULL /unlimited"
+
+Write-Output "give full control to $service_account"
+$acl = Get-Acl $env:APPFABRIC_SHARED_FOLDER
+$permission = "$service_account","FullControl","Allow"
+$accessRule = new-object System.Security.AccessControl.FileSystemAccessRule $permission
+$acl.SetAccessRule($accessRule)
+$acl | Set-Acl $env:APPFABRIC_SHARED_FOLDER
+
+Write-Output "give full control to administrator"
+$acl = Get-Acl $env:APPFABRIC_SHARED_FOLDER
+$permission = "$host_name\administrator","FullControl","Allow"
+$accessRule = new-object System.Security.AccessControl.FileSystemAccessRule $permission
+$acl.SetAccessRule($accessRule)
+$acl | Set-Acl $env:APPFABRIC_SHARED_FOLDER
+POWERSHELL_SCRIPT
+  source(powershell_script)
+end
+
+
+powershell "Configure AppFabric" do
+  parameters(
+    {
+      'APPFABRIC_CACHES' => node[:deploy][:appfabric_caches],
+      'APPFABRIC_SECURITY' => node[:deploy][:appfabric_security],
+      'APPFABRIC_SERVICE_USER' => node[:deploy][:appfabric_service_user],
+      'APPFABRIC_SERVICE_PASSWORD' => node[:deploy][:appfabric_service_password],
+      'APPFABRIC_SHARED_DRIVE' => node[:deploy][:appfabric_shared_drive],
+      'APPFABRIC_SHARED_FOLDER' => node[:deploy][:appfabric_shared_folder]
+    }
+  )
+  powershell_script = <<POWERSHELL_SCRIPT
 if (Test-Path $env:APPFABRIC_SHARED_FOLDER\ClusterConfig.xml)
 {
   Write-Output 'AppFabric already configured'
@@ -88,7 +143,7 @@ else {
 }
 
 Write-Output "New-Cache"
-$cache_array = $env:CACHES.split(',')
+$cache_array = $env:APPFABRIC_CACHES.split(',')
 foreach ($cache in $cache_array){
   New-Cache  -CacheName  $cache  -Secondaries  0  -Eviction  LRU  -Expirable  True  -TimeToLive  10  -NotificationsEnabled  False
 }

@@ -1,11 +1,16 @@
 
 powershell "Ensuring AppFabric caches are available" do
+  parameters(
+    {
+      'APPFABRIC_CACHES' => node[:deploy][:appfabric_caches]
+    }
+  )
   powershell_script = <<'POWERSHELL_SCRIPT'
 import-module AppFabricPowershell
 import-module DistributedCacheAdministration
 use-cachecluster
 
-$cache_array = 'default,TokenStore,SaasPolicy,EntityModel,Securables,Messages,Views,Enumerations'.split(',')
+$cache_array = $env:APPFABRIC_CACHES.split(',')
 $sleep_seconds = 15
 
 function ensure_is_up([string]$cache) {
