@@ -11,9 +11,9 @@ if (Test-Path "$env:APPFABRIC_SHARED_FOLDER\ClusterConfig.xml")
   exit 0
 }
 
-cd "$env:RS_ATTACH_DIR"
+cd "c:\installs"
 
-cmd /c "WindowsServerAppFabricSetup_x64_6.1.exe /i /SkipUpdates /l c:\installs\appfabric.log"
+cmd /c "c:\installs\WindowsServerAppFabricSetup_x64_6.1.exe /i /SkipUpdates /l c:\installs\appfabric.log"
 
 cmd /c "sc config AppFabricWorkflowManagementService start= disabled"
 POWERSHELL_SCRIPT
