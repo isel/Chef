@@ -264,6 +264,7 @@
   "groupings": {
   },
   "recipes": {
+    "deploy::appfabric_powershell": "Deploys AppFabric Powershell cmdlets",
     "deploy::download_artifacts": "Downloads artifacts",
     "deploy::elastic_search": "Deploys ElasticSearch",
     "deploy::engine": "Deploys Engine",

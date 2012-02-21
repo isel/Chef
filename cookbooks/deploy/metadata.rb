@@ -7,6 +7,7 @@ version          "0.0.1"
 
 supports "ubuntu"
 
+recipe "deploy::appfabric_powershell", "Deploys AppFabric Powershell cmdlets"
 recipe "deploy::download_artifacts", "Downloads artifacts"
 recipe "deploy::elastic_search", "Deploys ElasticSearch"
 recipe "deploy::engine", "Deploys Engine"
