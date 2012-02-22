@@ -44,9 +44,9 @@ $service_account = "$env:computername\$env:APPFABRIC_SERVICE_USER"
 
 Write-Output "setup appfabric user"
 cmd /c "net user $env:APPFABRIC_SERVICE_USER $env:APPFABRIC_SERVICE_PASSWORD /add /expires:never"
-cmd /c "set_password_to_not_expire_for $env:APPFABRIC_SERVICE_USER"
-cmd /c "ntrights +r SeServiceLogonRight -u $env:APPFABRIC_SERVICE_USER"
-cmd /c "ntrights +r SeAuditPrivilege -u $env:APPFABRIC_SERVICE_USER"
+cmd /c "c:\installs\set_password_to_not_expire_for $env:APPFABRIC_SERVICE_USER"
+cmd /c "c:\installs\ntrights +r SeServiceLogonRight -u $env:APPFABRIC_SERVICE_USER"
+cmd /c "c:\installs\ntrights +r SeAuditPrivilege -u $env:APPFABRIC_SERVICE_USER"
 
 Write-Output "setup shared drive"
 New-Item $env:APPFABRIC_SHARED_FOLDER -type directory
