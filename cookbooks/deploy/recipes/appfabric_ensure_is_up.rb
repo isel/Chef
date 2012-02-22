@@ -11,7 +11,7 @@ import-module DistributedCacheAdministration
 use-cachecluster
 
 $cache_array = $env:APPFABRIC_CACHES.split(',')
-$sleep_seconds = 15
+$sleep_seconds = 20
 
 function ensure_is_up([string]$cache) {
     $tries = 1
