@@ -28,6 +28,7 @@ function ensure_is_up([string]$cache) {
         catch {
             $tries += 1
             write-host "Error with cache $cache, retrying again in $sleep_seconds seconds ($(get-date))"
+            Get-CacheClusterHealth
             start-sleep -s $sleep_seconds
         }
     }
