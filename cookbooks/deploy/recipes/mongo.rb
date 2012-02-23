@@ -24,16 +24,15 @@ if !File.exists?('/etc/cron.daily/recycle_logs')
   end
 end
 
-if !File.exists?('/etc/crontab')
-  template '/etc/crontab' do
-    source 'database_crontab.erb'
-    mode 0644
-  end
-  bash 'Restarting cron' do
-    code <<-EOF
-      service cron restart
-    EOF
-  end
+template '/etc/crontab' do
+  source 'database_crontab.erb'
+  mode 0644
+end
+
+bash 'Restarting cron' do
+  code <<-EOF
+    service cron restart
+  EOF
 end
 
 if !File.exists?('/etc/init.d/mongo')
