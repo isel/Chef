@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -e
+
+# The daily cron command to recycle all but one stamped mongo logs
+
+service mongo logrotate
+LOGS_KEEP=1
+if [  `ls /mnt/logs/mongo.log.* | wc -l` -gt $LOGS_KEEP ] ; then
+    echo "recycling old logs"
+    ls -1tr /mnt/logs/mongo.log.*|head --lines=-$LOGS_KEEP  | xargs rm 2>/dev/null
+else
+    echo "none to recycle"
+fi
+
+exit 0

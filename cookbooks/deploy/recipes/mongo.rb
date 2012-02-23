@@ -10,11 +10,18 @@ if !File.exists?('/opt/Mongo')
       ln -s /opt/Mongo/mongodb-linux-x86_64-#{version} /opt/Mongo/current
 
       mkdir --parents /data/db
-      mkdir --parents /var/log
+      mkdir --parents /mnt/logs
     EOF
   end
 else
   log 'Mongo already installed.'
+end
+
+if !File.exists?('/etc/cron.daily/recycle_logs')
+  template '/etc/cron.daily/recycle_logs' do
+    source 'recycle_logs.erb'
+    mode 0755
+  end
 end
 
 if !File.exists?('/etc/init.d/mongo')

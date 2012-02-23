@@ -11,7 +11,8 @@
 
 
 MONGO_BIN=/opt/Mongo/current/bin
-MONGO_START="$MONGO_BIN/mongod --fork --port <%= @port %> -vvvvv --logpath /data/db/log --cpu"
+MONGO_LOG=/mnt/logs/mongo.log
+MONGO_START="$MONGO_BIN/mongod --fork --port <%= @port %> -vvvvv --logpath $MONGO_LOG --cpu"
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 
 . /lib/init/vars.sh
@@ -58,6 +59,17 @@ case "$1" in
             echo "Mongo is not running"
         fi
 	;;
+  logrotate)
+[ "$VERBOSE" = no ] || log_action_begin_msg "Asking MongoDB to rotate logs"
+    pid=`getPID`
+    if [ $pid ]
+    then
+        echo "Rotate logs of Mongo pid=$pid"
+        /bin/kill -SIGUSR1 $pid
+    else
+        echo "Mongo is not running"
+    fi
+   ;;
   status)
         pid=`getPID`
         if [ $pid ]
@@ -73,7 +85,7 @@ case "$1" in
 	exit 3
 	;;
   *)
-	echo "Usage: mongo start|stop" >&2
+	echo "Usage: mongo start|stop|logrotate" >&2
 	exit 3
 	;;
 esac
