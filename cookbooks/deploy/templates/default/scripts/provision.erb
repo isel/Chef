@@ -36,9 +36,9 @@ Helpers::drop_all_databases("<%= @db_server %>", "<%= @sarmus_port %>")
 
 Dir.chdir('/Provision/bin')
 
-def import_data(exe, tenant, input_file, model)
-  puts "running provisioning for model: #{model} tenant: #{tenant} input file: #{input_file}"
-  success = system "#{exe} -model #{model} -tenant #{tenant} -data \"#{input_file}\""
+def import_data(exe, tenant, input_file)
+  puts "running provisioning for tenant: #{tenant} input file: #{input_file}"
+  success = system "#{exe} -tenant #{tenant} -data \"#{input_file}\""
   exit_code = $?
   puts "provisioning exit code: #{exit_code}"
   if success
@@ -51,15 +51,15 @@ end
 tenant = '<%= @tenant %>'
 
 if tenant == 'VGC'
-  import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx', 'ultipro2')
-  import_data(exe, 'importer', 'c:\Provision\bin\VGC - SHARED.xlsx', 'ultipro2')
-  import_data(exe, 'VGC', 'c:\Provision\bin\VGC - HCM.xlsx', 'ultipro2')
+  import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
+  import_data(exe, 'importer', 'c:\Provision\bin\VGC - SHARED.xlsx')
+  import_data(exe, 'VGC', 'c:\Provision\bin\VGC - HCM.xlsx')
 else
-  import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx', 'HCM')
-  import_data(exe, 'importer', 'c:\Provision\PayrollProvision\files\PayrollEngine.xlsx', 'HCM')
+  import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
+  import_data(exe, 'importer', 'c:\Provision\PayrollProvision\files\PayrollEngine.xlsx')
 
   engine_PIM = File.read('c:/Provision/PayrollProvision/entities/HCM.entity_json')
   Helpers::PIMPublisher.new.publish_entity('<%= @app_server %>', engine_PIM)
 
-  import_data(exe, 'PENG', 'c:\Provision\PayrollProvision\files\Rules.xlsx', 'HCM')
+  import_data(exe, 'PENG', 'c:\Provision\PayrollProvision\files\Rules.xlsx')
 end
