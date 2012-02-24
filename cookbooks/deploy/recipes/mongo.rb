@@ -14,12 +14,12 @@ if !File.exists?('/opt/Mongo')
   end
 else
   log 'Mongo already installed.'
+end
 
-  bash 'Setup log directory on ephemeral drive' do
-    code <<-EOF
-      mkdir --parents /mnt/logs
-    EOF
-  end
+bash 'Setup log directory on ephemeral drive' do
+  code <<-EOF
+    mkdir --parents /mnt/logs
+  EOF
 end
 
 if !File.exists?('/etc/cron.daily/recycle_logs')
