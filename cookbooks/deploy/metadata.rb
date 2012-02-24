@@ -144,6 +144,11 @@ attribute "deploy/tenant",
   :required => "required",
   :recipes => ["deploy::provision", "deploy::smoke_tests_global"]
 
+attribute "deploy/use_mocked_website",
+  :display_name => "use mocked website",
+  :required => "required",
+  :recipes => ["deploy::jspr"]
+
 ### attributes used from other cookbooks
 attribute "core/server_type",
   :display_name => "server type",

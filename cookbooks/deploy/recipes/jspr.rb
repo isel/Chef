@@ -2,6 +2,7 @@ require 'rake/clean'
 
 template '/etc/apache2/conf.d/status.conf' do
   source 'status_conf.erb'
+  variables(:use_mocked_website => node[:deploy][:use_mocked_website])
 end
 
 bash 'Configuring apache' do
