@@ -317,6 +317,18 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/use_mocked_website": {
+      "display_name": "use mocked website",
+      "required": "required",
+      "recipes": [
+        "deploy::jspr"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "core/server_type": {
       "display_name": "server type",
       "description": "eg: db, app, web, cache",
