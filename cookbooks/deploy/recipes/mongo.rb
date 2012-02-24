@@ -29,6 +29,7 @@ if !File.exists?('/etc/cron.daily/recycle_logs')
   end
 end
 
+
 template '/etc/crontab' do
   source 'database_crontab.erb'
   mode 0644
@@ -36,6 +37,7 @@ end
 
 bash 'Restarting cron' do
   code <<-EOF
+    rm /etc/cron.daily/apt
     service cron restart
   EOF
 end
