@@ -10,11 +10,16 @@ if !File.exists?('/opt/Mongo')
       ln -s /opt/Mongo/mongodb-linux-x86_64-#{version} /opt/Mongo/current
 
       mkdir --parents /data/db
-      mkdir --parents /mnt/logs
     EOF
   end
 else
   log 'Mongo already installed.'
+
+  bash 'Setup log directory on ephemeral drive' do
+    code <<-EOF
+      mkdir --parents /mnt/logs
+    EOF
+  end
 end
 
 if !File.exists?('/etc/cron.daily/recycle_logs')
