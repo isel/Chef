@@ -28,7 +28,19 @@ function ensure_is_up([string]$cache) {
         catch {
             $tries += 1
             write-host "Error with cache $cache, retrying again in $sleep_seconds seconds ($(get-date))"
+
             Get-CacheClusterHealth
+            $to_mega = 1024
+
+            write-output "CPU utilization: $($(gwmi -class Win32_Processor).LoadPercentage) %"
+
+            $mem = Get-WmiObject -Class Win32_OperatingSystem -Namespace root/cimv2 -ComputerName .
+            write-output "Total Virtual Memory Size: $($mem.TotalVirtualMemorySize / $to_mega)"
+            write-output "Total Visible Memory Size: $($mem.TotalVisibleMemorySize / $to_mega)"
+            write-output "Free Physical Memory: $($mem.FreePhysicalMemory / $to_mega)"
+            write-output "Free Virtual Memory: $($mem.FreeVirtualMemory / $to_mega)"
+            write-output "Free Space In Paging Files: $($mem.FreeSpaceInPagingFiles / $to_mega)"
+
             start-sleep -s $sleep_seconds
         }
     }
