@@ -146,7 +146,9 @@ attribute "deploy/tenant",
 
 attribute "deploy/use_mocked_website",
   :display_name => "use mocked website",
-  :required => "required",
+  :description => "used to mock jspr to be able to run the ui tests",
+  :required => "optional",
+  :default => "false",
   :recipes => ["deploy::jspr"]
 
 ### attributes used from other cookbooks
