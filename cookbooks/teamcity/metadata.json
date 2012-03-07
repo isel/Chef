@@ -24,6 +24,7 @@
   "groupings": {
   },
   "recipes": {
+    "teamcity::set_fxcop_path": "Sets fxcop path in the build agent properties file",
     "teamcity::set_ncover_path": "Sets ncover path in the build agent properties file"
   },
   "version": "0.0.1"
