@@ -1,0 +1,30 @@
+{
+  "name": "teamcity",
+  "description": "Configures TeamCity",
+  "long_description": "",
+  "maintainer": "Isel Fernandez",
+  "maintainer_email": "isel_77@hotmail.com",
+  "license": "our license",
+  "platforms": {
+  },
+  "dependencies": {
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "teamcity::set_ncover_path": "Sets ncover path in the build agent properties file"
+  },
+  "version": "0.0.1"
+}
