@@ -17,7 +17,6 @@ script "Deploy sarmus" do
 
     cp #{node['deploy_scripts_dir']}/sarmus/sarmus $sarmus_root/#{revision}/bin
     chmod 755 /opt/sarmus/current/bin/sarmus
-
   EOF
 end
 
@@ -41,4 +40,10 @@ if !File.exists?('/etc/init.d/sarmus_service')
   end
 else
   log 'sarmus_service service is already registered.'
+end
+
+bash 'Starting sarmus_service service' do
+  code <<-EOF
+    service sarmus_service start
+  EOF
 end
