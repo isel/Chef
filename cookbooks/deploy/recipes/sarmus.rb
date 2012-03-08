@@ -14,13 +14,25 @@ script "Deploy sarmus" do
     mkdir --parents $sarmus_root/#{revision}/bin
 
     ln -s $sarmus_root/#{revision} $sarmus_root/current
-    cp #{node['deploy_scripts_dir']}/sarmus/sarmus_service /etc/init.d
-    chmod 755 /etc/init.d/sarmus_service
 
     cp #{node['deploy_scripts_dir']}/sarmus/sarmus $sarmus_root/#{revision}/bin
     chmod 755 /opt/sarmus/current/bin/sarmus
 
-    update-rc.d sarmus_service defaults
-    service sarmus_service start
   EOF
+end
+
+if !File.exists?('/etc/init.d/sarmus_service')
+  template '/etc/init.d/sarmus_service' do
+    source 'sarmus_service.erb'
+    mode 0755
+  end
+
+  script 'Registering sarmus_service service' do
+    interpreter "bash"
+    code <<-EOF
+      update-rc.d sarmus_service defaults
+    EOF
+  end
+else
+  log 'sarmus_service service is already registered.'
 end
