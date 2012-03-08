@@ -1,13 +1,29 @@
 require 'rake'
 require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Cloud/deployment'
+require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Helpers/process'
 
 Host_File = 'C:/Windows/System32/drivers/etc/hosts'
 
-servers = Cloud::Deployment.new.discover_servers('<%= @deployment_name %>')
-servers.each_value do |server|
-  if server.private_ip == '<%= @cache_server %>'
-    cache_hostname = server.tags['server:hostname']
-    line = "<%= @cache_server %> #{cache_hostname}"
-    File.open(Host_File, 'a+') { |file| file.puts line } unless File.read(Host_File).include?(line)
+if File.read(Host_File).include?('<%= @cache_server %>')
+  puts 'cache server already registered'
+else
+  servers = Cloud::Deployment.new.discover_servers('<%= @deployment_name %>')
+  servers.each_value do |server|
+    if server.private_ip == '<%= @cache_server %>'
+
+      cache_hostname = nil
+
+      Helpers::Process.new.run('wait for tags to be available', 5*60) do
+        begin
+          cache_hostname = server.tags['server:hostname']
+          !cache_hostname.nil?
+        rescue
+          false
+        end
+      end
+
+      line = "<%= @cache_server %> #{cache_hostname}"
+      File.open(Host_File, 'a+') { |file| file.puts line } unless File.read(Host_File).include?(line)
+    end
   end
 end

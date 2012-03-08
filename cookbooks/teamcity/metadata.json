@@ -1,0 +1,45 @@
+{
+  "name": "teamcity",
+  "description": "Configures TeamCity",
+  "long_description": "",
+  "maintainer": "Isel Fernandez",
+  "maintainer_email": "isel_77@hotmail.com",
+  "license": "our license",
+  "platforms": {
+  },
+  "dependencies": {
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+    "teamcity/gallio_path": {
+      "display_name": "gallio path",
+      "required": "required",
+      "recipes": [
+        "teamcity::set_gallio_path"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    }
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "teamcity::set_fxcop_path": "Sets fxcop path in the build agent properties file",
+    "teamcity::set_gallio_path": "Sets gallio path in the build agent properties file",
+    "teamcity::set_ncover_path": "Sets ncover path in the build agent properties file",
+    "teamcity::set_ruby_path": "Sets ruby path in the build agent properties file"
+  },
+  "version": "0.0.1"
+}

@@ -6,16 +6,6 @@ ExtendedStatus On
     Allow from localhost
 </Location>
 
-<% if @use_mocked_website == "true" %>
-Header set Access-Control-Allow-Origin "*"
-Header set Access-Control-Allow-Headers "Authorization, X-Requested-With, Origin, Content-Type, Accept"
-Header set Access-Control-Allow-Methods "GET,POST,PATCH,PUT,DELETE"
-
-AddDefaultCharset UTF-8
-
-AddCharset UTF-8 .php
-<% end %>
-
 AddCharset UTF-8 .html
 AddCharset UTF-8 .js
 AddCharset UTF-8 .css
