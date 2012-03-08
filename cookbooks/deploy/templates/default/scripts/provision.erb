@@ -58,6 +58,8 @@ else
   import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
   import_data(exe, 'importer', 'c:\Provision\PayrollProvision\files\PayrollEngine.xlsx')
 
+  sleep 12*60
+
   engine_PIM = File.read('c:/Provision/PayrollProvision/entities/HCM.entity_json')
   Helpers::PIMPublisher.new.publish_entity('<%= @app_server %>', engine_PIM)
 
