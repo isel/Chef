@@ -21,6 +21,12 @@ script "Deploy sarmus" do
   EOF
 end
 
+bash 'Setup log directory on ephemeral drive' do
+  code <<-EOF
+    mkdir --parents /mnt/logs
+  EOF
+end
+
 if !File.exists?('/etc/init.d/sarmus_service')
   template '/etc/init.d/sarmus_service' do
     source 'sarmus_service.erb'
