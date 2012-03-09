@@ -148,7 +148,7 @@ attribute "deploy/sarmus_loglevel",
 attribute "deploy/sarmus_logsize",
   :display_name => "sarmus logsize",
   :required => "optional",
-  :default => "2097152",
+  :default => "209715200",
   :recipes => ["deploy::sarmus"]
 
 attribute "deploy/sarmus_days_to_keep_logs",
