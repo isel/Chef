@@ -151,6 +151,12 @@ attribute "deploy/sarmus_logsize",
   :default => "2097152",
   :recipes => ["deploy::sarmus"]
 
+attribute "deploy/sarmus_days_to_keep_logs",
+  :display_name => "sarmus days to keep logs",
+  :required => "optional",
+  :default => "2",
+  :recipes => ["deploy::sarmus"]
+
 attribute "deploy/tenant",
   :display_name => "tenant",
   :required => "required",

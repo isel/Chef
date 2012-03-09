@@ -46,6 +46,16 @@ else
   log 'sarmus_service service is already registered.'
 end
 
+if !File.exists?('/etc/cron.daily/sarmus_logs_cleanup')
+  template '/etc/cron.daily/sarmus_logs_cleanup' do
+    source 'sarmus_logs_cleanup.erb'
+    variables(
+      :sarmus_days_to_keep_logs  => node[:deploy][:sarmus_days_to_keep_logs],
+      )
+    mode 0755
+  end
+end
+
 bash 'Starting sarmus_service service' do
   code <<-EOF
     service sarmus_service start
