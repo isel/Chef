@@ -50,7 +50,7 @@ if !File.exists?('/etc/cron.daily/sarmus_logs_cleanup')
   template '/etc/cron.daily/sarmus_logs_cleanup' do
     source 'sarmus_logs_cleanup.erb'
     variables(
-      :sarmus_days_to_keep_logs  => node[:deploy][:sarmus_days_to_keep_logs],
+      :sarmus_days_to_keep_logs  => node[:deploy][:sarmus_days_to_keep_logs]
       )
     mode 0755
   end
