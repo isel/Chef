@@ -320,7 +320,7 @@
     "deploy/sarmus_logsize": {
       "display_name": "sarmus logsize",
       "required": "optional",
-      "default": "2097152",
+      "default": "209715200",
       "recipes": [
         "deploy::sarmus"
       ],
