@@ -304,6 +304,32 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/sarmus_loglevel": {
+      "display_name": "sarmus loglevel",
+      "required": "optional",
+      "default": "4",
+      "recipes": [
+        "deploy::sarmus"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/sarmus_logsize": {
+      "display_name": "sarmus logsize",
+      "required": "optional",
+      "default": "2097152",
+      "recipes": [
+        "deploy::sarmus"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/tenant": {
       "display_name": "tenant",
       "required": "required",
