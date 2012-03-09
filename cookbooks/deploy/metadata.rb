@@ -139,6 +139,18 @@ attribute "deploy/sarmus_port",
   :required => "required",
   :recipes => ["deploy::foundation_services", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local_app"]
 
+attribute "deploy/sarmus_loglevel",
+  :display_name => "sarmus loglevel",
+  :required => "optional",
+  :default => "4",
+  :recipes => ["deploy::sarmus"]
+
+attribute "deploy/sarmus_logsize",
+  :display_name => "sarmus logsize",
+  :required => "optional",
+  :default => "2097152",
+  :recipes => ["deploy::sarmus"]
+
 attribute "deploy/tenant",
   :display_name => "tenant",
   :required => "required",

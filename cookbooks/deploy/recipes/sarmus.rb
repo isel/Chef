@@ -29,6 +29,10 @@ end
 if !File.exists?('/etc/init.d/sarmus_service')
   template '/etc/init.d/sarmus_service' do
     source 'sarmus_service.erb'
+    variables(
+      :sarmus_logsize  => node[:deploy][:sarmus_logsize],
+      :sarmus_loglevel => node[:deploy][:sarmus_loglevel]
+      )
     mode 0755
   end
 
