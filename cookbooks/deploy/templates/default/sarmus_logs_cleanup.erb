@@ -1,0 +1,38 @@
+#!/bin/sh
+
+set -e
+
+# configurable number of days of logs to keep
+SARMUS_DAYS_TO_KEEP_LOGS=<%= @sarmus_days_to_keep_logs %>
+
+
+SARMUS_LOG=/mnt/logs/sarmus.log
+
+if [ ! -f  "$SARMUS_LOG"  ] ; then
+  echo "Not found $SARMUS_LOG, aborting"
+  exit 1
+fi
+cd `dirname $SARMUS_LOG`
+
+DATE_FILTER=''
+for days in $(seq 0 1 $SARMUS_DAYS_TO_KEEP_LOGS) ; do
+  DATE_ARGUMENT="-$days day"
+  DATE_TOKEN=`/bin/date  +'%Y-%m-%d' --date "$DATE_ARGUMENT"`
+  DATE_FILTER="$DATE_FILTER|$DATE_TOKEN"
+done
+DATE_FILTER=${DATE_FILTER#|}
+DATE_FILTER=`echo $DATE_FILTER | sed 's/-/\\-/g'`
+# allow nonzero exit status
+set +e
+filelist=$(ls -1 sarmus.log.* | egrep -v "$DATE_FILTER" | egrep -v '.gz$' 2> /dev/null)
+set -e
+if [ "$filelist" != "" ] ; then 
+  echo -n  "Files to archive : " ; echo  $filelist| tr ' ' '\n'
+  /bin/gzip -9 -f $filelist
+else
+  echo "Nothing to archive"
+fi
+exit 0
+
+
+

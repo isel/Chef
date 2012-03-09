@@ -1,0 +1,80 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          sarmus
+# Required-Start:
+# Required-Stop:
+# Default-Start:     S
+# Default-Stop:      0 6
+# Short-Description: Start/stop the sarmus service
+# Description:       This script starts/stops the sarmus service
+### END INIT INFO
+
+SARMUS=/opt/sarmus/current
+SARMUS_BIN=$SARMUS/bin
+SARMUS_LOG=/mnt/logs/sarmus.log
+SARMUS_LOGLEVEL=<%= @sarmus_loglevel %>
+SARMUS_LOGSIZE=<%= @sarmus_logsize %>
+SARMUS_START="$SARMUS_BIN/sarmus --in 27017 --out 28017 --logsize $SARMUS_LOGSIZE --loglevel $SARMUS_LOGLEVEL --fork --logfile $SARMUS_LOG"
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+
+. /lib/init/vars.sh
+
+START_LOG=/opt/sarmus/current/START.log
+echo "Starting Sarmus: runlevel=$RUNLEVEL param=$1"  >> $START_LOG
+date    >> $START_LOG
+who -r  >> $START_LOG
+
+getPID () {
+    ps -ef | grep '[ \/]sarmus ' | grep -v grep | awk '{print $2}'
+}
+
+case "$1" in
+  start|"")
+        [ "$VERBOSE" = no ] || log_action_begin_msg "Initializing Sarmus"
+        pid=`getPID`
+        echo "PID=$pid"
+        if [ $pid ]
+        then
+            echo "Sarmus already running with pid=$pid"
+        else
+            echo "run $SARMUS_BIN/sarmus"
+            export TZ=UTC
+            $SARMUS_START&
+                        sleep 2
+        fi
+        ;;
+  stop)
+        # Carry a random seed from shut-down to start-up;
+        # see documentation in linux/drivers/char/random.c
+        [ "$VERBOSE" = no ] || log_action_begin_msg "Stopping Sarmus"
+        pid=`getPID`
+        if [ $pid ]
+        then
+            echo "Stopping Sarmus with pid=$pid"
+            kill -9 $pid
+        else
+            echo "Sarmus is not running"
+        fi
+        ;;
+  status)
+        pid=`getPID`
+        if [ $pid ]
+        then
+            echo "Sarmus is running with pid=$pid"
+        else
+            echo "Sarmus is not running"
+        fi
+        exit $?
+        ;;
+  restart|reload|force-reload)
+        echo "Error: argument '$1' not supported" >&2
+        exit 3
+        ;;
+  *)
+        echo "Usage: sarmus start|stop" >&2
+        exit 3
+        ;;
+esac
+
+:
+

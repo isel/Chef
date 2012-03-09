@@ -14,13 +14,50 @@ script "Deploy sarmus" do
     mkdir --parents $sarmus_root/#{revision}/bin
 
     ln -s $sarmus_root/#{revision} $sarmus_root/current
-    cp #{node['deploy_scripts_dir']}/sarmus/sarmus_service /etc/init.d
-    chmod 755 /etc/init.d/sarmus_service
 
     cp #{node['deploy_scripts_dir']}/sarmus/sarmus $sarmus_root/#{revision}/bin
     chmod 755 /opt/sarmus/current/bin/sarmus
+  EOF
+end
 
-    update-rc.d sarmus_service defaults
+bash 'Setup log directory on ephemeral drive' do
+  code <<-EOF
+    mkdir --parents /mnt/logs
+  EOF
+end
+
+if !File.exists?('/etc/init.d/sarmus_service')
+  template '/etc/init.d/sarmus_service' do
+    source 'sarmus_service.erb'
+    variables(
+      :sarmus_logsize  => node[:deploy][:sarmus_logsize],
+      :sarmus_loglevel => node[:deploy][:sarmus_loglevel]
+      )
+    mode 0755
+  end
+
+  script 'Registering sarmus_service service' do
+    interpreter "bash"
+    code <<-EOF
+      update-rc.d sarmus_service defaults
+    EOF
+  end
+else
+  log 'sarmus_service service is already registered.'
+end
+
+if !File.exists?('/etc/cron.daily/sarmus_logs_cleanup')
+  template '/etc/cron.daily/sarmus_logs_cleanup' do
+    source 'sarmus_logs_cleanup.erb'
+    variables(
+      :sarmus_days_to_keep_logs  => node[:deploy][:sarmus_days_to_keep_logs]
+      )
+    mode 0755
+  end
+end
+
+bash 'Starting sarmus_service service' do
+  code <<-EOF
     service sarmus_service start
   EOF
 end
