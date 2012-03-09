@@ -19,12 +19,12 @@ FileUtils.remove_dir('/Provision', true)
 FileUtils.mkdir_p('/Provision')
 
 FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Provision/.', '/Provision/bin')
-FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/ProvisionData/.', '/Provision/bin')
-FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/PayrollProvision', '/Provision')
 FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Models', '/Provision')
 FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Images', '/Provision')
 FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/uiml', '/Provision')
 FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Workflow.Activities.Compass', '/Provision')
+
+FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Provisioning/Legacy/.', '/Provision/bin')
 
 Helpers::change_app_setting(config, "ConnectionString", "Server=<%= @db_server %>:<%= @sarmus_port %>")
 Helpers::change_app_setting(config, "EntityFramework.ModelFolder", "C:\\Provision\\Models\\")
@@ -56,12 +56,12 @@ if tenant == 'VGC'
   import_data(exe, 'VGC', 'c:\Provision\bin\VGC - HCM.xlsx')
 else
   import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
-  import_data(exe, 'importer', 'c:\Provision\PayrollProvision\files\PayrollEngine.xlsx')
+  import_data(exe, 'importer', 'c:\Provision\bin\PayrollEngine.xlsx')
 
   sleep 12*60
 
-  engine_PIM = File.read('c:/Provision/PayrollProvision/entities/HCM.entity_json')
+  engine_PIM = File.read('c:/Provision/bin/HCM.entity_json')
   Helpers::PIMPublisher.new.publish_entity('<%= @app_server %>', engine_PIM)
 
-  import_data(exe, 'PENG', 'c:\Provision\PayrollProvision\files\Rules.xlsx')
+  import_data(exe, 'PENG', 'c:\Provision\bin\Rules.xlsx')
 end
