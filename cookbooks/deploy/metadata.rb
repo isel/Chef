@@ -30,7 +30,8 @@ recipe "deploy::tag_data_version", "Writes a tag denoting what data version has 
 
 attribute "deploy/appfabric_caches",
   :display_name => "appfabric caches",
-  :required => "required",
+  :required => "optional",
+  :default => "default,TokenStore,SaasPolicy,EntityModel,Securables,Messages,Views,Enumerations",
   :recipes => ["deploy::appfabric_configure", "deploy::appfabric_ensure_is_up"]
 
 attribute "deploy/appfabric_security",
@@ -40,7 +41,8 @@ attribute "deploy/appfabric_security",
 
 attribute "deploy/appfabric_service_user",
   :display_name => "appfabric service user",
-  :required => "required",
+  :required => "optional",
+  :default => "appfabric",
   :recipes => ["deploy::appfabric_configure"]
 
 attribute "deploy/appfabric_service_password",
@@ -50,12 +52,14 @@ attribute "deploy/appfabric_service_password",
 
 attribute "deploy/appfabric_shared_drive",
   :display_name => "appfabric shared drive",
-  :required => "required",
+  :required => "optional",
+  :default => "appfabric_caching",
   :recipes => ["deploy::appfabric_configure"]
 
 attribute "deploy/appfabric_shared_folder",
   :display_name => "appfabric shared folder",
-  :required => "required",
+  :required => "optional",
+  :default => "c:\\appfabric_caching",
   :recipes => ["deploy::appfabric_configure"]
 
 attribute "deploy/app_server",
@@ -101,12 +105,14 @@ attribute "deploy/domain",
 
 attribute "deploy/elastic_search_port",
   :display_name => "elastic search port",
-  :required => "required",
+  :required => "optional",
+  :default => "9200",
   :recipes => ["deploy::foundation_services", "deploy::smoke_tests_local_app"]
 
 attribute "deploy/elastic_search_version",
   :display_name => "elastic search version",
-  :required => "required",
+  :required => "optional",
+  :default => "0.17.6",
   :recipes => ["deploy::elastic_search"]
 
 attribute "deploy/engine_server",
@@ -121,12 +127,14 @@ attribute "deploy/force_provision",
 
 attribute "deploy/mongo_port",
   :display_name => "mongo port",
-  :required => "required",
+  :required => "optional",
+  :default => "28017",
   :recipes => ["deploy::mongo"]
 
 attribute "deploy/mongo_version",
   :display_name => "mongo version",
-  :required => "required",
+  :required => "optional",
+  :default => "2.0.1",
   :recipes => ["deploy::mongo"]
 
 attribute "deploy/revision",
@@ -136,7 +144,8 @@ attribute "deploy/revision",
 
 attribute "deploy/sarmus_port",
   :display_name => "sarmus port",
-  :required => "required",
+  :required => "optional",
+  :default => "27017",
   :recipes => ["deploy::foundation_services", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local_app"]
 
 attribute "deploy/sarmus_loglevel",

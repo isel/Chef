@@ -23,7 +23,8 @@
   "attributes": {
     "deploy/appfabric_caches": {
       "display_name": "appfabric caches",
-      "required": "required",
+      "required": "optional",
+      "default": "default,TokenStore,SaasPolicy,EntityModel,Securables,Messages,Views,Enumerations",
       "recipes": [
         "deploy::appfabric_configure",
         "deploy::appfabric_ensure_is_up"
@@ -48,7 +49,8 @@
     },
     "deploy/appfabric_service_user": {
       "display_name": "appfabric service user",
-      "required": "required",
+      "required": "optional",
+      "default": "appfabric",
       "recipes": [
         "deploy::appfabric_configure"
       ],
@@ -72,7 +74,8 @@
     },
     "deploy/appfabric_shared_drive": {
       "display_name": "appfabric shared drive",
-      "required": "required",
+      "required": "optional",
+      "default": "appfabric_caching",
       "recipes": [
         "deploy::appfabric_configure"
       ],
@@ -84,7 +87,8 @@
     },
     "deploy/appfabric_shared_folder": {
       "display_name": "appfabric shared folder",
-      "required": "required",
+      "required": "optional",
+      "default": "c:\\appfabric_caching",
       "recipes": [
         "deploy::appfabric_configure"
       ],
@@ -204,7 +208,8 @@
     },
     "deploy/elastic_search_port": {
       "display_name": "elastic search port",
-      "required": "required",
+      "required": "optional",
+      "default": "9200",
       "recipes": [
         "deploy::foundation_services",
         "deploy::smoke_tests_local_app"
@@ -217,7 +222,8 @@
     },
     "deploy/elastic_search_version": {
       "display_name": "elastic search version",
-      "required": "required",
+      "required": "optional",
+      "default": "0.17.6",
       "recipes": [
         "deploy::elastic_search"
       ],
@@ -253,7 +259,8 @@
     },
     "deploy/mongo_port": {
       "display_name": "mongo port",
-      "required": "required",
+      "required": "optional",
+      "default": "28017",
       "recipes": [
         "deploy::mongo"
       ],
@@ -265,7 +272,8 @@
     },
     "deploy/mongo_version": {
       "display_name": "mongo version",
-      "required": "required",
+      "required": "optional",
+      "default": "2.0.1",
       "recipes": [
         "deploy::mongo"
       ],
@@ -291,7 +299,8 @@
     },
     "deploy/sarmus_port": {
       "display_name": "sarmus port",
-      "required": "required",
+      "required": "optional",
+      "default": "27017",
       "recipes": [
         "deploy::foundation_services",
         "deploy::provision",
