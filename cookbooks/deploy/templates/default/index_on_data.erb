@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# This will index the search engine on the data retrieved from mongo
+# It only performs this function for a single tenant at the moment.
+
+## Input an integer
+
+
+if [ "$1" == "new" ]
+then
+    ./getTenantData > Viabot.data
+
+fi
+ERROR=0
+curl -XDELETE "http://localhost:9200/ugf/viabot/_query?q=name:*"
+if  [ $? ]
+then
+  ERROR=$?
+  echo "Defering error exit $ERROR"
+fi
+
+if [ ! -s Viabot.data ] ;  then
+  echo 'Viabot.data' is blank
+else
+  cat 'Viabot.data'
+fi
+if [ $ERROR -ne 0 ] ; then
+   exit $ERROR
+fi
+cat Viabot.data | while read person
+do
+    # record = personID + "|" + firstName + "|" + lastName
+    # record = record + "|" + entityID.hex + "|" +  city + "|" +  state
+    # record = record + "|" + title + "|" + pix
+    personID=`echo $person | cut -d'|' -f1 `
+    firstName=`echo $person | cut -d'|' -f2 `
+    lastName=`echo $person | cut -d'|' -f3 `
+    EntityID=`echo $person | cut -d'|' -f4 `
+    City=`echo $person | cut -d'|' -f5 `
+    State=`echo $person | cut -d'|' -f6 `
+    title=`echo $person | cut -d'|' -f7 `
+    pix=`echo $person | cut -d'|' -f8 `
+
+    doc="{ \"personID\" : \"$personID\" , "
+    doc+="\"id\" : \"$EntityID\", "
+    doc+="\"firstName\" : \"$firstName\", "
+    doc+="\"lastName\" : \"$lastName\", "
+    doc+="\"name\" : \"$firstName $lastName\","
+    doc+="\"title\" : \"$title\","
+    doc+="\"image\" : \"$pix\" }"
+    echo $doc
+
+    curl -XPUT localhost:9200/ugf/viabot/$EntityID --data "$doc"
+if  [ $?  ]
+then
+  ERROR=$?
+  echo "Defering error exit $ERROR"
+fi
+
+done
+if [ $ERROR -ne 0 ] ; then
+   exit $ERROR
+fi
