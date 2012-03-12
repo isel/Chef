@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'date'
 
-SARMUS_LOG = '/mnt/test/logs/sarmus.log'
+SARMUS_LOG = '/mnt/logs/sarmus.log'
 SARMUS_DAYS_TO_KEEP_LOGS = <%= @sarmus_days_to_keep_logs %>
 
 Dir.chdir(File.dirname(SARMUS_LOG))
