@@ -12,15 +12,16 @@ then
 
 fi
 ERROR=0
-curl -XDELETE "http://localhost:9200/ugf/viabot/_query?q=name:*"
+CURL_LOG="/tmp/`basename $0`.out.$$"
+curl -XDELETE "http://localhost:9200/ugf/viabot/_query?q=name:*" > $CURL_LOG 2>&1
 if  [ $? ]
 then
   ERROR=$?
   echo "Defering error exit $ERROR"
 fi
-
+cat $CURL_LOG
 if [ ! -s Viabot.data ] ;  then
-  echo 'Viabot.data' is blank
+  echo ; echo 'Viabot.data' is blank
 else
   cat 'Viabot.data'
 fi
