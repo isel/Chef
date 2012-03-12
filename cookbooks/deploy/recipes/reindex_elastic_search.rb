@@ -17,9 +17,9 @@ end
 template '/opt/Indexer/indexOnData' do
     source 'index_on_data.erb'
     # the variable is not yet used
-     variables(
-      :elastic_search_port  => node[:deploy][:elastic_search_port]
-    )
+    # variables(
+    #  :elastic_search_port  => node[:deploy][:elastic_search_port]
+    # )
     mode 0755
 end
 bash 'deploy elastic search' do
