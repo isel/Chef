@@ -9,7 +9,6 @@
 if [ "$1" == "new" ]
 then
     ./getTenantData > Viabot.data
-
 fi
 ERROR=0
 CURL_LOG="/tmp/`basename $0`.out.$$"
@@ -17,11 +16,18 @@ curl -XDELETE "http://localhost:9200/ugf/viabot/_query?q=name:*" > $CURL_LOG 2>&
 if  [ $? ]
 then
   ERROR=$?
-  echo "Defering error exit $ERROR"
+  echo "Deferring error exit $ERROR"
 fi
 cat $CURL_LOG
+egrep 'error|couldn' $CURL_LOG  > /dev/null 2>&1
+STATUS=$?
+if  [ !$STATUS ]
+then
+  ERROR=7
+  echo "Deferring error exit $ERROR"
+fi
 if [ ! -s Viabot.data ] ;  then
-  echo ; echo 'Viabot.data' is blank
+  echo 'Viabot.data' is blank
 else
   cat 'Viabot.data'
 fi
