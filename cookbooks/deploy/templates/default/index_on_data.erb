@@ -15,36 +15,28 @@ ERROR=0
 CURL_LOG="/tmp/`basename $0`.out.$$"
 echo "waiting for elasticsearch service to become operational"
 while [ ! $STATUS ] ;  do
-STATUS=`service elasticsearch status |  grep STARTED`
-echo "Checking if port 9200 is listened"
+STATUS="`service elasticsearch status |  grep STARTED`"
+echo $STATUS
 netstat -pa | grep 9200
 lsof -i :9200
-echo '---'
-sleep 10
+sleep 3
 done
 echo curl -XDELETE "http://localhost:9200/ugf/viabot/_query?q=name:*"
 curl -XDELETE "http://localhost:9200/ugf/viabot/_query?q=name:*" > $CURL_LOG 2>&1
-if  [ $? ]
-then
-  ERROR=$?
-  echo "Defering error exit $ERROR"
-fi
-echo $CURL_LOG
-echo '---'
+ERROR=$?
 cat $CURL_LOG
 echo
-echo '---'
 egrep 'couldn|error' $CURL_LOG
 exec 6<$CURL_LOG
 while read LINE <&6 ; do
 echo "Processing $LINE"
     if [  `expr "$LINE" : ".*\(error\).*"`  ] ;  then
-        echo 'found an error' 
-ERROR=1
+    #   echo 'found an error'
+    #   ERROR=1
     fi
     if [  `expr "$LINE" : ".*\(couldn't\).*"`  ] ;  then
-        echo 'found an error' 
-ERROR=1
+       echo 'found an error'
+       ERROR=1
     fi
 done
 6<&-
@@ -81,10 +73,7 @@ do
     echo $doc
 
     curl -XPUT localhost:9200/ugf/viabot/$EntityID --data "$doc"
-if  [ $?  ]
-then
-  ERROR=$?
-  echo "Defering error exit $ERROR"
+    ERROR=$?
 fi
 
 done
