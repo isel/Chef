@@ -29,15 +29,15 @@ echo
 egrep 'couldn|error' $CURL_LOG
 exec 6<$CURL_LOG
 while read LINE <&6 ; do
-echo "Processing $LINE"
-    if [  `expr "$LINE" : ".*\(error\).*"`  ] ;  then
+  echo "Processing $LINE"
+  if [  `expr "$LINE" : ".*\(error\).*"`  ] ;  then
     #   echo 'found an error'
     #   ERROR=1
-    fi
-    if [  `expr "$LINE" : ".*\(couldn't\).*"`  ] ;  then
+  fi
+  if [  `expr "$LINE" : ".*\(couldn't\).*"`  ] ;  then
        echo 'found an error'
        ERROR=1
-    fi
+  fi
 done
 6<&-
 
@@ -74,8 +74,6 @@ do
 
     curl -XPUT localhost:9200/ugf/viabot/$EntityID --data "$doc"
     ERROR=$?
-fi
-
 done
 if [ $ERROR -ne 0 ] ; then
    exit $ERROR
