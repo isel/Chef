@@ -9,41 +9,47 @@
 if [ "-$1" = "-new" ]
 then
     ./getTenantData > Viabot.data
-
 fi
+
 ERROR=0
-CURL_LOG="/tmp/`basename $0`.out.$$"
-echo "waiting for elasticsearch service to become operational"
-while [ ! $STATUS ] ;  do
-STATUS="`service elasticsearch status |  grep STARTED`"
-echo $STATUS
-netstat -pa | grep 9200
-lsof -i :9200
-sleep 3
-done
-echo curl -XDELETE "http://localhost:9200/ugf/viabot/_query?q=name:*"
-curl -XDELETE "http://localhost:9200/ugf/viabot/_query?q=name:*" > $CURL_LOG 2>&1
-ERROR=$?
-cat $CURL_LOG
-echo
-# egrep 'couldn|error' $CURL_LOG
-exec 6<$CURL_LOG
-while read LINE <&6 ; do
-  if [  `expr "$LINE" : ".*\(couldn't\).*"`  ] ;  then
-       echo 'found an error'
-       ERROR=1
-  fi
-done
-6<&-
 
 if [ ! -s Viabot.data ] ;  then
   echo ; echo 'Viabot.data' is blank
+  ERROR=2
 else
   cat 'Viabot.data'
 fi
 if [ $ERROR -ne 0 ] ; then
    exit $ERROR
 fi
+
+CURL_LOG="/tmp/`basename $0`.out.$$"
+echo "waiting for elasticsearch service to become operational"
+while [ ! $STATUS ] ;  do
+  STATUS="`service elasticsearch status |  grep STARTED`"
+  echo $STATUS
+  netstat -pa | grep 9200
+  lsof -i :9200
+  sleep 3
+done
+
+curl -XDELETE "http://localhost:9200/ugf/viabot/_query?q=name:*" > $CURL_LOG 2>&1
+ERROR=$?
+cat $CURL_LOG
+echo
+
+exec 6<$CURL_LOG
+while read LINE <&6 ; do
+  if [ `expr "$LINE" : ".*\(couldn't\).*"` ] ;  then
+     echo 'found an error'
+     ERROR=1
+  fi
+  if [ `expr "$LINE" : ".*\(someothererror't\).*"` ] ;  then
+     echo 'found another error'
+     ERROR=1
+  fidone
+6<&-
+
 cat Viabot.data | while read person
 do
     # record = personID + "|" + firstName + "|" + lastName
