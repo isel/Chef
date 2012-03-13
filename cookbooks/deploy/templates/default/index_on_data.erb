@@ -6,9 +6,10 @@
 ## Input an integer
 
 
-if [ "$1" == "new" ]
+if [ "-$1" = "-new" ]
 then
     ./getTenantData > Viabot.data
+
 fi
 ERROR=0
 CURL_LOG="/tmp/`basename $0`.out.$$"
@@ -16,18 +17,30 @@ curl -XDELETE "http://localhost:9200/ugf/viabot/_query?q=name:*" > $CURL_LOG 2>&
 if  [ $? ]
 then
   ERROR=$?
-  echo "Deferring error exit $ERROR"
+  echo "Defering error exit $ERROR"
 fi
+echo $CURL_LOG
+echo '---'
 cat $CURL_LOG
-egrep 'error|couldn' $CURL_LOG  > /dev/null 2>&1
-STATUS=$?
-if  [ !$STATUS ]
-then
-  ERROR=7
-  echo "Deferring error exit $ERROR"
-fi
+echo
+echo '---'
+egrep 'couldn|error' $CURL_LOG
+exec 6<$CURL_LOG
+while read LINE <&6 ; do
+echo "Processing $LINE"
+    if [  `expr "$LINE" : ".*\(error\).*"`  ] ;  then
+        echo 'found an error' 
+ERROR=1
+    fi
+    if [  `expr "$LINE" : ".*\(couldn't\).*"`  ] ;  then
+        echo 'found an error' 
+ERROR=1
+    fi
+done
+6<&-
+
 if [ ! -s Viabot.data ] ;  then
-  echo 'Viabot.data' is blank
+  echo ; echo 'Viabot.data' is blank
 else
   cat 'Viabot.data'
 fi
@@ -68,3 +81,4 @@ done
 if [ $ERROR -ne 0 ] ; then
    exit $ERROR
 fi
+
