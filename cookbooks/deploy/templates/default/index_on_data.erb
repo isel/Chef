@@ -13,7 +13,10 @@ then
 fi
 ERROR=0
 CURL_LOG="/tmp/`basename $0`.out.$$"
+echo "Checking if port 9200 is listened"
+netstat -pa | grep 9200
 lsof -i :9200
+echo '---'
 echo curl -XDELETE "http://localhost:9200/ugf/viabot/_query?q=name:*"
 curl -XDELETE "http://localhost:9200/ugf/viabot/_query?q=name:*" > $CURL_LOG 2>&1
 if  [ $? ]
