@@ -5,7 +5,6 @@
 
 ## Input an integer
 
-
 if [ "-$1" = "-new" ]
 then
     ./getTenantData > Viabot.data
@@ -22,7 +21,8 @@ fi
 
 CURL_LOG="/tmp/`basename $0`.out.$$"
 echo "waiting for elasticsearch service to become operational"
-while [ ! $STATUS ] ;  do
+STATUS=
+while [ "-$STATUS" = "-" ] ;  do
   STATUS="`service elasticsearch status |  grep STARTED`"
   echo $STATUS
   netstat -pa | grep 9200
@@ -44,7 +44,8 @@ while read LINE <&6 ; do
   if [ `expr "$LINE" : ".*\(someothererror't\).*"` ] ;  then
      echo 'found another error'
      ERROR=1
-  fidone
+  fi
+done
 6<&-
 
 cat Viabot.data | while read person
@@ -76,4 +77,3 @@ done
 if [ $ERROR -ne 0 ] ; then
    exit $ERROR
 fi
-
