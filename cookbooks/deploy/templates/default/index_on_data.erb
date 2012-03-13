@@ -13,6 +13,8 @@ then
 fi
 ERROR=0
 CURL_LOG="/tmp/`basename $0`.out.$$"
+lsof -i :9200
+echo curl -XDELETE "http://localhost:9200/ugf/viabot/_query?q=name:*"
 curl -XDELETE "http://localhost:9200/ugf/viabot/_query?q=name:*" > $CURL_LOG 2>&1
 if  [ $? ]
 then
