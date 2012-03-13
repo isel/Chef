@@ -19,9 +19,6 @@ if [ ! -s Viabot.data ] ;  then
 else
   cat 'Viabot.data'
 fi
-if [ $ERROR -ne 0 ] ; then
-   exit $ERROR
-fi
 
 CURL_LOG="/tmp/`basename $0`.out.$$"
 echo "waiting for elasticsearch service to become operational"
