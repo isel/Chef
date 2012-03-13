@@ -26,14 +26,9 @@ curl -XDELETE "http://localhost:9200/ugf/viabot/_query?q=name:*" > $CURL_LOG 2>&
 ERROR=$?
 cat $CURL_LOG
 echo
-egrep 'couldn|error' $CURL_LOG
+# egrep 'couldn|error' $CURL_LOG
 exec 6<$CURL_LOG
 while read LINE <&6 ; do
-  echo "Processing $LINE"
-  if [  `expr "$LINE" : ".*\(error\).*"`  ] ;  then
-    #   echo 'found an error'
-    #   ERROR=1
-  fi
   if [  `expr "$LINE" : ".*\(couldn't\).*"`  ] ;  then
        echo 'found an error'
        ERROR=1
