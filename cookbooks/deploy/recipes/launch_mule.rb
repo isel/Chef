@@ -1,4 +1,5 @@
 # source does not seem to work, removed
+@ip = node['ipaddress']
 
 bash 'launch mule' do
       code <<-EOF
@@ -13,6 +14,6 @@ bash 'launch mule' do
       if [ -x mule ] ; then
         ./mule
       fi
-      wget -O /dev/null http://#{node['ipaddress']}:8585/mmc
+      wget -O /dev/null http://@ip:8585/mmc
   EOF
 end
