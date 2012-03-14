@@ -19,6 +19,7 @@ bash 'download ActiveMQ' do
   fi
 EOF
 end
+
 bash 'launch ActiveMQ' do
   code <<-EOF
   pushd /opt/activemq/bin
