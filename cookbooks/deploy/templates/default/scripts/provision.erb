@@ -27,7 +27,7 @@ FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Workflow.Activities.Compass', 
 FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Provisioning/Legacy/.', '/Provision/bin')
 
 Helpers::change_app_setting(config, "ConnectionString", "Server=<%= @db_server %>:<%= @sarmus_port %>")
-Helpers::change_app_setting(config, "EntityFramework.ModelFolder", "C:\\Provision\\Models\\")
+Helpers::change_app_setting(config, "EntityFramework.ModelFolder", "C:\\Provision\\Models\\,C:\\Provision\\Models\\Tests\\")
 Helpers::change_app_setting(config, "ImportFlowRoot", "C:\\Provision\\Workflow.Activities.Compass\\")
 
 IOUtils::replace_text_in_file(config, '<\/hosts>', '</hosts><securityProperties mode="None" protectionLevel="None"/>')
