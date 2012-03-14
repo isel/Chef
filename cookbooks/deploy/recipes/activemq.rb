@@ -5,7 +5,7 @@ version = node[:deploy][:activemq_version]
 
 bash 'download ActiveMQ' do
   code <<-EOF
-  mkdir ~/Installs
+  mkdir -p ~/Installs
   cd ~/Installs
   wget --quiet http://apache.mirrors.redwire.net/activemq/apache-activemq/#{version}/apache-activemq-#{version}-bin.tar.gz
   tar xf apache-activemq-#{version}-bin.tar.gz
