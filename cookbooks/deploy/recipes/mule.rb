@@ -20,11 +20,12 @@ end
 # need to do it once
 bash 'add setting to system profile' do
     code <<-EOCODE
-  echo export MULE_HOME=/opt/mule>>/etc/bash.bashrc
-  echo export JAVA_HOME=/usr/lib/jvm/java-6-openjdk>>/etc/bash.bashrc
-  echo export MAVEN_HOME=/usr/share/maven2>>/etc/bash.bashrc
-  echo export MAVEN_OPTS=\'-Xmx512m -XX:MaxPermSize=256m\'>>/etc/bash.bashrc
-  echo export PATH=\$PATH:\$MULE_HOME/bin:\$JAVA_HOME/bin>>/etc/bash.bashrc
+  cat<<EOF>>/etc/bash.bashrc
+  export MULE_HOME=/opt/mule
+  export JAVA_HOME=/usr/lib/jvm/java-6-openjdk
+  export MAVEN_HOME=/usr/share/maven2
+  export MAVEN_OPTS=\'-Xmx512m -XX:MaxPermSize=256m\'
+  export PATH=\$PATH:\$MULE_HOME/bin:\$JAVA_HOME/bin
 EOF
 EOCODE
 end
