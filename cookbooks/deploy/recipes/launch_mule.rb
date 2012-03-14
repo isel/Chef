@@ -3,6 +3,7 @@
 bash 'launch mule' do
       code <<-EOF
       cd /opt/mule/bin
+      export LANG=en_US.UTF-8
       export MULE_HOME=/opt/mule
       export JAVA_HOME=/usr/lib/jvm/java-6-openjdk
       export MAVEN_HOME=/usr/share/maven2
@@ -12,6 +13,6 @@ bash 'launch mule' do
       if [ -x mule ] ; then
         ./mule
       fi
-      wget -O /dev/null http://node['ipaddress']:8585/mmc
+      wget -O /dev/null http://#{node['ipaddress']}:8585/mmc
   EOF
 end
