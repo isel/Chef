@@ -6,13 +6,13 @@ version = node[:deploy][:mule_version]
 
 # TODO detect maven
 # maven2 installs java runtime
-bash 'install maven' do
+bash 'install mule prerequisites' do
     code <<-EOF
     mkdir ~/.m2
-    sudo apt-get -y install maven2
+    sudo apt-get -yqq install maven2
     java -version
     mvn  --version
-    sudo apt-get -y install tomcat6
+    sudo apt-get -yqq install tomcat6
   EOF
 end
 # openjdk
