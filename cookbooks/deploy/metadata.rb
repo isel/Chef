@@ -14,6 +14,7 @@ recipe "deploy::appfabric_powershell", "Deploys AppFabric Powershell cmdlets"
 recipe "deploy::appfabric_ensure_is_up", "Ensures AppFabric cache are working"
 recipe "deploy::download_artifacts", "Downloads artifacts"
 recipe "deploy::elastic_search", "Deploys ElasticSearch"
+recipe "deploy::launch_mule.rb", "Launches Mule"
 recipe "deploy::mule", "Deploys Mule ESB"
 recipe "deploy::engine", "Deploys Engine"
 recipe "deploy::foundation_services", "Deploys the foundation rest services"
@@ -151,6 +152,12 @@ attribute "deploy/activemq_version",
   :required => "optional",
   :default => "5.4.3",
   :recipes => ["deploy::activemq"]
+
+attribute "deploy/ulimit_files",
+  :display_name => "setting for log4j",
+  :required => "optional",
+  :default => "8192",
+  :recipes => ["deploy::adjust_ulimit"]
 
 attribute "deploy/revision",
   :display_name => "revision",
