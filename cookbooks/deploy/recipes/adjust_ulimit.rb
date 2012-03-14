@@ -9,8 +9,7 @@ bash 'adjust ulimit settings' do
 
 ULIMIT_FILES=`ulimit -a |  grep 'open files'| awk '{print $NF}'`
 ULIMIT_FILES=`expr 0  + $ULIMIT_FILES`
-if [$ULIMIT_FILES -lt #{ulimit_files}] ; then
-
+if [ $ULIMIT_FILES -lt #{ulimit_files} ] ; then
   cp /etc/security/limits.conf /tmp/security_limits_conf.$$
   ADD_SETTING="nofile #{ulimit_files}"
   sed  -ie 's/\(# End of file\)/$ADD_SETTING\n\1/' /tmp/security_limits_conf.$$

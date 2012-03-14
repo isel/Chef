@@ -52,12 +52,18 @@ end
 # is populate_m2_repo idempotent ? - NO  - subsequent runs still take  3 minute user time
 # one can check for the presence of
 # /root/.m2/org/mule/mule/3.2.1/mule-3.2.1.pom
-
+# 'source' instruction does not have its effect,
+# repeating environment settings.
+# removed    . /etc/bash.bashrc
 if !File.exists?('/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom')
 bash 'populate maven repositories' do
     code <<-EOF
     cd /opt/mule/bin
-    . /etc/bash.bashrc
+    export MULE_HOME=/opt/mule
+    export JAVA_HOME=/usr/lib/jvm/java-6-openjdk
+    export MAVEN_HOME=/usr/share/maven2
+    export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
+    export PATH=\$PATH:\$MULE_HOME/bin:\$JAVA_HOME/bin
     if [ -x populate_m2_repo ] ; then
       ./populate_m2_repo ~/.m2
     fi
