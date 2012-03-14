@@ -296,6 +296,18 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/ipaddress": {
+      "display_name": "ipaddress of the host",
+      "required": "required",
+      "recipes": [
+        "deploy::launch_mule"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/activemq_version": {
       "display_name": "activeMQ version",
       "required": "optional",
@@ -445,6 +457,7 @@
     "deploy::appfabric_ensure_is_up": "Ensures AppFabric cache are working",
     "deploy::download_artifacts": "Downloads artifacts",
     "deploy::elastic_search": "Deploys ElasticSearch",
+    "deploy::launch_activemq": "Launches ActiveMQ",
     "deploy::launch_mule": "Launches Mule",
     "deploy::mule": "Deploys Mule ESB",
     "deploy::engine": "Deploys Engine",
