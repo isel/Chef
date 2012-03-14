@@ -1,10 +1,10 @@
-ruby_scripts_dir = node['ruby_scripts_dir']
-deploy_scripts_dir = node['deploy_scripts_dir']
+# ruby_scripts_dir = node['ruby_scripts_dir']
+# deploy_scripts_dir = node['deploy_scripts_dir']
 
 # Adjust ulimit settings
 ulimit_files=8192
-ulimit_files = node[:deploy][:ulimit_files]
-bash 'download ActiveMQ' do
+# ulimit_files = node[:deploy][:ulimit_files]
+bash 'adjust ulimit settings' do
   code <<-EOF
 
 ULIMIT_FILES=`ulimit -a |  grep 'open files'| awk '{print $NF}'`
