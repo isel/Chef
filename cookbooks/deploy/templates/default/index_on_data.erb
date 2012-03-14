@@ -5,45 +5,65 @@
 
 ## Input an integer
 
-
+SARMUS_LOG=/mnt/logs/sarmus.log
 if [ "-$1" = "-new" ]
 then
+# temporary injection to help triaging elasticsearch issue
+SARMUS_LOG_LINES_BEFORE=`wc $SARMUS_LOG | awk '{print $1}'`
     ./getTenantData > Viabot.data
-
+SARMUS_LOG_LINES_AFTER=`wc $SARMUS_LOG | awk '{print $1}'`
+echo SARMUS_LOG_LINES_AFTER=$SARMUS_LOG_LINES_AFTER
+echo SARMUS_LOG_LINES_BEFORE=$SARMUS_LOG_LINES_BEFORE
+SARMUS_LOG_LINES_APPENDED=0
+SARMUS_LOG_LINES_APPENDED=`expr $SARMUS_LOG_LINES_AFTER - $SARMUS_LOG_LINES_BEFORE`
+if [ $SARMUS_LOG_LINES_APPENDED -gt 0 ] ; then
+echo "Last log from sarmus: $SARMUS_LOG"
+tail -$SARMUS_LOG_LINES_APPENDED  $SARMUS_LOG
 fi
+fi
+
 ERROR=0
+
+if [ ! -s Viabot.data ] ;  then
+  echo ; echo 'Viabot.data' is blank
+  ERROR=2
+else
+  cat 'Viabot.data'
+fi
+
+if [ $ERROR -ne 0 ] ; then
+   exit $ERROR
+fi
+
 CURL_LOG="/tmp/`basename $0`.out.$$"
 echo "waiting for elasticsearch service to become operational"
-while [ ! $STATUS ] ;  do
-STATUS="`service elasticsearch status |  grep STARTED`"
-echo $STATUS
-netstat -pa | grep 9200
-lsof -i :9200
-sleep 3
+STATUS=
+while [ "-$STATUS" = "-" ] ;  do
+  STATUS="`service elasticsearch status |  grep STARTED`"
+  echo $STATUS
+  netstat -pa | grep :9200
+  lsof -i :9200
+  sleep 3
 done
-echo curl -XDELETE "http://localhost:9200/ugf/viabot/_query?q=name:*"
+
 curl -XDELETE "http://localhost:9200/ugf/viabot/_query?q=name:*" > $CURL_LOG 2>&1
 ERROR=$?
 cat $CURL_LOG
 echo
-# egrep 'couldn|error' $CURL_LOG
+
 exec 6<$CURL_LOG
 while read LINE <&6 ; do
-  if [  `expr "$LINE" : ".*\(couldn't\).*"`  ] ;  then
-       echo 'found an error'
-       ERROR=1
+  if [ `expr "$LINE" : ".*\(couldn't\).*"` ] ;  then
+     echo 'found an error'
+     ERROR=1
+  fi
+  if [ `expr "$LINE" : ".*\(someothererror't\).*"` ] ;  then
+     echo 'found another error'
+     ERROR=1
   fi
 done
 6<&-
 
-if [ ! -s Viabot.data ] ;  then
-  echo ; echo 'Viabot.data' is blank
-else
-  cat 'Viabot.data'
-fi
-if [ $ERROR -ne 0 ] ; then
-   exit $ERROR
-fi
 cat Viabot.data | while read person
 do
     # record = personID + "|" + firstName + "|" + lastName
@@ -73,4 +93,3 @@ done
 if [ $ERROR -ne 0 ] ; then
    exit $ERROR
 fi
-
