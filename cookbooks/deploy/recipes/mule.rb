@@ -25,7 +25,7 @@ bash 'add setting to system profile' do
   export JAVA_HOME=/usr/lib/jvm/java-6-openjdk
   export MAVEN_HOME=/usr/share/maven2
   export MAVEN_OPTS=\'-Xmx512m -XX:MaxPermSize=256m\'
-  export PATH=\$PATH:\$MULE_HOME/bin:\$JAVA_HOME/bin
+  export PATH=\\\$PATH:\\\$MULE_HOME/bin:\\\$JAVA_HOME/bin
 EOF
 EOCODE
 end
@@ -34,10 +34,10 @@ end
 if !File.exists?('/opt/mule/bin')
   bash 'install mule' do
     code <<-EOF
-    mkdir ~/Installs
+    mkdir -p ~/Installs
     cd ~/Installs
     # initial version - upload 200 MB from the web
-    wget http://s3.amazonaws.com/MuleEE/mule-ee-distribution-standalone-mmc-#{version}.tar.gz
+    wget -q http://s3.amazonaws.com/MuleEE/mule-ee-distribution-standalone-mmc-#{version}.tar.gz
     tar xf mule-ee-distribution-standalone-mmc-#{version}.tar.gz
     mkdir /opt/mule
     pushd /opt/mule
