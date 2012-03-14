@@ -3,7 +3,7 @@ deploy_scripts_dir = node['deploy_scripts_dir']
 
 version = node[:deploy][:activemq_version]
 
-bash 'download ActiveMQ' do
+bash 'install ActiveMQ' do
   code <<-EOF
   mkdir -p ~/Installs
   cd ~/Installs
@@ -21,7 +21,7 @@ EOF
 end
 
 bash 'launch ActiveMQ' do
-  code <<-EOF
+  code <<-'EOF'
   pushd /opt/activemq/bin
   /usr/bin/nohup ./activemq start > /var/log/smlog 2>&1 &
   netstat -an | grep :61616
