@@ -21,3 +21,4 @@ bash 'launch ActiveMQ' do
   nohup ./activemq start > /var/log/smlog 2>&1 &
   netstat -an | grep :61616
 EOF
+end
