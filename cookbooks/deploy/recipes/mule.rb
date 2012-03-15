@@ -111,8 +111,11 @@ if !File.exists?("/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom")
     export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
     export PATH=\$PATH:\$MULE_HOME/bin:\$JAVA_HOME/bin
     if [ -x populate_m2_repo ] ; then
-      ./populate_m2_repo ~/.m2
+      ./populate_m2_repo ~/.m2 | tail /tmp/populate_m2_repo.log.$$
     fi
+    # suppress the exit status, need to debug
+    tail -2 /tmp/populate_m2_repo.log.$$
+    exit 0
     EOF
   end
   log 'maven repositories successfully populated.'
