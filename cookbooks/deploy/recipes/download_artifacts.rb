@@ -7,7 +7,8 @@ template "#{ruby_scripts_dir}/download_artifacts.rb" do
     :revision => node[:deploy][:revision],
     :aws_access_key_id => node[:deploy][:aws_access_key_id],
     :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
-    :artifacts => node[:deploy][:artifacts]
+    :artifacts => node[:deploy][:artifacts],
+    :s3_folder => ''
   )
 end
 

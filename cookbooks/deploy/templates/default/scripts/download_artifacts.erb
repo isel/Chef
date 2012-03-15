@@ -2,7 +2,8 @@ require 'fog'
 require 'fileutils'
 
 revision = '<%= @revision %>'
-puts "pulling build scripts from revision: #{revision}"
+s3_folder = '<%= @s3_folder %>'
+puts "pulling build scripts from s3_folder: #{s3_folder} and revision: #{revision}"
 
 storage = Fog::Storage.new(
   :provider => 'AWS',
@@ -31,10 +32,12 @@ end
 Dir.mkdir(deploy_folder)
 missing_files = []
 
+s3_path = s3_folder == '' ? "GlobalIncite/#{revision}" : "GlobalIncite/#{s3_folder}/#{revision}"
+
 install_files.each do |f|
-    file = s3_files.get("GlobalIncite/#{revision}/#{f}.zip")
+    file = s3_files.get("#{s3_path}/#{f}.zip")
     if file.nil?
-        missing_files << "GlobalIncite/#{revision}/#{f}.zip"
+        missing_files << "#{s3_path}/#{f}.zip"
     else
         File.open("#{deploy_folder}/#{f}.zip", 'wb') do |local_file|
           local_file.write(file.body)
