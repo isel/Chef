@@ -9,7 +9,7 @@ bash 'install ActiveMQ' do
   cd ~/Installs
   wget --quiet http://apache.mirrors.redwire.net/activemq/apache-activemq/#{version}/apache-activemq-#{version}-bin.tar.gz
   tar xf apache-activemq-#{version}-bin.tar.gz
-  mkdir /opt/activemq
+  mkdir -p /opt/activemq
   pushd /opt/activemq
   cp -R ~/Installs/apache-activemq-#{version}/* .
   chmod -R 777 .
