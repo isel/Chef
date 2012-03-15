@@ -326,7 +326,8 @@
       "required": "optional",
       "default": "8192",
       "recipes": [
-        "deploy::adjust_ulimit"
+        "deploy::adjust_ulimit",
+        "deploy:launch_mule"
       ],
       "choice": [
 
