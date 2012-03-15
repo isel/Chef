@@ -283,6 +283,58 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/mule_version": {
+      "display_name": "mule version",
+      "required": "optional",
+      "default": "3.2.1",
+      "recipes": [
+        "deploy::mule"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/ipaddress": {
+      "display_name": "ipaddress of the host",
+      "required": "required",
+      "recipes": [
+        "deploy::launch_mule"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/activemq_version": {
+      "display_name": "activeMQ version",
+      "required": "optional",
+      "default": "5.4.3",
+      "recipes": [
+        "deploy::activemq"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/ulimit_files": {
+      "display_name": "setting for log4j",
+      "required": "optional",
+      "default": "8192",
+      "recipes": [
+        "deploy::adjust_ulimit",
+        "deploy:launch_mule"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/revision": {
       "display_name": "revision",
       "required": "required",
@@ -399,11 +451,16 @@
   "groupings": {
   },
   "recipes": {
+    "deploy::activemq": "Deploys ActiveMQ",
+    "deploy::adjust_ulimit": "Adjusts open files limit for log4j",
     "deploy::appfabric_configure": "Configures AppFabric",
     "deploy::appfabric_powershell": "Deploys AppFabric Powershell cmdlets",
     "deploy::appfabric_ensure_is_up": "Ensures AppFabric cache are working",
     "deploy::download_artifacts": "Downloads artifacts",
     "deploy::elastic_search": "Deploys ElasticSearch",
+    "deploy::launch_activemq": "Launches ActiveMQ",
+    "deploy::launch_mule": "Launches Mule",
+    "deploy::mule": "Deploys Mule ESB",
     "deploy::engine": "Deploys Engine",
     "deploy::foundation_services": "Deploys the foundation rest services",
     "deploy::jspr": "Deploys the web server websites",

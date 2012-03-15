@@ -7,11 +7,16 @@ version          "0.0.1"
 
 supports "ubuntu"
 
+recipe "deploy::activemq", "Deploys ActiveMQ"
+recipe "deploy::adjust_ulimit", "Adjusts open files limit for log4j"
 recipe "deploy::appfabric_configure", "Configures AppFabric"
 recipe "deploy::appfabric_powershell", "Deploys AppFabric Powershell cmdlets"
 recipe "deploy::appfabric_ensure_is_up", "Ensures AppFabric cache are working"
 recipe "deploy::download_artifacts", "Downloads artifacts"
 recipe "deploy::elastic_search", "Deploys ElasticSearch"
+recipe "deploy::launch_activemq", "Launches ActiveMQ"
+recipe "deploy::launch_mule",  "Launches Mule"
+recipe "deploy::mule", "Deploys Mule ESB"
 recipe "deploy::engine", "Deploys Engine"
 recipe "deploy::foundation_services", "Deploys the foundation rest services"
 recipe "deploy::jspr", "Deploys the web server websites"
@@ -136,6 +141,30 @@ attribute "deploy/mongo_version",
   :required => "optional",
   :default => "2.0.1",
   :recipes => ["deploy::mongo"]
+
+attribute "deploy/mule_version",
+  :display_name => "mule version",
+  :required => "optional",
+  :default => "3.2.1",
+  :recipes => ["deploy::mule"]
+
+attribute "deploy/ipaddress",
+  :display_name => "ipaddress of the host",
+  :required => "required",
+  :recipes => ["deploy::launch_mule"]
+
+
+attribute "deploy/activemq_version",
+  :display_name => "activeMQ version",
+  :required => "optional",
+  :default => "5.4.3",
+  :recipes => ["deploy::activemq"]
+
+attribute "deploy/ulimit_files",
+  :display_name => "setting for log4j",
+  :required => "optional",
+  :default => "8192",
+  :recipes => ["deploy::adjust_ulimit", "deploy:launch_mule"]
 
 attribute "deploy/revision",
   :display_name => "revision",
