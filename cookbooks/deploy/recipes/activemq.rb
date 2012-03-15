@@ -18,6 +18,5 @@ bash 'install ActiveMQ' do
     exit 1
   fi
 EOF
-  log 'activemq successgully launched'
 end
-
+  log 'activemq successgully launched'

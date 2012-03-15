@@ -94,6 +94,7 @@ if !File.exists?("/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom")
 bash 'populate maven repositories' do
   code <<-EOF
   cd /opt/mule/bin
+  # no op
   export LANG=en_US.UTF-8
   export MULE_HOME=/opt/mule
   export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
