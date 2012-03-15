@@ -7,6 +7,7 @@ version = node[:deploy][:mule_version]
 # may need to remove sun java6
 bash 'install mule prerequisites' do
     code <<-EOF
+    export DEBIAN_FRONTEND=noninteractive
     apt-get -yqq install openjdk-6-jre
     java -version
     mkdir -p ~/.m2
@@ -84,6 +85,7 @@ end
 else
   log 'Mule already installed.'
 end
+
 # source bash.bashrc does not seem to work yet.
 # may need to run the resolvelink.sh
 # script to trouble shoot multiple java and log4j
@@ -91,22 +93,28 @@ end
 log "Checking project [/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom]."
 
 if !File.exists?("/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom")
-bash 'populate maven repositories' do
-  code <<-EOF
-  cd /opt/mule/bin
-  export LANG=en_US.UTF-8
-  export MULE_HOME=/opt/mule
-  export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
-  export MAVEN_HOME=/usr/share/maven2
-  export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
-  export PATH=\$PATH:\$MULE_HOME/bin:\$JAVA_HOME/bin
-  # run maven in quiet mode
-  sed -i 's/-B/-B -q/' populate_m2_repo.groovy
-  if [ -x populate_m2_repo ] ; then
-    ./populate_m2_repo ~/.m2
-  fi
-EOF
-end
+
+  bash 'run maven in quiet mode' do
+    code <<-EOF
+    cd /opt/mule/bin
+    sed -i 's/-B/-B -q/' populate_m2_repo.groovy
+    EOF
+  end
+
+  bash 'populate maven repositories' do
+    code <<-EOF
+    cd /opt/mule/bin
+    export LANG=en_US.UTF-8
+    export MULE_HOME=/opt/mule
+    export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
+    export MAVEN_HOME=/usr/share/maven2
+    export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
+    export PATH=\$PATH:\$MULE_HOME/bin:\$JAVA_HOME/bin
+    if [ -x populate_m2_repo ] ; then
+      ./populate_m2_repo ~/.m2
+    fi
+    EOF
+  end
   log 'maven repositories successfully populated.'
 else
   log 'maven repositories already populated.'
