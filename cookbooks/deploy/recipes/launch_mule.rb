@@ -4,6 +4,7 @@ ulimit_files = node[:deploy][:ulimit_files]
 bash 'launch mule' do
       code <<-EOF
       cd /opt/mule/bin
+      source /etc/bash.bashrc
       export LANG=en_US.UTF-8
       export MULE_HOME=/opt/mule
       export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
