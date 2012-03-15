@@ -100,6 +100,8 @@ bash 'populate maven repositories' do
   export MAVEN_HOME=/usr/share/maven2
   export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
   export PATH=\$PATH:\$MULE_HOME/bin:\$JAVA_HOME/bin
+  # run maven in quiet mode
+  sed -i 's/-B/-B -q/' populate_m2_repo.groovy
   if [ -x populate_m2_repo ] ; then
     ./populate_m2_repo ~/.m2
   fi
