@@ -11,6 +11,8 @@ template "#{ruby_scripts_dir}/smoke_tests_local_messaging.rb" do
   )
 end
 
-powershell "Running local smoke tests" do
-  source("rake --rakefile #{ruby_scripts_dir}/smoke_tests_local_messaging.rb")
+bash 'Running local smoke tests' do
+   code <<-EOF
+    rake --rakefile #{ruby_scripts_dir}/smoke_tests_local_messaging.rb")
+  EOF
 end
