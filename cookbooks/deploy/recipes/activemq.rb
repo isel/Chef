@@ -11,7 +11,7 @@ bash 'install ActiveMQ' do
   tar xf apache-activemq-#{version}-bin.tar.gz
   mkdir /opt/activemq
   pushd /opt/activemq
-  cp -r ~/Installs/apache-activemq-#{version}/* .
+  cp -R ~/Installs/apache-activemq-#{version}/* .
   chmod -R 777 .
   if [ ! -f /opt/activemq/bin/activemq ]
   then

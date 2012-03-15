@@ -6,13 +6,18 @@ version = node[:deploy][:mule_version]
 
 # TODO detect maven
 # maven2 installs java runtime
+# may need to remove sun java6
+# due to errors
+# https://jira.appcelerator.org/browse/APSTUD-3609
+# http://stackoverflow.com/questions/1359708/problem-using-log4j-with-axis2
 bash 'install mule prerequisites' do
     code <<-EOF
-    mkdir ~/.m2
-    sudo apt-get -yqq install maven2
+    apt-get -yqq install openjdk-6-jre
     java -version
+    mkdir ~/.m2
+    apt-get -yqq install maven2
     mvn  --version
-    sudo apt-get -yqq install tomcat6
+    apt-get -yqq install tomcat6
   EOF
 end
 # openjdk
@@ -22,7 +27,7 @@ bash 'add setting to system profile' do
     code <<-EOCODE
   cat<<EOF>>/etc/bash.bashrc
   export MULE_HOME=/opt/mule
-  export JAVA_HOME=/usr/lib/jvm/java-6-openjdk
+  export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
   export MAVEN_HOME=/usr/share/maven2
   export MAVEN_OPTS=\'-Xmx512m -XX:MaxPermSize=256m\'
   export PATH=\\\$PATH:\\\$MULE_HOME/bin:\\\$JAVA_HOME/bin
@@ -41,27 +46,24 @@ if !File.exists?('/opt/mule/bin')
     tar xf mule-ee-distribution-standalone-mmc-#{version}.tar.gz
     mkdir /opt/mule
     pushd /opt/mule
-    cp -r ~/Installs/mule-enterprise-standalone-#{version}/* .
+    cp -R ~/Installs/mule-enterprise-standalone-#{version}/* .
     chmod -R 777 .
   EOF
 end
 else
   log 'Mule already installed.'
 end
-# source bash.bashrc
-# is populate_m2_repo idempotent ? - NO  - subsequent runs still take  3 minute user time
-# one can check for the presence of
-# /root/.m2/org/mule/mule/3.2.1/mule-3.2.1.pom
-# 'source' instruction does not have its effect,
-# repeating environment settings.
-# removed    . /etc/bash.bashrc
+# source bash.bashrc does not seem to work yet.
+# may need to run the resolvelink.sh
+# script to trouble shoot multiple java and log4j
+#
 if !File.exists?('/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom')
 bash 'populate maven repositories' do
     code <<-EOF
     cd /opt/mule/bin
     export LANG=en_US.UTF-8
     export MULE_HOME=/opt/mule
-    export JAVA_HOME=/usr/lib/jvm/java-6-openjdk
+    export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
     export MAVEN_HOME=/usr/share/maven2
     export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
     export PATH=\$PATH:\$MULE_HOME/bin:\$JAVA_HOME/bin

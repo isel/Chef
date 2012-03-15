@@ -164,7 +164,7 @@ attribute "deploy/ulimit_files",
   :display_name => "setting for log4j",
   :required => "optional",
   :default => "8192",
-  :recipes => ["deploy::adjust_ulimit"]
+  :recipes => ["deploy::adjust_ulimit", "deploy:launch_mule"]
 
 attribute "deploy/revision",
   :display_name => "revision",
