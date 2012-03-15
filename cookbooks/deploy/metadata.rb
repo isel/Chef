@@ -13,6 +13,8 @@ recipe "deploy::appfabric_configure", "Configures AppFabric"
 recipe "deploy::appfabric_powershell", "Deploys AppFabric Powershell cmdlets"
 recipe "deploy::appfabric_ensure_is_up", "Ensures AppFabric cache are working"
 recipe "deploy::download_artifacts", "Downloads artifacts"
+recipe "deploy::download_binaries", "Downloads binaries"
+recipe "deploy::download_pims", "Downloads pims"
 recipe "deploy::elastic_search", "Deploys ElasticSearch"
 recipe "deploy::launch_activemq", "Launches ActiveMQ"
 recipe "deploy::launch_mule",  "Launches Mule"
@@ -90,6 +92,16 @@ attribute "deploy/aws_secret_access_key",
   :required => "required",
   :recipes => ["deploy::download_artifacts", "deploy::elastic_search"]
 
+attribute "deploy/binaries_artifacts",
+  :display_name => "binaries artifacts",
+  :required => "required",
+  :recipes => ["deploy::download_binaries"]
+
+attribute "deploy/binaries_revision",
+  :display_name => "binaries revision",
+  :required => "required",
+  :recipes => ["deploy::download_binaries"]
+
 attribute "deploy/cache_server",
   :display_name => "cache server",
   :required => "required",
@@ -148,6 +160,16 @@ attribute "deploy/mule_version",
   :required => "optional",
   :default => "3.2.1",
   :recipes => ["deploy::mule"]
+
+attribute "deploy/pims_artifacts",
+  :display_name => "pims artifacts",
+  :required => "required",
+  :recipes => ["deploy::download_pims"]
+
+attribute "deploy/pims_revision",
+  :display_name => "pims revision",
+  :required => "required",
+  :recipes => ["deploy::download_pims"]
 
 attribute "deploy/ipaddress",
   :display_name => "ipaddress of the host",
