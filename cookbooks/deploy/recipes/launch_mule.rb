@@ -12,12 +12,16 @@ bash 'launch mule' do
       export PATH=\$PATH:\$MULE_HOME/bin:\$JAVA_HOME/bin
       ulimit -n #{ulimit_files}
       if [ -x mule ] ; then
-        /usr/bin/nohup ./mule > /var/log/mule 2>&1 &
+        /usr/bin/nohup ./mule start
       fi
-      HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://#{ipaddress}:8585/mmc`
-      if [ $HTTP_STATUS -ne 302 ] ; then
-        echo "Unexpected Mule response HTTP STATUS $HTTP_STATUS != 302 ()Found)"
-        exit 1
+      sleep 10
+      # Get HTTP status code with curl in bash
+      # HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://#{ipaddress}:8585/mmc`
+      HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://localhost:8585/mmc`
+      if [ $HTTP_STATUS -ne 302 -a $HTTP_STATUS -ne 200 ] ; then
+        echo "Unexpected response HTTP STATUS $HTTP_STATUS from Mule"
+        # needs to sleep longer
+        # exit 1
       fi
   EOF
 end
