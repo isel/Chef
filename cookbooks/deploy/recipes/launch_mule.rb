@@ -14,7 +14,7 @@ bash 'launch mule' do
       if [ -x mule ] ; then
         /usr/bin/nohup ./mule start
       fi
-      sleep 10
+      sleep 120
       # Get HTTP status code with curl in bash
       # HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://#{ipaddress}:8585/mmc`
       HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://localhost:8585/mmc`
