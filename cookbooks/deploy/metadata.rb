@@ -29,6 +29,7 @@ recipe "deploy::smoke_tests_local_app", "Runs local app server smoke tests"
 recipe "deploy::smoke_tests_local_cache", "Runs local cache server smoke tests"
 recipe "deploy::smoke_tests_local_db", "Runs local db server smoke tests"
 recipe "deploy::smoke_tests_local_engine", "Runs local engine server smoke tests"
+recipe "deploy::smoke_tests_local_messaging", "Runs local messaging server smoke tests"
 recipe "deploy::smoke_tests_local_web", "Runs local web server smoke tests"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
@@ -153,12 +154,23 @@ attribute "deploy/ipaddress",
   :required => "required",
   :recipes => ["deploy::launch_mule"]
 
-
 attribute "deploy/activemq_version",
   :display_name => "activeMQ version",
   :required => "optional",
   :default => "5.4.3",
   :recipes => ["deploy::activemq"]
+
+attribute "deploy/activemq_port",
+  :display_name => "activemq port",
+  :required => "optional",
+  :default => "61616",
+  :recipes => ["deploy::activemq", "deploy::smoke_tests_local_messaging"]
+
+attribute "deploy/mule_port",
+  :display_name => "mule port",
+  :required => "optional",
+  :default => "8585",
+  :recipes => ["deploy::mule", "deploy::launch_mule", "deploy::smoke_tests_local_messaging"]
 
 attribute "deploy/ulimit_files",
   :display_name => "setting for log4j",
