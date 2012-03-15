@@ -5,12 +5,6 @@ bash 'launch mule' do
       code <<-EOF
       cd /opt/mule/bin
       source /etc/bash.bashrc
-      export LANG=en_US.UTF-8
-      export MULE_HOME=/opt/mule
-      export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
-      export MAVEN_HOME=/usr/share/maven2
-      export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
-      export PATH=\$PATH:\$MULE_HOME/bin:\$JAVA_HOME/bin
       ulimit -n #{ulimit_files}
       if [ -x mule ] ; then
         /usr/bin/nohup ./mule > /var/log/mule 2>&1 &
@@ -21,5 +15,5 @@ bash 'launch mule' do
         exit 1
       fi
   EOF
-  log 'mule successfully launched'
 end
+log 'mule successfully launched'

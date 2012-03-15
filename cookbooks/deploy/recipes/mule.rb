@@ -42,7 +42,7 @@ export MULE_HOME=/opt/mule
 export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
 export MAVEN_HOME=/usr/share/maven2
 export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
-export PATH=\$PATH:\$MULE_HOME/bin:\$JAVA_HOME/bin
+export PATH=$PATH:$MULE_HOME/bin:$JAVA_HOME/bin
 EOF
 
 special_chars =  %r{
@@ -94,13 +94,7 @@ if !File.exists?("/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom")
 bash 'populate maven repositories' do
   code <<-EOF
   cd /opt/mule/bin
-  # no op
-  export LANG=en_US.UTF-8
-  export MULE_HOME=/opt/mule
-  export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
-  export MAVEN_HOME=/usr/share/maven2
-  export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
-  export PATH=\$PATH:\$MULE_HOME/bin:\$JAVA_HOME/bin
+  . /etc/bash.bashrc
   if [ -x populate_m2_repo ] ; then
     ./populate_m2_repo ~/.m2
   fi
