@@ -63,7 +63,7 @@ File.open(local_filename, 'r+') do |f|
 end
 end
 
-log 'bash profile  updated.'
+log 'bash profile updated.'
 
 # NOTE: mule is 180MB
 if !File.exists?('/opt/mule/bin')
@@ -79,8 +79,8 @@ if !File.exists?('/opt/mule/bin')
     cp -R ~/Installs/mule-enterprise-standalone-#{version}/* .
     chmod -R 777 .
   EOF
-  log 'Mule service is installed'
 end
+  log 'Mule service is installed'
 else
   log 'Mule already installed.'
 end
@@ -105,6 +105,7 @@ bash 'populate maven repositories' do
   fi
 EOF
 end
+  log 'maven repositories successfully populated.'
 else
   log 'maven repositories already populated.'
 end

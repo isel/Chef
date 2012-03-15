@@ -20,6 +20,6 @@ bash 'launch mule' do
         echo "Unexpected Mule response HTTP STATUS $HTTP_STATUS != 302 ()Found)"
         exit 1
       fi
-
   EOF
+  log 'mule successfully launched'
 end
