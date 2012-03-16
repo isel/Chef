@@ -1,6 +1,3 @@
-ruby_scripts_dir = node['ruby_scripts_dir']
-deploy_scripts_dir = node['deploy_scripts_dir']
-
 version = node[:deploy][:activemq_version]
 
 bash 'install ActiveMQ' do
@@ -19,4 +16,4 @@ bash 'install ActiveMQ' do
 EOF
 end
 
-log 'activemq successgully installed'
+log 'activemq successfully installed'

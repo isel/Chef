@@ -1,6 +1,3 @@
-# ruby_scripts_dir = node['ruby_scripts_dir']
-# deploy_scripts_dir = node['deploy_scripts_dir']
-
 # Adjust ulimit settings
 
 ulimit_files = node[:deploy][:ulimit_files]

@@ -1,5 +1,4 @@
-ruby_scripts_dir = node['ruby_scripts_dir']
-deploy_scripts_dir = node['deploy_scripts_dir']
+binaries_directory = node['binaries_directory']
 
 war = 'engine'
 
@@ -13,7 +12,7 @@ bash 'copy war file' do
   code <<-EOF
     pushd /var/lib/tomcat6/webapps
     rm -f -r #{war}
-    cp #{deploy_scripts_dir}/Engine/#{war}.war .
+    cp #{binaries_directory}/Engine/#{war}.war .
     popd
   EOF
 end

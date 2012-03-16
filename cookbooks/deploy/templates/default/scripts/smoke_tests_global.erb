@@ -8,7 +8,7 @@ ENV['db_server'] = '<%= @db_server %>'
 ENV['engine_server'] = '<%= @engine_server %>'
 ENV['sarmus_port'] = '<%= @sarmus_port %>'
 
-smoke_tests_dir = '<%= node['deploy_scripts_dir'] %>/CI/spec/Smoke'
+smoke_tests_dir = '<%= node['binaries_directory'] %>/CI/spec/Smoke'
 
 RSpec::Core::RakeTask.new(:spec) do |t|
   t.pattern = ["#{smoke_tests_dir}/deploy_global_spec.rb", "#{smoke_tests_dir}/deploy_global_<%= @tenant %>_spec.rb"]

@@ -1,1 +1,1 @@
-right_link_tag "data:version=#{node[:deploy][:revision]}"
+right_link_tag "data:version=#{node[:deploy][:binaries_revision]}"

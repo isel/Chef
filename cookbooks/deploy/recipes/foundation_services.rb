@@ -13,11 +13,11 @@ template "#{ruby_scripts_dir}/foundation_services.rb" do
   )
 end
 
-template "#{node['deploy_scripts_dir']}/AppServer/Websites/UltimateSoftware.Gateway.Active/HealthCheck.html" do
+template "#{node['binaries_directory']}/AppServer/Websites/UltimateSoftware.Gateway.Active/HealthCheck.html" do
   source 'health_check.erb'
 end
 
-template "#{node['deploy_scripts_dir']}/AppServer/Websites/UltimateSoftware.Services/HealthCheck.html" do
+template "#{node['binaries_directory']}/AppServer/Websites/UltimateSoftware.Services/HealthCheck.html" do
   source 'health_check.erb'
 end
 

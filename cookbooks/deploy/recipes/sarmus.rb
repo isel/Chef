@@ -1,4 +1,4 @@
-revision = node[:deploy][:revision]
+revision = node[:deploy][:binaries_revision]
 
 script "Deploy sarmus" do
   interpreter "bash"
@@ -15,7 +15,7 @@ script "Deploy sarmus" do
 
     ln -s $sarmus_root/#{revision} $sarmus_root/current
 
-    cp #{node['deploy_scripts_dir']}/sarmus/sarmus $sarmus_root/#{revision}/bin
+    cp #{node['binaries_directory']}/sarmus/sarmus $sarmus_root/#{revision}/bin
     chmod 755 /opt/sarmus/current/bin/sarmus
   EOF
 end

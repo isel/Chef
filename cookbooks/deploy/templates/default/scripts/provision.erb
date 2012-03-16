@@ -1,8 +1,8 @@
 require 'rake'
-require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Helpers/configuration'
-require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Helpers/io_utils'
-require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Helpers/mongo'
-require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Helpers/pim_publisher'
+require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/configuration'
+require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/io_utils'
+require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/mongo'
+require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/pim_publisher'
 
 
 exe = '/Provision/bin/UltimateSoftware.Provisioning.Runner.exe'
@@ -18,13 +18,13 @@ end
 FileUtils.remove_dir('/Provision', true)
 FileUtils.mkdir_p('/Provision')
 
-FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Provision/.', '/Provision/bin')
-FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Models', '/Provision')
-FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Images', '/Provision')
-FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/uiml', '/Provision')
-FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Workflow.Activities.Compass', '/Provision')
+FileUtils.cp_r('<%= node['binaries_directory'] %>/Provision/.', '/Provision/bin')
+FileUtils.cp_r('<%= node['binaries_directory'] %>/Models', '/Provision')
+FileUtils.cp_r('<%= node['binaries_directory'] %>/Images', '/Provision')
+FileUtils.cp_r('<%= node['binaries_directory'] %>/uiml', '/Provision')
+FileUtils.cp_r('<%= node['binaries_directory'] %>/Workflow.Activities.Compass', '/Provision')
 
-FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/Provisioning/Legacy/.', '/Provision/bin')
+FileUtils.cp_r('<%= node['binaries_directory'] %>/Provisioning/Legacy/.', '/Provision/bin')
 
 Helpers::change_app_setting(config, "ConnectionString", "Server=<%= @db_server %>:<%= @sarmus_port %>")
 Helpers::change_app_setting(config, "EntityFramework.ModelFolder", "C:\\Provision\\Models\\,C:\\Provision\\Models\\Tests\\")

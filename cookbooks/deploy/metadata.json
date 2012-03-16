@@ -170,7 +170,9 @@
       "display_name": "binaries revision",
       "required": "required",
       "recipes": [
-        "deploy::download_binaries"
+        "deploy::download_binaries",
+        "deploy::sarmus",
+        "deploy::tag_data_version"
       ],
       "choice": [
 

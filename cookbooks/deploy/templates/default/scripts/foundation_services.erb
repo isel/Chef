@@ -1,15 +1,15 @@
 require 'rake'
-require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Helpers/configuration'
-require '<%= node['deploy_scripts_dir'] %>/CI/BuildScripts/Helpers/io_utils'
+require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/configuration'
+require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/io_utils'
 
 FileList['/Websites/**'].each do |f|
   FileUtils.remove_entry(f, true)
 end
 
-FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/AppServer/Models', '/Websites')
-FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/AppServer/Websites/UltimateSoftware.Gateway.Active/.', '/Websites/ActiveSTS')
-FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services')
-FileUtils.cp_r('<%= node['deploy_scripts_dir'] %>/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services.Help')
+FileUtils.cp_r('<%= node['binaries_directory'] %>/AppServer/Models', '/Websites')
+FileUtils.cp_r('<%= node['binaries_directory'] %>/AppServer/Websites/UltimateSoftware.Gateway.Active/.', '/Websites/ActiveSTS')
+FileUtils.cp_r('<%= node['binaries_directory'] %>/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services')
+FileUtils.cp_r('<%= node['binaries_directory'] %>/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services.Help')
 
 
 configs = FileList['/Websites/**/*.config']

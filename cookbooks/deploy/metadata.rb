@@ -100,7 +100,7 @@ attribute "deploy/binaries_artifacts",
 attribute "deploy/binaries_revision",
   :display_name => "binaries revision",
   :required => "required",
-  :recipes => ["deploy::download_binaries"]
+  :recipes => ["deploy::download_binaries", "deploy::sarmus", "deploy::tag_data_version"]
 
 attribute "deploy/cache_server",
   :display_name => "cache server",

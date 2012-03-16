@@ -41,7 +41,7 @@ bash 'Deploying websites' do
     rm --recursive --force /var/www/JSPR
     rm --recursive --force /var/www/Compass
     rm --recursive --force /var/www/Prios
-    cp -r #{node['deploy_scripts_dir']}/JSPR/* /var/www
+    cp -r #{node['binaries_directory']}/JSPR/* /var/www
     ln -s /var/www/JSPR /var/www/Compass/JSPR
   EOF
 end
@@ -49,13 +49,13 @@ end
 bash 'Deploying prios' do
   code <<-EOF
     mkdir --parents /var/www/Prios/Tests
-    cp -r #{node['deploy_scripts_dir']}/Prios/* /var/www/Prios
-    cp -r #{node['deploy_scripts_dir']}/PriosUIAutomation/* /var/www/Prios/Tests
-    ls #{node['deploy_scripts_dir']}/JSPR/JSPR* > /var/www/Prios/Tests/jspr_version
+    cp -r #{node['binaries_directory']}/Prios/* /var/www/Prios
+    cp -r #{node['binaries_directory']}/PriosUIAutomation/* /var/www/Prios/Tests
+    ls #{node['binaries_directory']}/JSPR/JSPR* > /var/www/Prios/Tests/jspr_version
     version=`cat /var/www/Prios/Tests/jspr_version`
     sed -i "s@/JSPR/ver1/@/JSPR/$version/@" /var/www/Prios/Tests/jstestload.html
   EOF
-  only_if { File.exists?("#{node['deploy_scripts_dir']}/Prios") }
+  only_if { File.exists?("#{node['binaries_directory']}/Prios") }
 end
 
 template '/var/www/Compass/settings.js' do

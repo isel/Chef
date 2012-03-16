@@ -7,7 +7,7 @@ template "#{ruby_scripts_dir}/download_binaries.rb" do
     :aws_access_key_id => node[:deploy][:aws_access_key_id],
     :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
     :artifacts => node[:deploy][:binaries_artifacts],
-    :target_directory => node[:binaries_deploy_scripts_directory],
+    :target_directory => node[:binaries_directory],
     :revision => node[:deploy][:binaries_revision],
     :s3_directory => 'Binaries'
   )

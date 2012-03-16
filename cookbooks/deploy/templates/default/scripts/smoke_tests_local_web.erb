@@ -4,10 +4,10 @@ require 'rspec/core/rake_task'
 ENV['domain.name'] = ''
 ENV['app_server'] = '<%= @app_server %>'
 
-ENV['web_revision'] = FileList['<%= node['deploy_scripts_dir'] %>/JSPR/JSPR/ver*'][0].split('ver')[1] if '<%= @server_type %>' == 'web'
+ENV['web_revision'] = FileList['<%= node['binaries_directory'] %>/JSPR/JSPR/ver*'][0].split('ver')[1] if '<%= @server_type %>' == 'web'
 
 RSpec::Core::RakeTask.new(:spec) do |t|
-  t.pattern = '<%= node['deploy_scripts_dir'] %>/CI/spec/Smoke/deploy_<%= @server_type %>_spec.rb'
+  t.pattern = '<%= node['binaries_directory'] %>/CI/spec/Smoke/deploy_<%= @server_type %>_spec.rb'
 end
 
 task :default => [:spec]

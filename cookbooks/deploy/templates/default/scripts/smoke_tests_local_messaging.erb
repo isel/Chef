@@ -5,7 +5,7 @@ ENV['mule_port'] = '<%= @mule_port %>'
 ENV['activemq_port'] = '<%= @activemq_port %>'
 
 RSpec::Core::RakeTask.new(:spec) do |t|
-  t.pattern = '<%= node['deploy_scripts_dir'] %>/CI/spec/Smoke/deploy_<%= @server_type %>_spec.rb'
+  t.pattern = '<%= node['binaries_directory'] %>/CI/spec/Smoke/deploy_<%= @server_type %>_spec.rb'
 end
 
 task :default => [:spec]
