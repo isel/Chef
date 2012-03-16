@@ -17,24 +17,6 @@ bash 'install mule prerequisites' do
   EOF
 end
 
-use_bash_inline = false
-
-if use_bash_inline
-# bash script to add the settings is no longer used.
-bash 'add setting to system profile' do
-    code <<-EOCODE
-  cat<<EOF>>/etc/bash.bashrc
-  export LANG=en_US.UTF-8
-  export MULE_HOME=/opt/mule
-  export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
-  export MAVEN_HOME=/usr/share/maven2
-  export MAVEN_OPTS=\'-Xmx512m -XX:MaxPermSize=256m\'
-  export PATH=\\\$PATH:\\\$MULE_HOME/bin:\\\$JAVA_HOME/bin
-EOF
-EOCODE
-end
-else
-
 local_filename = '/etc/bash.bashrc'
 f = File.open(local_filename, 'r+'); contents = f.read; f.close
 append_contents = <<-'EOF'
@@ -59,10 +41,7 @@ append_contents.split(/\n/).each do |entry|
         end
 end
 
-File.open(local_filename, 'r+') do |f|
-  f.puts contents
-end
-end
+File.open(local_filename, 'r+') {|f| f.puts contents}
 
 log 'bash profile updated.'
 
@@ -109,12 +88,21 @@ if !File.exists?("/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom")
     export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
     export MAVEN_HOME=/usr/share/maven2
     export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
-    export PATH=\$PATH:\$MULE_HOME/bin:\$JAVA_HOME/bin
+    export PATH=$PATH:$MULE_HOME/bin:$JAVA_HOME/bin
     if [ -x populate_m2_repo ] ; then
-      ./populate_m2_repo ~/.m2 | tail /tmp/populate_m2_repo.log.$$
+      ./populate_m2_repo ~/.m2
     fi
-    # suppress the exit status, need to debug
-    tail -2 /tmp/populate_m2_repo.log.$$
+    LOG_FILE=/tmp/populate_m2_repo.log.$$
+    echo 'running with redirection to the temporary log file'
+    if [ -x populate_m2_repo ] ; then
+      ./populate_m2_repo ~/.m2 > $LOG_FILE 2>&1
+    fi
+    if [ -f $LOG_FILE ] ; then
+      /usr/bin/tail -10 $LOG_FILE
+    else
+      echo "no log file, ignoring"
+    fi
+    # temporarily suppress the exit status, need to debug
     exit 0
     EOF
   end

@@ -13,11 +13,10 @@ bash 'install ActiveMQ' do
   pushd /opt/activemq
   cp -R ~/Installs/apache-activemq-#{version}/* .
   chmod -R 777 .
-  if [ ! -f /opt/activemq/bin/activemq ]
-  then
+  if [ ! -f /opt/activemq/bin/activemq ] ; then
     exit 1
   fi
 EOF
 end
 
-log 'activemq successgully launched'
+log 'activemq successgully installed'
