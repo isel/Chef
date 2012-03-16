@@ -7,8 +7,9 @@ template "#{ruby_scripts_dir}/download_pims.rb" do
     :aws_access_key_id => node[:deploy][:aws_access_key_id],
     :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
     :artifacts => node[:deploy][:pims_artifacts],
+    :target_directory => node[:deploy][:pims_deploy_scripts_directory],
     :revision => node[:deploy][:pims_revision],
-    :s3_folder => 'PIMs'
+    :s3_directory => 'PIMs'
   )
 end
 
