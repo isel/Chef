@@ -203,7 +203,7 @@ attribute "deploy/ulimit_files",
 attribute "deploy/revision",
   :display_name => "revision",
   :required => "required",
-  :recipes => ["deploy::sarmus", "deploy::download_artifacts", "deploy::tag_data_version"]
+  :recipes => ["deploy::download_artifacts"]
 
 attribute "deploy/sarmus_port",
   :display_name => "sarmus port",

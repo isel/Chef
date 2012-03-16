@@ -418,9 +418,7 @@
       "display_name": "revision",
       "required": "required",
       "recipes": [
-        "deploy::sarmus",
-        "deploy::download_artifacts",
-        "deploy::tag_data_version"
+        "deploy::download_artifacts"
       ],
       "choice": [
 
