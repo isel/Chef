@@ -10,8 +10,8 @@ template "#{ruby_scripts_dir}/smoke_tests_local_messaging.rb" do
   )
   do
     puts "variable expansion: " +  node[:core][:server_type]
-  rescue => e
-    puts "ignoring exception #{e.to_s}"
+  rescue
+    puts "ignoring exception"
   end
 end
 
