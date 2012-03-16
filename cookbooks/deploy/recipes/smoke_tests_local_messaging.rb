@@ -10,6 +10,6 @@ end
 
 bash 'Running local smoke tests' do
    code <<-EOF
-    rake --rakefile #{ruby_scripts_dir}/smoke_tests_local_messaging.rb")
+    rake --rakefile #{ruby_scripts_dir}/smoke_tests_local_messaging.rb
   EOF
 end
