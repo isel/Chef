@@ -85,12 +85,12 @@ attribute "deploy/artifacts",
 attribute "deploy/aws_access_key_id",
   :display_name => "aws access key id",
   :required => "required",
-  :recipes => ["deploy::download_artifacts", "deploy::elastic_search"]
+  :recipes => ["deploy::download_artifacts", "deploy::download_binaries", "deploy::download_pims", "deploy::elastic_search"]
 
 attribute "deploy/aws_secret_access_key",
   :display_name => "aws secret access key",
   :required => "required",
-  :recipes => ["deploy::download_artifacts", "deploy::elastic_search"]
+  :recipes => ["deploy::download_artifacts", "deploy::download_binaries", "deploy::download_pims", "deploy::elastic_search"]
 
 attribute "deploy/binaries_artifacts",
   :display_name => "binaries artifacts",

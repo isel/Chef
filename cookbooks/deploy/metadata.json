@@ -133,6 +133,8 @@
       "required": "required",
       "recipes": [
         "deploy::download_artifacts",
+        "deploy::download_binaries",
+        "deploy::download_pims",
         "deploy::elastic_search"
       ],
       "choice": [
@@ -146,6 +148,8 @@
       "required": "required",
       "recipes": [
         "deploy::download_artifacts",
+        "deploy::download_binaries",
+        "deploy::download_pims",
         "deploy::elastic_search"
       ],
       "choice": [
