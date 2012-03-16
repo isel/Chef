@@ -3,7 +3,6 @@
 version = node[:deploy][:mule_version]
 
 # apt-get detects if debian package is already installed - no need to replicate its functionality
-# NOTE maven2 installs java runtime
 # may need to remove sun java6
 bash 'install mule prerequisites' do
     code <<-EOF
@@ -45,7 +44,7 @@ File.open(local_filename, 'r+') {|f| f.puts contents}
 
 log 'bash profile updated.'
 
-# NOTE: mule is 180MB
+
 if !File.exists?('/opt/mule/bin')
   bash 'install mule' do
     code <<-EOF
@@ -65,20 +64,11 @@ else
   log 'Mule already installed.'
 end
 
-# source bash.bashrc does not seem to work yet.
-# may need to run the resolvelink.sh
-# script to trouble shoot multiple java and log4j
+# source bash.bashrc does not seem to work, not used.
 
 log "Checking project [/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom]."
 
 if !File.exists?("/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom")
-
-  bash 'run maven in quiet mode' do
-    code <<-EOF
-    cd /opt/mule/bin
-    sed -i 's/-B/-B -q/' populate_m2_repo.groovy
-    EOF
-  end
 
   bash 'populate maven repositories' do
     code <<-EOF
@@ -89,20 +79,16 @@ if !File.exists?("/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom")
     export MAVEN_HOME=/usr/share/maven2
     export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
     export PATH=$PATH:$MULE_HOME/bin:$JAVA_HOME/bin
-    if [ -x populate_m2_repo ] ; then
-      ./populate_m2_repo ~/.m2
-    fi
     LOG_FILE=/tmp/populate_m2_repo.log.$$
-    echo 'running with redirection to the temporary log file'
     if [ -x populate_m2_repo ] ; then
       ./populate_m2_repo ~/.m2 > $LOG_FILE 2>&1
     fi
     if [ -f $LOG_FILE ] ; then
       /usr/bin/tail -10 $LOG_FILE
     else
-      echo "no log file, ignoring"
+      echo "no log file, aborting"
+      exit 1
     fi
-    # temporarily suppress the exit status, need to debug
     exit 0
     EOF
   end
