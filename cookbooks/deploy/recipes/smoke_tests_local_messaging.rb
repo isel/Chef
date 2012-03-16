@@ -4,7 +4,8 @@ template "#{ruby_scripts_dir}/smoke_tests_local_messaging.rb" do
   variables(
     :mule_port => node[:deploy][:mule_port],
     :activemq_port => node[:deploy][:activemq_port],
-    :server_type => node[:core][:server_type]
+      :server_type => 'messaging'
+  #  :server_type => node[:core][:server_type]
   )
 end
 
