@@ -1,5 +1,5 @@
 activemq_port = node[:deploy][:activemq_port]
-sleep_interval
+sleep_interval = 4
 bash 'launch activeMQ' do
   code <<-'EOF'
   pushd /opt/activemq/bin
@@ -8,7 +8,7 @@ bash 'launch activeMQ' do
   while  [  "-$STATUS" = '-' ] ; do
     STATUS=`netstat -an | grep :#{activemq_port}`
     echo 'waiting for achiveMQ to become available on port #{activemq_port}'
-    sleep 4
+    sleep #{sleep_interval}
   done
 
 EOF
