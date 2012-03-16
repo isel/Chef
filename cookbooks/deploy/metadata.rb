@@ -186,13 +186,13 @@ attribute "deploy/activemq_port",
   :display_name => "activemq port",
   :required => "optional",
   :default => "61616",
-  :recipes => ["deploy::activemq", "deploy::smoke_tests_local_messaging"]
+  :recipes => ["deploy::launch_activemq", "deploy::smoke_tests_local_messaging"]
 
 attribute "deploy/mule_port",
   :display_name => "mule port",
   :required => "optional",
   :default => "8585",
-  :recipes => ["deploy::mule", "deploy::launch_mule", "deploy::smoke_tests_local_messaging"]
+  :recipes => ["deploy::lunch_mule", "deploy::smoke_tests_local_messaging"]
 
 attribute "deploy/ulimit_files",
   :display_name => "setting for log4j",
