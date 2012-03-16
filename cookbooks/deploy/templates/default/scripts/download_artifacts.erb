@@ -3,7 +3,9 @@ require 'fileutils'
 
 revision = '<%= @revision %>'
 s3_directory = '<%= @s3_directory %>'
-puts "pulling build scripts from s3_directory: #{s3_directory} and revision: #{revision}"
+target_directory = '<%= @target_directory %>'
+
+puts "pulling build scripts from s3_directory: #{s3_directory}, revision: #{revision} to target_directory: #{target_directory}"
 
 storage = Fog::Storage.new(
   :provider => 'AWS',
@@ -16,7 +18,6 @@ s3_files = bucket.files
 
 install_files = '<%= @artifacts %>'.split(',')
 
-target_directory = '<%= @target_directory %>'
 revision_marker_file = File.join(target_directory,'revision.txt')
 
 if Dir.exist? target_directory
