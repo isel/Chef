@@ -8,11 +8,7 @@ template "#{ruby_scripts_dir}/smoke_tests_local_messaging.rb" do
 
   #  :server_type => node[:core][:server_type]
   )
-  do
-    puts "variable expansion: " +  node[:core][:server_type]
-  rescue
-    puts "ignoring exception"
-  end
+
 end
 
 bash 'Running local smoke tests' do
