@@ -1,5 +1,8 @@
+
 ipaddress = node['ipaddress']
 ulimit_files = node[:deploy][:ulimit_files]
+mule_port = node[:deploy][:mule_port]
+
 
 bash 'launch mule' do
       code <<-EOF
@@ -17,8 +20,8 @@ bash 'launch mule' do
       HTTP_STATUS=0
       while  [ $HTTP_STATUS -ne 302 -a $HTTP_STATUS -ne 200 ] ; do
         # Get HTTP status code with curl in bash
-        HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://localhost:8585/mmc`
-        echo 'waiting for mule to become running HTTP on 8585'
+        HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://#{ipaddress}:#{mule_port}/mmc`
+        echo 'waiting for mule to become running HTTP on #{mule_port}'
         echo "get HTTP status code $HTTP_STATUS"
         sleep 10
       done
