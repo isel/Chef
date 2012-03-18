@@ -4,17 +4,9 @@ template "#{ruby_scripts_dir}/smoke_tests_local_messaging.rb" do
   variables(
     :mule_port => node[:deploy][:mule_port],
     :activemq_port => node[:deploy][:activemq_port],
-    :server_type => 'messaging'
-
-  #  :server_type => node[:core][:server_type]
+    :server_type => node[:core][:server_type]
   )
 
-end
-
-begin
-  puts "variable expansion: " +  node[:core][:server_type]
-rescue => e
-  puts "ignoring exception: #{e.to_s}"
 end
 
 bash 'Running local smoke tests' do
