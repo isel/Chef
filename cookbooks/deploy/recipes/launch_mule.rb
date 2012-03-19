@@ -20,7 +20,7 @@ bash 'launch mule' do
       fi
   EOF
 end
-if verify_completion
+if verify_completion != ''
   bash 'verify the launch of mule' do
     code <<-EOF
     LAST_RETRY=0

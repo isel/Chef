@@ -203,7 +203,7 @@ attribute "deploy/ulimit_files",
 attribute "deploy/verify_completion",
   :display_name => "run checks",
   :required => "optional",
-  :default => false,
+  :default => "",
   :recipes => ["deploy::launch_activemq", "deploy:launch_mule"]
 
 attribute "deploy/revision",
