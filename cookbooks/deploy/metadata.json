@@ -409,7 +409,7 @@
       "default": "8192",
       "recipes": [
         "deploy::adjust_ulimit",
-        "deploy:launch_mule"
+        "deploy::launch_mule"
       ],
       "choice": [
 
@@ -423,7 +423,7 @@
       "default": "",
       "recipes": [
         "deploy::launch_activemq",
-        "deploy:launch_mule"
+        "deploy::launch_mule"
       ],
       "choice": [
 
