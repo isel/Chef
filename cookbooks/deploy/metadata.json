@@ -394,7 +394,7 @@
       "required": "optional",
       "default": "8585",
       "recipes": [
-        "deploy::lunch_mule",
+        "deploy::launch_mule",
         "deploy::smoke_tests_local_messaging"
       ],
       "choice": [
