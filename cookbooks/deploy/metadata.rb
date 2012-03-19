@@ -94,7 +94,7 @@ attribute "deploy/aws_secret_access_key",
 
 attribute "deploy/binaries_artifacts",
   :display_name => "binaries artifacts",
-  :required => "required",
+  :required => "optional",
   :recipes => ["deploy::download_binaries"]
 
 attribute "deploy/binaries_revision",
