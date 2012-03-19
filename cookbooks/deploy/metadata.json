@@ -417,6 +417,20 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/verify_completion": {
+      "display_name": "run checks",
+      "required": "optional",
+      "default": "",
+      "recipes": [
+        "deploy::launch_activemq",
+        "deploy:launch_mule"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/revision": {
       "display_name": "revision",
       "required": "required",
