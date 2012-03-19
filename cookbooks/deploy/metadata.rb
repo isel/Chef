@@ -192,7 +192,7 @@ attribute "deploy/mule_port",
   :display_name => "mule port",
   :required => "optional",
   :default => "8585",
-  :recipes => ["deploy::lunch_mule", "deploy::smoke_tests_local_messaging"]
+  :recipes => ["deploy::launch_mule", "deploy::smoke_tests_local_messaging"]
 
 attribute "deploy/ulimit_files",
   :display_name => "setting for log4j",
