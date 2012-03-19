@@ -83,10 +83,12 @@ if !File.exists?("/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom")
     if [ -x populate_m2_repo ] ; then
       ./populate_m2_repo ~/.m2 > $LOG_FILE 2>&1
     fi
+    echo "Saving maven logs to a file, please wait..."
     if [ -f $LOG_FILE ] ; then
+      echo "Tail of the maven log $LOG_FILE"
       /usr/bin/tail -10 $LOG_FILE
     else
-      echo "no log file, aborting"
+      echo "No log file, aborting"
       exit 1
     fi
     exit 0

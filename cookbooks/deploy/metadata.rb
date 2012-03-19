@@ -200,6 +200,12 @@ attribute "deploy/ulimit_files",
   :default => "8192",
   :recipes => ["deploy::adjust_ulimit", "deploy:launch_mule"]
 
+attribute "deploy/verify_completion",
+  :display_name => "run checks",
+  :required => "optional",
+  :default => false,
+  :recipes => ["deploy::launch_activemq", "deploy:launch_mule"]
+
 attribute "deploy/revision",
   :display_name => "revision",
   :required => "required",

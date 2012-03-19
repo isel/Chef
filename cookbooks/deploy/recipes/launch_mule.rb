@@ -2,6 +2,7 @@
 ipaddress = node['ipaddress']
 ulimit_files = node[:deploy][:ulimit_files]
 mule_port = node[:deploy][:mule_port]
+verify_completion = node[:deploy][:verify_completion]
 sleep_interval = 10
 
 bash 'launch mule' do
@@ -17,14 +18,31 @@ bash 'launch mule' do
       if [ -x mule ] ; then
         /usr/bin/nohup ./mule start
       fi
-      HTTP_STATUS=0
-      while  [ $HTTP_STATUS -ne 302 -a $HTTP_STATUS -ne 200 ] ; do
-        # Get HTTP status code with curl in bash
-        HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://#{ipaddress}:#{mule_port}/mmc`
-        echo 'waiting for mule to become running HTTP on #{mule_port}'
-        echo "get HTTP status code $HTTP_STATUS"
-        sleep #{sleep_interval}
-      done
   EOF
 end
+if verify_completion
+  bash 'verify the launch of mule' do
+    code <<-EOF
+    LAST_RETRY=0
+    RETRY_CNT=20
+    HTTP_STATUS=0
+    RESULT=1
+    echo 'waiting for mule to be serving HTTP on #{mule_port}'
+    while  [ "$RESULT" -ne "0" ] ; do
+      HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://#{ipaddress}:#{mule_port}/mmc`
+      expr $HTTP_STATUS : '302\|200' > /dev/null
+      RESULT=$?
+      echo "get HTTP status code $HTTP_STATUS"
+      RETRY_CNT=`expr $RETRY_CNT - 1`
+      if [ "$RETRY_CNT" -eq "$LAST_RETRY" ] ; then
+         echo "Exhausted retries"
+         exit 1
+      fi
+      echo "Retries left: $RETRY_CNT"
+      sleep #{sleep_interval}
+    done
+  EOF
+  end
+end
 log 'mule successfully launched'
+

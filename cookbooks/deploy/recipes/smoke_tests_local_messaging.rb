@@ -7,6 +7,7 @@ template "#{ruby_scripts_dir}/smoke_tests_local_messaging.rb" do
     :server_type => node[:core][:server_type]
   )
 
+
 end
 
 bash 'Running local smoke tests' do
