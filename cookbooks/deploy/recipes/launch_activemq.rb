@@ -8,7 +8,7 @@ bash 'launch activeMQ' do
   EOF
 end
 
-if verify_completion != ''
+if !verify_completion.nil? && verify_completion != ''
   bash 'verify the launch of activemq' do
   code <<-EOF
   LAST_RETRY=0

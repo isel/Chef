@@ -20,7 +20,8 @@ bash 'launch mule' do
       fi
   EOF
 end
-if verify_completion != ''
+
+if !verify_completion.nil? && verify_completion != ''
   bash 'verify the launch of mule' do
     code <<-EOF
     LAST_RETRY=0
@@ -30,9 +31,9 @@ if verify_completion != ''
     echo 'waiting for mule to be serving HTTP on #{mule_port}'
     while  [ "$RESULT" -ne "0" ] ; do
       HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://#{ipaddress}:#{mule_port}/mmc`
-      expr $HTTP_STATUS : '302\|200' > /dev/null
+      expr $HTTP_STATUS : '302\\|200' > /dev/null
       RESULT=$?
-      echo "get HTTP status code $HTTP_STATUS"
+      echo "get HTTP status code $HTTP_STATUS, $RESULT"
       RETRY_CNT=`expr $RETRY_CNT - 1`
       if [ "$RETRY_CNT" -eq "$LAST_RETRY" ] ; then
          echo "Exhausted retries"
