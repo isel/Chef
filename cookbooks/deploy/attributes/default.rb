@@ -1,6 +1,6 @@
 default['ruby_scripts_dir'] = '/RubyScripts'
 default['deploy_scripts_dir'] = '/DeployScripts'
-default['binaries_directory'] = '/DeployScripts_Binaries'
+default['binaries_directory'] = '/DeployScripts'
 default['pims_directory'] = '/DeployScripts_PIMs'
 
 default['powershell_x32_dir'] = '/Windows/system32/WindowsPowerShell/v1.0'
