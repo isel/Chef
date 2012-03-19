@@ -203,7 +203,7 @@ attribute "deploy/ulimit_files",
 attribute "deploy/verify_completion",
   :display_name => "run checks",
   :required => "optional",
-  :default => "",
+  :default => "1",
   :recipes => ["deploy::launch_activemq", "deploy::launch_mule"]
 
 attribute "deploy/revision",
@@ -252,7 +252,7 @@ attribute "core/server_type",
   :display_name => "server type",
   :description => "eg: db, app, web, cache",
   :required => "required",
-  :recipes => ["deploy::smoke_tests_local_app", "deploy::smoke_tests_local_cache", "deploy::smoke_tests_local_db", "deploy::smoke_tests_local_web"]
+  :recipes => ["deploy::smoke_tests_local_app", "deploy::smoke_tests_local_cache", "deploy::smoke_tests_local_db", "deploy::smoke_tests_local_web" "deploy::smoke_tests_local_messaging"]
 
 
 
