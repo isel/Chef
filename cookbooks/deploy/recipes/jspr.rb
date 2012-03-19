@@ -7,6 +7,8 @@ end
 
 bash 'Configuring apache' do
   code <<-EOF
+    mkdir --parents /var/www/Compass
+
     echo "load the caching expiration module..."
     a2enmod expires
 
@@ -21,8 +23,6 @@ end
 
 bash 'Set document root' do
   code <<-EOF
-    mkdir --parents /var/www/Compass
-
     if grep -q DocumentRoot /etc/apache2/apache2.conf; then
         echo "document root already set"
         exit 0
