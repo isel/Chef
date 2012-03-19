@@ -1,5 +1,5 @@
 
-ipaddress = node['ipaddress']
+hostname = node[:hostname]
 ulimit_files = node[:deploy][:ulimit_files]
 mule_port = node[:deploy][:mule_port]
 verify_completion = node[:deploy][:verify_completion]
@@ -30,7 +30,7 @@ if !verify_completion.nil? && verify_completion != ''
     RESULT=1
     echo 'waiting for mule to be serving HTTP on #{mule_port}'
     while  [ "$RESULT" -ne "0" ] ; do
-      HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://#{ipaddress}:#{mule_port}/mmc`
+      HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://#{hostname}:#{mule_port}/mmc`
       expr $HTTP_STATUS : '302\\|200' > /dev/null
       RESULT=$?
       echo "get HTTP status code $HTTP_STATUS, $RESULT"

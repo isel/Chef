@@ -171,11 +171,6 @@ attribute "deploy/pims_revision",
   :required => "required",
   :recipes => ["deploy::download_pims"]
 
-attribute "deploy/ipaddress",
-  :display_name => "ipaddress of the host",
-  :required => "required",
-  :recipes => ["deploy::launch_mule"]
-
 attribute "deploy/activemq_version",
   :display_name => "activeMQ version",
   :required => "optional",
