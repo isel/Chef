@@ -51,9 +51,9 @@ end
 tenant = '<%= @tenant %>'
 
 if tenant == 'VGC'
-  import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
-  import_data(exe, 'importer', 'c:\Provision\bin\VGC - SHARED.xlsx')
-  import_data(exe, 'VGC', 'c:\Provision\bin\VGC - HCM.xlsx')
+  #import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
+  #import_data(exe, 'importer', 'c:\Provision\bin\VGC - SHARED.xlsx')
+  #import_data(exe, 'VGC', 'c:\Provision\bin\VGC - HCM.xlsx')
 else
   import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
   import_data(exe, 'importer', 'c:\Provision\bin\PayrollEngine.xlsx')
@@ -87,6 +87,7 @@ if tenant == 'VGC'
   class_path = files.map {|f| "#{f}:" }.join[0..-2]
   cmd = "/jre/bin/java -classpath #{class_path} com.ultimatesoftware.publish.MainPublisher #{args}"
 
+  puts "command: #{cmd}"
   puts `#{cmd}`
   puts "cmd returned: #{$?}"
   raise "Error publishing pims: #{$?}" unless $?.success?
