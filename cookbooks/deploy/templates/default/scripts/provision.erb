@@ -51,9 +51,9 @@ end
 tenant = '<%= @tenant %>'
 
 if tenant == 'VGC'
-  #import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
-  #import_data(exe, 'importer', 'c:\Provision\bin\VGC - SHARED.xlsx')
-  #import_data(exe, 'VGC', 'c:\Provision\bin\VGC - HCM.xlsx')
+  import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
+  import_data(exe, 'importer', 'c:\Provision\bin\VGC - SHARED.xlsx')
+  import_data(exe, 'VGC', 'c:\Provision\bin\VGC - HCM.xlsx')
 else
   import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
   import_data(exe, 'importer', 'c:\Provision\bin\PayrollEngine.xlsx')
