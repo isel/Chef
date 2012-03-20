@@ -1,7 +1,8 @@
 @sarmus_loglevel = node[:deploy][:sarmus_loglevel]
-script "Restart sarmus" do
+script "Restart sarmus to #{@sarmus_loglevel}" do
   interpreter "bash"
   code <<-EOF
+    echo "Restart sarmus to #{@sarmus_loglevel}"
     SERVICE_STATUS=`service sarmus_service status`
     expr "$SERVICE_STATUS" : '.*running.*' > /dev/null
     STATUS=$?
