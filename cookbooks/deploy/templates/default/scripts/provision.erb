@@ -85,7 +85,7 @@ if tenant == 'VGC'
 
   args = "-a \"#{authentication_url}\" -u \"#{username}\" -p \"#{password}\" -s \"http://<%= @app_server %>\" -m \"/PIM_Publishing/pims\""
   class_path = files.map {|f| "#{f}:" }.join[0..-2]
-  cmd = "java -classpath #{class_path} com.ultimatesoftware.publish.MainPublisher #{args}"
+  cmd = "/jre/bin/java -classpath #{class_path} com.ultimatesoftware.publish.MainPublisher #{args}"
 
   puts `#{cmd}`
   puts "cmd returned: #{$?}"
