@@ -5,6 +5,7 @@ revision = '<%= @revision %>'
 s3_directory = '<%= @s3_directory %>'
 target_directory = '<%= @target_directory %>'
 
+puts "new branch"
 puts "pulling build scripts from s3_directory: #{s3_directory}, revision: #{revision} to target_directory: #{target_directory}"
 
 storage = Fog::Storage.new(
