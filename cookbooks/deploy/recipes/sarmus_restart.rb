@@ -10,6 +10,7 @@ script "Restart sarmus" do
     else
       echo 'sarmus service was not operational'
     fi
+      echo 'updating sarmus_service file'
       sed -e 's/\\(SARMUS_LOGLEVEL\\)=\\([0-9]\\)/\\1=#{@sarmus_loglevel}/' /etc/init.d/sarmus_service  > /tmp/sarmus_service.tmp.$$
       cp /tmp/sarmus_service.tmp.$$ /etc/init.d/sarmus_service
       service sarmus_service start
