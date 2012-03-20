@@ -26,6 +26,7 @@ recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::provision", "Provisions basic system data"
 recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
 recipe "deploy::sarmus", "Deploys sarmus"
+recipe "deploy::sarmus_restart", "Restarts sarmus"
 recipe "deploy::smoke_tests_global", "Runs global smoke tests"
 recipe "deploy::smoke_tests_local_app", "Runs local app server smoke tests"
 recipe "deploy::smoke_tests_local_cache", "Runs local cache server smoke tests"
@@ -215,8 +216,8 @@ attribute "deploy/sarmus_port",
 attribute "deploy/sarmus_loglevel",
   :display_name => "sarmus loglevel",
   :required => "optional",
-  :default => "4",
-  :recipes => ["deploy::sarmus"]
+  :default => "2",
+  :recipes => ["deploy::sarmus", "deploy::sarmus_restart"]
 
 attribute "deploy/sarmus_logsize",
   :display_name => "sarmus logsize",
