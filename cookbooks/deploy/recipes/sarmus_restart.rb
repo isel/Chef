@@ -12,8 +12,8 @@ script "Restart sarmus to #{sarmus_loglevel}" do
       echo 'sarmus service was not operational'
     fi
       echo 'updating sarmus_service file'
-      echo sed -e 's/\\(SARMUS_LOGLEVEL\\)=\\([0-9]\\)/\\1=#{sarmus_loglevel}/' /etc/init.d/sarmus_service  \> /tmp/sarmus_service.tmp.$$
-      sed -e 's/\\(SARMUS_LOGLEVEL\\)=\\([0-9]\\)/\\1=#{sarmus_loglevel}/' /etc/init.d/sarmus_service  > /tmp/sarmus_service.tmp.$$
+      NEW_DATA=#{sarmus_loglevel}
+      sed -e "s/\\\\(SARMUS_LOGLEVEL\\\\)=\\\\([0-9][0-9]*\\\\)/\\\\1=$NEW_DATA/" /etc/init.d/sarmus_service  > /tmp/sarmus_service.tmp.$$
       cp /tmp/sarmus_service.tmp.$$ /etc/init.d/sarmus_service
       service sarmus_service start
    EOF
