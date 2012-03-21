@@ -34,7 +34,7 @@ if '<%= @tenant %>' == 'VGC'
   password = '@Password01'
   authentication_url = 'http://<%= @app_server %>:81/httpIssue.svc/Authenticate/?realm=http://localhost/RP&tenantid=<%= @tenant %>'
 
-  provision.copy_pim_publishing_directories('/PIM_Publishing')
+  provision.copy_pim_publishing_directories('<%= node['pims_directory'] %>')
   provision.publish_pims(authentication_url, username, password, '<%= @app_server %>')
 else
   provision.import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
