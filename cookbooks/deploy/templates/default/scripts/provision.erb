@@ -5,9 +5,7 @@ require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/mongo'
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/pim_publisher'
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Deployment/provision'
 
-
 exe = '/Provision/bin/UltimateSoftware.Provisioning.Runner.exe'
-config = "#{exe}.config"
 
 if Dir.exist?('/Provision') && '<%= @force_provision %>' != 'true'
   puts 'Deployment has already been provisioned'
@@ -16,21 +14,28 @@ end
 
 puts 'Provisioning deployment'
 
-provision = Deployment::Provision.new('/Provision')
+provision = Deployment::Provision.new('/Provision', '/PIM_Publishing')
 
 provision.copy_provision_directories('<%= node['binaries_directory'] %>')
-provision.update_settings(config, '<%= @db_server %>', '<%= @sarmus_port %>')
+provision.update_settings("#{exe}.config", '<%= @db_server %>', '<%= @sarmus_port %>')
 
 Helpers::drop_all_databases("<%= @db_server %>", "<%= @sarmus_port %>")
 
 Dir.chdir('/Provision/bin')
 
-tenant = '<%= @tenant %>'
-
-if tenant == 'VGC'
+if '<%= @tenant %>' == 'VGC'
   provision.import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
   provision.import_data(exe, 'importer', 'c:\Provision\bin\VGC - SHARED.xlsx')
   provision.import_data(exe, 'VGC', 'c:\Provision\bin\VGC - HCM.xlsx')
+
+  puts 'Publishing pim'
+
+  username = 'test@test.com'
+  password = '@Password01'
+  authentication_url = 'http://<%= @app_server %>:81/httpIssue.svc/Authenticate/?realm=http://localhost/RP&tenantid=<%= @tenant %>'
+
+  provision.copy_pim_publishing_directories('/PIM_Publishing')
+  provision.publish_pims(authentication_url, username, password, '<%= @app_server %>')
 else
   provision.import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
   provision.import_data(exe, 'importer', 'c:\Provision\bin\PayrollEngine.xlsx')
@@ -43,27 +48,3 @@ else
   provision.import_data(exe, 'PENG', 'c:\Provision\bin\Rules.xlsx')
 end
 
-if tenant == 'VGC'
-  puts 'Publishing pim'
-  username = 'test@test.com'
-  password = '@Password01'
-  authentication_url = 'http://<%= @app_server %>:81/httpIssue.svc/Authenticate/?realm=http://localhost/RP&tenantid=<%= @tenant %>'
-
-  IOUtils::recreate_directory('/PIM_Publishing')
-
-  FileUtils.cp_r('<%= node['pims_directory'] %>/pims/.', '/PIM_Publishing/pims')
-  FileUtils.cp_r('<%= node['pims_directory'] %>/plugins/.', '/PIM_Publishing/plugins')
-  FileUtils.cp_r('<%= node['pims_directory'] %>/vendorbin/.', '/PIM_Publishing/vendorbin')
-
-  files = FileList["/PIM_Publishing/vendorbin/**/*.jar"].
-    include("/PIM_Publishing/plugins/plugins/**/com.ultimatesoftware.publish_*.jar")
-
-  args = "-a \"#{authentication_url}\" -u \"#{username}\" -p \"#{password}\" -s \"http://<%= @app_server %>\" -m \"/PIM_Publishing/pims\""
-  class_path = files.map {|f| "#{f};" }.join[0..-2]
-  cmd = "/jre/bin/java -classpath #{class_path} com.ultimatesoftware.publish.MainPublisher #{args}"
-
-  puts "command: #{cmd}"
-  puts `#{cmd}`
-  puts "cmd returned: #{$?}"
-  raise "Error publishing pims: #{$?}" unless $?.success?
-end
