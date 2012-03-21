@@ -3,6 +3,7 @@ require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/configuration
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/io_utils'
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/mongo'
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/pim_publisher'
+require '<%= node['binaries_directory'] %>/CI/BuildScripts/Deployment/provision'
 
 
 exe = '/Provision/bin/UltimateSoftware.Provisioning.Runner.exe'
@@ -15,16 +16,9 @@ end
 
 puts 'Provisioning deployment'
 
-FileUtils.remove_dir('/Provision', true)
-FileUtils.mkdir_p('/Provision')
+provision = Deployment::Provision.new('/Provision')
 
-FileUtils.cp_r('<%= node['binaries_directory'] %>/Provision/.', '/Provision/bin')
-FileUtils.cp_r('<%= node['binaries_directory'] %>/Models', '/Provision')
-FileUtils.cp_r('<%= node['binaries_directory'] %>/Images', '/Provision')
-FileUtils.cp_r('<%= node['binaries_directory'] %>/uiml', '/Provision')
-FileUtils.cp_r('<%= node['binaries_directory'] %>/Workflow.Activities.Compass', '/Provision')
-
-FileUtils.cp_r('<%= node['binaries_directory'] %>/Provisioning/Legacy/.', '/Provision/bin')
+provision.copy_provision_directories('<%= node['binaries_directory'] %>')
 
 Helpers::change_app_setting(config, "ConnectionString", "Server=<%= @db_server %>:<%= @sarmus_port %>")
 Helpers::change_app_setting(config, "EntityFramework.ModelFolder", "C:\\Provision\\Models\\,C:\\Provision\\Models\\Tests\\")
@@ -72,9 +66,7 @@ if tenant == 'VGC'
   password = '@Password01'
   authentication_url = 'http://<%= @app_server %>:81/httpIssue.svc/Authenticate/?realm=http://localhost/RP&tenantid=<%= @tenant %>'
 
-  # copy files to c:\PIM_Publishing
-  FileUtils.remove_dir('/PIM_Publishing', true)
-  FileUtils.mkdir_p('/PIM_Publishing')
+  IOUtils::recreate_directory('/PIM_Publishing')
 
   FileUtils.cp_r('<%= node['pims_directory'] %>/pims/.', '/PIM_Publishing/pims')
   FileUtils.cp_r('<%= node['pims_directory'] %>/plugins/.', '/PIM_Publishing/plugins')
