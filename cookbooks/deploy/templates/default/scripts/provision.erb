@@ -1,8 +1,4 @@
 require 'rake'
-require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/configuration'
-require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/io_utils'
-require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/mongo'
-require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/pim_publisher'
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Deployment/provision'
 
 exe = '/Provision/bin/UltimateSoftware.Provisioning.Runner.exe'
@@ -14,37 +10,7 @@ end
 
 puts 'Provisioning deployment'
 
-provision = Deployment::Provision.new('/Provision', '/PIM_Publishing')
+provision = Deployment::Provision.new(
+  '<%= node['binaries_directory'] %>', '/Provision', '<%= node['pims_directory'] %>', '/PIM_Publishing')
 
-provision.copy_provision_directories('<%= node['binaries_directory'] %>')
-provision.update_settings("#{exe}.config", '<%= @db_server %>', '<%= @sarmus_port %>')
-
-Helpers::drop_all_databases("<%= @db_server %>", "<%= @sarmus_port %>")
-
-Dir.chdir('/Provision/bin')
-
-if '<%= @tenant %>' == 'VGC'
-  provision.import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
-  provision.import_data(exe, 'importer', 'c:\Provision\bin\VGC - SHARED.xlsx')
-  provision.import_data(exe, 'VGC', 'c:\Provision\bin\VGC - HCM.xlsx')
-
-  puts 'Publishing pim'
-
-  username = 'test@test.com'
-  password = '@Password01'
-  authentication_url = 'http://<%= @app_server %>:81/httpIssue.svc/Authenticate/?realm=http://localhost/RP&tenantid=<%= @tenant %>'
-
-  provision.copy_pim_publishing_directories('<%= node['pims_directory'] %>')
-  provision.publish_pims(authentication_url, username, password, '<%= @app_server %>')
-else
-  provision.import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
-  provision.import_data(exe, 'importer', 'c:\Provision\bin\PayrollEngine.xlsx')
-
-  sleep 12*60
-
-  engine_PIM = File.read('c:/Provision/bin/HCM.entity_json')
-  Helpers::PIMPublisher.new.publish_entity('<%= @app_server %>', engine_PIM)
-
-  provision.import_data(exe, 'PENG', 'c:\Provision\bin\Rules.xlsx')
-end
-
+provision.run('<%= @tenant %>', '<%= @app_server %>', '<%= @db_server %>', '<%= @sarmus_port %>', exe)
