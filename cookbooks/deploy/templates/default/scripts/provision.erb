@@ -1,67 +1,16 @@
 require 'rake'
-require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/configuration'
-require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/io_utils'
-require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/mongo'
-require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/pim_publisher'
-
+require '<%= node['binaries_directory'] %>/CI/BuildScripts/Deployment/provision'
 
 exe = '/Provision/bin/UltimateSoftware.Provisioning.Runner.exe'
-config = "#{exe}.config"
 
 if Dir.exist?('/Provision') && '<%= @force_provision %>' != 'true'
   puts 'Deployment has already been provisioned'
   exit
-else
-  puts 'Provisioning deployment'
 end
 
-FileUtils.remove_dir('/Provision', true)
-FileUtils.mkdir_p('/Provision')
+puts 'Provisioning deployment'
 
-FileUtils.cp_r('<%= node['binaries_directory'] %>/Provision/.', '/Provision/bin')
-FileUtils.cp_r('<%= node['binaries_directory'] %>/Models', '/Provision')
-FileUtils.cp_r('<%= node['binaries_directory'] %>/Images', '/Provision')
-FileUtils.cp_r('<%= node['binaries_directory'] %>/uiml', '/Provision')
-FileUtils.cp_r('<%= node['binaries_directory'] %>/Workflow.Activities.Compass', '/Provision')
+provision = Deployment::Provision.new(
+  '<%= node['binaries_directory'] %>', '/Provision', '<%= node['pims_directory'] %>', '/PIM_Publishing')
 
-FileUtils.cp_r('<%= node['binaries_directory'] %>/Provisioning/Legacy/.', '/Provision/bin')
-
-Helpers::change_app_setting(config, "ConnectionString", "Server=<%= @db_server %>:<%= @sarmus_port %>")
-Helpers::change_app_setting(config, "EntityFramework.ModelFolder", "C:\\Provision\\Models\\,C:\\Provision\\Models\\Tests\\")
-Helpers::change_app_setting(config, "ImportFlowRoot", "C:\\Provision\\Workflow.Activities.Compass\\")
-
-IOUtils::replace_text_in_file(config, '<\/hosts>', '</hosts><securityProperties mode="None" protectionLevel="None"/>')
-
-Helpers::drop_all_databases("<%= @db_server %>", "<%= @sarmus_port %>")
-
-Dir.chdir('/Provision/bin')
-
-def import_data(exe, tenant, input_file)
-  puts "running provisioning for tenant: #{tenant} input file: #{input_file}"
-  success = system "#{exe} -tenant #{tenant} -data \"#{input_file}\""
-  exit_code = $?
-  puts "provisioning exit code: #{exit_code}"
-  if success
-    puts "provisioning #{File.basename(input_file)} successful"
-  else
-    raise "Error provisioning #{File.basename(input_file)}. Exit code: #{exit_code}"
-  end
-end
-
-tenant = '<%= @tenant %>'
-
-if tenant == 'VGC'
-  import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
-  import_data(exe, 'importer', 'c:\Provision\bin\VGC - SHARED.xlsx')
-  import_data(exe, 'VGC', 'c:\Provision\bin\VGC - HCM.xlsx')
-else
-  import_data(exe, 'importer', 'c:\Provision\bin\Models.xlsx')
-  import_data(exe, 'importer', 'c:\Provision\bin\PayrollEngine.xlsx')
-
-  sleep 12*60
-
-  engine_PIM = File.read('c:/Provision/bin/HCM.entity_json')
-  Helpers::PIMPublisher.new.publish_entity('<%= @app_server %>', engine_PIM)
-
-  import_data(exe, 'PENG', 'c:\Provision\bin\Rules.xlsx')
-end
+provision.run('<%= @tenant %>', '<%= @app_server %>', '<%= @db_server %>', '<%= @sarmus_port %>', exe)
