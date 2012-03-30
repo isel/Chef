@@ -34,7 +34,7 @@ bash 'launch mule' do
          echo "mule is already running on PID=$MULE_PID"
          else
             echo 'starting the mule'
-            /usr/bin/nohup .mule start
+            /usr/bin/nohup ./wmule start
          fi
       fi
   EOF
