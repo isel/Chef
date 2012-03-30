@@ -450,9 +450,10 @@
     "deploy/sarmus_loglevel": {
       "display_name": "sarmus loglevel",
       "required": "optional",
-      "default": "4",
+      "default": "2",
       "recipes": [
-        "deploy::sarmus"
+        "deploy::sarmus",
+        "deploy::sarmus_restart"
       ],
       "choice": [
 
@@ -552,6 +553,7 @@
     "deploy::provision": "Provisions basic system data",
     "deploy::reindex_elastic_search": "Reindexes ElasticSearch (should be going away)",
     "deploy::sarmus": "Deploys sarmus",
+    "deploy::sarmus_restart": "Restarts sarmus",
     "deploy::smoke_tests_global": "Runs global smoke tests",
     "deploy::smoke_tests_local_app": "Runs local app server smoke tests",
     "deploy::smoke_tests_local_cache": "Runs local cache server smoke tests",
