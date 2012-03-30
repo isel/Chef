@@ -27,8 +27,15 @@ bash 'launch mule' do
       fi
       ulimit -a
       if [ -x mule ] ; then
-        echo 'starting the mule'
-        /usr/bin/nohup ./mule start
+         MULE_STATUS=$(./mule status | tail -1| grep -i mule)
+         echo "MULE_STATUS=$MULE_STATUS "
+         MULE_PID=`expr "$MULE_STATUS" : 'Mule.*(\\([0-9][0-9]*\\)).*'`
+         if [ ! -z  $MULE_PID ] ; then
+         echo "mule is already running on PID=$MULE_PID"
+         else
+            echo 'starting the mule'
+            /usr/bin/nohup .mule start
+         fi
       fi
   EOF
 end
