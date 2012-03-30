@@ -1,4 +1,3 @@
-
 hostname = node[:hostname]
 ulimit_files = node[:deploy][:ulimit_files]
 mule_port = node[:deploy][:mule_port]
@@ -14,8 +13,21 @@ bash 'launch mule' do
       export MAVEN_HOME=/usr/share/maven2
       export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
       export PATH=$PATH:$MULE_HOME/bin:$JAVA_HOME/bin
-      ulimit -n #{ulimit_files}
+      FILE_LIMIT=#{ulimit_files}
+      if [ ! -z $FILE_LIMIT ];      then
+      FILE_LIMIT=`expr $FILE_LIMIT : '^\\([0-9][0-9]*\\)$'`
+      echo "FILE_LIMIT='$FILE_LIMIT'"
+      fi
+      if [ ! -z $FILE_LIMIT ]
+      then
+        echo 'bumping open file handle limit to $FILE_LIMIT'
+        ulimit -n $FILE_LIMIT
+      else
+        echo 'no meaningful FILE_LIMIT  provided'
+      fi
+      ulimit -a
       if [ -x mule ] ; then
+        echo 'starting the mule'
         /usr/bin/nohup ./mule start
       fi
   EOF
