@@ -1,4 +1,4 @@
-powershell "Setup AppFabric shared folder" do
+powershell 'Enable MSMQ' do
   parameters (
     {
       'SERVER_MANAGER_FEATURES' => node[:deploy][:server_manager_features]
@@ -38,4 +38,5 @@ write-output  "Feature ${feature} is unknown to Windows Server Manager"
 $Error.clear()
 
 EOF
+  source(powershell_script)
 end
