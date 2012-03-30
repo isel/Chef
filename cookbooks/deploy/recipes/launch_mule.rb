@@ -23,7 +23,7 @@ bash 'launch mule' do
         echo 'bumping open file handle limit to $FILE_LIMIT'
         ulimit -n $FILE_LIMIT
       else
-        echo 'no meaningful FILE_LIMIT  provided'
+        echo 'no meaningful FILE_LIMIT provided'
       fi
       ulimit -a
       if [ -x mule ] ; then
