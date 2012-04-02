@@ -514,6 +514,20 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/server_manager_features": {
+      "display_name": "MSMQ features",
+      "description": "List of windows MSMQ features to install",
+      "required": "optional",
+      "default": "MSMQ-Server;MSMQ-HTTP-Support;MSMQ-Directory;MSMS-NoSuchFeature",
+      "recipes": [
+        "deploy::enable_msmq"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "core/server_type": {
       "display_name": "server type",
       "description": "eg: db, app, web, cache",
@@ -543,6 +557,7 @@
     "deploy::download_binaries": "Downloads binaries",
     "deploy::download_pims": "Downloads pims",
     "deploy::elastic_search": "Deploys ElasticSearch",
+    "deploy::enable_msmq": "Enables msmq",
     "deploy::launch_activemq": "Launches ActiveMQ",
     "deploy::launch_mule": "Launches Mule",
     "deploy::mule": "Deploys Mule ESB",

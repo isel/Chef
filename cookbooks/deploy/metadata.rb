@@ -16,6 +16,7 @@ recipe "deploy::download_artifacts", "Downloads artifacts"
 recipe "deploy::download_binaries", "Downloads binaries"
 recipe "deploy::download_pims", "Downloads pims"
 recipe "deploy::elastic_search", "Deploys ElasticSearch"
+recipe "deploy::enable_msmq", "Enables msmq"
 recipe "deploy::launch_activemq", "Launches ActiveMQ"
 recipe "deploy::launch_mule",  "Launches Mule"
 recipe "deploy::mule", "Deploys Mule ESB"
@@ -242,6 +243,13 @@ attribute "deploy/use_mocked_website",
   :required => "optional",
   :default => "false",
   :recipes => ["deploy::jspr"]
+
+attribute "deploy/server_manager_features",
+  :display_name => "MSMQ features",
+  :description => "List of windows MSMQ features to install",
+  :required => "optional",
+  :default => "MSMQ-Server;MSMQ-HTTP-Support;MSMQ-Directory;MSMS-NoSuchFeature",
+  :recipes => ["deploy::enable_msmq"]
 
 ### attributes used from other cookbooks
 attribute "core/server_type",
