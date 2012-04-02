@@ -6,7 +6,7 @@ template "#{ruby_scripts_dir}/smoke_tests_global.rb" do
     :app_server => node[:deploy][:app_server],
     :db_server => node[:deploy][:db_server],
     :engine_server => node[:deploy][:engine_server],
-    :sarmus_port => node[:deploy][:sarmus_port],
+    :db_port => node[:deploy][:db_port],
     :tenant => node[:deploy][:tenant],
     :server_type => node[:core][:server_type]
   )

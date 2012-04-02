@@ -4,7 +4,7 @@ require 'rspec/core/rake_task'
 ENV['domain.name'] = ''
 ENV['app_server'] = '<%= @app_server %>'
 ENV['db_server'] = '<%= @db_server %>'
-ENV['sarmus_port'] = '<%= @sarmus_port %>'
+ENV['db_port'] = '<%= @db_port %>'
 ENV['elastic_search_port'] = '<%= @elastic_search_port %>'
 
 RSpec::Core::RakeTask.new(:spec) do |t|

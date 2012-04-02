@@ -25,8 +25,6 @@ recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::provision", "Provisions basic system data"
 recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
-recipe "deploy::sarmus", "Deploys sarmus"
-recipe "deploy::sarmus_restart", "Restarts sarmus"
 recipe "deploy::smoke_tests_global", "Runs global smoke tests"
 recipe "deploy::smoke_tests_local_app", "Runs local app server smoke tests"
 recipe "deploy::smoke_tests_local_cache", "Runs local cache server smoke tests"
@@ -36,6 +34,18 @@ recipe "deploy::smoke_tests_local_messaging", "Runs local messaging server smoke
 recipe "deploy::smoke_tests_local_web", "Runs local web server smoke tests"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
+
+attribute "deploy/activemq_port",
+  :display_name => "activemq port",
+  :required => "optional",
+  :default  => "61616",
+  :recipes  => ["deploy::launch_activemq", "deploy::smoke_tests_local_messaging"]
+
+attribute "deploy/activemq_version",
+  :display_name => "activeMQ version",
+  :required => "optional",
+  :default  => "5.4.3",
+  :recipes  => ["deploy::activemq"]
 
 attribute "deploy/appfabric_caches",
   :display_name => "appfabric caches",
@@ -101,12 +111,18 @@ attribute "deploy/binaries_artifacts",
 attribute "deploy/binaries_revision",
   :display_name => "binaries revision",
   :required => "required",
-  :recipes => ["deploy::download_binaries", "deploy::sarmus", "deploy::tag_data_version"]
+  :recipes => ["deploy::download_binaries", "deploy::tag_data_version"]
 
 attribute "deploy/cache_server",
   :display_name => "cache server",
   :required => "required",
   :recipes => ["deploy::foundation_services", "deploy::register_cache_hostname"]
+
+attribute "deploy/db_port",
+  :display_name => "db port",
+  :required => "optional",
+  :default  => "27017",
+  :recipes  => ["deploy::foundation_services", "deploy::mongo", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local_app"]
 
 attribute "deploy/db_server",
   :display_name => "db server",
@@ -144,17 +160,17 @@ attribute "deploy/force_provision",
   :required => "required",
   :recipes => ["deploy::provision"]
 
-attribute "deploy/mongo_port",
-  :display_name => "mongo port",
-  :required => "optional",
-  :default => "28017",
-  :recipes => ["deploy::mongo"]
-
 attribute "deploy/mongo_version",
   :display_name => "mongo version",
   :required => "optional",
   :default => "2.0.1",
   :recipes => ["deploy::mongo"]
+
+attribute "deploy/mule_port",
+  :display_name => "mule port",
+  :required => "optional",
+  :default  => "8585",
+  :recipes  => ["deploy::launch_mule", "deploy::smoke_tests_local_messaging"]
 
 attribute "deploy/mule_version",
   :display_name => "mule version",
@@ -172,69 +188,21 @@ attribute "deploy/pims_revision",
   :required => "required",
   :recipes => ["deploy::download_pims"]
 
-attribute "deploy/activemq_version",
-  :display_name => "activeMQ version",
-  :required => "optional",
-  :default => "5.4.3",
-  :recipes => ["deploy::activemq"]
-
-attribute "deploy/activemq_port",
-  :display_name => "activemq port",
-  :required => "optional",
-  :default => "61616",
-  :recipes => ["deploy::launch_activemq", "deploy::smoke_tests_local_messaging"]
-
-attribute "deploy/mule_port",
-  :display_name => "mule port",
-  :required => "optional",
-  :default => "8585",
-  :recipes => ["deploy::launch_mule", "deploy::smoke_tests_local_messaging"]
-
-attribute "deploy/ulimit_files",
-  :display_name => "setting for log4j",
-  :required => "optional",
-  :default => "8192",
-  :recipes => ["deploy::adjust_ulimit", "deploy::launch_mule"]
-
-attribute "deploy/verify_completion",
-  :display_name => "run checks",
-  :required => "optional",
-  :default => "1",
-  :recipes => ["deploy::launch_activemq", "deploy::launch_mule"]
-
 attribute "deploy/revision",
   :display_name => "revision",
   :required => "required",
   :recipes => ["deploy::download_artifacts"]
 
-attribute "deploy/sarmus_port",
-  :display_name => "sarmus port",
-  :required => "optional",
-  :default => "27017",
-  :recipes => ["deploy::foundation_services", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local_app"]
-
-attribute "deploy/sarmus_loglevel",
-  :display_name => "sarmus loglevel",
-  :required => "optional",
-  :default => "2",
-  :recipes => ["deploy::sarmus", "deploy::sarmus_restart"]
-
-attribute "deploy/sarmus_logsize",
-  :display_name => "sarmus logsize",
-  :required => "optional",
-  :default => "209715200",
-  :recipes => ["deploy::sarmus"]
-
-attribute "deploy/sarmus_days_to_keep_logs",
-  :display_name => "sarmus days to keep logs",
-  :required => "optional",
-  :default => "2",
-  :recipes => ["deploy::sarmus"]
-
 attribute "deploy/tenant",
   :display_name => "tenant",
   :required => "required",
   :recipes => ["deploy::provision", "deploy::smoke_tests_global"]
+
+attribute "deploy/ulimit_files",
+  :display_name => "setting for log4j",
+  :required => "optional",
+  :default  => "8192",
+  :recipes  => ["deploy::adjust_ulimit", "deploy::launch_mule"]
 
 attribute "deploy/use_mocked_website",
   :display_name => "use mocked website",
@@ -242,6 +210,13 @@ attribute "deploy/use_mocked_website",
   :required => "optional",
   :default => "false",
   :recipes => ["deploy::jspr"]
+
+attribute "deploy/verify_completion",
+  :display_name => "run checks",
+  :required => "optional",
+  :default  => "1",
+  :recipes  => ["deploy::launch_activemq", "deploy::launch_mule"]
+
 
 ### attributes used from other cookbooks
 attribute "core/server_type",

@@ -5,7 +5,7 @@ template "#{ruby_scripts_dir}/smoke_tests_local_app.rb" do
   variables(
     :app_server => node[:deploy][:app_server],
     :db_server => node[:deploy][:db_server],
-    :sarmus_port => node[:deploy][:sarmus_port],
+    :db_port => node[:deploy][:db_port],
     :elastic_search_port => node[:deploy][:elastic_search_port],
     :server_type => node[:core][:server_type]
   )

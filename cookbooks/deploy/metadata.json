@@ -21,6 +21,33 @@
   "replacing": {
   },
   "attributes": {
+    "deploy/activemq_port": {
+      "display_name": "activemq port",
+      "required": "optional",
+      "default": "61616",
+      "recipes": [
+        "deploy::launch_activemq",
+        "deploy::smoke_tests_local_messaging"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/activemq_version": {
+      "display_name": "activeMQ version",
+      "required": "optional",
+      "default": "5.4.3",
+      "recipes": [
+        "deploy::activemq"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/appfabric_caches": {
       "display_name": "appfabric caches",
       "required": "optional",
@@ -175,7 +202,6 @@
       "required": "required",
       "recipes": [
         "deploy::download_binaries",
-        "deploy::sarmus",
         "deploy::tag_data_version"
       ],
       "choice": [
@@ -190,6 +216,23 @@
       "recipes": [
         "deploy::foundation_services",
         "deploy::register_cache_hostname"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/db_port": {
+      "display_name": "db port",
+      "required": "optional",
+      "default": "27017",
+      "recipes": [
+        "deploy::foundation_services",
+        "deploy::mongo",
+        "deploy::provision",
+        "deploy::smoke_tests_global",
+        "deploy::smoke_tests_local_app"
       ],
       "choice": [
 
@@ -287,10 +330,10 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/mongo_port": {
-      "display_name": "mongo port",
+    "deploy/mongo_version": {
+      "display_name": "mongo version",
       "required": "optional",
-      "default": "28017",
+      "default": "2.0.1",
       "recipes": [
         "deploy::mongo"
       ],
@@ -300,12 +343,13 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/mongo_version": {
-      "display_name": "mongo version",
+    "deploy/mule_port": {
+      "display_name": "mule port",
       "required": "optional",
-      "default": "2.0.1",
+      "default": "8585",
       "recipes": [
-        "deploy::mongo"
+        "deploy::launch_mule",
+        "deploy::smoke_tests_local_messaging"
       ],
       "choice": [
 
@@ -350,12 +394,11 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/activemq_version": {
-      "display_name": "activeMQ version",
-      "required": "optional",
-      "default": "5.4.3",
+    "deploy/revision": {
+      "display_name": "revision",
+      "required": "required",
       "recipes": [
-        "deploy::activemq"
+        "deploy::download_artifacts"
       ],
       "choice": [
 
@@ -363,27 +406,12 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/activemq_port": {
-      "display_name": "activemq port",
-      "required": "optional",
-      "default": "61616",
+    "deploy/tenant": {
+      "display_name": "tenant",
+      "required": "required",
       "recipes": [
-        "deploy::launch_activemq",
-        "deploy::smoke_tests_local_messaging"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/mule_port": {
-      "display_name": "mule port",
-      "required": "optional",
-      "default": "8585",
-      "recipes": [
-        "deploy::launch_mule",
-        "deploy::smoke_tests_local_messaging"
+        "deploy::provision",
+        "deploy::smoke_tests_global"
       ],
       "choice": [
 
@@ -405,101 +433,6 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/verify_completion": {
-      "display_name": "run checks",
-      "required": "optional",
-      "default": "1",
-      "recipes": [
-        "deploy::launch_activemq",
-        "deploy::launch_mule"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/revision": {
-      "display_name": "revision",
-      "required": "required",
-      "recipes": [
-        "deploy::download_artifacts"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/sarmus_port": {
-      "display_name": "sarmus port",
-      "required": "optional",
-      "default": "27017",
-      "recipes": [
-        "deploy::foundation_services",
-        "deploy::provision",
-        "deploy::smoke_tests_global",
-        "deploy::smoke_tests_local_app"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/sarmus_loglevel": {
-      "display_name": "sarmus loglevel",
-      "required": "optional",
-      "default": "2",
-      "recipes": [
-        "deploy::sarmus",
-        "deploy::sarmus_restart"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/sarmus_logsize": {
-      "display_name": "sarmus logsize",
-      "required": "optional",
-      "default": "209715200",
-      "recipes": [
-        "deploy::sarmus"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/sarmus_days_to_keep_logs": {
-      "display_name": "sarmus days to keep logs",
-      "required": "optional",
-      "default": "2",
-      "recipes": [
-        "deploy::sarmus"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/tenant": {
-      "display_name": "tenant",
-      "required": "required",
-      "recipes": [
-        "deploy::provision",
-        "deploy::smoke_tests_global"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
     "deploy/use_mocked_website": {
       "display_name": "use mocked website",
       "description": "used to mock jspr to be able to run the ui tests",
@@ -507,6 +440,20 @@
       "default": "false",
       "recipes": [
         "deploy::jspr"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/verify_completion": {
+      "display_name": "run checks",
+      "required": "optional",
+      "default": "1",
+      "recipes": [
+        "deploy::launch_activemq",
+        "deploy::launch_mule"
       ],
       "choice": [
 
@@ -552,8 +499,6 @@
     "deploy::mongo": "Deploys mongodb",
     "deploy::provision": "Provisions basic system data",
     "deploy::reindex_elastic_search": "Reindexes ElasticSearch (should be going away)",
-    "deploy::sarmus": "Deploys sarmus",
-    "deploy::sarmus_restart": "Restarts sarmus",
     "deploy::smoke_tests_global": "Runs global smoke tests",
     "deploy::smoke_tests_local_app": "Runs local app server smoke tests",
     "deploy::smoke_tests_local_cache": "Runs local cache server smoke tests",

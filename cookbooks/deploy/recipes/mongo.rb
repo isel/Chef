@@ -47,7 +47,7 @@ if !File.exists?('/etc/init.d/mongo')
     source 'mongo.erb'
     mode 0755
     variables(
-      :port => node[:deploy][:mongo_port]
+      :port => node[:deploy][:db_port]
     )
   end
 

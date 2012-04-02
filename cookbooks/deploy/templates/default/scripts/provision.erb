@@ -13,4 +13,4 @@ puts 'Provisioning deployment'
 provision = Deployment::Provision.new(
   '<%= node['binaries_directory'] %>', '/Provision', '<%= node['pims_directory'] %>', '/PIM_Publishing')
 
-provision.run('<%= @tenant %>', '<%= @app_server %>', '<%= @db_server %>', '<%= @sarmus_port %>', exe)
+provision.run('<%= @tenant %>', '<%= @app_server %>', '<%= @db_server %>', '<%= @db_port %>', exe)
