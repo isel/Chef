@@ -1,0 +1,528 @@
+{
+  "name": "deploy",
+  "description": "Deploys the UGF software to the environment",
+  "long_description": "",
+  "maintainer": "Isel Fernandez",
+  "maintainer_email": "isel_77@hotmail.com",
+  "license": "our license",
+  "platforms": {
+    "ubuntu": ">= 0.0.0"
+  },
+  "dependencies": {
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+    "deploy/activemq_port": {
+      "display_name": "activemq port",
+      "required": "optional",
+      "default": "61616",
+      "recipes": [
+        "deploy::launch_activemq",
+        "deploy::smoke_tests_local_messaging"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/activemq_version": {
+      "display_name": "activeMQ version",
+      "required": "optional",
+      "default": "5.4.3",
+      "recipes": [
+        "deploy::activemq"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/appfabric_caches": {
+      "display_name": "appfabric caches",
+      "required": "optional",
+      "default": "default,TokenStore,SaasPolicy,EntityModel,Securables,Messages,Views,Enumerations",
+      "recipes": [
+        "deploy::appfabric_configure",
+        "deploy::appfabric_ensure_is_up"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/appfabric_security": {
+      "display_name": "appfabric security",
+      "required": "required",
+      "recipes": [
+        "deploy::appfabric_configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/appfabric_service_user": {
+      "display_name": "appfabric service user",
+      "required": "optional",
+      "default": "appfabric",
+      "recipes": [
+        "deploy::appfabric_configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/appfabric_service_password": {
+      "display_name": "appfabric service password",
+      "required": "required",
+      "recipes": [
+        "deploy::appfabric_configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/appfabric_shared_drive": {
+      "display_name": "appfabric shared drive",
+      "required": "optional",
+      "default": "appfabric_caching",
+      "recipes": [
+        "deploy::appfabric_configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/appfabric_shared_folder": {
+      "display_name": "appfabric shared folder",
+      "required": "optional",
+      "default": "c:\\appfabric_caching",
+      "recipes": [
+        "deploy::appfabric_configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/app_server": {
+      "display_name": "app server",
+      "required": "required",
+      "recipes": [
+        "deploy::engine",
+        "deploy::jspr",
+        "deploy::provision",
+        "deploy::smoke_tests_global",
+        "deploy::smoke_tests_local_app",
+        "deploy::smoke_tests_local_engine",
+        "deploy::smoke_tests_local_web"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/artifacts": {
+      "display_name": "artifacts",
+      "required": "required",
+      "recipes": [
+        "deploy::download_artifacts"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/aws_access_key_id": {
+      "display_name": "aws access key id",
+      "required": "required",
+      "recipes": [
+        "deploy::download_artifacts",
+        "deploy::download_binaries",
+        "deploy::download_pims",
+        "deploy::elastic_search"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/aws_secret_access_key": {
+      "display_name": "aws secret access key",
+      "required": "required",
+      "recipes": [
+        "deploy::download_artifacts",
+        "deploy::download_binaries",
+        "deploy::download_pims",
+        "deploy::elastic_search"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/binaries_artifacts": {
+      "display_name": "binaries artifacts",
+      "required": "required",
+      "recipes": [
+        "deploy::download_binaries"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/binaries_revision": {
+      "display_name": "binaries revision",
+      "required": "required",
+      "recipes": [
+        "deploy::download_binaries",
+        "deploy::tag_data_version"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/cache_server": {
+      "display_name": "cache server",
+      "required": "required",
+      "recipes": [
+        "deploy::foundation_services",
+        "deploy::register_cache_hostname"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/db_port": {
+      "display_name": "db port",
+      "required": "optional",
+      "default": "27017",
+      "recipes": [
+        "deploy::foundation_services",
+        "deploy::mongo",
+        "deploy::provision",
+        "deploy::smoke_tests_global",
+        "deploy::smoke_tests_local_app"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/db_server": {
+      "display_name": "db server",
+      "required": "required",
+      "recipes": [
+        "deploy::foundation_services",
+        "deploy::provision",
+        "deploy::smoke_tests_global",
+        "deploy::smoke_tests_local_app"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/deployment_name": {
+      "display_name": "deployment name",
+      "required": "required",
+      "recipes": [
+        "deploy::register_cache_hostname"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/domain": {
+      "display_name": "domain",
+      "recipes": [
+        "deploy::jspr"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string",
+      "required": "optional"
+    },
+    "deploy/elastic_search_port": {
+      "display_name": "elastic search port",
+      "required": "optional",
+      "default": "9200",
+      "recipes": [
+        "deploy::foundation_services",
+        "deploy::smoke_tests_local_app"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/elastic_search_version": {
+      "display_name": "elastic search version",
+      "required": "optional",
+      "default": "0.17.6",
+      "recipes": [
+        "deploy::elastic_search"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/engine_server": {
+      "display_name": "engine server",
+      "required": "required",
+      "recipes": [
+        "deploy::smoke_tests_global"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/force_provision": {
+      "display_name": "force provision",
+      "required": "required",
+      "recipes": [
+        "deploy::provision"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/mongo_version": {
+      "display_name": "mongo version",
+      "required": "optional",
+      "default": "2.0.1",
+      "recipes": [
+        "deploy::mongo"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/mule_port": {
+      "display_name": "mule port",
+      "required": "optional",
+      "default": "8585",
+      "recipes": [
+        "deploy::launch_mule",
+        "deploy::smoke_tests_local_messaging"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/mule_version": {
+      "display_name": "mule version",
+      "required": "optional",
+      "default": "3.2.1",
+      "recipes": [
+        "deploy::mule"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/pims_artifacts": {
+      "display_name": "pims artifacts",
+      "required": "required",
+      "recipes": [
+        "deploy::download_pims"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/pims_revision": {
+      "display_name": "pims revision",
+      "required": "required",
+      "recipes": [
+        "deploy::download_pims"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/revision": {
+      "display_name": "revision",
+      "required": "required",
+      "recipes": [
+        "deploy::download_artifacts"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/server_manager_features": {
+      "display_name": "MSMQ features",
+      "description": "List of windows MSMQ features to install",
+      "required": "optional",
+      "default": "MSMQ-Server;MSMQ-HTTP-Support;MSMQ-Directory;MSMS-NoSuchFeature",
+      "recipes": [
+        "deploy::enable_msmq"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/tenant": {
+      "display_name": "tenant",
+      "required": "required",
+      "recipes": [
+        "deploy::provision",
+        "deploy::smoke_tests_global"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/ulimit_files": {
+      "display_name": "setting for log4j",
+      "required": "optional",
+      "default": "8192",
+      "recipes": [
+        "deploy::adjust_ulimit",
+        "deploy::launch_mule"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/use_mocked_website": {
+      "display_name": "use mocked website",
+      "description": "used to mock jspr to be able to run the ui tests",
+      "required": "optional",
+      "default": "false",
+      "recipes": [
+        "deploy::jspr"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/verify_completion": {
+      "display_name": "run checks",
+      "required": "optional",
+      "default": "1",
+      "recipes": [
+        "deploy::launch_activemq",
+        "deploy::launch_mule"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "core/server_type": {
+      "display_name": "server type",
+      "description": "eg: db, app, web, cache",
+      "required": "required",
+      "recipes": [
+        "deploy::smoke_tests_local_app",
+        "deploy::smoke_tests_local_cache",
+        "deploy::smoke_tests_local_db",
+        "deploy::smoke_tests_local_webdeploy::smoke_tests_local_messaging"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    }
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "deploy::activemq": "Deploys ActiveMQ",
+    "deploy::adjust_ulimit": "Adjusts open files limit for log4j",
+    "deploy::appfabric_configure": "Configures AppFabric",
+    "deploy::appfabric_powershell": "Deploys AppFabric Powershell cmdlets",
+    "deploy::appfabric_ensure_is_up": "Ensures AppFabric cache are working",
+    "deploy::download_artifacts": "Downloads artifacts",
+    "deploy::download_binaries": "Downloads binaries",
+    "deploy::download_pims": "Downloads pims",
+    "deploy::elastic_search": "Deploys ElasticSearch",
+    "deploy::enable_msmq": "Enables msmq",
+    "deploy::launch_activemq": "Launches ActiveMQ",
+    "deploy::launch_mule": "Launches Mule",
+    "deploy::mule": "Deploys Mule ESB",
+    "deploy::engine": "Deploys Engine",
+    "deploy::foundation_services": "Deploys the foundation rest services",
+    "deploy::jspr": "Deploys the web server websites",
+    "deploy::mongo": "Deploys mongodb",
+    "deploy::provision": "Provisions basic system data",
+    "deploy::reindex_elastic_search": "Reindexes ElasticSearch (should be going away)",
+    "deploy::smoke_tests_global": "Runs global smoke tests",
+    "deploy::smoke_tests_local_app": "Runs local app server smoke tests",
+    "deploy::smoke_tests_local_cache": "Runs local cache server smoke tests",
+    "deploy::smoke_tests_local_db": "Runs local db server smoke tests",
+    "deploy::smoke_tests_local_engine": "Runs local engine server smoke tests",
+    "deploy::smoke_tests_local_messaging": "Runs local messaging server smoke tests",
+    "deploy::smoke_tests_local_web": "Runs local web server smoke tests",
+    "deploy::register_cache_hostname": "Registers the cache hostname and ip in the hosts file",
+    "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server"
+  },
+  "version": "0.0.1"
+}
