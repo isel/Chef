@@ -1,6 +1,6 @@
 binaries_directory = node['binaries_directory']
 
-war = 'engine'
+war = 'droolz'
 
 bash 'stop tomcat' do
   code <<-EOF
