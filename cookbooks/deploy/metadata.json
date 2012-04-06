@@ -21,6 +21,68 @@
   "replacing": {
   },
   "attributes": {
+    "deploy/app_listener_name": {
+      "display_name": "specifies which HAProxy server pool to use",
+      "required": "required",
+      "recipes": [
+        "deploy::register_appserver_with_haproxy"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/backend_name": {
+      "display_name": "A unique name for each back end e.g. (RS_INSTANCE_UUID)",
+      "required": "required",
+      "recipes": [
+        "deploy::register_appserver_with_haproxy"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/dns_name": {
+      "display_name": "DNS name of the front ends",
+      "required": "required",
+      "recipes": [
+        "deploy::register_appserver_with_haproxy"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/max_connections_per_lb": {
+      "display_name": "Maximum number of connections per server",
+      "required": "optional",
+      "default": "255",
+      "recipes": [
+        "deploy::register_appserver_with_haproxy"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/health_check_uri": {
+      "display_name": "Page to report the heart beat so the lb knows whether the server is up or not",
+      "required": "optional",
+      "default": "/HealthCheck.html",
+      "recipes": [
+        "deploy::register_appserver_with_haproxy"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/activemq_port": {
       "display_name": "activemq port",
       "required": "optional",
@@ -513,6 +575,7 @@
     "deploy::jspr": "Deploys the web server websites",
     "deploy::mongo": "Deploys mongodb",
     "deploy::provision": "Provisions basic system data",
+    "deploy::register_appserver_with_haproxy": "Registers an app server with each load balancer",
     "deploy::reindex_elastic_search": "Reindexes ElasticSearch (should be going away)",
     "deploy::smoke_tests_global": "Runs global smoke tests",
     "deploy::smoke_tests_local_app": "Runs local app server smoke tests",

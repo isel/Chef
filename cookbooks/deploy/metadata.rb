@@ -25,6 +25,7 @@ recipe "deploy::foundation_services", "Deploys the foundation rest services"
 recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::provision", "Provisions basic system data"
+recipe "deploy::register_appserver_with_haproxy", "Registers an app server with each load balancer"
 recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
 recipe "deploy::smoke_tests_global", "Runs global smoke tests"
 recipe "deploy::smoke_tests_local_app", "Runs local app server smoke tests"
@@ -35,6 +36,33 @@ recipe "deploy::smoke_tests_local_messaging", "Runs local messaging server smoke
 recipe "deploy::smoke_tests_local_web", "Runs local web server smoke tests"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
+
+attribute "deploy/app_listener_name",
+  :display_name => "specifies which HAProxy server pool to use",
+  :required => "required",
+  :recipes => ["deploy::register_appserver_with_haproxy"]
+
+attribute "deploy/backend_name",
+  :display_name => "A unique name for each back end e.g. (RS_INSTANCE_UUID)",
+  :required => "required",
+  :recipes  => ["deploy::register_appserver_with_haproxy"]
+
+attribute "deploy/dns_name",
+  :display_name => "DNS name of the front ends",
+  :required => "required",
+  :recipes  => ["deploy::register_appserver_with_haproxy"]
+
+attribute "deploy/max_connections_per_lb",
+  :display_name => "Maximum number of connections per server",
+  :required => "optional",
+  :default  => "255",
+  :recipes  => ["deploy::register_appserver_with_haproxy"]
+
+attribute "deploy/health_check_uri",
+  :display_name => "Page to report the heart beat so the lb knows whether the server is up or not",
+  :required => "optional",
+  :default  => "/HealthCheck.html",
+  :recipes  => ["deploy::register_appserver_with_haproxy"]
 
 attribute "deploy/activemq_port",
   :display_name => "activemq port",
