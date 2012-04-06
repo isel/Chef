@@ -38,28 +38,33 @@ recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip i
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
 
 attribute "deploy/app_listener_name",
-  :display_name => "specifies which HAProxy server pool to use",
+  :display_name => "app listener name",
+  :description => "specifies which HAProxy server pool to use",
   :required => "required",
   :recipes => ["deploy::register_appserver_with_haproxy"]
 
 attribute "deploy/backend_name",
-  :display_name => "A unique name for each back end e.g. (RS_INSTANCE_UUID)",
+  :display_name => "backend name",
+  :description => "A unique name for each back end e.g. (RS_INSTANCE_UUID)",
   :required => "required",
   :recipes  => ["deploy::register_appserver_with_haproxy"]
 
 attribute "deploy/dns_name",
-  :display_name => "DNS name of the front ends",
+  :display_name => "dns name",
+  :description => "DNS name of the front ends",
   :required => "required",
   :recipes  => ["deploy::register_appserver_with_haproxy"]
 
 attribute "deploy/max_connections_per_lb",
-  :display_name => "Maximum number of connections per server",
+  :display_name => "max connection per load balancer",
+  :description => "Maximum number of connections per server",
   :required => "optional",
   :default  => "255",
   :recipes  => ["deploy::register_appserver_with_haproxy"]
 
 attribute "deploy/health_check_uri",
-  :display_name => "Page to report the heart beat so the lb knows whether the server is up or not",
+  :display_name => "health check uri",
+  :description => "Page to report the heart beat so the lb knows whether the server is up or not",
   :required => "optional",
   :default  => "/HealthCheck.html",
   :recipes  => ["deploy::register_appserver_with_haproxy"]
