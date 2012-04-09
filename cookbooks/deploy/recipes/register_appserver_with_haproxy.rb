@@ -5,7 +5,10 @@ powershell 'Register app server with HAProxy' do
       'LB_BACKEND_NAME' => node[:deploy][:backend_name], #env:RS_INSTANCE_UUID
       'LB_HOSTNAME' => node[:deploy][:dns_name], #api.globalincite.info
       'MAX_CONN_PER_SERVER' => node[:deploy][:max_connections_per_lb], #255
-      'HEALTH_CHECK_URI' => node[:deploy][:health_check_uri] #/HealthCheck.html
+      'HEALTH_CHECK_URI' => node[:deploy][:health_check_uri], #/HealthCheck.html
+      'PRIVATE_SSH_KEY' => node[:deploy][:private_ssh_key],
+      'WEB_SERVER_PORT' => node[:deploy][:web_server_port],
+      'OPT_SESSION_STICKINESS' => node[:deploy][:session_stickiness]
     }
   )
 

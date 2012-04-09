@@ -69,6 +69,23 @@ attribute "deploy/health_check_uri",
   :default  => "/HealthCheck.html",
   :recipes  => ["deploy::register_appserver_with_haproxy"]
 
+attribute "deploy/private_ssh_key",
+  :display_name => "private ssh key",
+  :description => "The ssh key used to connect to the load balancer",
+  :required => "required",
+  :recipes  => ["deploy::register_appserver_with_haproxy"]
+
+attribute "deploy/web_server_port",
+  :display_name => "web server port",
+  :required => "required",
+  :recipes  => ["deploy::register_appserver_with_haproxy"]
+
+attribute "deploy/session_stickiness",
+  :display_name => "session stickiness",
+  :required => "optional",
+  :default  => "false",
+  :recipes  => ["deploy::register_appserver_with_haproxy"]
+
 attribute "deploy/activemq_port",
   :display_name => "activemq port",
   :required => "optional",
