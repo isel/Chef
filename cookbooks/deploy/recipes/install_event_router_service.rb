@@ -15,8 +15,7 @@ $serviceDisplayName = "Ultimate Software Event Router Service"
 $install_logFile = 'service_install.log'
 $uninstall_logFile = 'service_uninstall.log'
 $attachment_dir = "$env:RS_ATTACH_DIR"
-$sourcePath = "$env:SOURCE_PATH"
-# $sourcePath= 'C:\DeployScripts_Binaries\AppServer\Services\Messaging\Messaging.EventRouter\bin';
+$sourcePath = Join-Path  "$env:SOURCE_PATH" 'AppServer\Services\Messaging\Messaging.EventRouter\bin'
 $installPath = "${Env:\ProgramData}\installdir"
 
 $assemblyFileSet = "*.*"
