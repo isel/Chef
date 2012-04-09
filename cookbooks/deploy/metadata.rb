@@ -200,8 +200,8 @@ attribute "deploy/server_manager_features",
   :display_name => "MSMQ features",
   :description => "List of windows MSMQ features to install",
   :required    => "optional",
-  :default     => "MSMQ-Server;MSMQ-HTTP-Support;MSMQ-Directory;MSMS-NoSuchFeature",
-  :recipes     => ["deploy::enable_msmq"]
+  :default     => "MSMQ-Server;MSMQ-HTTP-Support;MSMQ-Directory",
+  :recipes     => ["deploy::enable_msmq","deploy::install_event_router_service"]
 
 attribute "deploy/tenant",
   :display_name => "tenant",

@@ -1,7 +1,9 @@
 powershell 'Install Event Router Service' do
   parameters (
     {
-      'SOURCE_PATH' => node[:binaries_directory].gsub('/','\\')
+      'SOURCE_PATH' => node[:binaries_directory].gsub('/','\\'),
+      'SERVER_MANAGER_FEATURES' => node[:deploy][:server_manager_features]
+
     }
   )
 
@@ -43,8 +45,7 @@ Get-ChildItem
 
 Write-Output "Check if prerequisite Windows Feature set is installed"
 
-$messageQueueFeatureSet = @( 'MSMQ','MSMQ-Services','MSMQ-Server')
-
+$features_array = $Env:SERVER_MANAGER_FEATURES -split ';'
 $installutil_command_fullpath = $installer_tools['v4.0_x86']
 
 $scInterval = 5
@@ -57,7 +58,7 @@ $scInterval = 5
 Import-Module ServerManager
 
 
-foreach ($feature in $messageQueueFeatureSet) {
+foreach ($feature in $features_array) {
   $test = get-WindowsFeature -Name $feature | Where-Object { $_.Installed -eq $true }
 
   if ($test -eq $null) {
