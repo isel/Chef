@@ -22,6 +22,7 @@ recipe "deploy::launch_mule",  "Launches Mule"
 recipe "deploy::mule", "Deploys Mule ESB"
 recipe "deploy::engine", "Deploys Engine"
 recipe "deploy::foundation_services", "Deploys the foundation rest services"
+recipe "deploy::install_event_router_service", "Installs Event Router Service"
 recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::provision", "Provisions basic system data"
@@ -160,6 +161,7 @@ attribute "deploy/force_provision",
   :display_name => "force provision",
   :required => "required",
   :recipes => ["deploy::provision"]
+
 
 attribute "deploy/mongo_version",
   :display_name => "mongo version",
