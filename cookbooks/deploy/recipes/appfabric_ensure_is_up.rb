@@ -7,9 +7,6 @@ powershell "Ensuring AppFabric caches are available" do
   )
   powershell_script = <<'POWERSHELL_SCRIPT'
 
-write-output 'Skipping appfabric caches check'
-exit 0
-
 import-module AppFabricPowershell
 import-module DistributedCacheAdministration
 use-cachecluster

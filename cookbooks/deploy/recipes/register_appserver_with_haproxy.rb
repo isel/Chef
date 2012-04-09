@@ -22,6 +22,8 @@ $ErrorActionPreference="Stop"
 
 function register_with_load_balancer($app_listener_name, $port)
 {
+  write-output "registering with load balancer ($app_listener_name, $port)"
+
   if(!$env:LB_HOSTNAME)
   {
     Write-Host "LB_HOSTNAME is not specified. No load balancer to connect - exiting."
@@ -101,7 +103,13 @@ function register_with_load_balancer($app_listener_name, $port)
   }
 }
 
-register_with_load_balancer $env:LB_APPLISTENER_NAME $env:WEB_SERVER_PORT
+$listener_names = $env:LB_APPLISTENER_NAME.split(',')
+$ports = $env:WEB_SERVER_PORT.split(',')
+
+for ($i = 0; $i -le $listener_names.Length - 1; $i++) {
+  register_with_load_balancer $listener_names[$i] $ports[$i]
+}
+
   EOF
 
   source(script)
