@@ -99,7 +99,7 @@ foreach($LB_IPAddress in $LB_IPAddresses) {
        Write-Output("{0}, moving on..." -f $_.Exception.Message)
        $Error.Clear()
    }
-   Write-Output ">>>>>>>Attaching app to host $LB_IPAddress <<<<<<<<<<<<<<"
+   Write-Output ">>>>>>>Attaching app to host $LB_IPAddress for backend $env:LB_BACKEND_NAME <<<<<<<<<<<<<<"
 
    # Run linux_command to register with HAProxy using the ssh client in the RightScale sandbox directory
    ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no root@$LB_IPAddress -i C:\HAProxy\private.key $linux_command
