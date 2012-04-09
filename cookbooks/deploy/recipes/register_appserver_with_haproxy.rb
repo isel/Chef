@@ -1,11 +1,11 @@
 powershell 'Register app server with HAProxy' do
   parameters (
     {
-      'LB_APPLISTENER_NAMES' => node[:deploy][:app_listener_names], #api, api81, api82
-      'LB_BACKEND_NAME' => node[:deploy][:backend_name], #env:RS_INSTANCE_UUID
-      'LB_HOSTNAME' => node[:deploy][:dns_name], #api.globalincite.info
-      'MAX_CONN_PER_SERVER' => node[:deploy][:max_connections_per_lb], #255
-      'HEALTH_CHECK_URI' => node[:deploy][:health_check_uri], #/HealthCheck.html
+      'LB_APPLISTENER_NAMES' => node[:deploy][:app_listener_names],
+      'LB_BACKEND_NAME' => node[:deploy][:backend_name],
+      'LB_HOSTNAME' => node[:deploy][:dns_name],
+      'MAX_CONN_PER_SERVER' => node[:deploy][:max_connections_per_lb],
+      'HEALTH_CHECK_URI' => node[:deploy][:health_check_uri],
       'PRIVATE_SSH_KEY' => node[:deploy][:private_ssh_key],
       'WEB_SERVER_PORTS' => node[:deploy][:web_server_ports],
       'OPT_SESSION_STICKINESS' => node[:deploy][:session_stickiness]
@@ -20,15 +20,15 @@ powershell 'Register app server with HAProxy' do
 # Stop and fail script when a command fails
 $ErrorActionPreference="Stop"
 
+if(!$env:LB_HOSTNAME)
+{
+  Write-Host "LB_HOSTNAME is not specified. No load balancer to connect - exiting."
+  exit 0
+}
+
 function register_with_load_balancer($app_listener_name, $port)
 {
   write-output "registering with load balancer ($app_listener_name, $port)"
-
-  if(!$env:LB_HOSTNAME)
-  {
-    Write-Host "LB_HOSTNAME is not specified. No load balancer to connect - exiting."
-    exit 0
-  }
 
   mkdir -force C:\HAProxy
   cd c:\HAProxy
