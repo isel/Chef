@@ -1,13 +1,13 @@
 powershell 'Register app server with HAProxy' do
   parameters (
     {
-      'LB_APPLISTENER_NAME' => node[:deploy][:app_listener_name], #api, api81, api82
+      'LB_APPLISTENER_NAMES' => node[:deploy][:app_listener_names], #api, api81, api82
       'LB_BACKEND_NAME' => node[:deploy][:backend_name], #env:RS_INSTANCE_UUID
       'LB_HOSTNAME' => node[:deploy][:dns_name], #api.globalincite.info
       'MAX_CONN_PER_SERVER' => node[:deploy][:max_connections_per_lb], #255
       'HEALTH_CHECK_URI' => node[:deploy][:health_check_uri], #/HealthCheck.html
       'PRIVATE_SSH_KEY' => node[:deploy][:private_ssh_key],
-      'WEB_SERVER_PORT' => node[:deploy][:web_server_port],
+      'WEB_SERVER_PORTS' => node[:deploy][:web_server_ports],
       'OPT_SESSION_STICKINESS' => node[:deploy][:session_stickiness]
     }
   )
@@ -103,8 +103,8 @@ function register_with_load_balancer($app_listener_name, $port)
   }
 }
 
-$listener_names = $env:LB_APPLISTENER_NAME.split(',')
-$ports = $env:WEB_SERVER_PORT.split(',')
+$listener_names = $env:LB_APPLISTENER_NAMES.split(',')
+$ports = $env:WEB_SERVER_PORTS.split(',')
 
 for ($i = 0; $i -le $listener_names.Length - 1; $i++) {
   register_with_load_balancer $listener_names[$i] $ports[$i]

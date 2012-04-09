@@ -37,9 +37,9 @@ recipe "deploy::smoke_tests_local_web", "Runs local web server smoke tests"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
 
-attribute "deploy/app_listener_name",
-  :display_name => "app listener name",
-  :description => "specifies which HAProxy server pool to use",
+attribute "deploy/app_listener_names",
+  :display_name => "app listener names",
+  :description => "specifies which HAProxy servers pool to use",
   :required => "required",
   :recipes => ["deploy::register_appserver_with_haproxy"]
 
@@ -75,8 +75,8 @@ attribute "deploy/private_ssh_key",
   :required => "required",
   :recipes  => ["deploy::register_appserver_with_haproxy"]
 
-attribute "deploy/web_server_port",
-  :display_name => "web server port",
+attribute "deploy/web_server_ports",
+  :display_name => "web server ports",
   :required => "required",
   :recipes  => ["deploy::register_appserver_with_haproxy"]
 

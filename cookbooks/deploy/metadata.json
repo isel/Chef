@@ -21,9 +21,9 @@
   "replacing": {
   },
   "attributes": {
-    "deploy/app_listener_name": {
-      "display_name": "app listener name",
-      "description": "specifies which HAProxy server pool to use",
+    "deploy/app_listener_names": {
+      "display_name": "app listener names",
+      "description": "specifies which HAProxy servers pool to use",
       "required": "required",
       "recipes": [
         "deploy::register_appserver_with_haproxy"
@@ -101,8 +101,8 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/web_server_port": {
-      "display_name": "web server port",
+    "deploy/web_server_ports": {
+      "display_name": "web server ports",
       "required": "required",
       "recipes": [
         "deploy::register_appserver_with_haproxy"
