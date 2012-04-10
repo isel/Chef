@@ -421,6 +421,20 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/service_platform": {
+      "display_name": "EventRouter HTTP runtime",
+      "description": "The .net runtime / affinity the  EventRouter service is hosted",
+      "required": "optional",
+      "default": "v4.0_x86",
+      "recipes": [
+        "deploy::install_event_router_service"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/service_port": {
       "display_name": "EventRouter HTTP Port",
       "description": "HTTP Port the WCF EventRouter service is listening",

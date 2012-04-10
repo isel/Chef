@@ -3,7 +3,8 @@ powershell 'Install Event Router Service' do
     {
       'SOURCE_PATH' => node[:binaries_directory].gsub('/','\\'),
       'SERVER_MANAGER_FEATURES' => node[:deploy][:server_manager_features],
-      'SERVICE_PORT' => node[:deploy][:service_port]
+      'SERVICE_PORT' => node[:deploy][:service_port],
+      'SERVICE_PLATROFM' => node[:deploy][:service_platform],
 
     }
   )
@@ -24,8 +25,8 @@ write-output "REBOOT=${Env:RS_REBOOT}"
 $install_logFile = 'service_install.log'
 $uninstall_logFile = 'service_uninstall.log'
 $attachment_dir = "$env:RS_ATTACH_DIR"
-$sourcePath = Join-Path  "$env:SOURCE_PATH" 'AppServer\Services\Messaging\Messaging.EventRouter\bin'
-$installPath = "${Env:\ProgramData}\installdir"
+$sourcePath = Join-Path  "$env:SOURCE_PATH" 'AppServer\Services\Messaging.EventRouter'
+$installPath = "${Env:\ProgramData}\Windows Services\Messaging Event Router"
 
 $assemblyFileSet = "*.*"
 $assemblyFileName = "UltimateSoftware.Foundation.Messaging.EventRouter.exe"
@@ -53,7 +54,7 @@ Get-ChildItem
 Write-Output "Check if prerequisite Windows Feature set is installed"
 
 $features_array = $Env:SERVER_MANAGER_FEATURES -split ';'
-$installutil_command_fullpath = $installer_tools['v4.0_x86']
+$installutil_command_fullpath = $installer_tools[$Env:SERVICE_PLATROFM]
 
 $scInterval = 5
 
