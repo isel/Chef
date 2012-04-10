@@ -41,6 +41,7 @@ attribute "deploy/app_listener_names",
   :display_name => "app listener names",
   :description => "specifies which HAProxy servers pool to use",
   :required => "required",
+  :default  => "api80,api81,api82",
   :recipes => ["deploy::register_appserver_with_haproxy"]
 
 attribute "deploy/backend_name",
@@ -78,6 +79,7 @@ attribute "deploy/private_ssh_key",
 attribute "deploy/web_server_ports",
   :display_name => "web server ports",
   :required => "required",
+  :default  => "80,81,82",
   :recipes  => ["deploy::register_appserver_with_haproxy"]
 
 attribute "deploy/session_stickiness",
