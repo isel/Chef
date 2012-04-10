@@ -15,7 +15,7 @@ powershell_script = <<-'EOF'
 
 $serviceDisplayName = "Ultimate Software Event Router Service"
 
-if ( (${Env:RS_REBOOT} -ne $null) -and !(${Env:RS_REBOOT} -match  "true"))  {
+if ( (${Env:RS_REBOOT} -ne $null) -and (${Env:RS_REBOOT} -match  "true"))  {
   write-output  "Skipping installation of ${serviceDisplayName} execution on reboot: ${Env:RS_REBOOT}."
   exit 0;
 }
