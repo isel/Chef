@@ -40,7 +40,7 @@ recipe "deploy::tag_data_version", "Writes a tag denoting what data version has 
 attribute "deploy/app_listener_names",
   :display_name => "app listener names",
   :description => "specifies which HAProxy servers pool to use",
-  :required => "required",
+  :required => "optional",
   :default  => "api80,api81,api82",
   :recipes => ["deploy::register_appserver_with_haproxy"]
 
@@ -78,7 +78,7 @@ attribute "deploy/private_ssh_key",
 
 attribute "deploy/web_server_ports",
   :display_name => "web server ports",
-  :required => "required",
+  :required => "optional",
   :default  => "80,81,82",
   :recipes  => ["deploy::register_appserver_with_haproxy"]
 
