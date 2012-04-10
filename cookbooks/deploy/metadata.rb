@@ -203,6 +203,14 @@ attribute "deploy/server_manager_features",
   :default     => "MSMQ-Server;MSMQ-HTTP-Support;MSMQ-Directory",
   :recipes     => ["deploy::enable_msmq","deploy::install_event_router_service"]
 
+attribute "deploy/service_port",
+  :display_name => "EventRouter HTTP Port",
+  :description => "HTTP Port the WCF EventRouter service is listening",
+  :required    => "optional",
+  :default     => "8989",
+  :recipes     => ["deploy::install_event_router_service"]
+
+
 attribute "deploy/tenant",
   :display_name => "tenant",
   :required => "required",

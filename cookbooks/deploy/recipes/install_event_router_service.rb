@@ -2,7 +2,8 @@ powershell 'Install Event Router Service' do
   parameters (
     {
       'SOURCE_PATH' => node[:binaries_directory].gsub('/','\\'),
-      'SERVER_MANAGER_FEATURES' => node[:deploy][:server_manager_features]
+      'SERVER_MANAGER_FEATURES' => node[:deploy][:server_manager_features],
+      'SERVICE_PORT' => node[:deploy][:service_port]
 
     }
   )
@@ -119,6 +120,44 @@ Start-Sleep $scInterval
 Write-Output "Confirm the service ""$serviceDisplayName"" is  operational"
 $test = Get-Service | where { $_.displayname -match $serviceDisplayName -and $_.status -match 'running' }
 Write-Output $test
+
+
+write-output "Configure the new security settings in Windows for EventRouter on port ${env:SERVICE_PORT}"
+<#
+
+* Core netsh documentation:
+http://msdn.microsoft.com/en-us/library/windows/desktop/cc307245%28v=vs.85%29.aspx
+
+* specific configuration :
+http://www.beautyandthebaud.com/http-could-not-register-url-http8000-your-process-does-not-have-access-rights-to-this-namespace/ -
+
+#>
+
+write-output "Configure the new security settings in Windows for EventRouter on port ${env:SERVICE_PORT}"
+<#
+
+* Core netsh documentation:
+http://msdn.microsoft.com/en-us/library/windows/desktop/cc307245%28v=vs.85%29.aspx
+
+* specific configuration :
+http://www.beautyandthebaud.com/http-could-not-register-url-http8000-your-process-does-not-have-access-rights-to-this-namespace/ -
+
+#>
+$url_expression = "http://+:${env:SERVICE_PORT}/EventRouter/"
+
+$check_urlacl =  ( netsh http show urlacl ) | where-object {$_ -match "$env:SERVICE_PORT"}
+# cannot currently distinguish if there was a correct or a wrong ACL
+if ($check_urlacl -ne $null){
+  netsh http delete urlacl url=$url_expression
+}
+netsh http add urlacl url=$url_expression user="NETWORK SERVICE"
+
+# display the settings
+netsh http show urlacl "url=${url_expression}"
+
+
+
+
 
 $Error.clear()
 
