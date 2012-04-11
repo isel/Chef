@@ -31,7 +31,7 @@ bash 'Setting directory links' do
   if [ -d  "apache-activemq-#{version}" ] ; then
     ln -s apache-activemq-#{version} #{product}
   fi
-  pushd "#{product}
+  pushd "#{product}"
   chmod -R 777 .
   if [ ! -f /opt/activemq/bin/activemq ] ; then
     exit 1

@@ -1,6 +1,27 @@
 # Erase all existence of "standard" ruby 1.8 and replace it with the RVM installed/default ruby
 if node[:platform] == "ubuntu"
 
+  ruby_scripts_dir = node['ruby_scripts_dir']
+  template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
+    source 'scripts/download_vendor_drop.erb'
+    variables(
+      :aws_access_key_id => node[:aws][:access_key_id],
+      :aws_secret_access_key => node[:aws][:secret_access_key],
+      :product => 'ruby',
+      :version => '1.9.2-p318',
+      :filelist => 'ruby',
+      :no_explode => '1'
+    )
+  end
+
+  bash 'Downloading artifacts' do
+    code <<-EOF
+      ruby #{ruby_scripts_dir}/download_vendor_drop.rb
+    EOF
+  end
+
+
+
   if !File.exists?(node[:rvm][:install_path])
     bindir=::File.join(node[:rvm][:install_path], 'bin')
     node[:rvm][:bin_path] = ::File.join(node[:rvm][:install_path], "bin", "rvm")
@@ -16,24 +37,6 @@ if node[:platform] == "ubuntu"
       creates "/tmp/rvm"
     end
 
-    ruby_scripts_dir = node['ruby_scripts_dir']
-    template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
-      source 'scripts/download_vendor_drop.erb'
-      variables(
-        :aws_access_key_id => node[:aws][:access_key_id],
-        :aws_secret_access_key => node[:aws][:secret_access_key],
-        :product => 'ruby',
-        :version => '1.9.2-p318',
-        :filelist => 'ruby',
-        :no_explode => '1'
-      )
-    end
-
-    bash 'Downloading artifacts' do
-      code <<-EOF
-        ruby #{ruby_scripts_dir}/download_vendor_drop.rb
-      EOF
-    end
 
 
     bash "Install RVM for all users" do
