@@ -1,8 +1,11 @@
-# TODO - skip action when directory already exists.
-
 ruby_scripts_dir = node['ruby_scripts_dir']
 version  = node[:deploy][:activemq_version]
 product = 'activemq'
+
+
+# Skip action when #{product} directory already exists.
+if !File.exists?("/opt/#{product}")
+
 template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
   source 'scripts/download_vendor_drop.erb'
   variables(
@@ -25,10 +28,10 @@ end
 bash 'Setting directory links' do
   code <<-EOF
   pushd /opt
-  if [ -d  "apache-activemq-#{version} ] ; then
+  if [ -d  "apache-activemq-#{version}" ] ; then
     ln -s apache-activemq-#{version} #{product}
   fi
-  pushd activemq
+  pushd "#{product}
   chmod -R 777 .
   if [ ! -f /opt/activemq/bin/activemq ] ; then
     exit 1
@@ -37,3 +40,7 @@ EOF
 end
 
 log 'Activemq successfully installed'
+else
+  log 'Activemq is already registered.'
+end
+
