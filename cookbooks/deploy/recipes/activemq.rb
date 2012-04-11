@@ -4,7 +4,6 @@ template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
   variables(
     :aws_access_key_id => node[:deploy][:aws_access_key_id],
     :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
-    :install_dir => install_dir,
     :product => 'activemq',
     :version => node[:deploy][:activemq_version],
     :filelist => 'activemq',

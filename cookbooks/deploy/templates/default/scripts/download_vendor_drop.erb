@@ -6,20 +6,18 @@ require 'fileutils'
 # a flag to suppress exploding the tarball.
 # the name does not have to be of any formar (e.g. rvm expects ruby-1.9.2-p318.tar.bz2 )
 
-install_dir = '<%= @install_dir %>'
 version = '<%= @version %>'
 product = '<%= @product %>'
 filelist =  '<%= @filelist %>'
 no_explode =  <%= @no_explode %>
 
-puts "downloading #{product} version: #{version} to #{install_dir}"
+puts "downloading #{product} version: #{version}"
 
 storage = Fog::Storage.new(
   :provider => 'AWS',
   :aws_access_key_id => '<%= @aws_access_key_id %>',
   :aws_secret_access_key => '<%= @aws_secret_access_key %>'
 )
-
 
 s3_files = storage.directories.find { |d| d.key == 'ugfinfrastructure' }
 

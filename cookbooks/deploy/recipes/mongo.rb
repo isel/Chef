@@ -7,7 +7,6 @@ if !File.exists?('/opt/Mongo')
     variables(
       :aws_access_key_id => node[:deploy][:aws_access_key_id],
       :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
-      :install_dir => install_dir,
       :product => 'Mongo',
       :version => version,
       :filelist => 'mongo',
