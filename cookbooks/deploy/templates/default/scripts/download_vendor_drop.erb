@@ -11,6 +11,8 @@ product = '<%= @product %>'
 filelist =  '<%= @filelist %>'
 no_explode =  <%= @no_explode %>
 
+deploy_folder = "/opt/#{product}/"
+
 puts "downloading #{product} version: #{version}"
 
 storage = Fog::Storage.new(
