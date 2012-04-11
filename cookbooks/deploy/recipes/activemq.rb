@@ -1,11 +1,12 @@
 ruby_scripts_dir = node['ruby_scripts_dir']
+version  = node[:deploy][:activemq_version]
 template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
   source 'scripts/download_vendor_drop.erb'
   variables(
     :aws_access_key_id => node[:deploy][:aws_access_key_id],
     :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
     :product => 'activemq',
-    :version => node[:deploy][:activemq_version],
+    :version => version,
     :filelist => 'activemq',
     :no_explode => '0'
   )
