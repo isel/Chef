@@ -58,11 +58,11 @@ attribute "rvm/compile_gemset/shutdown",
 attribute "aws/access_key_id",
   :display_name => "Access Key Id",
   :description => "This is an Amazon credential. Log in to your AWS account at aws.amazon.com to retrieve you access identifiers. Ex: 1JHQQ4KVEVM02KVEVM02",
-  :recipes => ["rvm::compile_gemset"],
+  :recipes => ["rvm::compile_gemset", "rvm::default"],
   :required => "required"
 
 attribute "aws/secret_access_key",
   :display_name => "Secret Access Key",
   :description => "This is an Amazon credential. Log in to your AWS account at aws.amazon.com to retrieve your access identifiers. Ex: XVdxPgOM4auGcMlPz61IZGotpr9LzzI07tT8s2Ws",
-  :recipes => ["rvm::compile_gemset"],
+  :recipes => ["rvm::compile_gemset", "rvm::default"],
   :required => "required"
