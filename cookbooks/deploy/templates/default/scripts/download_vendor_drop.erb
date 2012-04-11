@@ -19,7 +19,7 @@ storage = Fog::Storage.new(
   :aws_secret_access_key => '<%= @aws_secret_access_key %>'
 )
 
-s3_files = storage.directories.find { |d| d.key == 'ugfinfrastructure' }
+s3_files = storage.directories.find { |d| d.key == 'ugfinfrastructure' }.files
 puts "Looking up the directory #{product}/#{version}"
 dirname_found  = false
 dirname_regexp_nocapture = Regexp.new("^#{product}\/#{version}\/.*$")
