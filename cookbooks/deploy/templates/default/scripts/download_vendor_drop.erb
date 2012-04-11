@@ -20,6 +20,18 @@ storage = Fog::Storage.new(
 )
 
 s3_files = storage.directories.find { |d| d.key == 'ugfinfrastructure' }
+puts "Looking up the directory #{product}/#{version}"
+dirname_found  = false
+dirname_regexp_nocapture = Regexp.new("^#{product}\/#{version}\/.*$")
+  s3_files.each do
+    |obj_ptr|
+    if dirname_regexp_nocapture.match(obj_ptr.key)
+      dirname_found = true
+    end
+  end
+if !dirname_found
+    puts "Cannot find product #{product} version #{version} directory in S3..."
+end
 
 puts "Reading the directory #{product}/#{version}/"
   filelist.split(';').each do |filename_expected|
@@ -35,19 +47,20 @@ puts "Reading the directory #{product}/#{version}/"
         resource_key = obj_ptr.key
         puts "Downloading: #{resource_key} => #{deploy_folder}/#{basename_local_file}"
         # need a checksum !
-        handle = s3_files.get(resource_key)
+        stream_handle = s3_files.get(resource_key)
         puts "Creating local paths"
         deploy_folder = "/opt/#{product}/"
         Dir.mkdir(deploy_folder)
         Dir.chdir(deploy_folder)
-        puts "Copying the file"
-        File.open("#{deploy_folder}/#{basename_local_file}", 'wb') do
+
+        puts " copying the file"
+         File.open("#{deploy_folder}/#{basename_local_file}", 'wb') do
           |local_file|
-          local_file.write(handle.body)
-        end
+          local_file.write(stream_handle.body)
+         end
         unless no_explode == 1  then
-        puts "Exploding/unlinking the file"
-         `tar xf #{basename_local_file}`
+        puts "unlinking the file"
+         `tar xf #{basename_local_file}.tar.gz`
          `rm "#{basename_local_file}"`
         end
       end
@@ -55,4 +68,5 @@ puts "Reading the directory #{product}/#{version}/"
     if !filename_found
       puts "Cannot find file like  #{filename_expected} in S3..."
     end
+
   end
