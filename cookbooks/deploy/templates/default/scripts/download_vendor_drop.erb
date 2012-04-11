@@ -10,8 +10,8 @@ version = '<%= @version %>'
 product = '<%= @product %>'
 filelist =  '<%= @filelist %>'
 no_explode =  <%= @no_explode %>
-
-deploy_folder = "/opt/#{product}"
+deploy_folder = '<%= @deploy_folder %>'
+deploy_folder = deploy_folder.empty? ?  "/opt/#{product}" : deploy_folder
 
 puts "downloading #{product} version: #{version}"
 
@@ -62,7 +62,7 @@ puts "Reading the directory #{product}/#{version}/"
          end
         unless no_explode == 1  then
         puts "unlinking the file"
-         `tar xf #{basename_local_file}.tar.gz`
+         `tar xf #{basename_local_file}`
          `rm "#{basename_local_file}"`
         end
       end
