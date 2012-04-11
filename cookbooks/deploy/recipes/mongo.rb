@@ -9,8 +9,7 @@ if !File.exists?('/opt/Mongo')
       :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
       :product => 'Mongo',
       :version => version,
-      :filelist => 'mongo',
-      :no_explode => '0'
+      :filelist => 'mongo'
     )
   end
   bash 'Installing vendor drop artifacts' do

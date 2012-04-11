@@ -2,6 +2,7 @@
 if node[:platform] == "ubuntu"
 
   ruby_scripts_dir = node['ruby_scripts_dir']
+  puts "Processing template (need a different path for rvm cookbook) " + File.join(File.dirname(__FILE__), '/scripts/download_vendor_drop.erb' )
   template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
     source 'scripts/download_vendor_drop.erb'
     variables(

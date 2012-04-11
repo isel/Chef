@@ -2,10 +2,8 @@ ruby_scripts_dir = node['ruby_scripts_dir']
 version  = node[:deploy][:activemq_version]
 product = 'activemq'
 
-
-# Skip action when #{product} directory already exists.
 if !File.exists?("/opt/#{product}")
-
+puts "Processing template (need a different path for rvm cookbook) " + File.join(File.dirname(__FILE__), '/scripts/download_vendor_drop.erb' )
 template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
   source 'scripts/download_vendor_drop.erb'
   variables(
@@ -14,8 +12,7 @@ template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
     :product => product,
     :version => version,
     :filelist => 'activemq',
-    :deploy_folder => '/opt',
-    :no_explode => '0'
+    :deploy_folder => '/opt'
   )
 end
 
