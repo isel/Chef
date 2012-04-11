@@ -11,7 +11,7 @@ product = '<%= @product %>'
 filelist =  '<%= @filelist %>'
 no_explode =  <%= @no_explode %>
 
-deploy_folder = "/opt/#{product}/"
+deploy_folder = "/opt/#{product}"
 
 puts "downloading #{product} version: #{version}"
 
@@ -51,8 +51,8 @@ puts "Reading the directory #{product}/#{version}/"
         # need a checksum !
         stream_handle = s3_files.get(resource_key)
         puts "Creating local paths"
-        deploy_folder = "/opt/#{product}/"
-        Dir.mkdir(deploy_folder)
+
+        Dir.mkdir(deploy_folder) unless Dir.exists?(deploy_folder)
         Dir.chdir(deploy_folder)
 
         puts " copying the file"
