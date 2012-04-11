@@ -1,3 +1,4 @@
+ruby_scripts_dir = node['ruby_scripts_dir']
 if !File.exists?('/opt/Mongo')
   version = node[:deploy][:mongo_version]
   install_directory="/opt/Mongo/mongodb-linux-x86_64-#{version}"

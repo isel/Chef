@@ -1,3 +1,4 @@
+ruby_scripts_dir = node['ruby_scripts_dir']
 template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
   source 'scripts/download_vendor_drop.erb'
   variables(
