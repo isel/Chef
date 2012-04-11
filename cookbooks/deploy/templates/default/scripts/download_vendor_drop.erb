@@ -1,0 +1,60 @@
+require 'fog'
+require 'fileutils'
+
+# copies and expands vendor product tarball from produce/version specific s3
+# location. The caller is to arrange for the directory links and provide
+# a flag to suppress exploding the tarball.
+# the name does not have to be of any formar (e.g. rvm expects ruby-1.9.2-p318.tar.bz2 )
+
+install_dir = '<%= @install_dir %>'
+version = '<%= @version %>'
+product = '<%= @product %>'
+filelist =  '<%= @filelist %>'
+no_explode =  <%= @no_explode %>
+
+puts "downloading #{product} version: #{version} to #{install_dir}"
+
+storage = Fog::Storage.new(
+  :provider => 'AWS',
+  :aws_access_key_id => '<%= @aws_access_key_id %>',
+  :aws_secret_access_key => '<%= @aws_secret_access_key %>'
+)
+
+
+s3_files = storage.directories.find { |d| d.key == 'ugfinfrastructure' }
+
+puts "Reading the directory #{product}/#{version}/"
+  filelist.split(';').each do |filename_expected|
+    filename_found = false
+    puts "searching for #{filename_expected}"
+    regexp_capture = Regexp.new("#{product}\/#{version}\/(#{filename_expected}.*)$")
+    s3_files.each do
+      |obj_ptr|
+      # no control over multiple matches
+      if regexp_capture.match(obj_ptr.key)
+        filename_found = true
+        basename_local_file =  $1
+        resource_key = obj_ptr.key
+        puts "Downloading: #{resource_key} => #{deploy_folder}/#{basename_local_file}"
+        # need a checksum !
+        handle = s3_files.get(resource_key)
+        puts "Creating local paths"
+        deploy_folder = "/opt/#{product}/"
+        Dir.mkdir(deploy_folder)
+        Dir.chdir(deploy_folder)
+        puts "Copying the file"
+        File.open("#{deploy_folder}/#{basename_local_file}", 'wb') do
+          |local_file|
+          local_file.write(handle.body)
+        end
+        unless no_explode == 1  then
+        puts "Exploding/unlinking the file"
+         `tar xf #{basename_local_file}`
+         `rm "#{basename_local_file}"`
+        end
+      end
+    end
+    if !filename_found
+      puts "Cannot find file like  #{filename_expected} in S3..."
+    end
+  end
