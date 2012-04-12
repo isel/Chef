@@ -9,10 +9,10 @@ require 'fileutils'
 version = '<%= @version %>'
 product = '<%= @product %>'
 filelist =  '<%= @filelist %>'
-no_explode =  <%= @no_explode %>
+no_explode =  '<%= @no_explode %>'
 deploy_folder = '<%= @deploy_folder %>'
 deploy_folder = deploy_folder.empty? ?  "/opt/#{product}" : deploy_folder
-
+no_explode =  ( no_explode.nil? or no_explode.empty?) ? false : true;
 puts "downloading #{product} version: #{version}"
 
 storage = Fog::Storage.new(
@@ -60,8 +60,8 @@ puts "Reading the directory #{product}/#{version}/"
           |local_file|
           local_file.write(stream_handle.body)
          end
-        unless no_explode == 1  then
-        puts "unlinking the file"
+        unless ( no_explode ) then
+        puts "exploding and unlinking the file #{basename_local_file}"
          `tar xf #{basename_local_file}`
          `rm "#{basename_local_file}"`
         end
