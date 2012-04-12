@@ -19,14 +19,7 @@ attribute "rvm/install_path",
 
 attribute "rvm/ruby",
   :display_name => "RVM Ruby Name",
-  :description => "The full RVM version to install and set as default. Matches the version cached on s3",
-  :required => "optional",
-  :default => "ruby-1.9.2-p318",
-  :recipes => ["rvm::default"]
-
-attribute "rvm/ruby_head",
-  :display_name => "RVM Ruby Name",
-  :description => "The most recent RVM version to pull from the web, install and set as default. To find a list run `rvm list known`.  I.E. ruby-1.8.7-head",
+  :description => "The full RVM version to install and set as default. To find a list run `rvm list known`.  I.E. ruby-1.8.7-head",
   :required => "optional",
   :default => "ruby-1.9.2-head",
   :recipes => ["rvm::default"]
@@ -65,7 +58,7 @@ attribute "rvm/compile_gemset/shutdown",
 attribute "aws/access_key_id",
   :display_name => "Access Key Id",
   :description => "This is an Amazon credential. Log in to your AWS account at aws.amazon.com to retrieve you access identifiers. Ex: 1JHQQ4KVEVM02KVEVM02",
-  :recipes => ["rvm::compile_gemset", "rvm::default"],
+  :recipes => ["rvm::compile_gemset"],
   :required => "required"
 
 attribute "aws/secret_access_key",
