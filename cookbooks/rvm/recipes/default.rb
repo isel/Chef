@@ -3,7 +3,7 @@ if node[:platform] == "ubuntu"
 
   ruby_scripts_dir = node['ruby_scripts_dir']
   puts "Processing template (need a different path for rvm cookbook) " + File.join(File.dirname(__FILE__), '/scripts/download_vendor_drop.erb' )
-  if (0)
+
   template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
     source 'scripts/download_vendor_drop.erb'
     variables(
@@ -12,19 +12,33 @@ if node[:platform] == "ubuntu"
       :product => 'ruby',
       :version => '1.9.2-p318',
       :filelist => 'ruby',
+      :deploy_folder => '/opt/rvm/archives/',
       :no_explode => '1'
     )
   end
-  end
-  bash 'Downloading artifacts' do
+
+  # TODO  copy the rvm-installer (8K )
+  bash 'Remove rvm directory' do
     code <<-EOF
-      ruby #{ruby_scripts_dir}/download_vendor_drop.rb
+      rm -rf /opt/rvm
+      mkdir -p /opt/rvm/archives
     EOF
   end
 
+  bash 'Download ruby from s3 to cache rvm install' do
+    code <<-EOF
+      ruby #{ruby_scripts_dir}/download_vendor_drop.rb
+      cd /opt/rvm
+      tar xjvf archives/ruby-1.9.2-p318.tar.bz2
+    EOF
+  end
 
+  # TODO  fetch yaml-0.1.4.tar.gz
+  # where is the version defined ?
+  # inside the  wayneeseguin-rvm-master.tgz
+  # which we do not control
 
-  if !File.exists?(node[:rvm][:install_path])
+  # if !File.exists?(node[:rvm][:install_path])
     bindir=::File.join(node[:rvm][:install_path], 'bin')
     node[:rvm][:bin_path] = ::File.join(node[:rvm][:install_path], "bin", "rvm")
 
@@ -40,18 +54,25 @@ if node[:platform] == "ubuntu"
     end
 
 
-
+    #temporary override the version variable 1.9.2-p318
     bash "Install RVM for all users" do
       code <<-EOF
+        echo "/tmp/rvm --path #{node[:rvm][:install_path]} #{node[:rvm][:version]}"
         /tmp/rvm --path #{node[:rvm][:install_path]} #{node[:rvm][:version]}
+        echo "switching to #{node[:rvm][:bin_path]}
         #{node[:rvm][:bin_path]} reload
       EOF
     end
 
     bash "Installing #{node[:rvm][:ruby]} as RVM's default ruby" do
       code <<-EOF
-        #{node[:rvm][:bin_path]} install #{node[:rvm][:ruby]}
-        #{node[:rvm][:bin_path]} --default use #{node[:rvm][:ruby]}
+#        #{node[:rvm][:bin_path]} install #{node[:rvm][:ruby]}
+         /opt/rvm/bin/rvm install --verbose  ruby-1.9.2-p318
+
+#
+#         #{node[:rvm][:bin_path]} --default use #{node[:rvm][:ruby]}
+          /opt/rvm/bin/rvm install --default use ruby-1.9.2-p318
+
       EOF
     end
 
@@ -66,9 +87,9 @@ if node[:platform] == "ubuntu"
       creates "/usr/bin/ruby"
       action :run
     end
-  else
-    Chef::Log.info("RVM and default ruby are already installed. Skipping setup")
-  end
+#  else
+#    Chef::Log.info("RVM and default ruby are already installed. Skipping setup")
+#  end
 else
   Chef::Log.info("Your platform (#{node[:platform]}) is not supported by this recipe!")
 end
