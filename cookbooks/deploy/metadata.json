@@ -465,6 +465,32 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/lb_ssl_certificate": {
+      "display_name": "lb ssl certificate",
+      "description": "The contents of the SSL Certificate which can be obtained from the 'mycert.crt' file.",
+      "required": "required",
+      "recipes": [
+        "deploy::configure_load_balancer_forwarding"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/lb_ssl_key": {
+      "display_name": "lb ssl key",
+      "description": "The contents of the SSL key file (key.pem) that's required for secure (https) connections.",
+      "required": "required",
+      "recipes": [
+        "deploy::configure_load_balancer_forwarding"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/lb_website_dns": {
       "display_name": "lb website dns",
       "description": "The fully qualified domain name that the server will accept traffic for. Ex: www.globalincite.com",
