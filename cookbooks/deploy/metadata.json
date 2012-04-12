@@ -443,7 +443,7 @@
       "required": "optional",
       "default": "globalincite",
       "recipes": [
-        "deploy:configure_load_balancer_forwarding"
+        "deploy::configure_load_balancer_forwarding"
       ],
       "choice": [
 
@@ -457,7 +457,7 @@
       "required": "optional",
       "default": "/system/maintenance.html",
       "recipes": [
-        "deploy:configure_load_balancer_forwarding"
+        "deploy::configure_load_balancer_forwarding"
       ],
       "choice": [
 
@@ -470,7 +470,7 @@
       "description": "The fully qualified domain name that the server will accept traffic for. Ex: www.globalincite.com",
       "required": "required",
       "recipes": [
-        "deploy:configure_load_balancer_forwarding"
+        "deploy::configure_load_balancer_forwarding"
       ],
       "choice": [
 
