@@ -80,7 +80,7 @@ a2enmod rewrite
 if [ "#{lb_bind_port}" == "443" ]; then
   a2enmod headers
   a2enmod ssl
-if
+fi
 service apache2 restart
 
 logger -t RightScale "Vhost configuration done."
