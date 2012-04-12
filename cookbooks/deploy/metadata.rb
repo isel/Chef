@@ -12,6 +12,7 @@ recipe "deploy::adjust_ulimit", "Adjusts open files limit for log4j"
 recipe "deploy::appfabric_configure", "Configures AppFabric"
 recipe "deploy::appfabric_powershell", "Deploys AppFabric Powershell cmdlets"
 recipe "deploy::appfabric_ensure_is_up", "Ensures AppFabric cache are working"
+recipe "deploy::configure_load_balancer_forwarding", "Adds an entry vhost (frontend) that forwards requests to the next target"
 recipe "deploy::download_artifacts", "Downloads artifacts"
 recipe "deploy::download_binaries", "Downloads binaries"
 recipe "deploy::download_pims", "Downloads pims"
@@ -213,6 +214,26 @@ attribute "deploy/force_provision",
   :required => "required",
   :recipes => ["deploy::provision"]
 
+attribute "deploy/lb_application",
+  :display_name => "lb application",
+  :description => "Sets the directory for your application's web files (/home/webapps/APPLICATION/current/). If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory. This must be a valid directory name. Do not use symbols in the name.",
+  :required => "optional",
+  :default => "globalincite",
+  :recipes => ["deploy:configure_load_balancer_forwarding"]
+
+attribute "deploy/lb_maintenance_page",
+  :display_name => "lb maintenance page",
+  :description => "Optional path for a maintenance page, relative to document root (i.e., "".../current/public""). The file must exist in the subtree of the vhost, which will be served by the web server if it's present. If ignored, it will default to '/system/maintenance.html'.",
+  :required => "optional",
+  :default => "/system/maintenance.html",
+  :recipes => ["deploy:configure_load_balancer_forwarding"]
+
+attribute "deploy/lb_website_dns",
+  :display_name => "lb website dns",
+  :description => "The fully qualified domain name that the server will accept traffic for. Ex: www.globalincite.com",
+  :required => "required",
+  :recipes => ["deploy:configure_load_balancer_forwarding"]
+
 attribute "deploy/mongo_version",
   :display_name => "mongo version",
   :required => "optional",
@@ -283,6 +304,3 @@ attribute "core/server_type",
   :description => "eg: db, app, web, cache",
   :required => "required",
   :recipes => ["deploy::smoke_tests_local_app", "deploy::smoke_tests_local_cache", "deploy::smoke_tests_local_db", "deploy::smoke_tests_local_web" "deploy::smoke_tests_local_messaging"]
-
-
-
