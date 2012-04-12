@@ -120,16 +120,6 @@ cmd /c ${installutil_command_fullpath} "/InstallStateDir=${installPath}" "/LogFi
 Start-Sleep $scInterval
 # Get-Content -Path $install_logFile
 
-Write-Output "Start the service ""$serviceDisplayName"""
-cmd /c sc.exe start """${serviceDisplayName}"""
-Start-Sleep $scInterval
-
-Write-Output "Confirm the service ""$serviceDisplayName"" is  operational"
-$test = Get-Service | where { $_.displayname -match $serviceDisplayName -and $_.status -match 'running' }
-Write-Output $test
-
-
-write-output "Configure the new security settings in Windows for EventRouter on port ${env:SERVICE_PORT}"
 <#
 
 * Core netsh documentation:
@@ -141,15 +131,6 @@ http://www.beautyandthebaud.com/http-could-not-register-url-http8000-your-proces
 #>
 
 write-output "Configure the new security settings in Windows for EventRouter on port ${env:SERVICE_PORT}"
-<#
-
-* Core netsh documentation:
-http://msdn.microsoft.com/en-us/library/windows/desktop/cc307245%28v=vs.85%29.aspx
-
-* specific configuration :
-http://www.beautyandthebaud.com/http-could-not-register-url-http8000-your-process-does-not-have-access-rights-to-this-namespace/ -
-
-#>
 $url_expression = "http://+:${env:SERVICE_PORT}/EventRouter/"
 
 $check_urlacl =  ( netsh http show urlacl ) | where-object {$_ -match "$env:SERVICE_PORT"}
@@ -163,8 +144,13 @@ netsh http add urlacl url=$url_expression user="NETWORK SERVICE"
 netsh http show urlacl "url=${url_expression}"
 
 
+Write-Output "Start the service ""$serviceDisplayName"""
+cmd /c sc.exe start """${serviceDisplayName}"""
+Start-Sleep $scInterval
 
-
+Write-Output "Confirm the service ""$serviceDisplayName"" is  operational"
+$test = Get-Service | where { $_.displayname -match $serviceDisplayName -and $_.status -match 'running' }
+Write-Output $test
 
 $Error.clear()
 
