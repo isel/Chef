@@ -1,5 +1,9 @@
-bash 'Configuring load balancer forwarding' do
-  code <<-EOF
+lb_bind_address = '127.0.0.1'
+#lb_bind_port = '85'
+
+['85', '81', '82'].each do |lb_bind_port|
+  bash 'Configuring load balancer forwarding' do
+    code <<-EOF
 # Test for a reboot,  if this is a reboot just skip this script.
 echo rs_reboot = $RS_REBOOT
 echo rs_private_ip = $RS_PRIVATE_IP
@@ -26,14 +30,15 @@ mkdir -p $deploy_dir
 mkdir -p $log_dir
 ln -nfs $deploy_dir $doc_root
 
-# Pass the listener target of the next hop proxy (haproxy)
-#if [ -n "$LB_BIND_ADDRESS" -a -n "$LB_BIND_PORT" ]; then
-#  next_hop_option="-n $LB_BIND_ADDRESS:$LB_BIND_PORT"
-#else
-  next_hop_option="-n 127.0.0.1:85"
-#fi
-
 apache_maint_page="#{node[:deploy][:lb_maintenance_page]}"
+
+# Pass the listener target of the next hop proxy (haproxy)
+next_hop_option="-n #{lb_bind_address}:#{lb_bind_port}"
+
+# Entry port override?
+if [ "#{lb_bind_port}" != "85" ]; then
+  vhost_port_option="-p #{lb_bind_port}"
+fi
 
 # Set: ServerName, DocumentRoot, LogDirectory, MaintancePage, ExtendedStatus(On), and Serve
 # Locally(Off)
@@ -47,5 +52,6 @@ a2enmod rewrite
 service apache2 restart
 
 logger -t RightScale "Vhost configuration done."
-  EOF
+    EOF
+  end
 end
