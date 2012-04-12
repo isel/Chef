@@ -18,11 +18,15 @@ if node[:platform] == "ubuntu"
   end
 
   # TODO  copy the rvm-installer (8K )
+  # note -  during the normal run the system
+  # ruby is avaliable.
+  if 0
   bash 'Remove rvm directory' do
     code <<-EOF
       rm -rf /opt/rvm
       mkdir -p /opt/rvm/archives
     EOF
+  end
   end
 
   bash 'Download ruby from s3 to cache rvm install' do
