@@ -20,7 +20,7 @@ if node[:platform] == "ubuntu"
   # TODO  copy the rvm-installer (8K )
   # note -  during the normal run the system
   # ruby is avaliable.
-  if 0
+  if false
   bash 'Remove rvm directory' do
     code <<-EOF
       rm -rf /opt/rvm
