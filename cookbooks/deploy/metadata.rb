@@ -22,6 +22,7 @@ recipe "deploy::launch_mule",  "Launches Mule"
 recipe "deploy::mule", "Deploys Mule ESB"
 recipe "deploy::engine", "Deploys Engine"
 recipe "deploy::foundation_services", "Deploys the foundation rest services"
+recipe "deploy::install_event_router_service", "Installs Event Router Service"
 recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::provision", "Provisions basic system data"
@@ -161,6 +162,7 @@ attribute "deploy/force_provision",
   :required => "required",
   :recipes => ["deploy::provision"]
 
+
 attribute "deploy/mongo_version",
   :display_name => "mongo version",
   :required => "optional",
@@ -198,8 +200,24 @@ attribute "deploy/server_manager_features",
   :display_name => "MSMQ features",
   :description => "List of windows MSMQ features to install",
   :required    => "optional",
-  :default     => "MSMQ-Server;MSMQ-HTTP-Support;MSMQ-Directory;MSMS-NoSuchFeature",
-  :recipes     => ["deploy::enable_msmq"]
+  :default     => "MSMQ-Server;MSMQ-HTTP-Support;MSMQ-Directory",
+  :recipes     => ["deploy::enable_msmq","deploy::install_event_router_service"]
+
+
+attribute "deploy/service_platform",
+  :display_name => "EventRouter HTTP runtime",
+  :description => "The .net runtime / affinity the  EventRouter service is hosted",
+  :required    => "optional",
+  :default     => "v4.0_x86",
+  :recipes     => ["deploy::install_event_router_service"]
+
+attribute "deploy/service_port",
+  :display_name => "EventRouter HTTP Port",
+  :description => "HTTP Port the WCF EventRouter service is listening",
+  :required    => "optional",
+  :default     => "8989",
+  :recipes     => ["deploy::install_event_router_service"]
+
 
 attribute "deploy/tenant",
   :display_name => "tenant",

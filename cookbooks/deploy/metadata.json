@@ -410,9 +410,38 @@
       "display_name": "MSMQ features",
       "description": "List of windows MSMQ features to install",
       "required": "optional",
-      "default": "MSMQ-Server;MSMQ-HTTP-Support;MSMQ-Directory;MSMS-NoSuchFeature",
+      "default": "MSMQ-Server;MSMQ-HTTP-Support;MSMQ-Directory",
       "recipes": [
-        "deploy::enable_msmq"
+        "deploy::enable_msmq",
+        "deploy::install_event_router_service"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/service_platform": {
+      "display_name": "EventRouter HTTP runtime",
+      "description": "The .net runtime / affinity the  EventRouter service is hosted",
+      "required": "optional",
+      "default": "v4.0_x86",
+      "recipes": [
+        "deploy::install_event_router_service"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/service_port": {
+      "display_name": "EventRouter HTTP Port",
+      "description": "HTTP Port the WCF EventRouter service is listening",
+      "required": "optional",
+      "default": "8989",
+      "recipes": [
+        "deploy::install_event_router_service"
       ],
       "choice": [
 
@@ -510,6 +539,7 @@
     "deploy::mule": "Deploys Mule ESB",
     "deploy::engine": "Deploys Engine",
     "deploy::foundation_services": "Deploys the foundation rest services",
+    "deploy::install_event_router_service": "Installs Event Router Service",
     "deploy::jspr": "Deploys the web server websites",
     "deploy::mongo": "Deploys mongodb",
     "deploy::provision": "Provisions basic system data",
