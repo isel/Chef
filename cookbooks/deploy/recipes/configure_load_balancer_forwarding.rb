@@ -1,7 +1,6 @@
 lb_bind_address = '127.0.0.1'
 
-#['85', '81', '82', '443'].each do |lb_bind_port|
-['85', '81', '82'].each do |lb_bind_port|
+['85', '81', '82', '443'].each do |lb_bind_port|
   bash 'Configuring load balancer forwarding' do
     code <<-EOF
 # Test for a reboot,  if this is a reboot just skip this script ******* we don't get this one in chef
