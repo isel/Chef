@@ -32,13 +32,11 @@ ln -nfs $deploy_dir $doc_root
 apache_maint_page="#{node[:deploy][:lb_maintenance_page]}"
 
 # Pass the listener target of the next hop proxy (haproxy)
-if [ "#{lb_bind_port}" == "85" -or "#{lb_bind_port}" == "443" ]; then
+if [ "#{lb_bind_port}" == "85" -o "#{lb_bind_port}" == "443" ]; then
   next_hop_option="-n #{lb_bind_address}:85"
 else
   next_hop_option="-n #{lb_bind_address}:#{lb_bind_port}"
 fi
-
-echo next_hop_option = $next_hop_option
 
 # Entry port override?
 if [ "#{lb_bind_port}" != "85" ]; then
