@@ -21,9 +21,6 @@ if(!$env:LB_HOSTNAME)
 
 echo "----------------- $LB_IPAddress --------------"
 
-#Create Key File to access HAProxy server
-Set-Content -path "C:\HAProxy\private.key" -value $env:PRIVATE_SSH_KEY
-
 function deregister_with_load_balancer($app_listener_name)
 {
   write-output "deregistering from load balancer ($app_listener_name)"
@@ -33,6 +30,9 @@ function deregister_with_load_balancer($app_listener_name)
 
   # Get Loadbalancer IP address via reverse DNS lookup
   $LB_IPAddresses = ([System.Net.Dns]::GetHostAddresses($env:LB_HOSTNAME) | Select IPAddressToString)
+
+  #Create Key File to access HAProxy server
+  Set-Content -path "C:\HAProxy\private.key" -value $env:PRIVATE_SSH_KEY
 
   # Define the path to the haproxy configure script
   $haproxy_script = "/opt/rightscale/lb/bin/haproxy_config_server.rb"
