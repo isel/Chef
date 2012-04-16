@@ -55,7 +55,7 @@ attribute "deploy/backend_name",
 attribute "deploy/dns_name",
   :display_name => "dns name",
   :description => "DNS name of the front ends",
-  :required => "required",
+  :required => "optional",
   :recipes  => ["deploy::register_appserver_with_haproxy"]
 
 attribute "deploy/max_connections_per_lb",
@@ -75,7 +75,7 @@ attribute "deploy/health_check_uri",
 attribute "deploy/private_ssh_key",
   :display_name => "private ssh key",
   :description => "The ssh key used to connect to the load balancer",
-  :required => "required",
+  :required => "optional",
   :recipes  => ["deploy::register_appserver_with_haproxy"]
 
 attribute "deploy/web_server_ports",
