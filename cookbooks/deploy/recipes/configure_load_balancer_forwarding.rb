@@ -1,6 +1,7 @@
 lb_bind_address = '127.0.0.1'
 
-['85', '81', '82', '443'].each do |lb_bind_port|
+#['85', '81', '82', '443'].each do |lb_bind_port|
+['85', '81', '82'].each do |lb_bind_port|
   bash 'Configuring load balancer forwarding' do
     code <<-EOF
 # Test for a reboot,  if this is a reboot just skip this script ******* we don't get this one in chef
@@ -36,6 +37,8 @@ if [ "#{lb_bind_port}" == "85" -or "#{lb_bind_port}" == "443" ]; then
 else
   next_hop_option="-n #{lb_bind_address}:#{lb_bind_port}"
 fi
+
+echo next_hop_option = $next_hop_option
 
 # Entry port override?
 if [ "#{lb_bind_port}" != "85" ]; then
