@@ -13,6 +13,7 @@ recipe "deploy::appfabric_configure", "Configures AppFabric"
 recipe "deploy::appfabric_powershell", "Deploys AppFabric Powershell cmdlets"
 recipe "deploy::appfabric_ensure_is_up", "Ensures AppFabric cache are working"
 recipe "deploy::configure_load_balancer_forwarding", "Adds an entry vhost (frontend) that forwards requests to the next target"
+recipe "deploy::deregister_appserver_with_haproxy", "Deregisters an app server with each load balancer"
 recipe "deploy::download_artifacts", "Downloads artifacts"
 recipe "deploy::download_binaries", "Downloads binaries"
 recipe "deploy::download_pims", "Downloads pims"
@@ -44,19 +45,19 @@ attribute "deploy/app_listener_names",
   :description => "specifies which HAProxy servers pool to use",
   :required => "optional",
   :default  => "api80,api81,api82",
-  :recipes => ["deploy::register_appserver_with_haproxy"]
+  :recipes => ["deploy::register_appserver_with_haproxy", "deploy::deregister_appserver_with_haproxy"]
 
 attribute "deploy/backend_name",
   :display_name => "backend name",
   :description => "A unique name for each back end e.g. (RS_INSTANCE_UUID)",
   :required => "required",
-  :recipes  => ["deploy::register_appserver_with_haproxy"]
+  :recipes  => ["deploy::register_appserver_with_haproxy", "deploy::deregister_appserver_with_haproxy"]
 
 attribute "deploy/dns_name",
   :display_name => "dns name",
   :description => "DNS name of the front ends",
   :required => "optional",
-  :recipes  => ["deploy::register_appserver_with_haproxy"]
+  :recipes  => ["deploy::register_appserver_with_haproxy", "deploy::deregister_appserver_with_haproxy"]
 
 attribute "deploy/max_connections_per_lb",
   :display_name => "max connection per load balancer",
@@ -76,7 +77,7 @@ attribute "deploy/private_ssh_key",
   :display_name => "private ssh key",
   :description => "The ssh key used to connect to the load balancer",
   :required => "optional",
-  :recipes  => ["deploy::register_appserver_with_haproxy"]
+  :recipes  => ["deploy::register_appserver_with_haproxy", "deploy::deregister_appserver_with_haproxy"]
 
 attribute "deploy/web_server_ports",
   :display_name => "web server ports",

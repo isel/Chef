@@ -1,14 +1,11 @@
-powershell 'Register app server with HAProxy' do
+#LB_APPLISTENER_NAME, LB_BACKEND_NAME, LB_HOSTNAME, PRIVATE_SSH_KEY
+powershell 'Deregister app server with HAProxy' do
   parameters (
     {
       'LB_APPLISTENER_NAMES' => node[:deploy][:app_listener_names],
       'LB_BACKEND_NAME' => node[:deploy][:backend_name],
       'LB_HOSTNAME' => node[:deploy][:dns_name],
-      'MAX_CONN_PER_SERVER' => node[:deploy][:max_connections_per_lb],
-      'HEALTH_CHECK_URI' => node[:deploy][:health_check_uri],
-      'PRIVATE_SSH_KEY' => node[:deploy][:private_ssh_key],
-      'WEB_SERVER_PORTS' => node[:deploy][:web_server_ports],
-      'OPT_SESSION_STICKINESS' => node[:deploy][:session_stickiness]
+      'PRIVATE_SSH_KEY' => node[:deploy][:private_ssh_key]
     }
   )
 
@@ -18,13 +15,18 @@ $ErrorActionPreference="Stop"
 
 if(!$env:LB_HOSTNAME)
 {
-  Write-Host "LB_HOSTNAME is not specified. No load balancer to connect - exiting."
+  Write-Host "LB_HOSTNAME is not specified, no need to deregister. Exiting silently..."
   exit 0
 }
 
-function register_with_load_balancer($app_listener_name, $port)
+echo "----------------- $LB_IPAddress --------------"
+
+#Create Key File to access HAProxy server
+Set-Content -path "C:\HAProxy\private.key" -value $env:PRIVATE_SSH_KEY
+
+function deregister_with_load_balancer($app_listener_name)
 {
-  write-output "registering with load balancer ($app_listener_name, $port)"
+  write-output "deregistering from load balancer ($app_listener_name)"
 
   mkdir -force C:\HAProxy
   cd c:\HAProxy
@@ -32,34 +34,15 @@ function register_with_load_balancer($app_listener_name, $port)
   # Get Loadbalancer IP address via reverse DNS lookup
   $LB_IPAddresses = ([System.Net.Dns]::GetHostAddresses($env:LB_HOSTNAME) | Select IPAddressToString)
 
-  echo "----------------- $LB_IPAddress --------------"
-
-  #Create Key File to access HAProxy server
-  Set-Content -path "C:\HAProxy\private.key" -value $env:PRIVATE_SSH_KEY
-
-  if ($env:MAX_CONN_PER_SERVER -notmatch "^\d+$"){
-     Write-Output "MAX_CONN_PER_SERVER undefined or not an integer, defaulting to 255"
-     $env:MAX_CONN_PER_SERVER=255
-  }
-
+  # Define the path to the haproxy configure script
   $haproxy_script = "/opt/rightscale/lb/bin/haproxy_config_server.rb"
 
   $arguments = @(
-  	"-a add",
-  	"-w",
-  	"-s $env:LB_BACKEND_NAME",
-  	"-l $app_listener_name",
-  	"-t $env:RS_PRIVATE_IP`:$port",
-  	"-e `"inter 3000 rise 2 fall 3 maxconn $env:MAX_CONN_PER_SERVER`""
+    "-a del",
+    "-w",
+    "-s $env:LB_BACKEND_NAME",
+    "-l $app_listener_name"
   )
-
-  if ($env:HEALTH_CHECK_URI -match "^.+$"){
-     $arguments += "-k on"
-  }
-
-  if ($env:OPT_SESSION_STICKINESS -match "(true|false|on)$"){
-     $arguments += "-c $env:LB_BACKEND_NAME"
-  }
 
   # Join arguments and build linux command
   $arguments = [string]::join(' ',$arguments)
@@ -70,7 +53,7 @@ function register_with_load_balancer($app_listener_name, $port)
   $linux_command = "`"$linux_command`""
 
   # Iterate through each IP address of the load balancer to
-  # register instance with all load balancers
+  # deregister instance with all load balancers
 
   foreach($LB_IPAddress in $LB_IPAddresses) {
      $LB_IPAddress=$LB_IPAddress.IPAddressToString
@@ -91,18 +74,17 @@ function register_with_load_balancer($app_listener_name, $port)
          Write-Output("{0}, moving on..." -f $_.Exception.Message)
          $Error.Clear()
      }
-     Write-Output ">>>>>>>Attaching app to host $LB_IPAddress for backend $env:LB_BACKEND_NAME <<<<<<<<<<<<<<"
+     Write-Output ">>>>>>>Removing app from host $LB_IPAddress <<<<<<<<<<<<<<"
 
-     # Run linux_command to register with HAProxy using the ssh client in the RightScale sandbox directory
+     # Run linux_command to deregister with HAProxy using the ssh client in the RightScale sandbox directory
      ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no root@$LB_IPAddress -i C:\HAProxy\private.key $linux_command
   }
 }
 
 $listener_names = $env:LB_APPLISTENER_NAMES.split(',')
-$ports = $env:WEB_SERVER_PORTS.split(',')
 
 for ($i = 0; $i -le $listener_names.Length - 1; $i++) {
-  register_with_load_balancer $listener_names[$i] $ports[$i]
+  deregister_with_load_balancer $listener_names[$i]
 }
 
   EOF
