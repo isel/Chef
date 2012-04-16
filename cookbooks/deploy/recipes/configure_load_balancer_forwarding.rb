@@ -35,7 +35,7 @@ apache_maint_page="#{node[:deploy][:lb_maintenance_page]}"
 if [ "#{lb_bind_port}" == "85" -o "#{lb_bind_port}" == "443" ]; then
   next_hop_option="-n #{lb_bind_address}:85"
 else
-  next_hop_option="-n #{lb_bind_address}:#{lb_bind_port}"
+  next_hop_option="-n #{lb_bind_address}:80#{lb_bind_port}"
 fi
 
 # Entry port override?
