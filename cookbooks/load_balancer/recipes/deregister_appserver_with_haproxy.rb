@@ -2,10 +2,10 @@
 powershell 'Deregister app server with HAProxy' do
   parameters (
     {
-      'LB_APPLISTENER_NAMES' => node[:loadbalancer][:app_listener_names],
-      'LB_BACKEND_NAME' => node[:loadbalancer][:backend_name],
-      'LB_HOSTNAME' => node[:loadbalancer][:dns_name],
-      'PRIVATE_SSH_KEY' => node[:loadbalancer][:private_ssh_key]
+      'LB_APPLISTENER_NAMES' => node[:load_balancer][:app_listener_names],
+      'LB_BACKEND_NAME' => node[:load_balancer][:backend_name],
+      'LB_HOSTNAME' => node[:load_balancer][:dns_name],
+      'PRIVATE_SSH_KEY' => node[:load_balancer][:private_ssh_key]
     }
   )
 
