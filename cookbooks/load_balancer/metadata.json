@@ -50,14 +50,27 @@
       "calculated": false,
       "type": "string"
     },
-    "load_balancer/website_dns": {
-      "display_name": "dns name",
-      "description": "The fully qualified domain name that the server will accept traffic for. Ex: www.globalincite.com. Also, sets the directory for your application's web files (/home/webapps/APPLICATION/current/). If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory. This must be a valid directory name. Do not use symbols in the name.",
+    "load_balancer/health_check_uri": {
+      "display_name": "health check uri",
+      "description": "Page to report the heart beat so the lb knows whether the server is up or not",
       "required": "optional",
+      "default": "/HealthCheck.html",
       "recipes": [
-        "load_balancer::configure_load_balancer_forwarding",
-        "load_balancer::register_appserver_with_haproxy",
-        "load_balancer::deregister_appserver_with_haproxy"
+        "load_balancer::register_appserver_with_haproxy"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "load_balancer/maintenance_page": {
+      "display_name": "maintenance page",
+      "description": "Optional path for a maintenance page, relative to document root (i.e., .../current/public). The file must exist in the subtree of the vhost, which will be served by the web server if it's present. If ignored, it will default to '/system/maintenance.html'.",
+      "required": "optional",
+      "default": "/system/maintenance.html",
+      "recipes": [
+        "load_balancer::configure_load_balancer_forwarding"
       ],
       "choice": [
 
@@ -70,20 +83,6 @@
       "description": "Maximum number of connections per server",
       "required": "optional",
       "default": "255",
-      "recipes": [
-        "load_balancer::register_appserver_with_haproxy"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "load_balancer/health_check_uri": {
-      "display_name": "health check uri",
-      "description": "Page to report the heart beat so the lb knows whether the server is up or not",
-      "required": "optional",
-      "default": "/HealthCheck.html",
       "recipes": [
         "load_balancer::register_appserver_with_haproxy"
       ],
@@ -107,19 +106,6 @@
       "calculated": false,
       "type": "string"
     },
-    "load_balancer/web_server_ports": {
-      "display_name": "web server ports",
-      "required": "optional",
-      "default": "80,81,82",
-      "recipes": [
-        "load_balancer::register_appserver_with_haproxy"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
     "load_balancer/session_stickiness": {
       "display_name": "session stickiness",
       "required": "optional",
@@ -133,22 +119,8 @@
       "calculated": false,
       "type": "string"
     },
-    "load_balancer/lb_maintenance_page": {
-      "display_name": "lb maintenance page",
-      "description": "Optional path for a maintenance page, relative to document root (i.e., .../current/public). The file must exist in the subtree of the vhost, which will be served by the web server if it's present. If ignored, it will default to '/system/maintenance.html'.",
-      "required": "optional",
-      "default": "/system/maintenance.html",
-      "recipes": [
-        "load_balancer::configure_load_balancer_forwarding"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "load_balancer/lb_ssl_certificate": {
-      "display_name": "lb ssl certificate",
+    "load_balancer/ssl_certificate": {
+      "display_name": "ssl certificate",
       "description": "The contents of the SSL Certificate which can be obtained from the 'mycert.crt' file.",
       "required": "required",
       "recipes": [
@@ -160,12 +132,40 @@
       "calculated": false,
       "type": "string"
     },
-    "load_balancer/lb_ssl_key": {
-      "display_name": "lb ssl key",
+    "load_balancer/ssl_key": {
+      "display_name": "ssl key",
       "description": "The contents of the SSL key file (key.pem) that's required for secure (https) connections.",
       "required": "required",
       "recipes": [
         "load_balancer::configure_load_balancer_forwarding"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "load_balancer/web_server_ports": {
+      "display_name": "web server ports",
+      "required": "optional",
+      "default": "80,81,82",
+      "recipes": [
+        "load_balancer::register_appserver_with_haproxy"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "load_balancer/website_dns": {
+      "display_name": "website dns name",
+      "description": "The fully qualified domain name that the server will accept traffic for. Ex: www.globalincite.com. Also, sets the directory for your application's web files (/home/webapps/APPLICATION/current/). If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory. This must be a valid directory name. Do not use symbols in the name.",
+      "required": "optional",
+      "recipes": [
+        "load_balancer::configure_load_balancer_forwarding",
+        "load_balancer::register_appserver_with_haproxy",
+        "load_balancer::deregister_appserver_with_haproxy"
       ],
       "choice": [
 

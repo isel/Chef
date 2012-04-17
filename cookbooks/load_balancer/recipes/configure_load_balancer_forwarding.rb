@@ -28,7 +28,7 @@ mkdir -p $deploy_dir
 mkdir -p $log_dir
 ln -nfs $deploy_dir $doc_root
 
-apache_maint_page="#{node[:load_balancer][:lb_maintenance_page]}"
+apache_maint_page="#{node[:load_balancer][:maintenance_page]}"
 
 # Pass the listener target of the next hop proxy (haproxy)
 if [ "#{lb_bind_port}" == "85" -o "#{lb_bind_port}" == "443" ]; then
@@ -54,8 +54,8 @@ if [ "#{lb_bind_port}" == "443" ]; then
   # Put SSL certificates in place
   key_dir=/etc/${apache}/rightscale.d/key
   mkdir -m 700 -p $key_dir
-  echo "#{node[:load_balancer][:lb_ssl_key]}" > $key_dir/#{node[:load_balancer][:website_dns]}.key
-  echo "#{node[:load_balancer][:lb_ssl_certificate]}" > $key_dir/#{node[:load_balancer][:website_dns]}.crt
+  echo "#{node[:load_balancer][:ssl_key]}" > $key_dir/#{node[:load_balancer][:website_dns]}.key
+  echo "#{node[:load_balancer][:ssl_certificate]}" > $key_dir/#{node[:load_balancer][:website_dns]}.crt
   #if [ -n "$OPT_SSL_CERTIFICATE_CHAIN" ]; then
   #  echo "Installing SSL certificate chain"
   #  echo "$OPT_SSL_CERTIFICATE_CHAIN" > $key_dir/#{node[:load_balancer][:website_dns]}.sf_crt
