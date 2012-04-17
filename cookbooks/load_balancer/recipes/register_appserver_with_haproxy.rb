@@ -3,7 +3,7 @@ powershell 'Register app server with HAProxy' do
     {
       'LB_APPLISTENER_NAMES' => node[:load_balancer][:app_listener_names],
       'LB_BACKEND_NAME' => node[:load_balancer][:backend_name],
-      'LB_HOSTNAME' => node[:load_balancer][:dns_name],
+      'LB_HOSTNAME' => node[:load_balancer][:website_dns],
       'MAX_CONN_PER_SERVER' => node[:load_balancer][:max_connections_per_lb],
       'HEALTH_CHECK_URI' => node[:load_balancer][:health_check_uri],
       'PRIVATE_SSH_KEY' => node[:load_balancer][:private_ssh_key],
