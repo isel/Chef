@@ -1,5 +1,5 @@
-maintainer       "Isel Fernandez"
-maintainer_email "isel_77@hotmail.com"
+maintainer       "Cloud Infrastructure"
+maintainer_email "ugf_ci@ultimatesoftware.com"
 license          "our license"
 description      "Installs basic tools to manage any instance"
 long_description ""

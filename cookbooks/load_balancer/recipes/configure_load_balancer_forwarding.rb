@@ -21,14 +21,14 @@ log_dir="/var/log/apache2"
 install_dir_option=" -i /etc/apache2"
 
 ## General Variables
-doc_root=/home/webapps/#{node[:deploy][:lb_application]}/current
-deploy_dir=/home/webapps/#{node[:deploy][:lb_application]}/releases
+doc_root=/home/webapps/#{node[:load_balancer][:lb_application]}/current
+deploy_dir=/home/webapps/#{node[:load_balancer][:lb_application]}/releases
 
 mkdir -p $deploy_dir
 mkdir -p $log_dir
 ln -nfs $deploy_dir $doc_root
 
-apache_maint_page="#{node[:deploy][:lb_maintenance_page]}"
+apache_maint_page="#{node[:load_balancer][:lb_maintenance_page]}"
 
 # Pass the listener target of the next hop proxy (haproxy)
 if [ "#{lb_bind_port}" == "85" -o "#{lb_bind_port}" == "443" ]; then
@@ -44,7 +44,7 @@ fi
 
 # Set: ServerName, DocumentRoot, LogDirectory, MaintancePage, ExtendedStatus(On), and Serve
 # Locally(Off)
-options="-s #{node[:deploy][:lb_website_dns]} -d $doc_root -l $log_dir $install_dir_option -m "$apache_maint_page" -k on -f off"
+options="-s #{node[:load_balancer][:lb_website_dns]} -d $doc_root -l $log_dir $install_dir_option -m "$apache_maint_page" -k on -f off"
 
 # Add an entry vhost (frontend) that forwards to next target
 
@@ -54,11 +54,11 @@ if [ "#{lb_bind_port}" == "443" ]; then
   # Put SSL certificates in place
   key_dir=/etc/${apache}/rightscale.d/key
   mkdir -m 700 -p $key_dir
-  echo "#{node[:deploy][:lb_ssl_key]}" > $key_dir/#{node[:deploy][:lb_website_dns]}.key
-  echo "#{node[:deploy][:lb_ssl_certificate]}" > $key_dir/#{node[:deploy][:lb_website_dns]}.crt
+  echo "#{node[:load_balancer][:lb_ssl_key]}" > $key_dir/#{node[:load_balancer][:lb_website_dns]}.key
+  echo "#{node[:load_balancer][:lb_ssl_certificate]}" > $key_dir/#{node[:load_balancer][:lb_website_dns]}.crt
   #if [ -n "$OPT_SSL_CERTIFICATE_CHAIN" ]; then
   #  echo "Installing SSL certificate chain"
-  #  echo "$OPT_SSL_CERTIFICATE_CHAIN" > $key_dir/#{node[:deploy][:lb_website_dns]}.sf_crt
+  #  echo "$OPT_SSL_CERTIFICATE_CHAIN" > $key_dir/#{node[:load_balancer][:lb_website_dns]}.sf_crt
   #fi
   chmod 400 $key_dir/*
 
