@@ -1,14 +1,14 @@
 powershell 'Register app server with HAProxy' do
   parameters (
     {
-      'LB_APPLISTENER_NAMES' => node[:load_balancer][:app_listener_names],
-      'LB_BACKEND_NAME' => node[:load_balancer][:backend_name],
-      'LB_HOSTNAME' => node[:load_balancer][:dns_name],
-      'MAX_CONN_PER_SERVER' => node[:load_balancer][:max_connections_per_lb],
-      'HEALTH_CHECK_URI' => node[:load_balancer][:health_check_uri],
-      'PRIVATE_SSH_KEY' => node[:load_balancer][:private_ssh_key],
-      'WEB_SERVER_PORTS' => node[:load_balancer][:web_server_ports],
-      'OPT_SESSION_STICKINESS' => node[:load_balancer][:session_stickiness]
+      'LB_APPLISTENER_NAMES' => node[:loadbalancer][:app_listener_names],
+      'LB_BACKEND_NAME' => node[:loadbalancer][:backend_name],
+      'LB_HOSTNAME' => node[:loadbalancer][:dns_name],
+      'MAX_CONN_PER_SERVER' => node[:loadbalancer][:max_connections_per_lb],
+      'HEALTH_CHECK_URI' => node[:loadbalancer][:health_check_uri],
+      'PRIVATE_SSH_KEY' => node[:loadbalancer][:private_ssh_key],
+      'WEB_SERVER_PORTS' => node[:loadbalancer][:web_server_ports],
+      'OPT_SESSION_STICKINESS' => node[:loadbalancer][:session_stickiness]
     }
   )
 
