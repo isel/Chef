@@ -50,6 +50,19 @@
       "calculated": false,
       "type": "string"
     },
+    "load_balancer/forwarding_ports": {
+      "display_name": "forwarding ports",
+      "description": "The list of ports to be forwarded by the load balancer (i.e. 80,81,82,443)",
+      "required": "required",
+      "recipes": [
+        "load_balancer::configure_load_balancer_forwarding"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "load_balancer/health_check_uri": {
       "display_name": "health check uri",
       "description": "Page to report the heart beat so the lb knows whether the server is up or not",

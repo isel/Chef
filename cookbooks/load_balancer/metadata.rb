@@ -24,6 +24,12 @@ attribute "load_balancer/backend_name",
   :required => "required",
   :recipes  => ["load_balancer::register_appserver_with_haproxy", "load_balancer::deregister_appserver_with_haproxy"]
 
+attribute "load_balancer/forwarding_ports",
+  :display_name => "forwarding ports",
+  :description => "The list of ports to be forwarded by the load balancer (i.e. 80,81,82,443)",
+  :required => "required",
+  :recipes  => ["load_balancer::configure_load_balancer_forwarding"]
+
 attribute "load_balancer/health_check_uri",
   :display_name => "health check uri",
   :description => "Page to report the heart beat so the lb knows whether the server is up or not",

@@ -1,6 +1,4 @@
-lb_bind_address = '127.0.0.1'
-
-['85', '81', '82', '443'].each do |lb_bind_port|
+[:load_balancer][:forwarding_ports].split(',').each do |lb_bind_port|
   bash 'Configuring load balancer forwarding' do
     code <<-EOF
 # Test for a reboot,  if this is a reboot just skip this script ******* we don't get this one in chef
@@ -31,14 +29,15 @@ ln -nfs $deploy_dir $doc_root
 apache_maint_page="#{node[:load_balancer][:maintenance_page]}"
 
 # Pass the listener target of the next hop proxy (haproxy)
-if [ "#{lb_bind_port}" == "85" -o "#{lb_bind_port}" == "443" ]; then
-  next_hop_option="-n #{lb_bind_address}:85"
+bind_address = '127.0.0.1'
+if [ "#{lb_bind_port}" == "80" -o "#{lb_bind_port}" == "443" ]; then
+  next_hop_option="-n $bind_address:85"
 else
-  next_hop_option="-n #{lb_bind_address}:80#{lb_bind_port}"
+  next_hop_option="-n $bind_address:80#{lb_bind_port}"
 fi
 
 # Entry port override?
-if [ "#{lb_bind_port}" != "85" ]; then
+if [ "#{lb_bind_port}" != "80" ]; then
   vhost_port_option="-p #{lb_bind_port}"
 fi
 
