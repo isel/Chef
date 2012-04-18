@@ -1,4 +1,7 @@
-[:load_balancer][:forwarding_ports].split(',').each do |lb_bind_port|
+forwarding_ports = node[:load_balancer][:forwarding_ports]
+
+puts "forwarding_ports = #{forwarding_ports}"
+forwarding_ports.split(',').each do |lb_bind_port|
   bash 'Configuring load balancer forwarding' do
     code <<-EOF
 # Test for a reboot,  if this is a reboot just skip this script ******* we don't get this one in chef
