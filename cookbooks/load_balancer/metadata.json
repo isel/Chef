@@ -36,12 +36,26 @@
       "calculated": false,
       "type": "string"
     },
+    "load_balancer/app_server_ports": {
+      "display_name": "app server ports",
+      "required": "optional",
+      "default": "80,81,82",
+      "recipes": [
+        "load_balancer::register_appserver_with_haproxy"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "load_balancer/backend_name": {
       "display_name": "backend name",
       "description": "A unique name for each back end e.g. (RS_INSTANCE_UUID)",
       "required": "required",
       "recipes": [
         "load_balancer::register_appserver_with_haproxy",
+        "load_balancer::register_webserver_with_haproxy",
         "load_balancer::deregister_appserver_with_haproxy"
       ],
       "choice": [
@@ -69,7 +83,8 @@
       "required": "optional",
       "default": "/HealthCheck.html",
       "recipes": [
-        "load_balancer::register_appserver_with_haproxy"
+        "load_balancer::register_appserver_with_haproxy",
+        "load_balancer::register_webserver_with_haproxy"
       ],
       "choice": [
 
@@ -97,7 +112,8 @@
       "required": "optional",
       "default": "255",
       "recipes": [
-        "load_balancer::register_appserver_with_haproxy"
+        "load_balancer::register_appserver_with_haproxy",
+        "load_balancer::register_webserver_with_haproxy"
       ],
       "choice": [
 
@@ -124,7 +140,8 @@
       "required": "optional",
       "default": "false",
       "recipes": [
-        "load_balancer::register_appserver_with_haproxy"
+        "load_balancer::register_appserver_with_haproxy",
+        "load_balancer::register_webserver_with_haproxy"
       ],
       "choice": [
 
@@ -158,12 +175,26 @@
       "calculated": false,
       "type": "string"
     },
-    "load_balancer/web_server_ports": {
-      "display_name": "web server ports",
+    "load_balancer/web_listener_name": {
+      "display_name": "web listener name",
+      "description": "specifies which HAProxy servers pool to use",
       "required": "optional",
-      "default": "80,81,82",
+      "default": "www",
       "recipes": [
-        "load_balancer::register_appserver_with_haproxy"
+        "load_balancer::register_webserver_with_haproxy"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "load_balancer/web_server_port": {
+      "display_name": "web server port",
+      "required": "optional",
+      "default": "80",
+      "recipes": [
+        "load_balancer::register_webserver_with_haproxy"
       ],
       "choice": [
 
@@ -178,6 +209,7 @@
       "recipes": [
         "load_balancer::configure_load_balancer_forwarding",
         "load_balancer::register_appserver_with_haproxy",
+        "load_balancer::register_webserver_with_haproxy",
         "load_balancer::deregister_appserver_with_haproxy"
       ],
       "choice": [
@@ -192,7 +224,8 @@
   "recipes": {
     "load_balancer::configure_load_balancer_forwarding": "Adds an entry vhost (frontend) that forwards requests to the next target",
     "load_balancer::deregister_appserver_with_haproxy": "Deregisters an app server with each load balancer",
-    "load_balancer::register_appserver_with_haproxy": "Registers an app server with each load balancer"
+    "load_balancer::register_appserver_with_haproxy": "Registers an app server with each load balancer",
+    "load_balancer::register_webserver_with_haproxy": "Registers a web server with each load balancer"
   },
   "version": "0.0.1"
 }

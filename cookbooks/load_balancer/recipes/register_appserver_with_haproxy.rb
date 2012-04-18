@@ -7,7 +7,7 @@ powershell 'Register app server with HAProxy' do
       'MAX_CONN_PER_SERVER' => node[:load_balancer][:max_connections_per_lb],
       'HEALTH_CHECK_URI' => node[:load_balancer][:health_check_uri],
       'PRIVATE_SSH_KEY' => node[:load_balancer][:private_ssh_key],
-      'WEB_SERVER_PORTS' => node[:load_balancer][:web_server_ports],
+      'APP_SERVER_PORTS' => node[:load_balancer][:app_server_ports],
       'OPT_SESSION_STICKINESS' => node[:load_balancer][:session_stickiness]
     }
   )
@@ -18,7 +18,7 @@ $ErrorActionPreference="Stop"
 
 if(!$env:LB_HOSTNAME)
 {
-  Write-Host "LB_HOSTNAME is not specified. No load balancer to connect - exiting."
+  Write-Host "website_dns is not specified. No load balancer to connect - exiting."
   exit 0
 }
 
@@ -99,7 +99,7 @@ function register_with_load_balancer($app_listener_name, $port)
 }
 
 $listener_names = $env:LB_APPLISTENER_NAMES.split(',')
-$ports = $env:WEB_SERVER_PORTS.split(',')
+$ports = $env:APP_SERVER_PORTS.split(',')
 
 for ($i = 0; $i -le $listener_names.Length - 1; $i++) {
   register_with_load_balancer $listener_names[$i] $ports[$i]
