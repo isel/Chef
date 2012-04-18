@@ -1,7 +1,7 @@
-puts "running register web server with haproxy"
+log "running register web server with haproxy"
 
 if node[:load_balancer][:website_dns].nil?
-  puts 'website_dns is not specified. No load balancer to connect - exiting.'
+  log 'website_dns is not specified. No load balancer to connect - exiting.'
   exit 0
 end
 
@@ -42,40 +42,40 @@ lb_host.split.each do |item|
   end
 end
 
-puts "Found  #{addrs.length} addresses for host #{lb_host}"
+log "Found  #{addrs.length} addresses for host #{lb_host}"
 exit(-1) if addrs.length == 0
 
 successful=0
 addrs.each do |addr|
-  puts ">>>>>>>Attaching app to host #{addr} <<<<<<<<<<<<<<"
+  log ">>>>>>>Attaching app to host #{addr} <<<<<<<<<<<<<<"
 
   # Using the default config file...no cookie persistence...and health checks
   sshcmd = "ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no root@#{addr}"
   cfg_cmd="/opt/rightscale/lb/bin/haproxy_config_server.rb"
 
-  puts "ENV['EC2_LOCAL_IPV4'] = #{ENV['EC2_LOCAL_IPV4']}"
-  puts "node[:ipaddress] = #{node[:ipaddress]}"
+  log "ENV['EC2_LOCAL_IPV4'] = #{ENV['EC2_LOCAL_IPV4']}"
+  log "node[:ipaddress] = #{node[:ipaddress]}"
   target="#{ENV['EC2_LOCAL_IPV4']}:#{node[:load_balancer][:web_server_port]}"
   args= "-a add -w -l \"#{web_listener}\" -s \"#{backend_name}\" -t \"#{target}\" #{cookie_options} -e \" inter 3000 rise 2 fall 3 maxconn #{max_conn_per_svr}\" "
   args += " -k on " if node[:load_balancer][:health_check_uri] != nil && node[:load_balancer][:health_check_uri] != ""
 
   cmd = "#{sshcmd} #{cfg_cmd} #{shell_escape(args)}"
-  puts cmd
+  log cmd
 
   timeout=60*5 #@ 5min
   begin
     status = Timeout::timeout(timeout) do
      while true
         response = `#{cmd}`
-	puts response #for debugging...
+        log response #for debugging...
 	break if response.include?("Haproxy restart sucessful")
         break if response.include?("Restart not required")
-        puts "Retrying..."
+        log "Retrying..."
         sleep 10
       end
     end
   rescue Timeout::Error => e
-    puts "ERROR: Timeout after #{timeout/60} minutes."
+    log "ERROR: Timeout after #{timeout/60} minutes."
     next
   end
 
@@ -84,6 +84,6 @@ addrs.each do |addr|
 end
 
 if( successful != addrs.length )
-  puts "Failure, only #{successful} out of #{addrs.length} lb hosts could be connected"
+  log "Failure, only #{successful} out of #{addrs.length} lb hosts could be connected"
   exit(-1)
 end
