@@ -29,7 +29,7 @@ ln -nfs $deploy_dir $doc_root
 apache_maint_page="#{node[:load_balancer][:maintenance_page]}"
 
 # Pass the listener target of the next hop proxy (haproxy)
-bind_address = '127.0.0.1'
+bind_address='127.0.0.1'
 if [ "#{lb_bind_port}" == "80" -o "#{lb_bind_port}" == "443" ]; then
   next_hop_option="-n $bind_address:85"
 else
