@@ -1,3 +1,5 @@
+puts "running register web server with haproxy"
+
 if node[:load_balancer][:website_dns].nil?
   puts 'website_dns is not specified. No load balancer to connect - exiting.'
   exit 0
