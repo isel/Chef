@@ -83,12 +83,12 @@ attribute "deploy/app_server",
 attribute "deploy/aws_access_key_id",
   :display_name => "aws access key id",
   :required => "required",
-  :recipes => ["deploy::download_binaries", "deploy::download_pims", "deploy::elastic_search"]
+  :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_pims", "deploy::elastic_search", "deploy::mongo"]
 
 attribute "deploy/aws_secret_access_key",
   :display_name => "aws secret access key",
   :required => "required",
-  :recipes => ["deploy::download_binaries", "deploy::download_pims", "deploy::elastic_search"]
+  :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_pims", "deploy::elastic_search", "deploy::mongo"]
 
 attribute "deploy/binaries_artifacts",
   :display_name => "binaries artifacts",

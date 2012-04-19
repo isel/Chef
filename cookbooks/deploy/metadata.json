@@ -142,9 +142,11 @@
       "display_name": "aws access key id",
       "required": "required",
       "recipes": [
+        "deploy::activemq",
         "deploy::download_binaries",
         "deploy::download_pims",
-        "deploy::elastic_search"
+        "deploy::elastic_search",
+        "deploy::mongo"
       ],
       "choice": [
 
@@ -156,9 +158,11 @@
       "display_name": "aws secret access key",
       "required": "required",
       "recipes": [
+        "deploy::activemq",
         "deploy::download_binaries",
         "deploy::download_pims",
-        "deploy::elastic_search"
+        "deploy::elastic_search",
+        "deploy::mongo"
       ],
       "choice": [
 
