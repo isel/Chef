@@ -26,8 +26,7 @@
       "required": "optional",
       "default": "61616",
       "recipes": [
-        "deploy::launch_activemq",
-        "deploy::smoke_tests_local_messaging"
+        "deploy::launch_activemq"
       ],
       "choice": [
 
@@ -131,23 +130,7 @@
       "recipes": [
         "deploy::engine",
         "deploy::jspr",
-        "deploy::provision",
-        "deploy::smoke_tests_global",
-        "deploy::smoke_tests_local_app",
-        "deploy::smoke_tests_local_engine",
-        "deploy::smoke_tests_local_web"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/artifacts": {
-      "display_name": "artifacts",
-      "required": "required",
-      "recipes": [
-        "deploy::download_artifacts"
+        "deploy::provision"
       ],
       "choice": [
 
@@ -159,7 +142,6 @@
       "display_name": "aws access key id",
       "required": "required",
       "recipes": [
-        "deploy::download_artifacts",
         "deploy::download_binaries",
         "deploy::download_pims",
         "deploy::elastic_search"
@@ -174,7 +156,6 @@
       "display_name": "aws secret access key",
       "required": "required",
       "recipes": [
-        "deploy::download_artifacts",
         "deploy::download_binaries",
         "deploy::download_pims",
         "deploy::elastic_search"
@@ -230,9 +211,7 @@
       "recipes": [
         "deploy::foundation_services",
         "deploy::mongo",
-        "deploy::provision",
-        "deploy::smoke_tests_global",
-        "deploy::smoke_tests_local_app"
+        "deploy::provision"
       ],
       "choice": [
 
@@ -245,9 +224,7 @@
       "required": "required",
       "recipes": [
         "deploy::foundation_services",
-        "deploy::provision",
-        "deploy::smoke_tests_global",
-        "deploy::smoke_tests_local_app"
+        "deploy::provision"
       ],
       "choice": [
 
@@ -284,8 +261,7 @@
       "required": "optional",
       "default": "9200",
       "recipes": [
-        "deploy::foundation_services",
-        "deploy::smoke_tests_local_app"
+        "deploy::foundation_services"
       ],
       "choice": [
 
@@ -299,18 +275,6 @@
       "default": "0.17.6",
       "recipes": [
         "deploy::elastic_search"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/engine_server": {
-      "display_name": "engine server",
-      "required": "required",
-      "recipes": [
-        "deploy::smoke_tests_global"
       ],
       "choice": [
 
@@ -348,8 +312,7 @@
       "required": "optional",
       "default": "8585",
       "recipes": [
-        "deploy::launch_mule",
-        "deploy::smoke_tests_local_messaging"
+        "deploy::launch_mule"
       ],
       "choice": [
 
@@ -387,18 +350,6 @@
       "required": "required",
       "recipes": [
         "deploy::download_pims"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/revision": {
-      "display_name": "revision",
-      "required": "required",
-      "recipes": [
-        "deploy::download_artifacts"
       ],
       "choice": [
 
@@ -453,8 +404,7 @@
       "display_name": "tenant",
       "required": "required",
       "recipes": [
-        "deploy::provision",
-        "deploy::smoke_tests_global"
+        "deploy::provision"
       ],
       "choice": [
 
@@ -503,22 +453,6 @@
       ],
       "calculated": false,
       "type": "string"
-    },
-    "core/server_type": {
-      "display_name": "server type",
-      "description": "eg: db, app, web, cache",
-      "required": "required",
-      "recipes": [
-        "deploy::smoke_tests_local_app",
-        "deploy::smoke_tests_local_cache",
-        "deploy::smoke_tests_local_db",
-        "deploy::smoke_tests_local_webdeploy::smoke_tests_local_messaging"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
     }
   },
   "groupings": {
@@ -529,7 +463,6 @@
     "deploy::appfabric_configure": "Configures AppFabric",
     "deploy::appfabric_powershell": "Deploys AppFabric Powershell cmdlets",
     "deploy::appfabric_ensure_is_up": "Ensures AppFabric cache are working",
-    "deploy::download_artifacts": "Downloads artifacts",
     "deploy::download_binaries": "Downloads binaries",
     "deploy::download_pims": "Downloads pims",
     "deploy::elastic_search": "Deploys ElasticSearch",
@@ -544,13 +477,6 @@
     "deploy::mongo": "Deploys mongodb",
     "deploy::provision": "Provisions basic system data",
     "deploy::reindex_elastic_search": "Reindexes ElasticSearch (should be going away)",
-    "deploy::smoke_tests_global": "Runs global smoke tests",
-    "deploy::smoke_tests_local_app": "Runs local app server smoke tests",
-    "deploy::smoke_tests_local_cache": "Runs local cache server smoke tests",
-    "deploy::smoke_tests_local_db": "Runs local db server smoke tests",
-    "deploy::smoke_tests_local_engine": "Runs local engine server smoke tests",
-    "deploy::smoke_tests_local_messaging": "Runs local messaging server smoke tests",
-    "deploy::smoke_tests_local_web": "Runs local web server smoke tests",
     "deploy::register_cache_hostname": "Registers the cache hostname and ip in the hosts file",
     "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server"
   },

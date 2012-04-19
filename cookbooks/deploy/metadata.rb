@@ -12,7 +12,6 @@ recipe "deploy::adjust_ulimit", "Adjusts open files limit for log4j"
 recipe "deploy::appfabric_configure", "Configures AppFabric"
 recipe "deploy::appfabric_powershell", "Deploys AppFabric Powershell cmdlets"
 recipe "deploy::appfabric_ensure_is_up", "Ensures AppFabric cache are working"
-recipe "deploy::download_artifacts", "Downloads artifacts"
 recipe "deploy::download_binaries", "Downloads binaries"
 recipe "deploy::download_pims", "Downloads pims"
 recipe "deploy::elastic_search", "Deploys ElasticSearch"
@@ -27,13 +26,6 @@ recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::provision", "Provisions basic system data"
 recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
-recipe "deploy::smoke_tests_global", "Runs global smoke tests"
-recipe "deploy::smoke_tests_local_app", "Runs local app server smoke tests"
-recipe "deploy::smoke_tests_local_cache", "Runs local cache server smoke tests"
-recipe "deploy::smoke_tests_local_db", "Runs local db server smoke tests"
-recipe "deploy::smoke_tests_local_engine", "Runs local engine server smoke tests"
-recipe "deploy::smoke_tests_local_messaging", "Runs local messaging server smoke tests"
-recipe "deploy::smoke_tests_local_web", "Runs local web server smoke tests"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
 
@@ -41,7 +33,7 @@ attribute "deploy/activemq_port",
   :display_name => "activemq port",
   :required => "optional",
   :default  => "61616",
-  :recipes  => ["deploy::launch_activemq", "deploy::smoke_tests_local_messaging"]
+  :recipes  => ["deploy::launch_activemq"]
 
 attribute "deploy/activemq_version",
   :display_name => "activeMQ version",
@@ -86,24 +78,17 @@ attribute "deploy/appfabric_shared_folder",
 attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
-  :recipes => ["deploy::engine", "deploy::jspr", "deploy::provision",
-     "deploy::smoke_tests_global", "deploy::smoke_tests_local_app",
-     "deploy::smoke_tests_local_engine", "deploy::smoke_tests_local_web"]
-
-attribute "deploy/artifacts",
-  :display_name => "artifacts",
-  :required => "required",
-  :recipes => ["deploy::download_artifacts"]
+  :recipes  => ["deploy::engine", "deploy::jspr", "deploy::provision"]
 
 attribute "deploy/aws_access_key_id",
   :display_name => "aws access key id",
   :required => "required",
-  :recipes => ["deploy::download_artifacts", "deploy::download_binaries", "deploy::download_pims", "deploy::elastic_search"]
+  :recipes => ["deploy::download_binaries", "deploy::download_pims", "deploy::elastic_search"]
 
 attribute "deploy/aws_secret_access_key",
   :display_name => "aws secret access key",
   :required => "required",
-  :recipes => ["deploy::download_artifacts", "deploy::download_binaries", "deploy::download_pims", "deploy::elastic_search"]
+  :recipes => ["deploy::download_binaries", "deploy::download_pims", "deploy::elastic_search"]
 
 attribute "deploy/binaries_artifacts",
   :display_name => "binaries artifacts",
@@ -124,12 +109,12 @@ attribute "deploy/db_port",
   :display_name => "db port",
   :required => "optional",
   :default  => "27017",
-  :recipes  => ["deploy::foundation_services", "deploy::mongo", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local_app"]
+  :recipes  => ["deploy::foundation_services", "deploy::mongo", "deploy::provision"]
 
 attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
-  :recipes => ["deploy::foundation_services", "deploy::provision", "deploy::smoke_tests_global", "deploy::smoke_tests_local_app"]
+  :recipes => ["deploy::foundation_services", "deploy::provision"]
 
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
@@ -144,18 +129,13 @@ attribute "deploy/elastic_search_port",
   :display_name => "elastic search port",
   :required => "optional",
   :default => "9200",
-  :recipes => ["deploy::foundation_services", "deploy::smoke_tests_local_app"]
+  :recipes => ["deploy::foundation_services"]
 
 attribute "deploy/elastic_search_version",
   :display_name => "elastic search version",
   :required => "optional",
   :default => "0.17.6",
   :recipes => ["deploy::elastic_search"]
-
-attribute "deploy/engine_server",
-  :display_name => "engine server",
-  :required => "required",
-  :recipes => ["deploy::smoke_tests_global"]
 
 attribute "deploy/force_provision",
   :display_name => "force provision",
@@ -172,7 +152,7 @@ attribute "deploy/mule_port",
   :display_name => "mule port",
   :required => "optional",
   :default  => "8585",
-  :recipes  => ["deploy::launch_mule", "deploy::smoke_tests_local_messaging"]
+  :recipes  => ["deploy::launch_mule"]
 
 attribute "deploy/mule_version",
   :display_name => "mule version",
@@ -189,11 +169,6 @@ attribute "deploy/pims_revision",
   :display_name => "pims revision",
   :required => "required",
   :recipes => ["deploy::download_pims"]
-
-attribute "deploy/revision",
-  :display_name => "revision",
-  :required => "required",
-  :recipes => ["deploy::download_artifacts"]
 
 attribute "deploy/server_manager_features",
   :display_name => "MSMQ features",
@@ -219,7 +194,7 @@ attribute "deploy/service_port",
 attribute "deploy/tenant",
   :display_name => "tenant",
   :required => "required",
-  :recipes => ["deploy::provision", "deploy::smoke_tests_global"]
+  :recipes => ["deploy::provision"]
 
 attribute "deploy/ulimit_files",
   :display_name => "setting for log4j",
@@ -240,9 +215,3 @@ attribute "deploy/verify_completion",
   :default  => "1",
   :recipes  => ["deploy::launch_activemq", "deploy::launch_mule"]
 
-### attributes used from other cookbooks
-attribute "core/server_type",
-  :display_name => "server type",
-  :description => "eg: db, app, web, cache",
-  :required => "required",
-  :recipes => ["deploy::smoke_tests_local_app", "deploy::smoke_tests_local_cache", "deploy::smoke_tests_local_db", "deploy::smoke_tests_local_web" "deploy::smoke_tests_local_messaging"]
