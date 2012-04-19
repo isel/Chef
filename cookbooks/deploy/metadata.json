@@ -144,9 +144,7 @@
       "recipes": [
         "deploy::download_binaries",
         "deploy::download_pims",
-        "deploy::elastic_search",
-        "deploy::activemq",
-        "deploy::mongo"
+        "deploy::elastic_search"
       ],
       "choice": [
 
