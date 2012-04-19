@@ -1,14 +1,34 @@
-version = node[:deploy][:activemq_version]
+ruby_scripts_dir = node['ruby_scripts_dir']
+version  = node[:deploy][:activemq_version]
+product = 'activemq'
 
-bash 'install ActiveMQ' do
+if !File.exists?("/opt/#{product}")
+puts "Processing template (need a different path for rvm cookbook) " + File.join(File.dirname(__FILE__), '/scripts/download_vendor_drop.erb' )
+template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
+  source 'scripts/download_vendor_drop.erb'
+  variables(
+    :aws_access_key_id => node[:deploy][:aws_access_key_id],
+    :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
+    :product => product,
+    :version => version,
+    :filelist => 'activemq',
+    :deploy_folder => '/opt'
+  )
+end
+
+bash 'Downloading artifacts' do
   code <<-EOF
-  mkdir -p ~/Installs
-  cd ~/Installs
-  wget --quiet http://apache.mirrors.redwire.net/activemq/apache-activemq/#{version}/apache-activemq-#{version}-bin.tar.gz
-  tar xf apache-activemq-#{version}-bin.tar.gz
-  mkdir -p /opt/activemq
-  pushd /opt/activemq
-  cp -R ~/Installs/apache-activemq-#{version}/* .
+    ruby #{ruby_scripts_dir}/download_vendor_drop.rb
+  EOF
+end
+
+bash 'Setting directory links' do
+  code <<-EOF
+  pushd /opt
+  if [ -d  "apache-activemq-#{version}" ] ; then
+    ln -s apache-activemq-#{version} #{product}
+  fi
+  pushd "#{product}"
   chmod -R 777 .
   if [ ! -f /opt/activemq/bin/activemq ] ; then
     exit 1
@@ -16,4 +36,8 @@ bash 'install ActiveMQ' do
 EOF
 end
 
-log 'activemq successfully installed'
+log 'Activemq successfully installed'
+else
+  log 'Activemq is already registered.'
+end
+

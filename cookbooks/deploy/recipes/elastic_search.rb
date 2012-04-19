@@ -12,19 +12,31 @@ if !File.exists?('/opt/ElasticSearch')
       EOF
   end
 
-  template "#{ruby_scripts_dir}/download_elastic_search.rb" do
-    source 'scripts/download_elastic_search.erb'
+  template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
+    source 'scripts/download_vendor_drop.erb'
     variables(
-      :install_dir => install_dir,
-      :version => node[:deploy][:elastic_search_version],
       :aws_access_key_id => node[:deploy][:aws_access_key_id],
-      :aws_secret_access_key => node[:deploy][:aws_secret_access_key]
+      :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
+      :install_dir => install_dir,
+      :product => 'ElasticSearch',
+      :version => node[:deploy][:elastic_search_version],
+      :filelist => 'elasticsearch;servicewrapper'
     )
   end
 
   bash 'Downloading artifacts' do
     code <<-EOF
-      ruby #{ruby_scripts_dir}/download_elastic_search.rb
+      ruby #{ruby_scripts_dir}/download_vendor_drop.rb
+    EOF
+  end
+
+  bash 'set up directory  links' do
+    deploy_folder = '/opt/ElasticSearch/'
+    code <<-EOF
+      pushd #{deploy_folder}
+      ln -s #{install_dir} current
+      mv *servicewrapper*/service current/bin/
+      rm -Rf *servicewrapper*
     EOF
   end
 

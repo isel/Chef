@@ -162,7 +162,9 @@
         "deploy::download_artifacts",
         "deploy::download_binaries",
         "deploy::download_pims",
-        "deploy::elastic_search"
+        "deploy::elastic_search",
+        "deploy::activemq",
+        "deploy::mongo"
       ],
       "choice": [
 

@@ -1,15 +1,28 @@
+ruby_scripts_dir = node['ruby_scripts_dir']
 if !File.exists?('/opt/Mongo')
   version = node[:deploy][:mongo_version]
-  bash 'Installing Mongo' do
+  install_directory="/opt/Mongo/mongodb-linux-x86_64-#{version}"
+  template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
+    source 'scripts/download_vendor_drop.erb'
+    variables(
+      :aws_access_key_id => node[:deploy][:aws_access_key_id],
+      :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
+      :product => 'Mongo',
+      :version => version,
+      :filelist => 'mongo'
+    )
+  end
+  bash 'Installing vendor drop artifacts' do
     code <<-EOF
-      mkdir --parents /opt/Mongo
-      cd /opt/Mongo
+      ruby #{ruby_scripts_dir}/download_vendor_drop.rb
+    EOF
+  end
 
-      curl http://downloads.mongodb.org/linux/mongodb-linux-x86_64-#{version}.tgz > mongo.tgz
-      tar xvfz mongo.tgz
-      ln -s /opt/Mongo/mongodb-linux-x86_64-#{version} /opt/Mongo/current
-
-      mkdir --parents /data/db
+  bash 'Setting directory links' do
+    code <<-EOF
+      pushd /opt/Mongo
+      ln -s #{install_directory} current
+      mkdir -p /data/db
     EOF
   end
 else
