@@ -28,7 +28,7 @@ attribute "load_balancer/app_server_ports",
 attribute "load_balancer/backend_name",
   :display_name => "backend name",
   :description => "A unique name for each back end e.g. (RS_INSTANCE_UUID)",
-  :required => "required",
+  :required => "optional",
   :recipes  => [
     "load_balancer::register_appserver_with_haproxy",
     "load_balancer::register_webserver_with_haproxy",
