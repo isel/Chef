@@ -7,15 +7,12 @@ powershell "Ensuring AppFabric caches are available" do
   )
   powershell_script = <<'POWERSHELL_SCRIPT'
 
-write-output 'Skipping appfabric caches check'
-exit 0
-
 import-module AppFabricPowershell
 import-module DistributedCacheAdministration
 use-cachecluster
 
 $cache_array = $env:APPFABRIC_CACHES.split(',')
-$sleep_seconds = 20
+$sleep_seconds = 30
 
 function ensure_is_up([string]$cache) {
     $tries = 1
@@ -48,7 +45,7 @@ function ensure_is_up([string]$cache) {
             start-sleep -s $sleep_seconds
         }
     }
-    until ($finished -or $tries -gt 5)
+    until ($finished -or $tries -gt 20)
 
     if (!$finished) {
         write-host "Could not add/remove items the cache $cache after $tries retries"
