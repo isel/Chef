@@ -2,11 +2,6 @@ ruby_block "Register web server with HAProxy" do
   block do
     puts "running register web server with haproxy"
 
-    if node[:load_balancer][:website_dns].nil?
-      puts 'website_dns is not specified. No load balancer to connect - exiting.'
-      exit 0
-    end
-
     require 'yaml'
     require 'resolv'
     require 'timeout'
@@ -44,8 +39,7 @@ ruby_block "Register web server with HAProxy" do
       end
     end
 
-    puts "Found  #{addrs.length} addresses for host #{lb_host}"
-    exit(-1) if addrs.length == 0
+    raise "Found  #{addrs.length} addresses for host #{lb_host}" if addrs.length == 0
 
     successful=0
     addrs.each do |addr|
@@ -85,9 +79,7 @@ ruby_block "Register web server with HAProxy" do
 
     end
 
-    if (successful != addrs.length)
-      puts "Failure, only #{successful} out of #{addrs.length} lb hosts could be connected"
-      exit(-1)
-    end
+    raise "Failure, only #{successful} out of #{addrs.length} lb hosts could be connected" if successful != addrs.length
   end
+  not_if { node[:load_balancer][:website_dns].nil? }
 end
