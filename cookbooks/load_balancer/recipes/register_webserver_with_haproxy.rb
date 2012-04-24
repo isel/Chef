@@ -19,7 +19,7 @@ ruby_block "Register web server with HAProxy" do
   # Connect server machine to load balancer to start receiving traffic
     web_listener = node[:load_balancer][:web_listener_name]
     backend_name = node[:load_balancer][:backend_name]
-    lb_host = node[:load_balancer][:website_dns]
+    lb_host = "#{node[:load_balancer][:prefix]}.#{node[:load_balancer][:domain]}"
 
   # Use cookies?
     sess_sticky = node[:load_balancer][:session_stickiness].downcase
@@ -81,5 +81,5 @@ ruby_block "Register web server with HAProxy" do
 
     raise "Failure, only #{successful} out of #{addrs.length} lb hosts could be connected" if successful != addrs.length
   end
-  not_if { node[:load_balancer][:website_dns].nil? }
+  only_if { node[:load_balancer][:domain] }
 end

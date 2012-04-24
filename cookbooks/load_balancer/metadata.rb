@@ -42,8 +42,12 @@ attribute "load_balancer/domain",
   :description => "The domain name without the prefix (ie, globalincite.com)",
   :required => "optional",
   :recipes  => [
+    "load_balancer::configure_load_balancer_forwarding",
+    "load_balancer::register_with_route53",
     "load_balancer::deregister_with_route53",
-    "load_balancer::register_with_route53"
+    "load_balancer::register_appserver_with_haproxy",
+    "load_balancer::register_webserver_with_haproxy",
+    "load_balancer::deregister_appserver_with_haproxy"
   ]
 
 attribute "load_balancer/forwarding_ports",
@@ -96,8 +100,12 @@ attribute "load_balancer/prefix",
   :description => "The prefix to a domain (ie, www or api)",
   :required    => "optional",
   :recipes     => [
+    "load_balancer::configure_load_balancer_forwarding",
+    "load_balancer::register_with_route53",
     "load_balancer::deregister_with_route53",
-    "load_balancer::register_with_route53"
+    "load_balancer::register_appserver_with_haproxy",
+    "load_balancer::register_webserver_with_haproxy",
+    "load_balancer::deregister_appserver_with_haproxy"
   ]
 
 attribute "load_balancer/private_ssh_key",
@@ -137,13 +145,3 @@ attribute "load_balancer/web_server_port",
   :default  => "80",
   :recipes  => ["load_balancer::register_webserver_with_haproxy"]
 
-attribute "load_balancer/website_dns",
-  :display_name => "website dns name",
-  :description => "The fully qualified domain name that the server will accept traffic for. Ex: www.globalincite.com. Also, sets the directory for your application's web files (/home/webapps/APPLICATION/current/). If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory. This must be a valid directory name. Do not use symbols in the name.",
-  :required => "optional",
-  :recipes  => [
-    "load_balancer::configure_load_balancer_forwarding",
-    "load_balancer::register_appserver_with_haproxy",
-    "load_balancer::register_webserver_with_haproxy",
-    "load_balancer::deregister_appserver_with_haproxy"
-  ]
