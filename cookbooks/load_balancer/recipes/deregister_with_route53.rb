@@ -1,5 +1,5 @@
 
-template "#{node['ruby_scripts_dir']}/unregister_with_route53.rb" do
+template "#{node['ruby_scripts_dir']}/deregister_with_route53.rb" do
   source 'scripts/route53.erb'
   variables(
     :action => 'delete',
@@ -11,9 +11,9 @@ template "#{node['ruby_scripts_dir']}/unregister_with_route53.rb" do
   )
 end
 
-bash 'Un-registering with Route53' do
+bash 'De-registering with Route53' do
   code <<-EOF
-      ruby #{node['ruby_scripts_dir']}/unregister_with_route53.rb
+      ruby #{node['ruby_scripts_dir']}/deregister_with_route53.rb
   EOF
 
   only_if { node[:load_balancer][:load_balancer1] }
