@@ -35,11 +35,38 @@ attribute "load_balancer/backend_name",
     "load_balancer::deregister_appserver_with_haproxy"
   ]
 
+attribute "load_balancer/domain",
+  :display_name => "domain name",
+  :description => "The domain name without the prefix (ie, globalincite.com)",
+  :required => "optional",
+  :recipes  => [
+    "load_balancer::register_with_route53",
+    "load_balancer::unregister_with_route53"
+  ]
+
 attribute "load_balancer/forwarding_ports",
   :display_name => "forwarding ports",
   :description => "The list of ports to be forwarded by the load balancer (i.e. 80,81,82,443)",
   :required => "required",
   :recipes  => ["load_balancer::configure_load_balancer_forwarding"]
+
+attribute "load_balancer/load_balancer1",
+  :display_name => "load balancer 1",
+  :description => "The ip address of load balancer 1",
+  :required    => "optional",
+  :recipes     => [
+    "load_balancer::register_with_route53",
+    "load_balancer::unregister_with_route53"
+  ]
+
+attribute "load_balancer/load_balancer2",
+  :display_name => "load balancer 2",
+  :description => "The ip address of load balancer 2",
+  :required    => "optional",
+  :recipes     => [
+    "load_balancer::register_with_route53",
+    "load_balancer::unregister_with_route53"
+  ]
 
 attribute "load_balancer/health_check_uri",
   :display_name => "health check uri",
@@ -61,6 +88,15 @@ attribute "load_balancer/max_connections_per_lb",
   :required => "optional",
   :default  => "255",
   :recipes  => ["load_balancer::register_appserver_with_haproxy", "load_balancer::register_webserver_with_haproxy"]
+
+attribute "load_balancer/prefix",
+  :display_name => "prefix",
+  :description => "The prefix to a domain (ie, www or api)",
+  :required    => "optional",
+  :recipes     => [
+    "load_balancer::register_with_route53",
+    "load_balancer::unregister_with_route53"
+  ]
 
 attribute "load_balancer/private_ssh_key",
   :display_name => "private ssh key",
