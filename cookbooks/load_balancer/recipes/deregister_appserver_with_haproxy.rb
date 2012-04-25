@@ -2,6 +2,7 @@
 powershell 'Deregister app server with HAProxy' do
   parameters (
     {
+      'SHOULD_REGISTER_WITH_LB' => node[:load_balancer][:should_register_with_lb],
       'LB_APPLISTENER_NAMES' => node[:load_balancer][:app_listener_names],
       'LB_BACKEND_NAME' => node[:load_balancer][:backend_name],
       'LB_HOSTNAME' => "#{node[:load_balancer][:prefix]}.#{node[:load_balancer][:domain]}",
@@ -14,9 +15,9 @@ powershell 'Deregister app server with HAProxy' do
 # Stop and fail script when a command fails
 $ErrorActionPreference="Stop"
 
-if(!$env:LB_HOSTNAME)
+if(!$env:SHOULD_REGISTER_WITH_LB)
 {
-  Write-Host "LB_HOSTNAME is not specified, no need to deregister. Exiting silently..."
+  Write-Host "No load balancer to connect to - exiting."
   exit 0
 }
 

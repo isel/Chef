@@ -56,24 +56,6 @@ attribute "load_balancer/forwarding_ports",
   :required => "required",
   :recipes  => ["load_balancer::configure_load_balancer_forwarding"]
 
-attribute "load_balancer/load_balancer1",
-  :display_name => "load balancer 1",
-  :description => "The ip address of load balancer 1",
-  :required    => "optional",
-  :recipes     => [
-    "load_balancer::deregister_with_route53",
-    "load_balancer::register_with_route53"
-  ]
-
-attribute "load_balancer/load_balancer2",
-  :display_name => "load balancer 2",
-  :description => "The ip address of load balancer 2",
-  :required    => "optional",
-  :recipes     => [
-    "load_balancer::deregister_with_route53",
-    "load_balancer::register_with_route53"
-  ]
-
 attribute "load_balancer/health_check_uri",
   :display_name => "health check uri",
   :description => "Page to report the heart beat so the lb knows whether the server is up or not",
@@ -114,11 +96,40 @@ attribute "load_balancer/private_ssh_key",
   :required => "optional",
   :recipes  => ["load_balancer::register_appserver_with_haproxy", "load_balancer::deregister_appserver_with_haproxy"]
 
+attribute "load_balancer/route53_ip",
+  :display_name => "Route 53 ip",
+  :description => "The ip address to register with Route53",
+  :required    => "optional",
+  :recipes     => [
+    "load_balancer::deregister_with_route53",
+    "load_balancer::register_with_route53"
+  ]
+
+attribute "load_balancer/route53_additional_ip",
+  :display_name => "Route 53 additioanl ip",
+  :description => "An additional ip address to register with Route53",
+  :required    => "optional",
+  :recipes     => [
+    "load_balancer::deregister_with_route53",
+    "load_balancer::register_with_route53"
+  ]
+
 attribute "load_balancer/session_stickiness",
   :display_name => "session stickiness",
   :required => "optional",
   :default  => "false",
   :recipes  => ["load_balancer::register_appserver_with_haproxy", "load_balancer::register_webserver_with_haproxy"]
+
+attribute "load_balancer/should_register_with_lb",
+  :display_name => "should register with load balancer",
+  :description => "This environment uses loadbalancers (true/false)",
+  :required => "optional",
+  :default => "false",
+  :recipes => [
+    "load_balancer::register_appserver_with_haproxy",
+    "load_balancer::register_webserver_with_haproxy",
+    "load_balancer::deregister_appserver_with_haproxy"
+  ]
 
 attribute "load_balancer/ssl_certificate",
   :display_name => "ssl certificate",

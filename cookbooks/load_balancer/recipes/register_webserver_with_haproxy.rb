@@ -81,5 +81,5 @@ ruby_block "Register web server with HAProxy" do
 
     raise "Failure, only #{successful} out of #{addrs.length} lb hosts could be connected" if successful != addrs.length
   end
-  only_if { node[:load_balancer][:domain] }
+  only_if { node[:load_balancer][:should_register_with_lb] == 'true' }
 end
