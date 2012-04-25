@@ -75,18 +75,23 @@ function register_with_load_balancer($app_listener_name, $port)
   # register instance with all load balancers
 
   foreach($LB_IPAddress in $LB_IPAddresses) {
-     echo "----------------- $LB_IPAddress --------------"
-
      $LB_IPAddress=$LB_IPAddress.IPAddressToString
+
+     echo "----------------- $LB_IPAddress --------------"
      try
      {
           $LB_IPAddress_Host=([System.Net.Dns]::GetHostByAddress($LB_IPAddress)).Hostname
+          echo "LB_IPAddress_Host: $LB_IPAddress_Host"
+
           if ($LB_IPAddress_Host -match "^ec2.*amazonaws.com$")
           {
               $LB_IPAddress_New=(([System.Net.Dns]::GetHostByName($LB_IPAddress_Host)).AddressList | select IPAddressToString).IPAddressToString
+              echo "LB_IPAddress_New: $LB_IPAddress_New"
+
               if ($LB_IPAddress_New -match "^10\.")
               {
                   $LB_IPAddress=(([System.Net.Dns]::GetHostByName($LB_IPAddress_Host)).AddressList | select IPAddressToString).IPAddressToString
+                  echo "New LB_IPAddress: $LB_IPAddress"
               }
           }
      }
