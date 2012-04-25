@@ -47,10 +47,11 @@ ruby_block "Register web server with HAProxy" do
 
       # Using the default config file...no cookie persistence...and health checks
       sshcmd = "ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no root@#{addr}"
-      cfg_cmd="/opt/rightscale/lb/bin/haproxy_config_server.rb"
+      cfg_cmd="#{node[:ruby187]} /opt/rightscale/lb/bin/haproxy_config_server.rb"
 
       puts "ENV['EC2_LOCAL_IPV4'] = #{ENV['EC2_LOCAL_IPV4']}"
       puts "node[:ipaddress] = #{node[:ipaddress]}"
+
       target="#{ENV['EC2_LOCAL_IPV4']}:#{node[:load_balancer][:web_server_port]}"
       args= "-a add -w -l \"#{web_listener}\" -s \"#{backend_name}\" -t \"#{target}\" #{cookie_options} -e \" inter 3000 rise 2 fall 3 maxconn #{max_conn_per_svr}\" "
       args += " -k on " if node[:load_balancer][:health_check_uri] != nil && node[:load_balancer][:health_check_uri] != ""
@@ -76,7 +77,6 @@ ruby_block "Register web server with HAProxy" do
       end
 
       successful += 1
-
     end
 
     raise "Failure, only #{successful} out of #{addrs.length} lb hosts could be connected" if successful != addrs.length

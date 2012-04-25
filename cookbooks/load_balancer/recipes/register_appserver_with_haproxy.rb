@@ -9,7 +9,8 @@ powershell 'Register app server with HAProxy' do
       'PRIVATE_SSH_KEY' => node[:load_balancer][:private_ssh_key],
       'APP_SERVER_PORTS' => node[:load_balancer][:app_server_ports],
       'OPT_SESSION_STICKINESS' => node[:load_balancer][:session_stickiness],
-      'IP_ADDRESS' => node[:deploy][:app_server]
+      'IP_ADDRESS' => node[:deploy][:app_server],
+      'RUBY187' => node[:ruby187]
     }
   )
 
@@ -45,7 +46,7 @@ function register_with_load_balancer($app_listener_name, $port)
      $env:MAX_CONN_PER_SERVER=255
   }
 
-  $haproxy_script = "/opt/rightscale/sandbox/bin/ruby /opt/rightscale/lb/bin/haproxy_config_server.rb"
+  $haproxy_script = "$env:RUBY187 /opt/rightscale/lb/bin/haproxy_config_server.rb"
 
   $arguments = @(
   	"-a add",

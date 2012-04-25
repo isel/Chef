@@ -5,7 +5,8 @@ powershell 'Deregister app server with HAProxy' do
       'LB_APPLISTENER_NAMES' => node[:load_balancer][:app_listener_names],
       'LB_BACKEND_NAME' => node[:load_balancer][:backend_name],
       'LB_HOSTNAME' => "#{node[:load_balancer][:prefix]}.#{node[:load_balancer][:domain]}",
-      'PRIVATE_SSH_KEY' => node[:load_balancer][:private_ssh_key]
+      'PRIVATE_SSH_KEY' => node[:load_balancer][:private_ssh_key],
+      'RUBY187' => node[:ruby187]
     }
   )
 
@@ -35,7 +36,7 @@ function deregister_with_load_balancer($app_listener_name)
   Set-Content -path "C:\HAProxy\private.key" -value $env:PRIVATE_SSH_KEY
 
   # Define the path to the haproxy configure script
-  $haproxy_script = "/opt/rightscale/sandbox/bin/ruby /opt/rightscale/lb/bin/haproxy_config_server.rb"
+  $haproxy_script = "$env:RUBY187 /opt/rightscale/lb/bin/haproxy_config_server.rb"
 
   $arguments = @(
     "-a del",
