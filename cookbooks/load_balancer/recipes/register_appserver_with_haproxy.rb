@@ -103,6 +103,7 @@ function register_with_load_balancer($app_listener_name, $port)
      Write-Output ">>>>>>>Attaching app to host $LB_IPAddress for backend $env:LB_BACKEND_NAME <<<<<<<<<<<<<<"
 
      # Run linux_command to register with HAProxy using the ssh client in the RightScale sandbox directory
+     Write-Output "linux command: $linux_command"
      ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no root@$LB_IPAddress -i C:\HAProxy\private.key $linux_command
   }
 }
