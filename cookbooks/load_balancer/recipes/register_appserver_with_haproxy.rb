@@ -8,7 +8,8 @@ powershell 'Register app server with HAProxy' do
       'HEALTH_CHECK_URI' => node[:load_balancer][:health_check_uri],
       'PRIVATE_SSH_KEY' => node[:load_balancer][:private_ssh_key],
       'APP_SERVER_PORTS' => node[:load_balancer][:app_server_ports],
-      'OPT_SESSION_STICKINESS' => node[:load_balancer][:session_stickiness]
+      'OPT_SESSION_STICKINESS' => node[:load_balancer][:session_stickiness],
+      'IP_ADDRESS' => node[:ipaddress]
     }
   )
 
@@ -51,7 +52,7 @@ function register_with_load_balancer($app_listener_name, $port)
   	"-w",
   	"-s $env:LB_BACKEND_NAME",
   	"-l $app_listener_name",
-  	"-t #{node[:ipaddress]}`:$port",
+  	"-t $ENV:IP_ADDRESS`:$port",
   	"-e `"inter 3000 rise 2 fall 3 maxconn $env:MAX_CONN_PER_SERVER`""
   )
 
