@@ -106,7 +106,7 @@ attribute "load_balancer/route53_ip",
   ]
 
 attribute "load_balancer/route53_additional_ip",
-  :display_name => "Route 53 additioanl ip",
+  :display_name => "Route 53 additional ip",
   :description => "An additional ip address to register with Route53",
   :required    => "optional",
   :recipes     => [
