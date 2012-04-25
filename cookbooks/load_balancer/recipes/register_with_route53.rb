@@ -21,7 +21,7 @@ if node[:platform] == "ubuntu"
   end
 else
   powershell 'Registering with Route53' do
-    source("ruby #{ruby_scripts_dir}/register_with_route53.rb")
+    source("ruby #{node['ruby_scripts_dir']}/register_with_route53.rb")
 
     only_if { node[:load_balancer][:load_balancer1] && node[:load_balancer][:domain] }
   end
