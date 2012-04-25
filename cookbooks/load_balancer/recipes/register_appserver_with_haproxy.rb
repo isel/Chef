@@ -22,6 +22,8 @@ if(!$env:LB_HOSTNAME)
   exit 0
 }
 
+Write-Host "Host name: $env:LB_HOSTNAME"
+
 function register_with_load_balancer($app_listener_name, $port)
 {
   write-output "registering with load balancer ($app_listener_name, $port)"
@@ -32,7 +34,7 @@ function register_with_load_balancer($app_listener_name, $port)
   # Get Loadbalancer IP address via reverse DNS lookup
   $LB_IPAddresses = ([System.Net.Dns]::GetHostAddresses($env:LB_HOSTNAME) | Select IPAddressToString)
 
-  echo "----------------- $LB_IPAddress --------------"
+  echo "-----------------[ $LB_IPAddresses ]--------------"
 
   #Create Key File to access HAProxy server
   Set-Content -path "C:\HAProxy\private.key" -value $env:PRIVATE_SSH_KEY
@@ -73,6 +75,8 @@ function register_with_load_balancer($app_listener_name, $port)
   # register instance with all load balancers
 
   foreach($LB_IPAddress in $LB_IPAddresses) {
+     echo "----------------- $LB_IPAddress --------------"
+
      $LB_IPAddress=$LB_IPAddress.IPAddressToString
      try
      {
