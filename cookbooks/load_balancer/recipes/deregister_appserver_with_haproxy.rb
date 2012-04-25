@@ -35,7 +35,7 @@ function deregister_with_load_balancer($app_listener_name)
   Set-Content -path "C:\HAProxy\private.key" -value $env:PRIVATE_SSH_KEY
 
   # Define the path to the haproxy configure script
-  $haproxy_script = "/opt/rightscale/lb/bin/haproxy_config_server.rb"
+  $haproxy_script = "/opt/rightscale/sandbox/bin/ruby /opt/rightscale/lb/bin/haproxy_config_server.rb"
 
   $arguments = @(
     "-a del",

@@ -45,7 +45,7 @@ function register_with_load_balancer($app_listener_name, $port)
      $env:MAX_CONN_PER_SERVER=255
   }
 
-  $haproxy_script = "/opt/rightscale/lb/bin/haproxy_config_server.rb"
+  $haproxy_script = "/opt/rightscale/sandbox/bin/ruby /opt/rightscale/lb/bin/haproxy_config_server.rb"
 
   $arguments = @(
   	"-a add",
