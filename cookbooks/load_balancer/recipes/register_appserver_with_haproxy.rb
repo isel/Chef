@@ -51,7 +51,7 @@ function register_with_load_balancer($app_listener_name, $port)
   	"-w",
   	"-s $env:LB_BACKEND_NAME",
   	"-l $app_listener_name",
-  	"-t $env:RS_PRIVATE_IP`:$port",
+  	"-t #{node[:ipaddress]}`:$port",
   	"-e `"inter 3000 rise 2 fall 3 maxconn $env:MAX_CONN_PER_SERVER`""
   )
 
