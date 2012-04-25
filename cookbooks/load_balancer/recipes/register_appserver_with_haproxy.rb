@@ -9,7 +9,7 @@ powershell 'Register app server with HAProxy' do
       'PRIVATE_SSH_KEY' => node[:load_balancer][:private_ssh_key],
       'APP_SERVER_PORTS' => node[:load_balancer][:app_server_ports],
       'OPT_SESSION_STICKINESS' => node[:load_balancer][:session_stickiness],
-      'IP_ADDRESS' => node[:ipaddress]
+      'IP_ADDRESS' => "10.81.10.35"
     }
   )
 
