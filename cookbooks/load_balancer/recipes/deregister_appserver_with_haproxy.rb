@@ -15,7 +15,7 @@ powershell 'Deregister app server with HAProxy' do
 # Stop and fail script when a command fails
 $ErrorActionPreference="Stop"
 
-if(!$env:SHOULD_REGISTER_WITH_LB)
+if($env:SHOULD_REGISTER_WITH_LB = 'false')
 {
   Write-Host "No load balancer to connect to - exiting."
   exit 0
