@@ -17,7 +17,7 @@ ruby_block "Register web server with HAProxy" do
     end
 
   # Connect server machine to load balancer to start receiving traffic
-    web_listener = node[:load_balancer][:web_listener_name]
+    web_listener = node[:load_balancer][:prefix]
     backend_name = node[:load_balancer][:backend_name]
     lb_host = "#{node[:load_balancer][:prefix]}.#{node[:load_balancer][:domain]}"
 

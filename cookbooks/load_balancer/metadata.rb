@@ -132,16 +132,14 @@ attribute "load_balancer/ssl_key",
   :required => "required",
   :recipes => ["load_balancer::configure_load_balancer_forwarding"]
 
-attribute "load_balancer/web_listener_name",
-  :display_name => "web listener name",
-  :description => "specifies which HAProxy servers pool to use",
-  :required => "optional",
-  :default  => "www",
-  :recipes => ["load_balancer::register_webserver_with_haproxy"]
-
 attribute "load_balancer/web_server_port",
   :display_name => "web server port",
   :required => "optional",
   :default  => "80",
   :recipes  => ["load_balancer::register_webserver_with_haproxy"]
 
+### attributes used from other cookbooks
+attribute "deploy/app_server",
+  :display_name => "app server",
+  :required => "required",
+  :recipes  => ["load_balancer::register_appserver_with_haproxy"]

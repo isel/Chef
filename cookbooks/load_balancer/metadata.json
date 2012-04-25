@@ -239,11 +239,10 @@
       "calculated": false,
       "type": "string"
     },
-    "load_balancer/web_listener_name": {
-      "display_name": "web listener name",
-      "description": "specifies which HAProxy servers pool to use",
+    "load_balancer/web_server_port": {
+      "display_name": "web server port",
       "required": "optional",
-      "default": "www",
+      "default": "80",
       "recipes": [
         "load_balancer::register_webserver_with_haproxy"
       ],
@@ -253,12 +252,11 @@
       "calculated": false,
       "type": "string"
     },
-    "load_balancer/web_server_port": {
-      "display_name": "web server port",
-      "required": "optional",
-      "default": "80",
+    "deploy/app_server": {
+      "display_name": "app server",
+      "required": "required",
       "recipes": [
-        "load_balancer::register_webserver_with_haproxy"
+        "load_balancer::register_appserver_with_haproxy"
       ],
       "choice": [
 
