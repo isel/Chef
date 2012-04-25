@@ -11,10 +11,18 @@ template "#{node['ruby_scripts_dir']}/register_with_route53.rb" do
   )
 end
 
-bash 'Registering with Route53' do
-  code <<-EOF
-      ruby #{node['ruby_scripts_dir']}/register_with_route53.rb
-  EOF
+if node[:platform] == "ubuntu"
+  bash 'Registering with Route53' do
+    code <<-EOF
+        ruby #{node['ruby_scripts_dir']}/register_with_route53.rb
+    EOF
 
-  only_if { node[:load_balancer][:load_balancer1] }
+    only_if { node[:load_balancer][:load_balancer1] && node[:load_balancer][:domain] }
+  end
+else
+  powershell 'Registering with Route53' do
+    source("ruby #{ruby_scripts_dir}/register_with_route53.rb")
+
+    only_if { node[:load_balancer][:load_balancer1] && node[:load_balancer][:domain] }
+  end
 end

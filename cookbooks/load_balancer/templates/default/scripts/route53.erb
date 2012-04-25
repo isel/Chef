@@ -2,4 +2,10 @@ require '<%= @binaries_directory %>/CI/BuildScripts/Cloud/Route53/hosted_zones'
 
 zones = HostedZones.new
 
-puts zones.<%= @action %>_A_resource_record('<%= @prefix %>', '<%= @domain %>', ['<%= @load_balancer1 %>', '<%= @load_balancer2 %>'])
+<% if @load_balancer2.nil? -%>
+ip_addresses = ['<%= @load_balancer1 %>']
+<% else -%>
+ip_addresses = ['<%= @load_balancer1 %>', '<%= @load_balancer2 %>']
+<% end  -%>
+
+puts zones.<%= @action %>_A_resource_record('<%= @prefix %>', '<%= @domain %>', ip_addresses)
