@@ -404,6 +404,30 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/tag_key": {
+      "display_name": "tag key",
+      "required": "optional",
+      "recipes": [
+        "deploy::wait_for_server_with_tag"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/tag_value": {
+      "display_name": "tag value",
+      "required": "optional",
+      "recipes": [
+        "deploy::wait_for_server_with_tag"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/tenant": {
       "display_name": "tenant",
       "required": "required",
@@ -482,7 +506,8 @@
     "deploy::provision": "Provisions basic system data",
     "deploy::reindex_elastic_search": "Reindexes ElasticSearch (should be going away)",
     "deploy::register_cache_hostname": "Registers the cache hostname and ip in the hosts file",
-    "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server"
+    "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server",
+    "deploy::wait_for_server_with_tag": "Waits for server to have a tag"
   },
   "version": "0.0.1"
 }

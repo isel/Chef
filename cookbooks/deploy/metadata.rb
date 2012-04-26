@@ -28,6 +28,7 @@ recipe "deploy::provision", "Provisions basic system data"
 recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
+recipe "deploy::wait_for_server_with_tag", "Waits for server to have a tag"
 
 attribute "deploy/activemq_port",
   :display_name => "activemq port",
@@ -190,6 +191,16 @@ attribute "deploy/service_port",
   :required    => "optional",
   :default     => "8989",
   :recipes     => ["deploy::install_event_router_service"]
+
+attribute "deploy/tag_key",
+  :display_name => "tag key",
+  :required => "optional",
+  :recipes => ["deploy::wait_for_server_with_tag"]
+
+attribute "deploy/tag_value",
+  :display_name => "tag value",
+  :required => "optional",
+  :recipes => ["deploy::wait_for_server_with_tag"]
 
 attribute "deploy/tenant",
   :display_name => "tenant",
