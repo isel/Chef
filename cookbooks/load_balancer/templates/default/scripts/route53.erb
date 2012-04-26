@@ -9,5 +9,3 @@ ip_addresses = ['<%= @route53_ip %>', '<%= @route53_additional_ip %>']
 <% end  -%>
 
 puts zones.<%= @action %>_A_resource_record('<%= @prefix %>', '<%= @domain %>', ip_addresses)
-
-puts `right_link_tag "route53:domain=<%= @prefix %>.<%= @domain %>"`
