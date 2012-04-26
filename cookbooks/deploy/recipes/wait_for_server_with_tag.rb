@@ -13,11 +13,11 @@ if node[:platform] == "ubuntu"
     code <<-EOF
         ruby #{node['ruby_scripts_dir']}/wait_for_server_with_tag.rb
     EOF
+    only_if { node[:deploy][:tag_key] && node[:deploy][:tag_value] }
   end
-  only_if { node[:deploy][:tag_key] && node[:deploy][:tag_value] }
 else
   powershell "Waiting for server with tag: #{node[:deploy][:tag_key]}" do
     source("ruby #{node['ruby_scripts_dir']}/wait_for_server_with_tag.rb")
+    only_if { node[:deploy][:tag_key] && node[:deploy][:tag_value] }
   end
-  only_if { node[:deploy][:tag_key] && node[:deploy][:tag_value] }
 end
