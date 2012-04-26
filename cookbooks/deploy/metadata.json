@@ -240,7 +240,8 @@
       "display_name": "deployment name",
       "required": "required",
       "recipes": [
-        "deploy::register_cache_hostname"
+        "deploy::register_cache_hostname",
+        "deploy::wait_for_server_with_tag"
       ],
       "choice": [
 

@@ -120,7 +120,7 @@ attribute "deploy/db_server",
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
   :required => "required",
-  :recipes => ["deploy::register_cache_hostname"]
+  :recipes => ["deploy::register_cache_hostname", "deploy::wait_for_server_with_tag"]
 
 attribute "deploy/domain",
   :display_name => "domain",
