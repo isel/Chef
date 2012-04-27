@@ -158,5 +158,5 @@ attribute "deploy/app_server",
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
   :required => "required",
-  :recipes  => ["load_balancer::register_appserver_with_haproxy"]
+  :recipes  => ["load_balancer::register_appserver_with_haproxy", "load_balancer::register_webserver_with_haproxy"]
 
