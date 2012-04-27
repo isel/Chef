@@ -1,7 +1,26 @@
-node[:deploy].set['tag_key'] = 'route53:domain'
-node[:deploy].set['tag_value'] = "#{node[:load_balancer][:prefix]}.#{node[:load_balancer][:domain]}"
+template "#{node['ruby_scripts_dir']}/wait_for_server_with_tag.rb" do
+  source 'scripts/wait_for_server_with_tag.erb'
+  variables(
+    :deployment_name => node[:deploy][:deployment_name],
+    :tag_key => 'route53:domain',
+    :tag_value => "#{node[:load_balancer][:prefix]}.#{node[:load_balancer][:domain]}",
+    :timeout => '30*60'
+  )
+end
 
-include_recipe 'deploy::wait_for_server_with_tag'
+if node[:platform] == "ubuntu"
+  bash 'Waiting for server with tag: route53:domain' do
+    code <<-EOF
+        ruby #{node['ruby_scripts_dir']}/wait_for_server_with_tag.rb
+    EOF
+    only_if { node[:load_balancer][:prefix] && node[:load_balancer][:domain] }
+  end
+else
+  powershell 'Waiting for server with tag: route53:domain' do
+    source("ruby #{node['ruby_scripts_dir']}/wait_for_server_with_tag.rb")
+    only_if { node[:load_balancer][:prefix] && node[:load_balancer][:domain] }
+  end
+end
 
 powershell 'Register app server with HAProxy' do
   parameters (

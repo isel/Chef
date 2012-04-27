@@ -160,12 +160,3 @@ attribute "deploy/deployment_name",
   :required => "required",
   :recipes  => ["load_balancer::register_appserver_with_haproxy"]
 
-attribute "deploy/tag_key",
-  :display_name => "tag key",
-  :required => "optional",
-  :recipes => ["load_balancer::register_appserver_with_haproxy"]
-
-attribute "deploy/tag_value",
-  :display_name => "tag value",
-  :required => "optional",
-  :recipes => ["load_balancer::register_appserver_with_haproxy"]
