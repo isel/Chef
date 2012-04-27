@@ -1,3 +1,8 @@
+node[:deploy].set['tag_key'] = 'route53:domain'
+node[:deploy].set['tag_value'] = "#{node[:load_balancer][:prefix]}.#{node[:load_balancer][:domain]}"
+
+include_recipe 'deploy::wait_for_server_with_tag'
+
 powershell 'Register app server with HAProxy' do
   parameters (
     {
