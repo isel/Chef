@@ -12,7 +12,7 @@ bash 'Waiting for server with tag: route53:domain' do
   code <<-EOF
       ruby #{node['ruby_scripts_dir']}/wait_for_server_with_tag.rb
   EOF
-  only_if { node[:load_balancer][:prefix] && node[:load_balancer][:domain] }
+  only_if { node[:load_balancer][:should_register_with_lb] == 'true' }
 end
 
 ruby_block "Register web server with HAProxy" do

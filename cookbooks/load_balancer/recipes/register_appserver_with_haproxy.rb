@@ -10,7 +10,7 @@ end
 
 powershell 'Waiting for server with tag: route53:domain' do
   source("ruby #{node['ruby_scripts_dir']}/wait_for_server_with_tag.rb")
-  only_if { node[:load_balancer][:prefix] && node[:load_balancer][:domain] }
+  only_if { node[:load_balancer][:should_register_with_lb] == 'true' }
 end
 
 powershell 'Register app server with HAProxy' do
