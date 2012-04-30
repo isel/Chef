@@ -1,16 +1,14 @@
-template "#{node['ruby_scripts_dir']}/wait_for_server_with_tag.rb" do
-  source 'scripts/wait_for_server_with_tag.erb'
+template "#{node['ruby_scripts_dir']}/wait_for_load_balancers.rb" do
+  source 'scripts/wait_for_load_balancers.erb'
   variables(
     :deployment_name => node[:deploy][:deployment_name],
-    :tag_key => 'route53:domain',
-    :tag_value => "#{node[:load_balancer][:prefix]}.#{node[:load_balancer][:domain]}",
     :timeout => '30*60'
   )
 end
 
 bash 'Waiting for server with tag: route53:domain' do
   code <<-EOF
-      ruby #{node['ruby_scripts_dir']}/wait_for_server_with_tag.rb
+      ruby #{node['ruby_scripts_dir']}/wait_for_load_balancers.rb
   EOF
   only_if { node[:load_balancer][:should_register_with_lb] == 'true' }
 end
