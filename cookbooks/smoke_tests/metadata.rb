@@ -12,6 +12,7 @@ recipe "smoke_tests::local_app", "Runs local app server smoke tests"
 recipe "smoke_tests::local_cache", "Runs local cache server smoke tests"
 recipe "smoke_tests::local_db", "Runs local db server smoke tests"
 recipe "smoke_tests::local_engine", "Runs local engine server smoke tests"
+recipe "smoke_tests::local_loadbalancer", "Runs local load balancer server smoke tests"
 recipe "smoke_tests::local_messaging", "Runs local messaging server smoke tests"
 recipe "smoke_tests::local_web", "Runs local web server smoke tests"
 
@@ -25,7 +26,8 @@ attribute "core/server_type",
   :display_name => "server type",
   :description => "eg: db, app, web, cache",
   :required => "required",
-  :recipes => ["smoke_tests::local_app", "smoke_tests::local_cache", "smoke_tests::local_db", "smoke_tests::local_web" "smoke_tests::local_messaging"]
+  :recipes => ["smoke_tests::local_app", "smoke_tests::local_cache", "smoke_tests::local_db", "smoke_tests::local_engine",
+               "smoke_tests::local_loadbalancer", "smoke_tests::local_messaging", "smoke_tests::local_web" ]
 
 attribute "deploy/activemq_port",
   :display_name => "activemq port",

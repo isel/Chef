@@ -2,10 +2,12 @@
 powershell 'Deregister app server with HAProxy' do
   parameters (
     {
+      'SHOULD_REGISTER_WITH_LB' => node[:load_balancer][:should_register_with_lb],
       'LB_APPLISTENER_NAMES' => node[:load_balancer][:app_listener_names],
       'LB_BACKEND_NAME' => node[:load_balancer][:backend_name],
-      'LB_HOSTNAME' => node[:load_balancer][:website_dns],
-      'PRIVATE_SSH_KEY' => node[:load_balancer][:private_ssh_key]
+      'LB_HOSTNAME' => "#{node[:load_balancer][:prefix]}.#{node[:load_balancer][:domain]}",
+      'PRIVATE_SSH_KEY' => node[:load_balancer][:private_ssh_key],
+      'RUBY187' => node[:ruby187]
     }
   )
 
@@ -13,9 +15,9 @@ powershell 'Deregister app server with HAProxy' do
 # Stop and fail script when a command fails
 $ErrorActionPreference="Stop"
 
-if(!$env:LB_HOSTNAME)
+if($env:SHOULD_REGISTER_WITH_LB -eq 'false')
 {
-  Write-Host "LB_HOSTNAME is not specified, no need to deregister. Exiting silently..."
+  Write-Host "No load balancer to connect to - exiting."
   exit 0
 }
 
@@ -35,7 +37,7 @@ function deregister_with_load_balancer($app_listener_name)
   Set-Content -path "C:\HAProxy\private.key" -value $env:PRIVATE_SSH_KEY
 
   # Define the path to the haproxy configure script
-  $haproxy_script = "/opt/rightscale/lb/bin/haproxy_config_server.rb"
+  $haproxy_script = "$env:RUBY187 /opt/rightscale/lb/bin/haproxy_config_server.rb"
 
   $arguments = @(
     "-a del",
