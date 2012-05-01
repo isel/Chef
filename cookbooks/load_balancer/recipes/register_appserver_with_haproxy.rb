@@ -1,15 +1,13 @@
-template "#{node['ruby_scripts_dir']}/wait_for_server_with_tag.rb" do
-  source 'scripts/wait_for_server_with_tag.erb'
+template "#{node['ruby_scripts_dir']}/wait_for_load_balancers.rb" do
+  source 'scripts/wait_for_load_balancers.erb'
   variables(
     :deployment_name => node[:deploy][:deployment_name],
-    :tag_key => 'route53:domain',
-    :tag_value => "#{node[:load_balancer][:prefix]}.#{node[:load_balancer][:domain]}",
     :timeout => '30*60'
   )
 end
 
-powershell 'Waiting for server with tag: route53:domain' do
-  source("ruby #{node['ruby_scripts_dir']}/wait_for_server_with_tag.rb")
+powershell 'Waiting for load balancers to be operational' do
+  source("ruby #{node['ruby_scripts_dir']}/wait_for_load_balancers.rb")
   only_if { node[:load_balancer][:should_register_with_lb] == 'true' }
 end
 
