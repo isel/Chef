@@ -6,7 +6,7 @@ template "#{node['ruby_scripts_dir']}/wait_for_load_balancers.rb" do
   )
 end
 
-powershell 'Waiting for server with tag: route53:domain' do
+powershell 'Waiting for load balancers to be operational' do
   source("ruby #{node['ruby_scripts_dir']}/wait_for_load_balancers.rb")
   only_if { node[:load_balancer][:should_register_with_lb] == 'true' }
 end

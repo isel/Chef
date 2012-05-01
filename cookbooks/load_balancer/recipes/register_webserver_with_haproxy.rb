@@ -6,7 +6,7 @@ template "#{node['ruby_scripts_dir']}/wait_for_load_balancers.rb" do
   )
 end
 
-bash 'Waiting for server with tag: route53:domain' do
+bash 'Waiting for load balancers to be operational' do
   code <<-EOF
       ruby #{node['ruby_scripts_dir']}/wait_for_load_balancers.rb
   EOF
