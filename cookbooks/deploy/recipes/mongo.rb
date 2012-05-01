@@ -73,8 +73,17 @@ else
   log 'Mongo service is already registered.'
 end
 
-bash 'Starting mongo service' do
-  code <<-EOF
-    service mongo start
-  EOF
+ruby_block 'Starting mongo service' do
+  block do
+    puts `service mongo start`
+
+    sleep_time = 5
+    done = false
+    elapsed = 0
+    until done || elapsed >= 300
+      sleep sleep_time
+      done = `service mongo status`.include?('Mongo is running with pid=')
+      elapsed += sleep_time
+    end
+  end
 end
