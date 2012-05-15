@@ -11,7 +11,8 @@ template "#{ruby_scripts_dir}/event_router_service_setup.rb" do
   variables(
     :source_directory  => File.join( node[:binaries_directory] , 'AppServer/Services/Messaging.EventRouter').gsub(/\\/,'/'),
     :target_directory => File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' ).gsub(/\\/,'/'),
-    :messaging_server  => node[:deploy][:messaging_server]
+    :messaging_server  => node[:deploy][:messaging_server],
+    :messaging_server_port  => node[:deploy][:messaging_server_port]
   )
 
 end

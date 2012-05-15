@@ -161,7 +161,7 @@ attribute "deploy/mule_port",
   :recipes  => ["deploy::launch_mule"]
 
 attribute "deploy/messaging_server_port",
-  :display_name => "messaging server",
+  :display_name => "messaging server port",
   :required => "optional",
   :default  => "8081",
   :recipes  => ["deploy::event_router_service", "deploy::foundation_services"]

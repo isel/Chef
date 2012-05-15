@@ -1,6 +1,7 @@
 require 'fileutils'
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/configuration'
 
+puts "Launched the event_router_setup.rb"
 
 source_directory = '<%= @source_directory %>'
 target_directory = '<%= @target_directory %>'
@@ -8,16 +9,19 @@ messaging_server = '<%= @messaging_server %>'
 messaging_server_port = '<%= @messaging_server_port %>'
 app_config       = 'UltimateSoftware.Foundation.Messaging.EventRouter.exe.config'
 
+puts "Verifying the presence of the target directory: #{target_directory}"
 if Dir.exist?(target_directory)
 puts 'Event Roures Service has already been configured'
 exit 0
 end
 
+puts "Verifying the presence of the source directory: #{source_directory}"
 if !Dir.exist?(source_directory)
 puts 'Event Roures Service source directory is missing'
 exit  4
 end
 
+puts "Creating the target directory: #{target_directory}"
 FileUtils.mkdir_p(target_directory)
 if !Dir.exist?(target_directory)
 puts 'Event Roures Service target directory cannot be created'
