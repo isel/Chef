@@ -124,6 +124,20 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/messaging_server": {
+      "display_name": "messaging_server",
+      "description": "Private IP address messaging_server host in this deployment",
+      "required": "required",
+      "recipes": [
+        "deploy::event_router_service",
+        "deploy::foundation_services"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/app_server": {
       "display_name": "app server",
       "required": "required",
@@ -324,6 +338,20 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/messaging_server_port": {
+      "display_name": "messaging server",
+      "required": "required",
+      "default": "8081",
+      "recipes": [
+        "deploy::event_router_service",
+        "deploy::foundation_services"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/mule_version": {
       "display_name": "mule version",
       "required": "optional",
@@ -368,7 +396,7 @@
       "default": "MSMQ-Server;MSMQ-HTTP-Support;MSMQ-Directory",
       "recipes": [
         "deploy::enable_msmq",
-        "deploy::install_event_router_service"
+        "deploy::event_router_service"
       ],
       "choice": [
 
@@ -382,7 +410,7 @@
       "required": "optional",
       "default": "v4.0_x86",
       "recipes": [
-        "deploy::install_event_router_service"
+        "deploy::event_router_service"
       ],
       "choice": [
 
@@ -396,7 +424,7 @@
       "required": "optional",
       "default": "8989",
       "recipes": [
-        "deploy::install_event_router_service"
+        "deploy::event_router_service"
       ],
       "choice": [
 
@@ -476,7 +504,7 @@
     "deploy::mule": "Deploys Mule ESB",
     "deploy::engine": "Deploys Engine",
     "deploy::foundation_services": "Deploys the foundation rest services",
-    "deploy::install_event_router_service": "Installs Event Router Service",
+    "deploy::event_router_service": "Installs Event Router Service",
     "deploy::jspr": "Deploys the web server websites",
     "deploy::mongo": "Deploys mongodb",
     "deploy::provision": "Provisions basic system data",

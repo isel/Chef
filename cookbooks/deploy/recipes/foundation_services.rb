@@ -9,7 +9,9 @@ template "#{ruby_scripts_dir}/foundation_services.rb" do
     :cache_server => node[:deploy][:cache_server],
     :db_server => node[:deploy][:db_server],
     :elastic_search_port => node[:deploy][:elastic_search_port],
-    :db_port => node[:deploy][:db_port]
+    :db_port => node[:deploy][:db_port],
+    :messaging_server => node[:deploy][:messaging_server],
+    :messaging_server_port => node[:deploy][:messaging_server_port]
   )
 end
 
