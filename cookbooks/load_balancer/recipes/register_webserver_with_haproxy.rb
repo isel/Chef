@@ -1,3 +1,18 @@
+template "#{node['ruby_scripts_dir']}/wait_for_load_balancers.rb" do
+  source 'scripts/wait_for_load_balancers.erb'
+  variables(
+    :deployment_name => node[:deploy][:deployment_name],
+    :timeout => '30*60'
+  )
+end
+
+bash 'Waiting for load balancers to be operational' do
+  code <<-EOF
+      ruby #{node['ruby_scripts_dir']}/wait_for_load_balancers.rb
+  EOF
+  only_if { node[:load_balancer][:should_register_with_lb] == 'true' }
+end
+
 ruby_block "Register web server with HAProxy" do
   block do
     puts "running register web server with haproxy"
@@ -17,9 +32,9 @@ ruby_block "Register web server with HAProxy" do
     end
 
   # Connect server machine to load balancer to start receiving traffic
-    web_listener = node[:load_balancer][:web_listener_name]
+    web_listener = node[:load_balancer][:prefix]
     backend_name = node[:load_balancer][:backend_name]
-    lb_host = node[:load_balancer][:website_dns]
+    lb_host = "#{node[:load_balancer][:prefix]}.#{node[:load_balancer][:domain]}"
 
   # Use cookies?
     sess_sticky = node[:load_balancer][:session_stickiness].downcase
@@ -47,10 +62,11 @@ ruby_block "Register web server with HAProxy" do
 
       # Using the default config file...no cookie persistence...and health checks
       sshcmd = "ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no root@#{addr}"
-      cfg_cmd="/opt/rightscale/lb/bin/haproxy_config_server.rb"
+      cfg_cmd="#{node[:ruby187]} /opt/rightscale/lb/bin/haproxy_config_server.rb"
 
       puts "ENV['EC2_LOCAL_IPV4'] = #{ENV['EC2_LOCAL_IPV4']}"
       puts "node[:ipaddress] = #{node[:ipaddress]}"
+
       target="#{ENV['EC2_LOCAL_IPV4']}:#{node[:load_balancer][:web_server_port]}"
       args= "-a add -w -l \"#{web_listener}\" -s \"#{backend_name}\" -t \"#{target}\" #{cookie_options} -e \" inter 3000 rise 2 fall 3 maxconn #{max_conn_per_svr}\" "
       args += " -k on " if node[:load_balancer][:health_check_uri] != nil && node[:load_balancer][:health_check_uri] != ""
@@ -76,10 +92,9 @@ ruby_block "Register web server with HAProxy" do
       end
 
       successful += 1
-
     end
 
     raise "Failure, only #{successful} out of #{addrs.length} lb hosts could be connected" if successful != addrs.length
   end
-  not_if { node[:load_balancer][:website_dns].nil? }
+  only_if { node[:load_balancer][:should_register_with_lb] == 'true' }
 end

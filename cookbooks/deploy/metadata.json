@@ -436,7 +436,8 @@
       "display_name": "tenant",
       "required": "required",
       "recipes": [
-        "deploy::provision"
+        "deploy::provision",
+        "deploy::engine"
       ],
       "choice": [
 

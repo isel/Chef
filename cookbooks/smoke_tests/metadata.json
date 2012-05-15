@@ -41,7 +41,10 @@
         "smoke_tests::local_app",
         "smoke_tests::local_cache",
         "smoke_tests::local_db",
-        "smoke_tests::local_websmoke_tests::local_messaging"
+        "smoke_tests::local_engine",
+        "smoke_tests::local_loadbalancer",
+        "smoke_tests::local_messaging",
+        "smoke_tests::local_web"
       ],
       "choice": [
 
@@ -151,6 +154,7 @@
     "smoke_tests::local_cache": "Runs local cache server smoke tests",
     "smoke_tests::local_db": "Runs local db server smoke tests",
     "smoke_tests::local_engine": "Runs local engine server smoke tests",
+    "smoke_tests::local_loadbalancer": "Runs local load balancer server smoke tests",
     "smoke_tests::local_messaging": "Runs local messaging server smoke tests",
     "smoke_tests::local_web": "Runs local web server smoke tests"
   },

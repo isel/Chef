@@ -1,3 +1,5 @@
+website_dns = "#{node[:load_balancer][:prefix]}.#{node[:load_balancer][:domain]}"
+
 node[:load_balancer][:forwarding_ports].split(',').each do |lb_bind_port|
   bash 'Configuring load balancer forwarding' do
     code <<-EOF
@@ -19,8 +21,8 @@ log_dir="/var/log/apache2"
 install_dir_option=" -i /etc/apache2"
 
 ## General Variables
-doc_root=/home/webapps/#{node[:load_balancer][:website_dns]}/current
-deploy_dir=/home/webapps/#{node[:load_balancer][:website_dns]}/releases
+doc_root=/home/webapps/#{website_dns}/current
+deploy_dir=/home/webapps/#{website_dns}/releases
 
 mkdir -p $deploy_dir
 mkdir -p $log_dir
@@ -43,7 +45,7 @@ fi
 
 # Set: ServerName, DocumentRoot, LogDirectory, MaintancePage, ExtendedStatus(On), and Serve
 # Locally(Off)
-options="-s #{node[:load_balancer][:website_dns]} -d $doc_root -l $log_dir $install_dir_option -m "$apache_maint_page" -k on -f off"
+options="-s #{website_dns} -d $doc_root -l $log_dir $install_dir_option -m "$apache_maint_page" -k on -f off"
 
 # Add an entry vhost (frontend) that forwards to next target
 
@@ -53,11 +55,11 @@ if [ "#{lb_bind_port}" == "443" ]; then
   # Put SSL certificates in place
   key_dir=/etc/${apache}/rightscale.d/key
   mkdir -m 700 -p $key_dir
-  echo "#{node[:load_balancer][:ssl_key]}" > $key_dir/#{node[:load_balancer][:website_dns]}.key
-  echo "#{node[:load_balancer][:ssl_certificate]}" > $key_dir/#{node[:load_balancer][:website_dns]}.crt
+  echo "#{node[:load_balancer][:ssl_key]}" > $key_dir/#{website_dns}.key
+  echo "#{node[:load_balancer][:ssl_certificate]}" > $key_dir/#{website_dns}.crt
   #if [ -n "$OPT_SSL_CERTIFICATE_CHAIN" ]; then
   #  echo "Installing SSL certificate chain"
-  #  echo "$OPT_SSL_CERTIFICATE_CHAIN" > $key_dir/#{node[:load_balancer][:website_dns]}.sf_crt
+  #  echo "$OPT_SSL_CERTIFICATE_CHAIN" > $key_dir/#{website_dns}.sf_crt
   #fi
   chmod 400 $key_dir/*
 

@@ -206,7 +206,7 @@ attribute "deploy/service_port",
 attribute "deploy/tenant",
   :display_name => "tenant",
   :required => "required",
-  :recipes => ["deploy::provision"]
+  :recipes => ["deploy::provision", "deploy::engine"]
 
 attribute "deploy/ulimit_files",
   :display_name => "setting for log4j",

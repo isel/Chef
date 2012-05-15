@@ -10,8 +10,7 @@ FileList['/Websites/**'].each do |f|
   FileUtils.remove_entry(f, true)
 end
 
-
-FileUtils.cp_r('<%= node['binaries_directory'] %>/AppServer/Models', '/Websites')
+FileUtils.cp_r('<%= node['binaries_directory'] %>/Models', '/Websites')
 FileUtils.cp_r('<%= node['binaries_directory'] %>/AppServer/Websites/UltimateSoftware.Gateway.Active/.', '/Websites/ActiveSTS')
 FileUtils.cp_r('<%= node['binaries_directory'] %>/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services')
 FileUtils.cp_r('<%= node['binaries_directory'] %>/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services.Help')

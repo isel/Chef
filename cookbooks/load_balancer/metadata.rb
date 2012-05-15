@@ -9,8 +9,10 @@ supports "ubuntu"
 
 recipe "load_balancer::configure_load_balancer_forwarding", "Adds an entry vhost (frontend) that forwards requests to the next target"
 recipe "load_balancer::deregister_appserver_with_haproxy", "Deregisters an app server with each load balancer"
+recipe "load_balancer::deregister_with_route53", "Deregisters an ip address with a domain in Route53"
 recipe "load_balancer::register_appserver_with_haproxy", "Registers an app server with each load balancer"
 recipe "load_balancer::register_webserver_with_haproxy", "Registers a web server with each load balancer"
+recipe "load_balancer::register_with_route53", "Registers an ip address with a domain in Route53"
 
 attribute "load_balancer/app_listener_names",
   :display_name => "app listener names",
@@ -30,6 +32,19 @@ attribute "load_balancer/backend_name",
   :description => "A unique name for each back end e.g. (RS_INSTANCE_UUID)",
   :required => "optional",
   :recipes  => [
+    "load_balancer::register_appserver_with_haproxy",
+    "load_balancer::register_webserver_with_haproxy",
+    "load_balancer::deregister_appserver_with_haproxy"
+  ]
+
+attribute "load_balancer/domain",
+  :display_name => "domain name",
+  :description => "The domain name without the prefix (ie, globalincite.com)",
+  :required => "optional",
+  :recipes  => [
+    "load_balancer::configure_load_balancer_forwarding",
+    "load_balancer::register_with_route53",
+    "load_balancer::deregister_with_route53",
     "load_balancer::register_appserver_with_haproxy",
     "load_balancer::register_webserver_with_haproxy",
     "load_balancer::deregister_appserver_with_haproxy"
@@ -62,17 +77,59 @@ attribute "load_balancer/max_connections_per_lb",
   :default  => "255",
   :recipes  => ["load_balancer::register_appserver_with_haproxy", "load_balancer::register_webserver_with_haproxy"]
 
+attribute "load_balancer/prefix",
+  :display_name => "prefix",
+  :description => "The prefix to a domain (ie, www or api)",
+  :required    => "optional",
+  :recipes     => [
+    "load_balancer::configure_load_balancer_forwarding",
+    "load_balancer::register_with_route53",
+    "load_balancer::deregister_with_route53",
+    "load_balancer::register_appserver_with_haproxy",
+    "load_balancer::register_webserver_with_haproxy",
+    "load_balancer::deregister_appserver_with_haproxy"
+  ]
+
 attribute "load_balancer/private_ssh_key",
   :display_name => "private ssh key",
   :description => "The ssh key used to connect to the load balancer",
   :required => "optional",
   :recipes  => ["load_balancer::register_appserver_with_haproxy", "load_balancer::deregister_appserver_with_haproxy"]
 
+attribute "load_balancer/route53_ip",
+  :display_name => "Route 53 ip",
+  :description => "The ip address to register with Route53",
+  :required    => "optional",
+  :recipes     => [
+    "load_balancer::deregister_with_route53",
+    "load_balancer::register_with_route53"
+  ]
+
+attribute "load_balancer/route53_additional_ip",
+  :display_name => "Route 53 additional ip",
+  :description => "An additional ip address to register with Route53",
+  :required    => "optional",
+  :recipes     => [
+    "load_balancer::deregister_with_route53",
+    "load_balancer::register_with_route53"
+  ]
+
 attribute "load_balancer/session_stickiness",
   :display_name => "session stickiness",
   :required => "optional",
   :default  => "false",
   :recipes  => ["load_balancer::register_appserver_with_haproxy", "load_balancer::register_webserver_with_haproxy"]
+
+attribute "load_balancer/should_register_with_lb",
+  :display_name => "should register with load balancer",
+  :description => "This environment uses loadbalancers (true/false)",
+  :required => "optional",
+  :default => "false",
+  :recipes => [
+    "load_balancer::register_appserver_with_haproxy",
+    "load_balancer::register_webserver_with_haproxy",
+    "load_balancer::deregister_appserver_with_haproxy"
+  ]
 
 attribute "load_balancer/ssl_certificate",
   :display_name => "ssl certificate",
@@ -86,26 +143,20 @@ attribute "load_balancer/ssl_key",
   :required => "required",
   :recipes => ["load_balancer::configure_load_balancer_forwarding"]
 
-attribute "load_balancer/web_listener_name",
-  :display_name => "web listener name",
-  :description => "specifies which HAProxy servers pool to use",
-  :required => "optional",
-  :default  => "www",
-  :recipes => ["load_balancer::register_webserver_with_haproxy"]
-
 attribute "load_balancer/web_server_port",
   :display_name => "web server port",
   :required => "optional",
   :default  => "80",
   :recipes  => ["load_balancer::register_webserver_with_haproxy"]
 
-attribute "load_balancer/website_dns",
-  :display_name => "website dns name",
-  :description => "The fully qualified domain name that the server will accept traffic for. Ex: www.globalincite.com. Also, sets the directory for your application's web files (/home/webapps/APPLICATION/current/). If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory. This must be a valid directory name. Do not use symbols in the name.",
-  :required => "optional",
-  :recipes  => [
-    "load_balancer::configure_load_balancer_forwarding",
-    "load_balancer::register_appserver_with_haproxy",
-    "load_balancer::register_webserver_with_haproxy",
-    "load_balancer::deregister_appserver_with_haproxy"
-  ]
+### attributes used from other cookbooks
+attribute "deploy/app_server",
+  :display_name => "app server",
+  :required => "required",
+  :recipes  => ["load_balancer::register_appserver_with_haproxy"]
+
+attribute "deploy/deployment_name",
+  :display_name => "deployment name",
+  :required => "required",
+  :recipes  => ["load_balancer::register_appserver_with_haproxy", "load_balancer::register_webserver_with_haproxy"]
+

@@ -1,0 +1,11 @@
+require '<%= @binaries_directory %>/CI/BuildScripts/Cloud/Route53/hosted_zones'
+
+zones = HostedZones.new
+
+<% if @route53_additional_ip.nil? -%>
+ip_addresses = ['<%= @route53_ip %>']
+<% else -%>
+ip_addresses = ['<%= @route53_ip %>', '<%= @route53_additional_ip %>']
+<% end  -%>
+
+puts zones.<%= @action %>_A_resource_record('<%= @prefix %>', '<%= @domain %>', ip_addresses)
