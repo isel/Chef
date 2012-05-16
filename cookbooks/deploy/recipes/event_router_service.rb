@@ -5,8 +5,10 @@ ruby_scripts_dir = node['ruby_scripts_dir']
 
 # copy the application files to intermediate directory and update application configuration.
 
-@source_directory  = File.join( node[:binaries_directory] , 'AppServer/Services/Messaging.EventRouter').gsub(/\\/,'/'),
-@staging_directory = File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' ).gsub(/\\/,'/'),
+@source_directory  = File.join( node[:binaries_directory] , 'AppServer/Services/Messaging.EventRouter').gsub(/\\/,'/')
+@staging_directory = File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' ).gsub(/\\/,'/')
+
+puts "running template"
 
 template "#{ruby_scripts_dir}/event_router_service_setup.rb" do
 
@@ -20,6 +22,58 @@ template "#{ruby_scripts_dir}/event_router_service_setup.rb" do
   )
 
 end
+
+puts "running directly"
+
+=begin
+
+=end
+
+source_directory = @source_directory
+target_directory =  @target_directory
+messaging_server =  node[:deploy][:messaging_server]
+messaging_server_port = node[:deploy][:messaging_server_port]
+
+app_config       = 'UltimateSoftware.Foundation.Messaging.EventRouter.exe.config'
+
+puts "Verifying the presence of the target directory: #{target_directory}"
+if Dir.exist?(target_directory)
+puts 'Event Roures Service has already been configured'
+exit 0
+end
+
+puts "Verifying the presence of the source directory: #{source_directory}"
+if !Dir.exist?(source_directory)
+puts 'Event Roures Service source directory is missing'
+exit  4
+end
+
+puts "Creating the target directory: #{target_directory}"
+FileUtils.mkdir_p(target_directory)
+if !Dir.exist?(target_directory)
+puts 'Event Roures Service target directory cannot be created'
+exit 8
+end
+
+puts "Copying application files #{source_directory} to #{target_directory}"
+
+Dir.chdir(source_directory)
+
+FileUtils.cp_r("#{source_directory}/.",  target_directory )
+
+Dir.chdir(target_directory)
+
+
+if !File.exist?(app_config)
+puts 'Event Roures Service configuration file #{app_config} is missing'
+exit  16
+end
+
+# puts "Updating configuration file #{app_config} with #{messaging_server}"
+# Helpers::change_app_setting(app_config, "MessagingServer.Uri", "http://#{messaging_server}:#{messaging_server_port}")
+
+puts "finished"
+
 @staging_directory.gsub!('/','\\')
 # Install block : powershell
 powershell 'Install Event Router Service' do
