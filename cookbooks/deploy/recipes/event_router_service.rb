@@ -5,23 +5,27 @@ ruby_scripts_dir = node['ruby_scripts_dir']
 
 # copy the application files to intermediate directory and update application configuration.
 
+@source_directory  = File.join( node[:binaries_directory] , 'AppServer/Services/Messaging.EventRouter').gsub(/\\/,'/'),
+@staging_directory = File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' ).gsub(/\\/,'/'),
+
 template "#{ruby_scripts_dir}/event_router_service_setup.rb" do
 
   source 'scripts/event_router_service_setup.erb'
+
   variables(
-    :source_directory  => File.join( node[:binaries_directory] , 'AppServer/Services/Messaging.EventRouter').gsub(/\\/,'/'),
-    :target_directory => File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' ).gsub(/\\/,'/'),
+    :source_directory  => @source_directory,
+    :target_directory => @staging_directory,
     :messaging_server  => node[:deploy][:messaging_server],
     :messaging_server_port  => node[:deploy][:messaging_server_port]
   )
 
 end
-
+@staging_directory.gsub!('/','\\')
 # Install block : powershell
 powershell 'Install Event Router Service' do
   parameters (
     {
-      'SOURCE_PATH' => File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' ).gsub('/','\\'),
+      'SOURCE_PATH' => @staging_directory,
       'SERVER_MANAGER_FEATURES' => node[:deploy][:server_manager_features],
       'SERVICE_PORT' => node[:deploy][:service_port],
       'SERVICE_PLATROFM' => node[:deploy][:service_platform]
