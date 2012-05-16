@@ -55,11 +55,15 @@ exit 8
 end
 end
 puts "Copying application files #{@source_directory} to #{@staging_directory}"
-
+begin
 Dir.chdir(@source_directory)
 FileUtils.cp_r("#{@source_directory}/.",  @staging_directory )
 Dir.chdir(@staging_directory)
 puts 'Event Roures Service has already been configured'
+rescue
+  puts "Nothing to copy in #{@source_directory}"
+  @staging_directory =  @source_directory
+end
 # continue with template
 # exit 0
 template "#{ruby_scripts_dir}/event_router_service_setup.rb" do
