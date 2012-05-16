@@ -1,27 +1,12 @@
 require 'rake'
 require 'fileutils'
-DEBUG = 0
 
-if DEBUG == 1
-node = {'ruby_scripts_dir'=>"C:/projects/ugf/BuildAndDeployment", :binaries_directory=>"c:/DeployScripts_Binaries"}
-end
+ruby_scripts_dir = node['ruby_scripts_dir']
 
-begin
-  ruby_scripts_dir = node['ruby_scripts_dir']
-rescue
-  ruby_scripts_dir =  '/RubyScripts'
-end
-begin
-  @binaries_directory = node[:binaries_directory]
 
-rescue
-  @binaries_directory = '/DeployScripts_Binaries'
-end
-puts "Running template #{ruby_scripts_dir}/event_router_service_setup.rb"
-
-# copy the application files to intermediate directory and update application configuration.
-
+@binaries_directory = node[:binaries_directory]
 @source_directory  = File.join( @binaries_directory , 'AppServer/Services/Messaging.EventRouter')
+# C:\windows\TEMP
 @staging_directory = File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' )
 
 @source_directory = Dir.getwd if @source_directory.nil?
@@ -30,83 +15,29 @@ puts "Running template #{ruby_scripts_dir}/event_router_service_setup.rb"
 @source_directory = @source_directory.gsub(/\\/,'/') if  !@source_directory.nil?
 @staging_directory = @staging_directory.gsub(/\\/,'/') if !@staging_directory.nil?
 
-puts "source_directory=#{@source_directory}"
-puts "staging_directory=#{@staging_directory}"
 
-
-puts "Verifying the presence of the source directory: #{@source_directory}"
-if !File.exist?(@source_directory)
-puts 'Event Roures Service source directory is missing'
-# continue
-# exit  4
-end
-
-puts "Verifying the presence of the target directory: #{@staging_directory}"
-if File.exist?(@staging_directory)
-  puts 'Event Roures Service target directory already exists'
-
-else
-puts "Creating the target directory: #{@staging_directory}"
-FileUtils.mkdir_p(@staging_directory)
-if !File.exist?(@staging_directory)
-puts 'Event Roures Service target directory cannot be created'
-exit 8
-end
-end
-puts "Copying application files #{@source_directory} to #{@staging_directory}"
-begin
-Dir.chdir(@source_directory)
-FileUtils.cp_r("#{@source_directory}/.",  @staging_directory )
-Dir.chdir(@staging_directory)
-puts 'Event Roures Service has already been configured'
-rescue
-  puts "Nothing to copy in #{@source_directory}"
-  @staging_directory =  @source_directory
-end
-
-begin
-  @messaging_server = node[:deploy][:messaging_server]
-rescue
-  @messaging_server =  '127.0.0.1'
-end
-
-begin
-  @messaging_server_port = node[:deploy][:messaging_server_port]
-rescue
-  @messaging_server_port =  '8081'
-end
-
-
-
-# continue with template
-# exit 0
 template "#{ruby_scripts_dir}/event_router_service.rb" do
   source 'scripts/event_router_service.erb'
   variables(
-    :source_directory  => @source_directory,
+    :source_directory  => @source_directory, 
     :target_directory => @staging_directory,
-    :messaging_server  => @messaging_Server ,
-    :messaging_server_port  => @messaging_server_port,
+    :messaging_server  => node[:deploy][:messaging_server] ,
     :binaries_directory => @binaries_directory
-
   )
+
 end
 
-puts "Running ruby code directly"
+powershell "Copy the application files to intermediate directory and update application configuration of event router service" do
+  source("ruby #{ruby_scripts_dir}/event_router_service.rb" )
+end
 
-=begin
 
-=end
-
-puts "Finished"
-
-@staging_directory.gsub!('/','\\')
 
 # Install block : powershell
 powershell 'Install Event Router Service' do
   parameters (
     {
-      'SOURCE_PATH' => @staging_directory,
+      'SOURCE_PATH' => @staging_directory.gsub('/','\\'),
       'SERVER_MANAGER_FEATURES' => node[:deploy][:server_manager_features],
       'SERVICE_PORT' => node[:deploy][:service_port],
       'SERVICE_PLATROFM' => node[:deploy][:service_platform]
