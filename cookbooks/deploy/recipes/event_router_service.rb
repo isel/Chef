@@ -5,22 +5,23 @@ DEBUG = 0
 if DEBUG == 1
 node = {'ruby_scripts_dir'=>"C:/projects/ugf/BuildAndDeployment", :binaries_directory=>"c:/DeployScripts_Binaries"}
 end
+
 begin
-ruby_scripts_dir = node['ruby_scripts_dir']
+  ruby_scripts_dir = node['ruby_scripts_dir']
 rescue
   ruby_scripts_dir =  '/RubyScripts'
 end
 begin
-  binaries_directory = node[:binaries_directory]
+  @binaries_directory = node[:binaries_directory]
 
 rescue
-  binaries_directory = '/DeployScripts_Binaries'
+  @binaries_directory = '/DeployScripts_Binaries'
 end
 puts "Running template #{ruby_scripts_dir}/event_router_service_setup.rb"
 
 # copy the application files to intermediate directory and update application configuration.
 
-@source_directory  = File.join( binaries_directory , 'AppServer/Services/Messaging.EventRouter')
+@source_directory  = File.join( @binaries_directory , 'AppServer/Services/Messaging.EventRouter')
 @staging_directory = File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' )
 
 @source_directory = Dir.getwd if @source_directory.nil?
@@ -44,8 +45,6 @@ puts "Verifying the presence of the target directory: #{@staging_directory}"
 if File.exist?(@staging_directory)
   puts 'Event Roures Service target directory already exists'
 
-# continue
-# exit 0
 else
 puts "Creating the target directory: #{@staging_directory}"
 FileUtils.mkdir_p(@staging_directory)
@@ -64,6 +63,21 @@ rescue
   puts "Nothing to copy in #{@source_directory}"
   @staging_directory =  @source_directory
 end
+
+begin
+  @messaging_server = node[:deploy][:messaging_server]
+rescue
+  @messaging_server =  '127.0.0.1'
+end
+
+begin
+  @messaging_server_port = node[:deploy][:messaging_server_port]
+rescue
+  @messaging_server_port =  '8081'
+end
+
+
+
 # continue with template
 # exit 0
 template "#{ruby_scripts_dir}/event_router_service.rb" do
@@ -71,8 +85,10 @@ template "#{ruby_scripts_dir}/event_router_service.rb" do
   variables(
     :source_directory  => @source_directory,
     :target_directory => @staging_directory,
-    :messaging_server  => node[:deploy][:messaging_server],
-    :messaging_server_port  => node[:deploy][:messaging_server_port]
+    :messaging_server  => @messaging_Server ,
+    :messaging_server_port  => @messaging_server_port,
+    :binaries_directory => @binaries_directory
+
   )
 end
 

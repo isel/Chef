@@ -226,3 +226,4 @@ attribute "deploy/verify_completion",
   :required => "optional",
   :default  => "1",
   :recipes  => ["deploy::launch_activemq", "deploy::launch_mule"]
+
