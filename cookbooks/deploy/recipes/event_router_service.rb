@@ -66,8 +66,8 @@ rescue
 end
 # continue with template
 # exit 0
-template "#{ruby_scripts_dir}/event_router_service_setup.rb" do
-  source 'scripts/event_router_service_setup.erb'
+template "#{ruby_scripts_dir}/event_router_service.rb" do
+  source 'scripts/event_router_service.erb'
   variables(
     :source_directory  => @source_directory,
     :target_directory => @staging_directory,
