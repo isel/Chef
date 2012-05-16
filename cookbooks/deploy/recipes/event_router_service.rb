@@ -5,10 +5,16 @@ ruby_scripts_dir = node['ruby_scripts_dir']
 
 # copy the application files to intermediate directory and update application configuration.
 
-@source_directory  = File.join( node[:binaries_directory] , 'AppServer/Services/Messaging.EventRouter').gsub(/\\/,'/')
-@staging_directory = File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' ).gsub(/\\/,'/')
+@source_directory  = File.join( node[:binaries_directory] , 'AppServer/Services/Messaging.EventRouter')
+@staging_directory = File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' )
 
-puts "running template"
+@source_directory = Dir.getwd if @source_directory.nil?
+@staging_directory =  Dir.getwd if @staging_directory.nil?
+
+@source_directory = @source_directory.gsub(/\\/,'/') if  !@source_directory.nil?
+@staging_directory = @staging_directory.gsub(/\\/,'/') if !@staging_directory.nil?
+
+puts "Running template"
 
 template "#{ruby_scripts_dir}/event_router_service_setup.rb" do
 
@@ -23,13 +29,13 @@ template "#{ruby_scripts_dir}/event_router_service_setup.rb" do
 
 end
 
-puts "running directly"
+puts "Running directly"
 
 =begin
 
 =end
 
-puts "finished"
+puts "Finished"
 
 @staging_directory.gsub!('/','\\')
 
