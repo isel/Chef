@@ -3,8 +3,6 @@ require 'fileutils'
 
 ruby_scripts_dir = node['ruby_scripts_dir']
 
-#
-
 template "#{ruby_scripts_dir}/event_router_service.rb" do
 
   source 'scripts/event_router_service.erb'
@@ -12,7 +10,8 @@ template "#{ruby_scripts_dir}/event_router_service.rb" do
     :source_directory  => File.join( node[:binaries_directory] , 'AppServer/Services/Messaging.EventRouter').gsub(/\\/,'/'),
     :target_directory => File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' ).gsub(/\\/,'/'),
     :messaging_server  => node[:deploy][:messaging_server],
-    :messaging_server_port  => node[:deploy][:messaging_server_port]
+    :messaging_server_port  => node[:deploy][:messaging_server_port],
+    :binaries_directory =>    node[:binaries_directory]
   )
 end
 
