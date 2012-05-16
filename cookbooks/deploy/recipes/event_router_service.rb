@@ -37,20 +37,20 @@ messaging_server_port = node[:deploy][:messaging_server_port]
 app_config       = 'UltimateSoftware.Foundation.Messaging.EventRouter.exe.config'
 
 puts "Verifying the presence of the target directory: #{target_directory}"
-if Dir.exist?(target_directory)
+if File.exist?(target_directory)
 puts 'Event Roures Service has already been configured'
 exit 0
 end
 
 puts "Verifying the presence of the source directory: #{source_directory}"
-if !Dir.exist?(source_directory)
+if !File.exist?(source_directory)
 puts 'Event Roures Service source directory is missing'
 exit  4
 end
 
 puts "Creating the target directory: #{target_directory}"
 FileUtils.mkdir_p(target_directory)
-if !Dir.exist?(target_directory)
+if !File.exist?(target_directory)
 puts 'Event Roures Service target directory cannot be created'
 exit 8
 end
@@ -62,7 +62,6 @@ Dir.chdir(source_directory)
 FileUtils.cp_r("#{source_directory}/.",  target_directory )
 
 Dir.chdir(target_directory)
-
 
 if !File.exist?(app_config)
 puts 'Event Roures Service configuration file #{app_config} is missing'
