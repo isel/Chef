@@ -1,7 +1,13 @@
 require 'rake'
 require 'fileutils'
+DEBUG = 0
+if DEBUG == 1
+node = {'ruby_scripts_dir'=>"C:/projects/ugf/BuildAndDeployment", :binaries_directory=>"c:/DeployScripts_Binaries"}
+end
 
 ruby_scripts_dir = node['ruby_scripts_dir']
+
+puts "Running template #{ruby_scripts_dir}/event_router_service_setup.rb"
 
 # copy the application files to intermediate directory and update application configuration.
 
@@ -14,22 +20,50 @@ ruby_scripts_dir = node['ruby_scripts_dir']
 @source_directory = @source_directory.gsub(/\\/,'/') if  !@source_directory.nil?
 @staging_directory = @staging_directory.gsub(/\\/,'/') if !@staging_directory.nil?
 
-puts "Running template"
+puts "source_directory=#{@source_directory}"
+puts "staging_directory=#{@staging_directory}"
 
+
+puts "Verifying the presence of the source directory: #{@source_directory}"
+if !File.exist?(@source_directory)
+puts 'Event Roures Service source directory is missing'
+# continue
+# exit  4
+end
+
+puts "Verifying the presence of the target directory: #{@staging_directory}"
+if File.exist?(@staging_directory)
+  puts 'Event Roures Service target directory already exists'
+
+# continue
+# exit 0
+else
+puts "Creating the target directory: #{@staging_directory}"
+FileUtils.mkdir_p(@staging_directory)
+if !File.exist?(@staging_directory)
+puts 'Event Roures Service target directory cannot be created'
+exit 8
+end
+end
+puts "Copying application files #{@source_directory} to #{@staging_directory}"
+
+Dir.chdir(@source_directory)
+FileUtils.cp_r("#{@source_directory}/.",  @staging_directory )
+Dir.chdir(@staging_directory)
+puts 'Event Roures Service has already been configured'
+# continue with template
+# exit 0
 template "#{ruby_scripts_dir}/event_router_service_setup.rb" do
-
   source 'scripts/event_router_service_setup.erb'
-
   variables(
     :source_directory  => @source_directory,
     :target_directory => @staging_directory,
     :messaging_server  => node[:deploy][:messaging_server],
     :messaging_server_port  => node[:deploy][:messaging_server_port]
   )
-
 end
 
-puts "Running directly"
+puts "Running ruby code directly"
 
 =begin
 
