@@ -3,41 +3,27 @@ require 'fileutils'
 
 ruby_scripts_dir = node['ruby_scripts_dir']
 
-
-@binaries_directory = node[:binaries_directory]
-@source_directory  = File.join( @binaries_directory , 'AppServer/Services/Messaging.EventRouter')
-# C:\windows\TEMP
-@staging_directory = File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' )
-
-@source_directory = Dir.getwd if @source_directory.nil?
-@staging_directory =  Dir.getwd if @staging_directory.nil?
-
-@source_directory = @source_directory.gsub(/\\/,'/') if  !@source_directory.nil?
-@staging_directory = @staging_directory.gsub(/\\/,'/') if !@staging_directory.nil?
-
+#
 
 template "#{ruby_scripts_dir}/event_router_service.rb" do
+
   source 'scripts/event_router_service.erb'
   variables(
-    :source_directory  => @source_directory, 
-    :target_directory => @staging_directory,
-    :messaging_server  => node[:deploy][:messaging_server] ,
-    :binaries_directory => @binaries_directory
+    :source_directory  => File.join( node[:binaries_directory] , 'AppServer/Services/Messaging.EventRouter').gsub(/\\/,'/'),
+    :target_directory => File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' ).gsub(/\\/,'/'),
+    :messaging_server  => node[:deploy][:messaging_server],
+    :messaging_server_port  => node[:deploy][:messaging_server_port]
   )
-
 end
 
-powershell "Copy the application files to intermediate directory and update application configuration of event router service" do
+powershell 'copy the application files to intermediate directory and update application configuration.' do
   source("ruby #{ruby_scripts_dir}/event_router_service.rb" )
 end
-
-
-
 # Install block : powershell
 powershell 'Install Event Router Service' do
   parameters (
     {
-      'SOURCE_PATH' => @staging_directory.gsub('/','\\'),
+      'SOURCE_PATH' => File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' ).gsub('/','\\'),
       'SERVER_MANAGER_FEATURES' => node[:deploy][:server_manager_features],
       'SERVICE_PORT' => node[:deploy][:service_port],
       'SERVICE_PLATROFM' => node[:deploy][:service_platform]
