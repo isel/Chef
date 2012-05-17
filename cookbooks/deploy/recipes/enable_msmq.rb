@@ -13,7 +13,7 @@ powershell 'Enable MSMQ' do
 
    # http://blogs.msdn.com/b/johnbreakwell/archive/2007/06/19/minimalist-setup-script-for-msmq-unattended-installation.aspx
     Import-Module ServerManager
-    $features_array = $Env:SERVER_MANAGER_FEATURES -split ';'
+    $features_array = $Env:SERVER_MANAGER_FEATURES -split ','
 
     foreach ( $feature in $features_array    )
     {

@@ -186,7 +186,7 @@ attribute "deploy/server_manager_features",
   :display_name => "MSMQ features",
   :description => "List of windows MSMQ features to install",
   :required    => "optional",
-  :default     => "MSMQ-Server;MSMQ-HTTP-Support;MSMQ-Directory",
+  :default     => "MSMQ-Server,MSMQ-HTTP-Support,MSMQ-Directory",
   :recipes     => ["deploy::enable_msmq","deploy::event_router_service"]
 
 attribute "deploy/service_platform",
