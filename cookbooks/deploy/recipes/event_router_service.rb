@@ -68,7 +68,7 @@ Get-ChildItem
 
 Write-Output "Check if prerequisite Windows Feature set is installed"
 
-$features_array = $Env:SERVER_MANAGER_FEATURES -split ';'
+$features_array = $Env:SERVER_MANAGER_FEATURES -split ','
 $installutil_command_fullpath = $installer_tools[$Env:SERVICE_PLATROFM]
 
 $scInterval = 5
