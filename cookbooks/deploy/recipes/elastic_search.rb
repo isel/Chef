@@ -41,6 +41,37 @@ if !File.exists?('/opt/ElasticSearch')
     EOF
   end
 
+  bash 'set up plugins' do
+      deploy_folder = '/opt/ElasticSearch/'
+      code <<-EOF
+        pushd #{deploy_folder}
+        echo 'Linking the bigdesk directory'
+        mkdir -p /opt/ElasticSearch/current/plugins/bigdesk/_site
+        find . -maxdepth 1 -type d -name '*bigdesk*'  -exec cp -R {}/* /opt/ElasticSearch/current/plugins/bigdesk/_site \\;
+        echo "run the install, though it is redundant"
+        mkdir -p /opt/ElasticSearch/current/lukas-vlcek
+        find . -maxdepth 1 -type d -name '*bigdesk*'  -exec cp -R {}/* /opt/ElasticSearch/current/lukas-vlcek \\;
+        ./bin/plugin -install lukas-vlcek/bigdesk
+
+
+
+        echo 'Linking the elasticsearch-head directory'
+        mkdir -p /opt/ElasticSearch/current/plugins/head/_site
+        find . -maxdepth 1 -type d -name '*elasticsearch-head*'   -exec cp -R {} /opt/ElasticSearch/current/plugins/head/_site \\;
+        mkdir -p /opt/ElasticSearch/current/Aconex
+        find . -maxdepth 1 -type d -name '*bigdesk*'  -exec cp -R {}/* /opt/ElasticSearch/current/Aconex \\;
+
+        echo "run the install, though it is redundant"
+        ./bin/plugin  -install Aconex/elasticsearch-head
+
+
+      EOF
+    end
+  # smoketest candidsate
+  # elasticsearch-head available
+  # under http://localhost:9200/_plugin/head/
+  # bigdesk available under http://localhost:9200/_plugin/bigdesk/.
+
   bash 'setup Elastic Search as a service' do
     code <<-EOF
       cd /opt/ElasticSearch

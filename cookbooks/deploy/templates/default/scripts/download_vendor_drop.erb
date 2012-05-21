@@ -36,7 +36,7 @@ if !dirname_found
 end
 
 puts "Reading the directory #{product}/#{version}/"
-  filelist.split(';').each do |filename_expected|
+  filelist.split(/[;,]/).each do |filename_expected|
     filename_found = false
     puts "searching for #{filename_expected}"
     regexp_capture = Regexp.new("#{product}\/#{version}\/(#{filename_expected}.*)$")
