@@ -63,7 +63,7 @@ if !File.exists?('/opt/ElasticSearch')
     code <<-EOF
 
     set +e
-    DEPLOY_FOLDER="${deploy_folder}"
+    DEPLOY_FOLDER="#{deploy_folder}"
     pushd $DEPLOY_FOLDER
 
     mkdir -p current/plugins/bigdesk/_site
@@ -77,7 +77,7 @@ if !File.exists?('/opt/ElasticSearch')
     ./bin/plugin -install lukas-vlcek/bigdesk
     popd
 
-    pushd #{deploy_folder}
+    pushd $DEPLOY_FOLDER
     echo "Linking the elasticsearch-head directory $PLUGIN_DIR to plugins and Aconex"
     mkdir -p current/plugins/head/_site
     PLUGIN_DIR=`find . -maxdepth 1 -type d -name '*elasticsearch-head*'`
