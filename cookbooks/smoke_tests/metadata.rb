@@ -11,6 +11,7 @@ recipe "smoke_tests::global", "Runs global smoke tests"
 recipe "smoke_tests::local_app", "Runs local app server smoke tests"
 recipe "smoke_tests::local_cache", "Runs local cache server smoke tests"
 recipe "smoke_tests::local_db", "Runs local db server smoke tests"
+recipe "smoke_tests::local_search" , "Runs local elasticsearch smoke tests"
 recipe "smoke_tests::local_engine", "Runs local engine server smoke tests"
 recipe "smoke_tests::local_loadbalancer", "Runs local load balancer server smoke tests"
 recipe "smoke_tests::local_messaging", "Runs local messaging server smoke tests"
@@ -55,7 +56,7 @@ attribute "deploy/elastic_search_port",
   :display_name => "elastic search port",
   :required => "optional",
   :default => "9200",
-  :recipes => ["smoke_tests::local_app"]
+  :recipes => ["smoke_tests::local_search","smoke_tests::local_app"]
 
 attribute "deploy/mule_port",
   :display_name => "mule port",

@@ -112,6 +112,7 @@
       "required": "optional",
       "default": "9200",
       "recipes": [
+        "smoke_tests::local_search",
         "smoke_tests::local_app"
       ],
       "choice": [

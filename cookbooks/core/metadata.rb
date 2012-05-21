@@ -14,7 +14,7 @@ recipe "core::setup_powershell_runtimes", "Allows up the poweshell to run multip
 
 attribute "core/server_type",
   :display_name => "server type",
-  :description => "eg: db, app, web, cache",
+  :description => "eg: db, app, web, cache, messaging, or search",
   :required => "required",
   :recipes => ["core::tag_server_type"]
 
