@@ -20,7 +20,8 @@ if !File.exists?('/opt/ElasticSearch')
       :install_dir => install_dir,
       :product => 'ElasticSearch',
       :version => node[:deploy][:elastic_search_version],
-      :filelist => 'elasticsearch;servicewrapper'
+      :filelist => node[:deploy][:elastic_search_filelist]
+#      :filelist => 'elasticsearch,servicewrapper,bigdesk,elasticsearch-head'
     )
   end
 

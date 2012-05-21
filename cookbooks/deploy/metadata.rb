@@ -143,6 +143,14 @@ attribute "deploy/elastic_search_version",
   :default => "0.19.3",
   :recipes => ["deploy::elastic_search"]
 
+attribute "deploy/elastic_search_filelist",
+  :display_name => "elastic search related files",
+  :required => "optional",
+  :default => "elasticsearch;servicewrapper,bigdesk,elasticsearch-head",
+  :recipes => ["deploy::elastic_search"]
+
+
+
 attribute "deploy/force_provision",
   :display_name => "force provision",
   :required => "required",
