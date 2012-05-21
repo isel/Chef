@@ -81,6 +81,7 @@ if !File.exists?('/opt/ElasticSearch')
     echo "Linking the elasticsearch-head directory $PLUGIN_DIR to plugins and Aconex"
     mkdir -p current/plugins/head/_site
     PLUGIN_DIR=`find . -maxdepth 1 -type d -name '*elasticsearch-head*'`
+    cp -R $PLUGIN_DIR/* current/plugins/head/_site
     mkdir -p current/Aconex
     cp -R $PLUGIN_DIR/* current/Aconex
     cd current
