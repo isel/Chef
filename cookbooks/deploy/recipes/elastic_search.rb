@@ -57,7 +57,7 @@ if !File.exists?('/opt/ElasticSearch')
 
         echo 'Linking the elasticsearch-head directory'
         mkdir -p /opt/ElasticSearch/current/plugins/head/_site
-        find . -maxdepth 1 -type d -name '*elasticsearch-head*'   -exec cp -R {} /opt/ElasticSearch/current/plugins/head/_site \\;
+        find . -maxdepth 1 -type d -name '*elasticsearch-head*'   -exec cp -R {}/* /opt/ElasticSearch/current/plugins/head/_site \\;
         mkdir -p /opt/ElasticSearch/current/Aconex
         find . -maxdepth 1 -type d -name '*bigdesk*'  -exec cp -R {}/* /opt/ElasticSearch/current/Aconex \\;
 
