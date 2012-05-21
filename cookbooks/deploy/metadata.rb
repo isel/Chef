@@ -140,7 +140,7 @@ attribute "deploy/elastic_search_port",
 attribute "deploy/elastic_search_version",
   :display_name => "elastic search version",
   :required => "optional",
-  :default => "0.17.6",
+  :default => "0.19.3",
   :recipes => ["deploy::elastic_search"]
 
 attribute "deploy/force_provision",
