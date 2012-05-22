@@ -2,12 +2,10 @@ ruby_scripts_dir = node['ruby_scripts_dir']
 hostname = node[:hostname]
 elastic_search_port = node[:deploy][:elastic_search_port]
 verify_completion = node[:deploy][:verify_completion]
+# temporary code
+install_via_git_download = node[:deploy][:install_via_git_download]
 deploy_folder = '/opt/ElasticSearch/'
 sleep_interval = 10
-
-# temporary code
-install_via_git_download = false
-
 
 if !File.exists?(deploy_folder)
   install_dir = "elasticsearch-#{node[:deploy][:elastic_search_version]}"
@@ -91,7 +89,7 @@ if !File.exists?(deploy_folder)
   end
   log 'Elastic Search Plugins are installed.'
 
-  if install_via_git_download
+  if !install_via_git_download.nil?  && install_via_git_download != ''
     bash 'install and set up plugins' do
       deploy_folder = '/opt/ElasticSearch/'
       code <<-EOF
@@ -108,8 +106,6 @@ if !File.exists?(deploy_folder)
     end
     log 'ElasticSearch Plugins are installed from git repository.'
   end
-
-
 
 else
   log 'ElasticSearch is already installed.'

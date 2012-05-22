@@ -235,3 +235,9 @@ attribute "deploy/verify_completion",
   :default  => "1",
   :recipes  => ["deploy::launch_activemq", "deploy::elastic_search", "deploy::launch_mule"]
 
+attribute "deploy/install_via_git_download" ,
+:display_name => "install from plugin developer github ignoring snapshot stored on s3 ",
+:required => "optional",
+:default  => "",
+:recipes  => ["deploy::elastic_search"]
+

@@ -500,6 +500,19 @@
       ],
       "calculated": false,
       "type": "string"
+    },
+    "deploy/install_via_git_download": {
+      "display_name": "install from plugin developer github ignoring snapshot stored on s3 ",
+      "required": "optional",
+      "default": "",
+      "recipes": [
+        "deploy::elastic_search"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
     }
   },
   "groupings": {
