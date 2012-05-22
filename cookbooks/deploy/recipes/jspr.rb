@@ -49,7 +49,7 @@ end
 bash 'Deploying prios' do
   code <<-EOF
     mkdir --parents /var/www/Prios/Tests
-    cp -R #{node['binaries_directory']}/Prios/ /var/www/Prios
+    cp -r #{node['binaries_directory']}/Prios/* /var/www/Prios
     cp -R #{node['binaries_directory']}/PriosUIAutomation/ /var/www/Prios/Tests
     ls #{node['binaries_directory']}/JSPR/JSPR* > /var/www/Prios/Tests/jspr_version
     version=`cat /var/www/Prios/Tests/jspr_version`
