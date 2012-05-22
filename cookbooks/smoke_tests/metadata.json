@@ -154,6 +154,7 @@
     "smoke_tests::local_app": "Runs local app server smoke tests",
     "smoke_tests::local_cache": "Runs local cache server smoke tests",
     "smoke_tests::local_db": "Runs local db server smoke tests",
+    "smoke_tests::local_search": "Runs local elasticsearch smoke tests",
     "smoke_tests::local_engine": "Runs local engine server smoke tests",
     "smoke_tests::local_loadbalancer": "Runs local load balancer server smoke tests",
     "smoke_tests::local_messaging": "Runs local messaging server smoke tests",
