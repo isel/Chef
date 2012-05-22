@@ -1,11 +1,31 @@
+require 'rake'
+require 'fileutils'
+
+ruby_scripts_dir = node['ruby_scripts_dir']
+
+template "#{ruby_scripts_dir}/event_router_service.rb" do
+
+  source 'scripts/event_router_service.erb'
+  variables(
+    :source_directory  => File.join( node[:binaries_directory] , 'AppServer/Services/Messaging.EventRouter').gsub(/\\/,'/'),
+    :target_directory => File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' ).gsub(/\\/,'/'),
+    :messaging_server  => node[:deploy][:messaging_server],
+    :messaging_server_port  => node[:deploy][:messaging_server_port],
+    :binaries_directory =>    node[:binaries_directory]
+  )
+end
+
+powershell 'copy the application files to intermediate directory and update application configuration.' do
+  source("ruby #{ruby_scripts_dir}/event_router_service.rb" )
+end
+# Install block : powershell
 powershell 'Install Event Router Service' do
   parameters (
     {
-      'SOURCE_PATH' => node[:binaries_directory].gsub('/','\\'),
+      'SOURCE_PATH' => File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' ).gsub('/','\\'),
       'SERVER_MANAGER_FEATURES' => node[:deploy][:server_manager_features],
       'SERVICE_PORT' => node[:deploy][:service_port],
-      'SERVICE_PLATROFM' => node[:deploy][:service_platform],
-
+      'SERVICE_PLATROFM' => node[:deploy][:service_platform]
     }
   )
 
@@ -24,13 +44,10 @@ write-output "REBOOT=${Env:RS_REBOOT}"
 
 $install_logFile = 'service_install.log'
 $uninstall_logFile = 'service_uninstall.log'
-$attachment_dir = "$env:RS_ATTACH_DIR"
-$sourcePath = Join-Path  "$env:SOURCE_PATH" 'AppServer\Services\Messaging.EventRouter'
+$sourcePath = "$Env:SOURCE_PATH"
 $installPath = "${Env:\ProgramData}\Windows Services\Messaging Event Router"
-
-$assemblyFileSet = "*.*"
-$assemblyFileName = "UltimateSoftware.Foundation.Messaging.EventRouter.exe"
-$assemblyPackageName = "UltimateSoftware.Foundation.Messaging.EventRouter.zip"
+$assemblyFileSet = '*.*'
+$assemblyFileName = 'UltimateSoftware.Foundation.Messaging.EventRouter.exe'
 
 # Choose the proper installer or the 32 bit .net 4.x runtime
 $installer_tools = @{
@@ -45,15 +62,13 @@ New-Item -Path "${sourcePath}" -Type Directory -Force -ErrorAction SilentlyConti
 Write-Output "creating directory ""${installPath}"""
 New-Item -Path "${installPath}" -Type Directory -Force -ErrorAction SilentlyContinue
 
-
 chdir "${sourcePath}"
 Get-ChildItem
 # need to verify if the files are in place.
 
-
 Write-Output "Check if prerequisite Windows Feature set is installed"
 
-$features_array = $Env:SERVER_MANAGER_FEATURES -split ';'
+$features_array = $Env:SERVER_MANAGER_FEATURES -split ','
 $installutil_command_fullpath = $installer_tools[$Env:SERVICE_PLATROFM]
 
 $scInterval = 5
@@ -64,7 +79,6 @@ $scInterval = 5
 # http://web.me.com/stefsewell/TechEd2010/ASI02-INT/Entries/2010/9/19_Part_2_-_Installing_a_new_service.html
 
 Import-Module ServerManager
-
 
 foreach ($feature in $features_array) {
   $test = get-WindowsFeature -Name $feature | Where-Object { $_.Installed -eq $true }
@@ -104,6 +118,8 @@ remove-item -path '*' -Recurse -force
 Write-Output "Copy / overwrite the service files $sourcePath to $installPath"
 
 Copy-Item -Path (Join-Path $sourcePath "$assemblyfileSet") -Destination $installPath -Recurse -Force
+
+
 chdir $installPath
 Get-ChildItem
 

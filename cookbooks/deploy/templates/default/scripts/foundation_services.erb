@@ -2,6 +2,10 @@ require 'rake'
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/configuration'
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/io_utils'
 
+messaging_server = '<%= @messaging_server %>'
+messaging_server_port = '<%= @messaging_server_port %>'
+
+
 FileList['/Websites/**'].each do |f|
   FileUtils.remove_entry(f, true)
 end
@@ -26,6 +30,9 @@ Helpers::change_all_app_settings(configs, "SigningCertificateName", "CN=localhos
 Helpers::change_all_app_settings(configs, "ConnectionString", "Server=<%= @db_server %>:<%= @db_port %>")
 Helpers::change_all_app_settings(configs, "SearchUri", "http://<%= @db_server %>:<%= @elastic_search_port %>/ugf/viabot/_search")
 Helpers::change_all_app_settings(configs, "EntityFramework.ModelFolder", "C:\\WebSites\\Models\\")
+
+Helpers::change_app_setting("/Websites/Services/Web.config",  "MessagingServer.Uri", "http://#{messaging_server}:#{messaging_server_port}")
+
 
 IOUtils::replace_text_in_files(configs, '<%= '<host name="localhost"' %>', "<%= '<host name=\"' %><%= @cache_server %>\"")
 IOUtils::replace_text_in_files(configs, '<\/hosts>', '</hosts><securityProperties mode="None" protectionLevel="None"/>')

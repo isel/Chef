@@ -21,7 +21,7 @@ recipe "deploy::launch_mule",  "Launches Mule"
 recipe "deploy::mule", "Deploys Mule ESB"
 recipe "deploy::engine", "Deploys Engine"
 recipe "deploy::foundation_services", "Deploys the foundation rest services"
-recipe "deploy::install_event_router_service", "Installs Event Router Service"
+recipe "deploy::event_router_service", "Installs Event Router Service"
 recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::provision", "Provisions basic system data"
@@ -74,6 +74,12 @@ attribute "deploy/appfabric_shared_folder",
   :required => "optional",
   :default => "c:\\appfabric_caching",
   :recipes => ["deploy::appfabric_configure"]
+
+attribute "deploy/messaging_server",
+:display_name => "messaging_server",
+:description => "Private IP address messaging_server host in this deployment",
+:required => "required",
+:recipes  => ["deploy::event_router_service", "deploy::foundation_services"]
 
 attribute "deploy/app_server",
   :display_name => "app server",
@@ -154,6 +160,12 @@ attribute "deploy/mule_port",
   :default  => "8585",
   :recipes  => ["deploy::launch_mule"]
 
+attribute "deploy/messaging_server_port",
+  :display_name => "messaging server port",
+  :required => "optional",
+  :default  => "8081",
+  :recipes  => ["deploy::event_router_service", "deploy::foundation_services"]
+
 attribute "deploy/mule_version",
   :display_name => "mule version",
   :required => "optional",
@@ -174,22 +186,22 @@ attribute "deploy/server_manager_features",
   :display_name => "MSMQ features",
   :description => "List of windows MSMQ features to install",
   :required    => "optional",
-  :default     => "MSMQ-Server;MSMQ-HTTP-Support;MSMQ-Directory",
-  :recipes     => ["deploy::enable_msmq","deploy::install_event_router_service"]
+  :default     => "MSMQ-Server,MSMQ-HTTP-Support,MSMQ-Directory",
+  :recipes     => ["deploy::enable_msmq","deploy::event_router_service"]
 
 attribute "deploy/service_platform",
   :display_name => "EventRouter HTTP runtime",
   :description => "The .net runtime / affinity the  EventRouter service is hosted",
   :required    => "optional",
   :default     => "v4.0_x86",
-  :recipes     => ["deploy::install_event_router_service"]
+  :recipes     => ["deploy::event_router_service"]
 
 attribute "deploy/service_port",
   :display_name => "EventRouter HTTP Port",
   :description => "HTTP Port the WCF EventRouter service is listening",
   :required    => "optional",
   :default     => "8989",
-  :recipes     => ["deploy::install_event_router_service"]
+  :recipes     => ["deploy::event_router_service"]
 
 attribute "deploy/tenant",
   :display_name => "tenant",
@@ -214,3 +226,4 @@ attribute "deploy/verify_completion",
   :required => "optional",
   :default  => "1",
   :recipes  => ["deploy::launch_activemq", "deploy::launch_mule"]
+
