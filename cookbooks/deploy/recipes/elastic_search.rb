@@ -106,13 +106,13 @@ if !File.exists?(deploy_folder)
       popd
     EOF
     end
-    log 'Elastic Search Plugins are installed from git repository.'
+    log 'ElasticSearch Plugins are installed from git repository.'
   end
 
 
 
 else
-  log 'Elastic Search is already installed.'
+  log 'ElasticSearch is already installed.'
 end
 
 if !verify_completion.nil? && verify_completion != ''
@@ -122,9 +122,9 @@ if !verify_completion.nil? && verify_completion != ''
     RETRY_CNT=20
     HTTP_STATUS=0
     RESULT=1
-    echo 'waiting for mule to be serving HTTP on #{elastic_search_port}'
+    echo 'waiting for ElasticSearch to be serving HTTP on #{elastic_search_port}'
     while  [ "$RESULT" -ne "0" ] ; do
-      HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://#{hostname}:#{elastic_search_port}/mmc`
+      HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://#{hostname}:#{elastic_search_port}`
       expr $HTTP_STATUS : '302\\|200' > /dev/null
       RESULT=$?
       echo "get HTTP status code $HTTP_STATUS, $RESULT"
