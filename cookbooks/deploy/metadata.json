@@ -492,6 +492,7 @@
       "default": "1",
       "recipes": [
         "deploy::launch_activemq",
+        "deploy::elastic_search",
         "deploy::launch_mule"
       ],
       "choice": [
