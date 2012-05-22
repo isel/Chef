@@ -57,9 +57,9 @@ if !File.exists?('/opt/ElasticSearch')
       echo 'Starting the service'
       service elasticsearch start
     EOF
-    log 'Elastic Search service is installed and started.'
-
   end
+  log 'Elastic Search service is installed and started.'
+
   install_via_git_download = false
   if install_via_git_download
     bash 'install and set up plugins' do
@@ -74,7 +74,6 @@ if !File.exists?('/opt/ElasticSearch')
       ./bin/plugin -install lukas-vlcek/bigdesk
       ./bin/plugin -install Aconex/elasticsearch-head
       popd
-
     EOF
     end
   end
@@ -100,10 +99,8 @@ if !File.exists?('/opt/ElasticSearch')
     cp -R $PLUGIN_DIR/* current/plugins/head/_site
     popd
       EOF
-    end
-
+  end
   log 'Elastic Search Plugins are installed.'
-
 else
   log 'Elastic Search is already installed.'
 end
