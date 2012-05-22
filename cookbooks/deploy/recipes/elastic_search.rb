@@ -57,7 +57,28 @@ if !File.exists?('/opt/ElasticSearch')
       echo 'Starting the service'
       service elasticsearch start
     EOF
+    log 'Elastic Search service is installed and started.'
+
   end
+  install_via_git_download = false
+  if install_via_git_download
+    bash 'install and set up plugins' do
+      deploy_folder = '/opt/ElasticSearch/'
+      code <<-EOF
+
+      set +e
+      DEPLOY_FOLDER="#{deploy_folder}"
+      pushd $DEPLOY_FOLDER
+      cd current
+      echo "run the install"
+      ./bin/plugin -install lukas-vlcek/bigdesk
+      ./bin/plugin -install Aconex/elasticsearch-head
+      popd
+
+    EOF
+    end
+  end
+
   bash 'set up plugins' do
     deploy_folder = '/opt/ElasticSearch/'
     code <<-EOF
@@ -70,11 +91,6 @@ if !File.exists?('/opt/ElasticSearch')
     PLUGIN_DIR=`find . -maxdepth 1 -type d -name '*bigdesk*'`
     echo "Linking the bigdesk directory PLUGIN_DIR"
     cp -R $PLUGIN_DIR/* current/plugins/bigdesk/_site
-    echo "run the install"
-    mkdir -p  current/lukas-vlcek
-    cp -R $PLUGIN_DIR/* current/lukas-vlcek
-    cd current
-    ./bin/plugin -install lukas-vlcek/bigdesk
     popd
 
     pushd $DEPLOY_FOLDER
@@ -82,17 +98,11 @@ if !File.exists?('/opt/ElasticSearch')
     mkdir -p current/plugins/head/_site
     PLUGIN_DIR=`find . -maxdepth 1 -type d -name '*elasticsearch-head*'`
     cp -R $PLUGIN_DIR/* current/plugins/head/_site
-    mkdir -p current/Aconex
-    cp -R $PLUGIN_DIR/* current/Aconex
-    cd current
-    echo "run the install"
-    ./bin/plugin  -install Aconex/elasticsearch-head
     popd
-
-
       EOF
     end
 
+  log 'Elastic Search Plugins are installed.'
 
 else
   log 'Elastic Search is already installed.'
