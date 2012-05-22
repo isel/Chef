@@ -1,12 +1,21 @@
 ruby_scripts_dir = node['ruby_scripts_dir']
+hostname = node[:hostname]
+elastic_search_port = node[:deploy][:elastic_search_port]
+verify_completion = node[:deploy][:verify_completion]
+deploy_folder = '/opt/ElasticSearch/'
+sleep_interval = 10
 
-if !File.exists?('/opt/ElasticSearch')
+# temporary code
+install_via_git_download = false
+
+
+if !File.exists?(deploy_folder)
   install_dir = "elasticsearch-#{node[:deploy][:elastic_search_version]}"
   bash 'install elastic search prerequisites' do
     code <<-EOF
-      apt-get -y install openjdk-6-jre
-      apt-get -y install python-dev
-      apt-get -y install python-setuptools
+      apt-get -yqq install openjdk-6-jre
+      apt-get -yqq install python-dev
+      apt-get -yqq install python-setuptools
       easy_install -U setuptools
       easy_install pymongo
       EOF
@@ -21,7 +30,6 @@ if !File.exists?('/opt/ElasticSearch')
       :product => 'ElasticSearch',
       :version => node[:deploy][:elastic_search_version],
       :filelist => node[:deploy][:elastic_search_filelist]
-#      :filelist => 'elasticsearch,servicewrapper,bigdesk,elasticsearch-head'
     )
   end
 
@@ -32,7 +40,6 @@ if !File.exists?('/opt/ElasticSearch')
   end
 
   bash 'set up directory  links' do
-    deploy_folder = '/opt/ElasticSearch/'
     code <<-EOF
       pushd #{deploy_folder}
       ln -s #{install_dir} current
@@ -41,10 +48,9 @@ if !File.exists?('/opt/ElasticSearch')
     EOF
   end
 
-
-  bash 'setup Elastic Search as a service' do
+  bash 'configure Elastic Search as a service' do
     code <<-EOF
-      cd /opt/ElasticSearch
+      pushd #{deploy_folder}
       current/bin/service/elasticsearch install
 
       echo 'Set up rcelasticsearch as a shortcut to the service wrapper'
@@ -60,26 +66,7 @@ if !File.exists?('/opt/ElasticSearch')
   end
   log 'Elastic Search service is installed and started.'
 
-  install_via_git_download = false
-  if install_via_git_download
-    bash 'install and set up plugins' do
-      deploy_folder = '/opt/ElasticSearch/'
-      code <<-EOF
-
-      set +e
-      DEPLOY_FOLDER="#{deploy_folder}"
-      pushd $DEPLOY_FOLDER
-      cd current
-      echo "run the install"
-      ./bin/plugin -install lukas-vlcek/bigdesk
-      ./bin/plugin -install Aconex/elasticsearch-head
-      popd
-    EOF
-    end
-  end
-
   bash 'set up plugins' do
-    deploy_folder = '/opt/ElasticSearch/'
     code <<-EOF
 
     set +e
@@ -98,10 +85,57 @@ if !File.exists?('/opt/ElasticSearch')
     PLUGIN_DIR=`find . -maxdepth 1 -type d -name '*elasticsearch-head*'`
     cp -R $PLUGIN_DIR/* current/plugins/head/_site
     popd
-      EOF
+    echo 'Restarting the service'
+    service elasticsearch restart
+    EOF
   end
   log 'Elastic Search Plugins are installed.'
+
+  if install_via_git_download
+    bash 'install and set up plugins' do
+      deploy_folder = '/opt/ElasticSearch/'
+      code <<-EOF
+
+      set +e
+      DEPLOY_FOLDER="#{deploy_folder}"
+      pushd $DEPLOY_FOLDER
+      cd current
+      echo "run the install"
+      ./bin/plugin -install lukas-vlcek/bigdesk
+      ./bin/plugin -install Aconex/elasticsearch-head
+      popd
+    EOF
+    end
+    log 'Elastic Search Plugins are installed from git repository.'
+  end
+
+
+
 else
   log 'Elastic Search is already installed.'
 end
 
+if !verify_completion.nil? && verify_completion != ''
+  bash 'verify the availability of ElasticSearch' do
+    code <<-EOF
+    LAST_RETRY=0
+    RETRY_CNT=20
+    HTTP_STATUS=0
+    RESULT=1
+    echo 'waiting for mule to be serving HTTP on #{elastic_search_port}'
+    while  [ "$RESULT" -ne "0" ] ; do
+      HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://#{hostname}:#{elastic_search_port}/mmc`
+      expr $HTTP_STATUS : '302\\|200' > /dev/null
+      RESULT=$?
+      echo "get HTTP status code $HTTP_STATUS, $RESULT"
+      RETRY_CNT=`expr $RETRY_CNT - 1`
+      if [ "$RETRY_CNT" -eq "$LAST_RETRY" ] ; then
+         echo "Exhausted retries"
+         exit 1
+      fi
+      echo "Retries left: $RETRY_CNT"
+      sleep #{sleep_interval}
+    done
+  EOF
+  end
+end
