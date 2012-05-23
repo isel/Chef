@@ -143,13 +143,11 @@ attribute "deploy/elastic_search_version",
   :default => "0.19.3",
   :recipes => ["deploy::elastic_search"]
 
-attribute "deploy/elastic_search_filelist",
-  :display_name => "elastic search related files",
+attribute "deploy/elastic_search_plugins",
+  :display_name => "elastic search plugins",
   :required => "optional",
-  :default => "elasticsearch;servicewrapper,bigdesk,elasticsearch-head",
+  :default => "bigdesk,elasticsearch-head",
   :recipes => ["deploy::elastic_search"]
-
-
 
 attribute "deploy/force_provision",
   :display_name => "force provision",
@@ -233,7 +231,7 @@ attribute "deploy/verify_completion",
   :display_name => "run checks",
   :required => "optional",
   :default  => "1",
-  :recipes  => ["deploy::launch_activemq", "deploy::elastic_search", "deploy::launch_mule"]
+  :recipes  => ["deploy::launch_activemq", "deploy::launch_mule"]
 
 attribute "deploy/install_via_git_download" ,
 :display_name => "install from plugin developer github ignoring snapshot stored on s3 ",

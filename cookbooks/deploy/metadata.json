@@ -300,10 +300,10 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/elastic_search_filelist": {
-      "display_name": "elastic search related files",
+    "deploy/elastic_search_plugins": {
+      "display_name": "elastic search plugins",
       "required": "optional",
-      "default": "elasticsearch;servicewrapper,bigdesk,elasticsearch-head",
+      "default": "bigdesk,elasticsearch-head",
       "recipes": [
         "deploy::elastic_search"
       ],
@@ -492,7 +492,6 @@
       "default": "1",
       "recipes": [
         "deploy::launch_activemq",
-        "deploy::elastic_search",
         "deploy::launch_mule"
       ],
       "choice": [

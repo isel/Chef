@@ -58,6 +58,12 @@ attribute "deploy/elastic_search_port",
   :default => "9200",
   :recipes => ["smoke_tests::local_search","smoke_tests::local_app"]
 
+attribute "deploy/elastic_search_plugins",
+  :display_name => "elastic search plugins",
+  :required => "optional",
+  :default => "bigdesk,elasticsearch-head",
+  :recipes => ["smoke_tests::local_search"]
+
 attribute "deploy/mule_port",
   :display_name => "mule port",
   :required => "optional",

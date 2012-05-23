@@ -1,21 +1,21 @@
 ruby_scripts_dir = node['ruby_scripts_dir']
 hostname = node[:hostname]
 elastic_search_port = node[:deploy][:elastic_search_port]
-verify_completion = node[:deploy][:verify_completion]
-# temporary code
 install_via_git_download = node[:deploy][:install_via_git_download]
 deploy_folder = '/opt/ElasticSearch/'
+elastic_search_plugins = node[:deploy][:elastic_search_plugins]
+elastic_search_files  =  node['elastic_search_files']
+
 sleep_interval = 10
+@plugin_directories = {'elasticsearch-head'  => 'head',
+                'bigdesk' => 'bigdesk'}
+
 
 if !File.exists?(deploy_folder)
   install_dir = "elasticsearch-#{node[:deploy][:elastic_search_version]}"
-  bash 'install elastic search prerequisites' do
+  bash 'Install elastic search prerequisites' do
     code <<-EOF
       apt-get -yqq install openjdk-6-jre
-      apt-get -yqq install python-dev
-      apt-get -yqq install python-setuptools
-      easy_install -U setuptools
-      easy_install pymongo
       EOF
   end
 
@@ -27,7 +27,7 @@ if !File.exists?(deploy_folder)
       :install_dir => install_dir,
       :product => 'ElasticSearch',
       :version => node[:deploy][:elastic_search_version],
-      :filelist => node[:deploy][:elastic_search_filelist]
+      :filelist => [elastic_search_files, elastic_search_plugins].join(',')
     )
   end
 
@@ -64,74 +64,42 @@ if !File.exists?(deploy_folder)
   end
   log 'Elastic Search service is installed and started.'
 
-  bash 'set up plugins' do
-    code <<-EOF
-
-    set +e
-    DEPLOY_FOLDER="#{deploy_folder}"
-    pushd $DEPLOY_FOLDER
-
-    mkdir -p current/plugins/bigdesk/_site
-    PLUGIN_DIR=`find . -maxdepth 1 -type d -name '*bigdesk*'`
-    echo "Linking the bigdesk directory PLUGIN_DIR"
-    cp -R $PLUGIN_DIR/* current/plugins/bigdesk/_site
-    popd
-
-    pushd $DEPLOY_FOLDER
-    echo "Linking the elasticsearch-head directory $PLUGIN_DIR to plugins and Aconex"
-    mkdir -p current/plugins/head/_site
-    PLUGIN_DIR=`find . -maxdepth 1 -type d -name '*elasticsearch-head*'`
-    cp -R $PLUGIN_DIR/* current/plugins/head/_site
-    popd
-    echo 'Restarting the service'
-    service elasticsearch restart
-    EOF
-  end
-  log 'Elastic Search Plugins are installed.'
-
-  if !install_via_git_download.nil?  && install_via_git_download != ''
-    bash 'install and set up plugins' do
-      deploy_folder = '/opt/ElasticSearch/'
+  elastic_search_plugins.split(',').each do |plugin|
+    bash "set up plugin #{plugin}" do
+      plugin_directory = @plugin_directories[plugin]
       code <<-EOF
 
       set +e
       DEPLOY_FOLDER="#{deploy_folder}"
+      PLUGIN_FOLDER="current/plugins/#{plugin_directory}/_site"
       pushd $DEPLOY_FOLDER
-      cd current
-      echo "run the install"
-      ./bin/plugin -install lukas-vlcek/bigdesk
-      ./bin/plugin -install Aconex/elasticsearch-head
-      popd
-    EOF
-    end
-    log 'ElasticSearch Plugins are installed from git repository.'
-  end
 
+      mkdir -p $PLUGIN_FOLDER
+      PLUGIN_DIR=`find . -maxdepth 1 -type d -name '*#{plugin}*'`
+      echo "Linking the #{plugin} directory $PLUGIN_DIR"
+      cp -R $PLUGIN_DIR/* $PLUGIN_FOLDER
+      popd
+      echo 'Restarting the service'
+      service elasticsearch restart
+      EOF
+    end
+  end
+  log 'Elastic Search Plugins are installed: #{elastic_search_plugins}'
+
+  bash 'reinstall plugins from developer github' do
+    code <<-EOF
+    set +e
+    DEPLOY_FOLDER="#{deploy_folder}"
+    pushd $DEPLOY_FOLDER
+    cd current
+    echo "run the install"
+    ./bin/plugin -install lukas-vlcek/bigdesk
+    ./bin/plugin -install Aconex/elasticsearch-head
+    popd
+    EOF
+    not_if { install_via_git_download.nil? || install_via_git_download == ''}
+  end
+  log 'ElasticSearch Plugins are reinstalled from developer git repository.'
 else
   log 'ElasticSearch is already installed.'
-end
-
-if !verify_completion.nil? && verify_completion != ''
-  bash 'verify the availability of ElasticSearch' do
-    code <<-EOF
-    LAST_RETRY=0
-    RETRY_CNT=20
-    HTTP_STATUS=0
-    RESULT=1
-    echo 'waiting for ElasticSearch to be serving HTTP on #{elastic_search_port}'
-    while  [ "$RESULT" -ne "0" ] ; do
-      HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://#{hostname}:#{elastic_search_port}`
-      expr $HTTP_STATUS : '302\\|200' > /dev/null
-      RESULT=$?
-      echo "get HTTP status code $HTTP_STATUS, $RESULT"
-      RETRY_CNT=`expr $RETRY_CNT - 1`
-      if [ "$RETRY_CNT" -eq "$LAST_RETRY" ] ; then
-         echo "Exhausted retries"
-         exit 1
-      fi
-      echo "Retries left: $RETRY_CNT"
-      sleep #{sleep_interval}
-    done
-  EOF
-  end
 end

@@ -121,6 +121,19 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/elastic_search_plugins": {
+      "display_name": "elastic search plugins",
+      "required": "optional",
+      "default": "bigdesk,elasticsearch-head",
+      "recipes": [
+        "smoke_tests::local_search"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/mule_port": {
       "display_name": "mule port",
       "required": "optional",
