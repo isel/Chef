@@ -10,8 +10,6 @@ elastic_search_files  =  node['elastic_search_files']
 log "Elastic Search Plugins to be installed: (#{elastic_search_plugins})"
 
 sleep_interval = 10
-@plugin_directories = {'elasticsearch-head'  => 'head',
-                'bigdesk' => 'bigdesk'}
 
 
 if !File.exists?(deploy_folder)
@@ -67,11 +65,13 @@ if !File.exists?(deploy_folder)
   end
   log 'Elastic Search service is installed and started.'
 
-  elastic_search_plugins.split(',').each do |plugin|
-    bash "set up plugin #{plugin}" do
-      plugin_directory = @plugin_directories[plugin]
-      code <<-EOF
+  @plugin_directories = {'elasticsearch-head'  => 'head',
+                  'bigdesk' => 'bigdesk'}
 
+  elastic_search_plugins.split(',').each do |plugin|
+    plugin_directory = @plugin_directories[plugin]
+    bash "set up plugin #{plugin}" do
+      code <<-EOF
       set +e
       DEPLOY_FOLDER="#{deploy_folder}"
       PLUGIN_FOLDER="current/plugins/#{plugin_directory}/_site"
@@ -85,7 +85,7 @@ if !File.exists?(deploy_folder)
       echo 'Restarting the service'
       service elasticsearch restart
       EOF
-
+      not_if { plugin_directory.nil? }
     end
   end
   log "Elastic Search Plugins are installed: #{elastic_search_plugins}"
