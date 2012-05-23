@@ -7,7 +7,7 @@ elastic_search_plugins = node[:deploy][:elastic_search_plugins]
 elastic_search_plugins = '' if elastic_search_plugins.nil?
 elastic_search_files  =  node['elastic_search_files']
 
-log "Elastic Search Plugins to be installed: (#{elastic_search_plugins})
+log "Elastic Search Plugins to be installed: (#{elastic_search_plugins})"
 
 sleep_interval = 10
 @plugin_directories = {'elasticsearch-head'  => 'head',
