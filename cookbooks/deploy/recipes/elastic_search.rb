@@ -124,5 +124,5 @@ bash 'Confirm Elastic Search is operational' do
     sleep #{sleep_interval}
   done
   EOF
-  not_if { verify_completion.nil || verify_completion == ''}
+  not_if { verify_completion.nil? || verify_completion == ''}
 end
