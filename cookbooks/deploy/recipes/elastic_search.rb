@@ -105,3 +105,24 @@ if !File.exists?(deploy_folder)
 else
   log 'ElasticSearch is already installed.'
 end
+
+bash 'Confirm Elastic Search is operational' do
+  code <<-EOF
+  set +e
+  LAST_RETRY=0
+  RETRY_CNT=20
+  STATUS=
+  echo 'waiting for ElasticSearch to become available on port #{elastic_search_port}'
+  while  [ "-$STATUS" = '-' ] ; do
+    STATUS=`netstat -an | grep :#{elastic_search_port}`
+    RETRY_CNT=`expr $RETRY_CNT - 1`
+    if [ "$RETRY_CNT" -eq "$LAST_RETRY" ] ; then
+       echo "Exhausted retries"
+       exit 1
+    fi
+    echo "Retries left: $RETRY_CNT"
+    sleep #{sleep_interval}
+  done
+  EOF
+  not_if { verify_completion.nil || verify_completion == ''}
+end
