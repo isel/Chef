@@ -74,6 +74,3 @@ attribute "deploy/tenant",
   :display_name => "tenant",
   :required => "required",
   :recipes => ["smoke_tests::global"]
-
-
-

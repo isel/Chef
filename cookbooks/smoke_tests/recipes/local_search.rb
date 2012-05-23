@@ -1,4 +1,5 @@
 ruby_scripts_dir = node['ruby_scripts_dir']
+log "running smoke test with #{node[:deploy][:elastic_search_plugins]}"
 template "#{ruby_scripts_dir}/local_search.rb" do
   source 'scripts/local_search.erb'
   variables(
