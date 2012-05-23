@@ -2,6 +2,7 @@ ruby_scripts_dir = node['ruby_scripts_dir']
 hostname = node[:hostname]
 elastic_search_port = node[:deploy][:elastic_search_port]
 install_via_git_download = node[:deploy][:install_via_git_download]
+verify_completion = node[:deploy][:verify_completion]
 deploy_folder = '/opt/ElasticSearch/'
 elastic_search_plugins = node[:deploy][:elastic_search_plugins]
 elastic_search_plugins = '' if elastic_search_plugins.nil?
