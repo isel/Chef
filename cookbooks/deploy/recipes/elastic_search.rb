@@ -4,7 +4,10 @@ elastic_search_port = node[:deploy][:elastic_search_port]
 install_via_git_download = node[:deploy][:install_via_git_download]
 deploy_folder = '/opt/ElasticSearch/'
 elastic_search_plugins = node[:deploy][:elastic_search_plugins]
+elastic_search_plugins = '' if elastic_search_plugins.nil?
 elastic_search_files  =  node['elastic_search_files']
+
+log "Elastic Search Plugins to be installed: (#{elastic_search_plugins})
 
 sleep_interval = 10
 @plugin_directories = {'elasticsearch-head'  => 'head',
@@ -82,9 +85,10 @@ if !File.exists?(deploy_folder)
       echo 'Restarting the service'
       service elasticsearch restart
       EOF
+
     end
   end
-  log 'Elastic Search Plugins are installed: #{elastic_search_plugins}'
+  log "Elastic Search Plugins are installed: #{elastic_search_plugins}"
 
   bash 'reinstall plugins from developer github' do
     code <<-EOF
