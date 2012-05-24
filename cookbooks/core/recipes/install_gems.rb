@@ -2,7 +2,7 @@ gems = [
   # installing fog dependencies first because of gem dependency error
   {'gem' => 'formatador',          'version' => '0.2.1'},
   {'gem' => 'multi_json',          'version' => '1.0.3'},
-  {'gem' => 'mime-types',          'version' => '1.18'},
+  {'gem' => 'mime-types',          'version' => '1.17.2'},
   {'gem' => 'net-scp',             'version' => '1.0.4'},
   {'gem' => 'net-ssh',             'version' => '2.2.1'},
   {'gem' => 'nokogiri',            'version' => '1.5.2'},
