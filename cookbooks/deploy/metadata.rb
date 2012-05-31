@@ -146,7 +146,7 @@ attribute "deploy/elastic_search_version",
 attribute "deploy/elastic_search_plugins",
   :display_name => "elastic search plugins",
   :required => "optional",
-  :default => "bigdesk,elasticsearch-head",
+  :default => "bigdesk,elasticsearch-head,analysis-phonetic,analysis-icu",
   :recipes => ["deploy::elastic_search"]
 
 attribute "deploy/force_provision",

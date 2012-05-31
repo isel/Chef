@@ -63,10 +63,10 @@ if !File.exists?(deploy_folder)
   end
   log 'Elastic Search service is installed and started.'
 
-
-
-  @plugin_directories = {'elasticsearch-head'  => 'head',
-                  'bigdesk' => 'bigdesk'}
+  @plugin_directories = {'elasticsearch-head'  => 'current/plugins/head/_site',
+                  'bigdesk' => 'current/plugins/bigdesk/_site',
+  'analysis-icu'  => 'current/plugins/analysis-icu',
+                  'analysis-phonetic' => 'current/plugins/analysis-phonetic'}
 
   elastic_search_plugins.split(',').each do |plugin|
     plugin_directory = @plugin_directories[plugin]
@@ -74,12 +74,12 @@ if !File.exists?(deploy_folder)
       code <<-EOF
       set +e
       DEPLOY_FOLDER="#{deploy_folder}"
-      PLUGIN_FOLDER="current/plugins/#{plugin_directory}/_site"
+      PLUGIN_FOLDER="#{site_plugin_directory}"
       pushd $DEPLOY_FOLDER
-
       mkdir -p $PLUGIN_FOLDER
+
       PLUGIN_DIR=`find . -maxdepth 1 -type d -name '*#{plugin}*'`
-      echo "Copyint the #{plugin} directory $PLUGIN_DIR contents to $PLUGIN_FOLDER"
+      echo "Copying the #{plugin} directory $PLUGIN_DIR contents to $PLUGIN_FOLDER"
       cp -R $PLUGIN_DIR/* $PLUGIN_FOLDER
       popd
       echo 'Restarting the service'
@@ -88,7 +88,8 @@ if !File.exists?(deploy_folder)
       not_if { plugin_directory.nil? }
     end
   end
-  log "Elastic Search Plugins are installed: #{elastic_search_plugins}"
+  log "Elastic Search Plugins installed: #{elastic_search_plugins}"
+
   bash 'reinstall plugins from developer github' do
     code <<-EOF
     set +e
@@ -98,6 +99,7 @@ if !File.exists?(deploy_folder)
     echo "run the install"
     ./bin/plugin -install lukas-vlcek/bigdesk
     ./bin/plugin -install Aconex/elasticsearch-head
+
     echo 'ElasticSearch Plugins are reinstalled from developer git repository.'
     popd
     EOF
