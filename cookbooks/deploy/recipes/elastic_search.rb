@@ -74,7 +74,7 @@ if !File.exists?(deploy_folder)
       code <<-EOF
       set +e
       DEPLOY_FOLDER="#{deploy_folder}"
-      PLUGIN_FOLDER="#{site_plugin_directory}"
+      PLUGIN_FOLDER="#{plugin_directory}"
       pushd $DEPLOY_FOLDER
       mkdir -p $PLUGIN_FOLDER
 
