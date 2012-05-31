@@ -227,6 +227,7 @@
       "required": "optional",
       "default": "27017",
       "recipes": [
+        "deploy::event_router_service",
         "deploy::foundation_services",
         "deploy::mongo",
         "deploy::provision"
@@ -241,6 +242,7 @@
       "display_name": "db server",
       "required": "required",
       "recipes": [
+        "deploy::event_router_service",
         "deploy::foundation_services",
         "deploy::provision"
       ],

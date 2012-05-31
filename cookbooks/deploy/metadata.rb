@@ -115,12 +115,12 @@ attribute "deploy/db_port",
   :display_name => "db port",
   :required => "optional",
   :default  => "27017",
-  :recipes  => ["deploy::foundation_services", "deploy::mongo", "deploy::provision"]
+  :recipes  => ["deploy::event_router_service", "deploy::foundation_services", "deploy::mongo", "deploy::provision"]
 
 attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
-  :recipes => ["deploy::foundation_services", "deploy::provision"]
+  :recipes => ["deploy::event_router_service", "deploy::foundation_services", "deploy::provision"]
 
 attribute "deploy/deployment_name",
   :display_name => "deployment name",

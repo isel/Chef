@@ -45,3 +45,4 @@ end
 
 puts "Updating configuration file #{app_config} with #{messaging_server}"
 Helpers::change_app_setting(app_config, "MessagingServer.Uri", "http://#{messaging_server}:#{messaging_server_port}")
+Helpers::change_app_setting(app_config, "ConnectionString", "Server=<%= @db_server %>:<%= @db_port %>")
