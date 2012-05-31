@@ -61,7 +61,7 @@ attribute "deploy/elastic_search_port",
 attribute "deploy/elastic_search_plugins",
   :display_name => "elastic search plugins",
   :required => "optional",
-  :default => "bigdesk,elasticsearch-head",
+  :default => "bigdesk,elasticsearch-head,analysis-phonetic,analysis-icu",
   :recipes => ["smoke_tests::local_search"]
 
 attribute "deploy/mule_port",
