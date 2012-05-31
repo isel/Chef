@@ -8,8 +8,6 @@ source_directory = '<%= @source_directory %>'
 target_directory = '<%= @target_directory %>'
 messaging_server = '<%= @messaging_server %>'
 messaging_server_port = '<%= @messaging_server_port %>'
-messaging_server = '<%= @messaging_server %>'
-messaging_server_port = '<%= @messaging_server_port %>'
 db_server = '<%= @db_server %>'
 db_port = '<%= @db_port %>'
 
@@ -18,19 +16,19 @@ app_config       = 'UltimateSoftware.Foundation.Messaging.EventRouter.exe.config
 
 puts "Verifying the presence of the target directory: #{target_directory}"
 if File.exist?(target_directory)
-  puts 'Event Roures Service has already been configured'
+  puts 'Event Router Service has already been configured'
 else
 
   puts "Verifying the presence of the source directory: #{source_directory}"
   if !File.exist?(source_directory)
-    puts 'Event Roures Service source directory is missing'
+    puts 'Event Router Service source directory is missing'
     exit  4
   end
 
   puts "Creating the target directory: #{target_directory}"
   FileUtils.mkdir_p(target_directory)
   if !File.exist?(target_directory)
-    puts 'Event Roures Service target directory cannot be created'
+    puts 'Event Router Service target directory cannot be created'
     exit 8
   end
 
@@ -44,7 +42,7 @@ else
 
 
   if !File.exist?(app_config)
-    puts 'Event Roures Service configuration file #{app_config} is missing'
+    puts 'Event Router Service configuration file #{app_config} is missing'
     exit  16
   end
 end
