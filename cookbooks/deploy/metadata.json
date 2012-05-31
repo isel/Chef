@@ -451,8 +451,9 @@
       "display_name": "tenant",
       "required": "required",
       "recipes": [
-        "deploy::provision",
-        "deploy::engine"
+        "deploy::engine",
+        "deploy::jspr",
+        "deploy::provision"
       ],
       "choice": [
 
