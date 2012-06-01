@@ -186,7 +186,11 @@ else
   status_text = "Log file not found : #{raw_log}"
 
 end
-puts "#{status_text.chomp}"
+
+log "#{status_text.chomp}"
+
 if errors || failures
- puts "local smoke test failed, calling exit 1"
+ log  "Local smoke test failed"
+else
+ log "Local smoke test passed"
 end
