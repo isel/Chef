@@ -139,54 +139,54 @@ end
 raw_log = "#{deploy_folder}/current/logs/#{cluster_name}.log"
 
 if File.exists?(raw_log)
-rawdata = File.open(raw_log, 'r:UTF-8')
-contents = rawdata.read.split(/\n/)
-processed_lines = [];
-$stderr.puts "Processing #{contents.length} lines"
-begin
+  rawdata = File.open(raw_log, 'r:UTF-8')
+  contents = rawdata.read.split(/\n/)
+  processed_lines = [];
+  $stderr.puts "Processing #{contents.length} lines"
+  begin
 
-  plugin_filter = Regexp.new('\[plugins\s+\]')
+    plugin_filter = Regexp.new('\[plugins\s+\]')
 
 
-  processed_lines = contents.select { |item| item.include?('plugins') }
-  $stderr.puts "Processing #{processed_lines.length} lines"
+    processed_lines = contents.select { |item| item.include?('plugins') }
+    $stderr.puts "Processing #{processed_lines.length} lines"
 
-  last_log_line = contents.select { |item| plugin_filter.match(item) }.last
-  $stderr.puts "Processing last log entry: #{last_log_line.chomp}"
-  @loaded_plugins = []
-  @site_plugins = []
-  # capture entries -
-  # NOTE ruby seems to ignore non greedy regex postfix
+    last_log_line = contents.select { |item| plugin_filter.match(item) }.last
+    $stderr.puts "Processing last log entry: #{last_log_line.chomp}"
+    @loaded_plugins = []
+    @site_plugins = []
+    # capture entries -
+    # NOTE ruby seems to ignore non greedy regex postfix
 
-  if Regexp.new('loaded\s+\[([^\]]+)?\]').match(last_log_line)
-    @loaded_plugins << $1.split(/\s*,\s*/)
-    $stderr.puts "Found regular plugins: #{ @loaded_plugins.inspect }"
-  end
+    if Regexp.new('loaded\s+\[([^\]]+)?\]').match(last_log_line)
+      @loaded_plugins << $1.split(/\s*,\s*/)
+      $stderr.puts "Found regular plugins: #{ @loaded_plugins.inspect }"
+    end
 
-  if Regexp.new('sites\s+\[([^\]]+)?\]').match(last_log_line)
-    @site_plugins << $1.split(/\s*,\s*/)
-    $stderr.puts "Found site plugins: #{@site_plugins.inspect}"
-  end
-  $stderr.puts "Comparing #{ [@site_plugins.flatten + @loaded_plugins.flatten].flatten }  with #{@expected_plugins.flatten}"
-  @missing_plugins = @expected_plugins - [@site_plugins.flatten + @loaded_plugins.flatten].flatten
-  if @missing_plugins.nil?  || @missing_plugins.length == 0
+    if Regexp.new('sites\s+\[([^\]]+)?\]').match(last_log_line)
+      @site_plugins << $1.split(/\s*,\s*/)
+      $stderr.puts "Found site plugins: #{@site_plugins.inspect}"
+    end
+    $stderr.puts "Comparing #{ [@site_plugins.flatten + @loaded_plugins.flatten].flatten }  with #{@expected_plugins.flatten}"
+    @missing_plugins = @expected_plugins - [@site_plugins.flatten + @loaded_plugins.flatten].flatten
+    if @missing_plugins.nil? || @missing_plugins.length == 0
+      errors = 0
+      status_text = 'Found all plugins'
+    else
+      status_text = "Detected missing plugins: #{@missing_plugins}"
+      errors = 1
+    end
+  rescue
     errors = 0
-    status_text = 'Found all plugins'
-  else
-    status_text = "Detected missing plugins: #{@missing_plugins}"
-    errors = 1
+    failures = 1
+    status_text = "Unable to parse log: #{raw_log}"
   end
-rescue
-  errors = 0
-  failures = 1
-  status_text = "Unable to parse log: #{raw_log}"
-end
 else
   failures = 1
   status_text = "Log file not found : #{raw_log}"
 
 end
-puts "#{final_result.chomp}"
+puts "#{status_text.chomp}"
 if errors || failures
   exit 1
 end
