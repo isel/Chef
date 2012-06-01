@@ -188,5 +188,5 @@ else
 end
 puts "#{status_text.chomp}"
 if errors || failures
-  exit 1
+ puts "local smoke test failed, calling exit 1"
 end
