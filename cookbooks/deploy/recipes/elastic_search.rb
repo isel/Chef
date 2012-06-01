@@ -137,6 +137,8 @@ end
 @expected_plugins = elastic_search_plugins.split(',')
 
 raw_log = "#{deploy_folder}/current/logs/#{cluster_name}.log"
+
+if File.exists?(raw_log)
 rawdata = File.open(raw_log, 'r:UTF-8')
 contents = rawdata.read.split(/\n/)
 processed_lines = [];
@@ -177,9 +179,14 @@ begin
 rescue
   errors = 0
   failures = 1
-  status_text = 'Unable to parse log.'
+  status_text = "Unable to parse log: #{raw_log}"
+end
+else
+  failures = 1
+  status_text = "Log file not found : #{raw_log}"
+
 end
 puts "#{final_result.chomp}"
-if  errors || failures
+if errors || failures
   exit 1
 end
