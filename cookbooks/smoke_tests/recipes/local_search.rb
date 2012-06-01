@@ -1,7 +1,7 @@
 ruby_scripts_dir = node['ruby_scripts_dir']
 elastic_search_plugins = node[:deploy][:elastic_search_plugins]
 # temporarily limit the smoke test to site plugins
-elastic_search_plugins = join(',', %w(bigdesk head))
+elastic_search_plugins = %w(bigdesk head).join(',')
 log 'temporarily limit the smoke test to site plugins'
 log "running smoke test with #{elastic_search_plugins}"
 
