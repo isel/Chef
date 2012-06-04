@@ -13,7 +13,7 @@ else
 
       cache_hostname = nil
 
-      Helpers::Process.new.run('wait for tags to be available', 5*60) do
+      Helpers::Process.new.run('wait for tags to be available', 10*60) do
         begin
           cache_hostname = server.tags['server:hostname']
           !cache_hostname.nil?
