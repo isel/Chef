@@ -99,8 +99,9 @@ if !File.exists?(deploy_folder)
     echo "run the install"
     ./bin/plugin -install lukas-vlcek/bigdesk
     ./bin/plugin -install Aconex/elasticsearch-head
-
-    echo 'ElasticSearch Plugins are reinstalled from developer git repository.'
+    ./bin/plugin -install elasticsearch/elasticsearch-analysis-phonetic/1.2.0
+    ./bin/plugin -install elasticsearch/elasticsearch-analysis-icu/1.5.0
+    echo 'ElasticSearch Plugins are reinstalled from developer git repositories.'
     popd
     EOF
     not_if { install_via_git_download.nil? || install_via_git_download == '' }
