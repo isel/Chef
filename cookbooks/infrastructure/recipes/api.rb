@@ -1,4 +1,4 @@
-bash 'Installing Passenger' do
+bash 'Installing Passenger prereqs' do
   code <<-EOF
     gem install passenger -v 3.0.12 --no-rdoc --no-ri
 
@@ -6,7 +6,11 @@ bash 'Installing Passenger' do
     apt-get install -y apache2-prefork-dev
     apt-get install -y libapr1-dev
     apt-get install -y libaprutil1-dev
+  EOF
+end
 
+bash 'Installing Passenger' do
+  code <<-EOF
     passenger-install-apache2-module --auto
   EOF
 end
