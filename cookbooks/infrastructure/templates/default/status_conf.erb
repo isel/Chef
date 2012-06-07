@@ -1,0 +1,19 @@
+ExtendedStatus On
+<Location /server-status>
+  SetHandler server-status
+  Order deny,allow
+  Deny from all
+  Allow from localhost
+</Location>
+
+<VirtualHost *:80>
+  <Directory /var/www/api/public>
+    AllowOverride all
+    Options -MultiViews
+    Order allow,deny
+    Allow from all
+  </Directory>
+</VirtualHost>
+
+
+
