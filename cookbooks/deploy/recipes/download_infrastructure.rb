@@ -6,9 +6,9 @@ template "#{ruby_scripts_dir}/download_infrastructure.rb" do
   variables(
     :aws_access_key_id => node[:deploy][:aws_access_key_id],
     :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
-    :artifacts => node[:deploy][:binaries_artifacts],
-    :target_directory => node[:binaries_directory],
-    :revision => node[:deploy][:binaries_revision],
+    :artifacts => node[:deploy][:infrastructure_artifacts],
+    :target_directory => node[:infrastructure_directory],
+    :revision => node[:deploy][:infrastructure_revision],
     :s3_repository => node[:deploy][:s3_repository],
     :s3_directory => 'Services'
   )
@@ -22,6 +22,6 @@ if node[:platform] == "ubuntu"
   end
 else
   powershell "Downloading artifacts" do
-    source("ruby #{ruby_scripts_dir}/download_binaries.rb")
+    source("ruby #{ruby_scripts_dir}/download_infrastructure.rb")
   end
 end

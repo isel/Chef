@@ -90,12 +90,12 @@ attribute "deploy/app_server",
 attribute "deploy/aws_access_key_id",
   :display_name => "aws access key id",
   :required => "required",
-  :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_pims", "deploy::elastic_search", "deploy::mongo"]
+  :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_infrastructure", "deploy::download_pims", "deploy::elastic_search", "deploy::mongo"]
 
 attribute "deploy/aws_secret_access_key",
   :display_name => "aws secret access key",
   :required => "required",
-  :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_pims", "deploy::elastic_search", "deploy::mongo"]
+  :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_infrastructure", "deploy::download_pims", "deploy::elastic_search", "deploy::mongo"]
 
 attribute "deploy/binaries_artifacts",
   :display_name => "binaries artifacts",
@@ -154,6 +154,16 @@ attribute "deploy/force_provision",
   :display_name => "force provision",
   :required => "required",
   :recipes => ["deploy::provision"]
+
+attribute "deploy/infrastructure_artifacts",
+  :display_name => "infrastructure artifacts",
+  :required => "required",
+  :recipes => ["deploy::download_infrastructure"]
+
+attribute "deploy/infrastructure_revision",
+  :display_name => "infrastructure revision",
+  :required => "required",
+  :recipes => ["deploy::download_infrastructure"]
 
 attribute "deploy/mongo_version",
   :display_name => "mongo version",

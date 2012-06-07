@@ -158,6 +158,7 @@
       "recipes": [
         "deploy::activemq",
         "deploy::download_binaries",
+        "deploy::download_infrastructure",
         "deploy::download_pims",
         "deploy::elastic_search",
         "deploy::mongo"
@@ -174,6 +175,7 @@
       "recipes": [
         "deploy::activemq",
         "deploy::download_binaries",
+        "deploy::download_infrastructure",
         "deploy::download_pims",
         "deploy::elastic_search",
         "deploy::mongo"
@@ -320,6 +322,30 @@
       "required": "required",
       "recipes": [
         "deploy::provision"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/infrastructure_artifacts": {
+      "display_name": "infrastructure artifacts",
+      "required": "required",
+      "recipes": [
+        "deploy::download_infrastructure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/infrastructure_revision": {
+      "display_name": "infrastructure revision",
+      "required": "required",
+      "recipes": [
+        "deploy::download_infrastructure"
       ],
       "choice": [
 
