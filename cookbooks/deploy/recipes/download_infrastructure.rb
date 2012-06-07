@@ -1,7 +1,7 @@
 ruby_scripts_dir = node['ruby_scripts_dir']
 Dir.mkdir(ruby_scripts_dir) unless File.exist? ruby_scripts_dir
 
-template "#{ruby_scripts_dir}/download_binaries.rb" do
+template "#{ruby_scripts_dir}/download_infrastructure.rb" do
   source 'scripts/download_artifacts.erb'
   variables(
     :aws_access_key_id => node[:deploy][:aws_access_key_id],
@@ -10,14 +10,14 @@ template "#{ruby_scripts_dir}/download_binaries.rb" do
     :target_directory => node[:binaries_directory],
     :revision => node[:deploy][:binaries_revision],
     :s3_repository => node[:deploy][:s3_repository],
-    :s3_directory => 'Binaries'
+    :s3_directory => 'Services'
   )
 end
 
 if node[:platform] == "ubuntu"
   bash 'Downloading artifacts' do
     code <<-EOF
-      ruby #{ruby_scripts_dir}/download_binaries.rb
+      ruby #{ruby_scripts_dir}/download_infrastructure.rb
     EOF
   end
 else

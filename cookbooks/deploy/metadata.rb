@@ -10,23 +10,24 @@ supports "ubuntu"
 recipe "deploy::activemq", "Deploys ActiveMQ"
 recipe "deploy::adjust_ulimit", "Adjusts open files limit for log4j"
 recipe "deploy::appfabric_configure", "Configures AppFabric"
-recipe "deploy::appfabric_powershell", "Deploys AppFabric Powershell cmdlets"
 recipe "deploy::appfabric_ensure_is_up", "Ensures AppFabric cache are working"
+recipe "deploy::appfabric_powershell", "Deploys AppFabric Powershell cmdlets"
 recipe "deploy::download_binaries", "Downloads binaries"
+recipe "deploy::download_infrastructure", "Downloads infrastructure api"
 recipe "deploy::download_pims", "Downloads pims"
 recipe "deploy::elastic_search", "Deploys ElasticSearch"
 recipe "deploy::enable_msmq", "Enables msmq"
+recipe "deploy::engine", "Deploys Engine"
+recipe "deploy::event_router_service", "Installs Event Router Service"
+recipe "deploy::foundation_services", "Deploys the foundation rest services"
+recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::launch_activemq", "Launches ActiveMQ"
 recipe "deploy::launch_mule",  "Launches Mule"
-recipe "deploy::mule", "Deploys Mule ESB"
-recipe "deploy::engine", "Deploys Engine"
-recipe "deploy::foundation_services", "Deploys the foundation rest services"
-recipe "deploy::event_router_service", "Installs Event Router Service"
-recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::mongo", "Deploys mongodb"
+recipe "deploy::mule", "Deploys Mule ESB"
 recipe "deploy::provision", "Provisions basic system data"
-recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
+recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
 
 attribute "deploy/activemq_port",
@@ -187,6 +188,12 @@ attribute "deploy/pims_revision",
   :display_name => "pims revision",
   :required => "required",
   :recipes => ["deploy::download_pims"]
+
+attribute "deploy/s3_repository",
+  :display_name => "s3 repository",
+  :required => "optional",
+  :default  => "GlobalIncite",
+  :recipes  => ["deploy::download_binaries", "deploy::download_infrastructure", "deploy::download_pims"]
 
 attribute "deploy/server_manager_features",
   :display_name => "MSMQ features",

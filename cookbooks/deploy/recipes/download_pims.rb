@@ -9,6 +9,7 @@ template "#{ruby_scripts_dir}/download_pims.rb" do
     :artifacts => node[:deploy][:pims_artifacts],
     :target_directory => node[:pims_directory],
     :revision => node[:deploy][:pims_revision],
+    :s3_repository => node[:deploy][:s3_repository],
     :s3_directory => 'PIMs'
   )
 end

@@ -34,7 +34,7 @@ end
 Dir.mkdir(target_directory)
 missing_files = []
 
-s3_path = s3_directory == '' ? "GlobalIncite/#{revision}" : "GlobalIncite/#{s3_directory}/#{revision}"
+s3_path = "<%= @s3_repository %>/#{s3_directory}/#{revision}"
 
 install_files.each do |f|
     file = s3_files.get("#{s3_path}/#{f}.zip")

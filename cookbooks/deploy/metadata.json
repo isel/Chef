@@ -404,6 +404,21 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/s3_repository": {
+      "display_name": "s3 repository",
+      "required": "optional",
+      "default": "GlobalIncite",
+      "recipes": [
+        "deploy::download_binaries",
+        "deploy::download_infrastructure",
+        "deploy::download_pims"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/server_manager_features": {
       "display_name": "MSMQ features",
       "description": "List of windows MSMQ features to install",
@@ -524,23 +539,24 @@
     "deploy::activemq": "Deploys ActiveMQ",
     "deploy::adjust_ulimit": "Adjusts open files limit for log4j",
     "deploy::appfabric_configure": "Configures AppFabric",
-    "deploy::appfabric_powershell": "Deploys AppFabric Powershell cmdlets",
     "deploy::appfabric_ensure_is_up": "Ensures AppFabric cache are working",
+    "deploy::appfabric_powershell": "Deploys AppFabric Powershell cmdlets",
     "deploy::download_binaries": "Downloads binaries",
+    "deploy::download_infrastructure": "Downloads infrastructure api",
     "deploy::download_pims": "Downloads pims",
     "deploy::elastic_search": "Deploys ElasticSearch",
     "deploy::enable_msmq": "Enables msmq",
+    "deploy::engine": "Deploys Engine",
+    "deploy::event_router_service": "Installs Event Router Service",
+    "deploy::foundation_services": "Deploys the foundation rest services",
+    "deploy::jspr": "Deploys the web server websites",
     "deploy::launch_activemq": "Launches ActiveMQ",
     "deploy::launch_mule": "Launches Mule",
-    "deploy::mule": "Deploys Mule ESB",
-    "deploy::engine": "Deploys Engine",
-    "deploy::foundation_services": "Deploys the foundation rest services",
-    "deploy::event_router_service": "Installs Event Router Service",
-    "deploy::jspr": "Deploys the web server websites",
     "deploy::mongo": "Deploys mongodb",
+    "deploy::mule": "Deploys Mule ESB",
     "deploy::provision": "Provisions basic system data",
-    "deploy::reindex_elastic_search": "Reindexes ElasticSearch (should be going away)",
     "deploy::register_cache_hostname": "Registers the cache hostname and ip in the hosts file",
+    "deploy::reindex_elastic_search": "Reindexes ElasticSearch (should be going away)",
     "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server"
   },
   "version": "0.0.1"
