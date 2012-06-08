@@ -7,7 +7,8 @@ bash 'Installing Passenger prereqs' do
     apt-get install -y libapr1-dev
     apt-get install -y libaprutil1-dev
 
-    /opt/rvm/gems/ruby-1.9.2-head/bin/passenger-install-apache2-module --auto
+    apt-get install -y libapache2-mod-passenger
+    #/opt/rvm/gems/ruby-1.9.2-head/bin/passenger-install-apache2-module --auto
   EOF
 end
 
