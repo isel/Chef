@@ -1,18 +1,16 @@
 bash 'Installing Passenger prereqs' do
   code <<-EOF
     gem install passenger -v 3.0.12 --no-rdoc --no-ri
-    #
-    #apt-get install -y libcurl4-openssl-dev
-    #apt-get install -y apache2-prefork-dev
-    #apt-get install -y libapr1-dev
-    #apt-get install -y libaprutil1-dev
-    #
-    #sync
-    #
-    #echo ===========================================
-    #export PATH=/opt/rvm/bin:/opt/rvm/gems/ruby-1.9.2-head/bin:/opt/rvm/gems/ruby-1.9.2-head@global/bin:/opt/rvm/rubies/ruby-1.9.2-head/bin:$PATH
-    #echo $PATH
-    #passenger-install-apache2-module --auto
+
+    apt-get install -y libcurl4-openssl-dev
+    apt-get install -y apache2-prefork-dev
+    apt-get install -y libapr1-dev
+    apt-get install -y libaprutil1-dev
+
+    sync
+
+    # this might need the ruby path, see http://weblog.bitlasoft.com/2010/05/installing-passenger-passenger-install-apache2-module-command-not-found/
+    passenger-install-apache2-module --auto
   EOF
 end
 
@@ -23,8 +21,8 @@ bash 'Set document root and configure Passenger' do
         exit 0
     fi
 
-    echo LoadModule passenger_module /usr/lib/ruby/gems/1.8/gems/passenger-3.0.12/ext/apache2/mod_passenger.so >> /etc/apache2/apache2.conf
-    echo PassengerRoot /usr/lib/ruby/gems/1.8/gems/passenger-3.0.12 >> /etc/apache2/apache2.conf
+    echo LoadModule passenger_module /opt/rvm/gems/ruby-1.9.2-head/gems/passenger-3.0.12/ext/apache2/mod_passenger.so >> /etc/apache2/apache2.conf
+    echo PassengerRoot /opt/rvm/gems/ruby-1.9.2-head/gems/passenger-3.0.12 >> /etc/apache2/apache2.conf
     echo PassengerRuby /opt/rvm/wrappers/ruby-1.9.2-head/ruby >> /etc/apache2/apache2.conf
     echo PassengerDefaultUser www-data >> /etc/apache2/apache2.conf
 
