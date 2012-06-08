@@ -1,11 +1,13 @@
 bash 'Installing Passenger prereqs' do
   code <<-EOF
-    gem install passenger -v 3.0.12 --no-rdoc --no-ri
+    rvm gem install passenger -v 3.0.12 --no-rdoc --no-ri
 
     apt-get install -y libcurl4-openssl-dev
     apt-get install -y apache2-prefork-dev
     apt-get install -y libapr1-dev
     apt-get install -y libaprutil1-dev
+
+    sync
 
     echo ===========================================
     gem list
