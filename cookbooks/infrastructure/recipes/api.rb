@@ -10,12 +10,10 @@ bash 'Installing Passenger prereqs' do
     sync
 
     echo ===========================================
-    gem list
     export PATH=/opt/rvm/bin:/opt/rvm/gems/ruby-1.9.2-head/bin:/opt/rvm/gems/ruby-1.9.2-head@global/bin:/opt/rvm/rubies/ruby-1.9.2-head/bin:$PATH
     echo $PATH
-    rvm use default
-    rvmsudo passenger-install-apache2-module --auto
-    #rvmsudo /opt/rvm/gems/ruby-1.9.2-head/bin/passenger-install-apache2-module --auto
+    passenger-install-apache2-module --auto
+    #/opt/rvm/gems/ruby-1.9.2-head/bin/passenger-install-apache2-module --auto
     #apt-get install -y libapache2-mod-passenger
   EOF
 end
