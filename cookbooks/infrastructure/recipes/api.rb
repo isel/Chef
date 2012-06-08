@@ -8,7 +8,7 @@ bash 'Installing Passenger prereqs' do
     apt-get install -y libaprutil1-dev
 
     echo ===========================================
-    echo gem list
+    gem list
     echo $PATH
     #export PATH=/opt/rvm/rubies/ruby-1.9.2-head/bin:$PATH
     passenger-install-apache2-module --auto
