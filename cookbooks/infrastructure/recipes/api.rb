@@ -1,20 +1,18 @@
 bash 'Installing Passenger prereqs' do
   code <<-EOF
-    rvm gem install passenger -v 3.0.12 --no-rdoc --no-ri
-
-    apt-get install -y libcurl4-openssl-dev
-    apt-get install -y apache2-prefork-dev
-    apt-get install -y libapr1-dev
-    apt-get install -y libaprutil1-dev
-
-    sync
-
-    echo ===========================================
-    export PATH=/opt/rvm/bin:/opt/rvm/gems/ruby-1.9.2-head/bin:/opt/rvm/gems/ruby-1.9.2-head@global/bin:/opt/rvm/rubies/ruby-1.9.2-head/bin:$PATH
-    echo $PATH
-    passenger-install-apache2-module --auto
-    #/opt/rvm/gems/ruby-1.9.2-head/bin/passenger-install-apache2-module --auto
-    #apt-get install -y libapache2-mod-passenger
+    gem install passenger -v 3.0.12 --no-rdoc --no-ri
+    #
+    #apt-get install -y libcurl4-openssl-dev
+    #apt-get install -y apache2-prefork-dev
+    #apt-get install -y libapr1-dev
+    #apt-get install -y libaprutil1-dev
+    #
+    #sync
+    #
+    #echo ===========================================
+    #export PATH=/opt/rvm/bin:/opt/rvm/gems/ruby-1.9.2-head/bin:/opt/rvm/gems/ruby-1.9.2-head@global/bin:/opt/rvm/rubies/ruby-1.9.2-head/bin:$PATH
+    #echo $PATH
+    #passenger-install-apache2-module --auto
   EOF
 end
 
