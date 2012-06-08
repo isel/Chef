@@ -9,8 +9,8 @@ bash 'Installing Passenger prereqs' do
 
     echo ===========================================
     gem list
+    export PATH=/opt/rvm/rubies/ruby-1.9.2-head/bin:$PATH
     echo $PATH
-    #export PATH=/opt/rvm/rubies/ruby-1.9.2-head/bin:$PATH
     passenger-install-apache2-module --auto
     #apt-get install -y libapache2-mod-passenger
   EOF
