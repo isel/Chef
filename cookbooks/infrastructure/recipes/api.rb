@@ -30,6 +30,10 @@ bash 'Setting up website' do
 
     cd /var/www/api
 
+    echo "##### PATH #####"
+    echo $PATH
+    echo "##### PATH #####"
+
     echo "running bundle install"
     bundle install
 
