@@ -28,9 +28,13 @@ bash 'Setting up website' do
     chmod --recursive 0666 /var/www/api/log
     chown --recursive www-data:www-data /var/www/api/log
 
-
     cd /var/www/api
+
+    echo "running bundle install"
     bundle install
+
+    echo "running gem list"
+    gem list
 
     service apache2 restart
   EOF
