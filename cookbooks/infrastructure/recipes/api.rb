@@ -30,17 +30,8 @@ bash 'Setting up website' do
 
     cd /var/www/api
 
-    echo "##### PATH #####"
     export PATH=/opt/rvm/gems/ruby-1.9.2-head/bin:/opt/rvm/gems/ruby-1.9.2-head@global/bin:/opt/rvm/rubies/ruby-1.9.2-head/bin:/opt/rvm/bin:/usr/local/bin:/home/ec2/bin:/usr/local/sbin:$PATH
-
-    echo $PATH
-    echo "##### PATH #####"
-
-    echo "running bundle install"
     rvm exec bundle install
-
-    echo "running gem list"
-    gem list
 
     service apache2 restart
   EOF
