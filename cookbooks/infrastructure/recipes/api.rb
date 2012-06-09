@@ -35,7 +35,7 @@ bash 'Setting up website' do
     echo "##### PATH #####"
 
     echo "running bundle install"
-    bundle install
+    /opt/rvm/gems/ruby-1.9.2-head/bin/bundle install
 
     echo "running gem list"
     gem list
