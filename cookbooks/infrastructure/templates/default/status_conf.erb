@@ -13,6 +13,17 @@ ExtendedStatus On
     Order allow,deny
     Allow from all
   </Directory>
+
+  Alias /documentation /var/www/api/doc
+  <Directory /var/www/api/doc>
+    DirectoryIndex index.html
+    AllowOverride all
+    Options -MultiViews
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  DocumentRoot /var/www/api/doc
 </VirtualHost>
 
 
