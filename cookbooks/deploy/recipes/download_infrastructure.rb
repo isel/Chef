@@ -9,7 +9,7 @@ template "#{ruby_scripts_dir}/download_infrastructure.rb" do
     :artifacts => node[:deploy][:infrastructure_artifacts],
     :target_directory => node[:infrastructure_directory],
     :revision => node[:deploy][:infrastructure_revision],
-    :s3_repository => node[:deploy][:s3_repository],
+    :s3_repository => node[:deploy][:s3_api_repository],
     :s3_directory => 'Services'
   )
 end

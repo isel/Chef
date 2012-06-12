@@ -430,13 +430,25 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/s3_api_repository": {
+      "display_name": "s3 repository for the services api",
+      "required": "optional",
+      "default": "Infrastructure",
+      "recipes": [
+        "deploy::download_infrastructure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/s3_repository": {
-      "display_name": "s3 repository",
+      "display_name": "s3 repository for the UGF platform",
       "required": "optional",
       "default": "GlobalIncite",
       "recipes": [
         "deploy::download_binaries",
-        "deploy::download_infrastructure",
         "deploy::download_pims"
       ],
       "choice": [

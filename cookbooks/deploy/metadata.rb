@@ -199,11 +199,17 @@ attribute "deploy/pims_revision",
   :required => "required",
   :recipes => ["deploy::download_pims"]
 
+attribute "deploy/s3_api_repository",
+  :display_name => "s3 repository for the services api",
+  :required => "optional",
+  :default  => "Infrastructure",
+  :recipes  => ["deploy::download_infrastructure"]
+
 attribute "deploy/s3_repository",
-  :display_name => "s3 repository",
+  :display_name => "s3 repository for the UGF platform",
   :required => "optional",
   :default  => "GlobalIncite",
-  :recipes  => ["deploy::download_binaries", "deploy::download_infrastructure", "deploy::download_pims"]
+  :recipes  => ["deploy::download_binaries", "deploy::download_pims"]
 
 attribute "deploy/server_manager_features",
   :display_name => "MSMQ features",
