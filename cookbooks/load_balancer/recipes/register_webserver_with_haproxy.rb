@@ -34,7 +34,12 @@ ruby_block "Register web server with HAProxy" do
   # Connect server machine to load balancer to start receiving traffic
     web_listener = node[:load_balancer][:prefix]
     backend_name = node[:load_balancer][:backend_name]
-    lb_host = "#{node[:load_balancer][:prefix]}.#{node[:load_balancer][:domain]}"
+
+    if "#{node[:load_balancer][:domain]}".include?("apiinfrastructure")
+      lb_host = "#{node[:load_balancer][:domain]}"
+    else
+      lb_host = "#{node[:load_balancer][:prefix]}.#{node[:load_balancer][:domain]}"
+    end
 
   # Use cookies?
     sess_sticky = node[:load_balancer][:session_stickiness].downcase
