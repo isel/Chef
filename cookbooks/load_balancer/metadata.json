@@ -199,6 +199,20 @@
       "calculated": false,
       "type": "string"
     },
+    "load_balancer/server_timeout": {
+      "display_name": "server timeout",
+      "description": "Set the HAProxy cfg file's srvtimeout setting",
+      "required": "optional",
+      "default": "50000",
+      "recipes": [
+        "load_balancer::register_webserver_with_haproxy"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "load_balancer/session_stickiness": {
       "display_name": "session stickiness",
       "required": "optional",

@@ -114,6 +114,13 @@ attribute "load_balancer/route53_additional_ip",
     "load_balancer::register_with_route53"
   ]
 
+attribute "load_balancer/server_timeout",
+  :display_name => "server timeout",
+  :description => "Set the HAProxy cfg file's srvtimeout setting",
+  :required    => "optional",
+  :default     => "50000",
+  :recipes     => ["load_balancer::register_webserver_with_haproxy"]
+
 attribute "load_balancer/session_stickiness",
   :display_name => "session stickiness",
   :required => "optional",
