@@ -85,7 +85,7 @@ ruby_block "Register web server with HAProxy" do
           while true
             response = `#{cmd}`
             puts response #for debugging...
-            break if response.include?("Haproxy restart sucessful")
+            break if response.include?("Haproxy restart successful")
             break if response.include?("Restart not required")
             puts "Retrying..."
             sleep 10

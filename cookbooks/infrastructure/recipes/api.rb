@@ -18,6 +18,10 @@ template '/etc/apache2/conf.d/status.conf' do
   source 'status_conf.erb'
 end
 
+template "#{node['infrastructure_directory']}/InfrastructureServices/public/HealthCheck.html" do
+  source 'health_check.erb'
+end
+
 bash 'Setting up website' do
   code <<-EOF
     mkdir --parents /var/www/api
@@ -36,4 +40,6 @@ bash 'Setting up website' do
     service apache2 restart
   EOF
 end
+
+
 
