@@ -1,6 +1,6 @@
 bash 'Set HAProxy timeout' do
   code <<-EOF
-    sed -i "s@srvtimeout      60000@srvtimeout      #{node[:load_balancer][:server_timeout]}@" /home/haproxy/rightscale_lb.cfg
+    sed -i "s@srvtimeout[ \t]*[0-9]*@srvtimeout      #{node[:load_balancer][:server_timeout]}@" /home/haproxy/rightscale_lb.cfg
   EOF
 end
 

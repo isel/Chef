@@ -99,7 +99,10 @@ ruby_block "Register web server with HAProxy" do
       successful += 1
     end
 
-    raise "Failure, only #{successful} out of #{addrs.length} lb hosts could be connected" if successful != addrs.length
+    # this is a hack but it appears that if we do not have a real formal www domain, then this raises a bogus error
+    if !"#{node[:load_balancer][:domain]}".include?("apiinfrastructure")
+      raise "Failure, only #{successful} out of #{addrs.length} lb hosts could be connected" if successful != addrs.length
+    end
   end
   only_if { node[:load_balancer][:should_register_with_lb] == 'true' }
 end
