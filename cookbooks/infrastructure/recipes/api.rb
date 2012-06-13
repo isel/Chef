@@ -18,7 +18,8 @@ template '/etc/apache2/conf.d/status.conf' do
   source 'status_conf.erb'
 end
 
-template "#{node['infrastructure_directory']}/InfrastructureServices/public/HealthCheck.html" do
+template "#{node['infrastructure_directory']}/InfrastructureServices/doc/HealthCheck.html" do
+  mode "0644"
   source 'health_check.erb'
 end
 
