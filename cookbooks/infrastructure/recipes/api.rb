@@ -18,7 +18,7 @@ template '/etc/apache2/conf.d/status.conf' do
   source 'status_conf.erb'
 end
 
-template "#{node['infrastructure_directory']}/InfrastructureServices/doc/HealthCheck.html" do
+template "/var/www/HealthCheck.html" do
   mode "0644"
   source 'health_check.erb'
 end
@@ -32,6 +32,8 @@ bash 'Setting up website' do
     echo "" >> /var/www/api/log/rest.log
     chmod --recursive 0666 /var/www/api/log
     chown --recursive www-data:www-data /var/www/api/log
+
+    cp /var/www/HealthCheck.html /var/www/api/doc
 
     cd /var/www/api
 

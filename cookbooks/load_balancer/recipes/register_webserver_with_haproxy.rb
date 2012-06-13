@@ -6,13 +6,6 @@ template "#{node['ruby_scripts_dir']}/wait_for_load_balancers.rb" do
   )
 end
 
-bash 'Set HAProxy timeout' do
-  code <<-EOF
-    sed -i "s@srvtimeout      50000@srvtimeout      #{node[:load_balancer][:server_timeout]}@" /home/haproxy/rightscale_lb.cfg
-  EOF
-  only_if { node[:load_balancer][:should_register_with_lb] == 'true' }
-end
-
 bash 'Waiting for load balancers to be operational' do
   code <<-EOF
       ruby #{node['ruby_scripts_dir']}/wait_for_load_balancers.rb

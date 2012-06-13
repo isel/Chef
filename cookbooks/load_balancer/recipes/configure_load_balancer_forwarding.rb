@@ -1,3 +1,9 @@
+bash 'Set HAProxy timeout' do
+  code <<-EOF
+    sed -i "s@srvtimeout      50000@srvtimeout      #{node[:load_balancer][:server_timeout]}@" /home/haproxy/rightscale_lb.cfg
+  EOF
+end
+
 website_dns = "#{node[:load_balancer][:prefix]}.#{node[:load_balancer][:domain]}"
 
 node[:load_balancer][:forwarding_ports].split(',').each do |lb_bind_port|

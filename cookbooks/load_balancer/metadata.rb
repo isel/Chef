@@ -119,7 +119,7 @@ attribute "load_balancer/server_timeout",
   :description => "Set the HAProxy cfg file's srvtimeout setting",
   :required    => "optional",
   :default     => "50000",
-  :recipes     => ["load_balancer::register_webserver_with_haproxy"]
+  :recipes     => ["load_balancer::configure_load_balancer_forwarding"]
 
 attribute "load_balancer/session_stickiness",
   :display_name => "session stickiness",
