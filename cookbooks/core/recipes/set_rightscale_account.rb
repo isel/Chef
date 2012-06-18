@@ -1,0 +1,1 @@
+ENV['rightscale_account'] = 'hello world!'

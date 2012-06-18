@@ -7,6 +7,8 @@ ENV['db_server'] = '<%= @db_server %>'
 ENV['db_port'] = '<%= @db_port %>'
 ENV['elastic_search_port'] = '<%= @elastic_search_port %>'
 
+puts "ENV['rightscale_account'] = #{ENV['rightscale_account']}"
+
 RSpec::Core::RakeTask.new(:spec) do |t|
   t.pattern = '<%= node['binaries_directory'] %>/CI/spec/Smoke/deploy_<%= @server_type %>_spec.rb'
 end
