@@ -205,6 +205,12 @@ attribute "deploy/s3_api_repository",
   :default  => "Infrastructure",
   :recipes  => ["deploy::download_infrastructure"]
 
+attribute "deploy/s3_bucket",
+  :display_name => "s3 bucket for the UGF platform",
+  :required => "optional",
+  :default  => "ugfartifacts",
+  :recipes  => ["deploy::download_binaries", "deploy::download_infrastructure", "deploy::download_pims"]
+
 attribute "deploy/s3_repository",
   :display_name => "s3 repository for the UGF platform",
   :required => "optional",
