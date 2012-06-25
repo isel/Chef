@@ -4,7 +4,7 @@ template "#{ruby_scripts_dir}/smoke_tests_spec.rb" do
   source 'smoke_tests_spec.erb'
 end
 
-template "#{ruby_scripts_dir}/run_smoke_tests.rb" do
+template "#{ruby_scripts_dir}/smoke_tests.rb" do
   source 'scripts/smoke_tests.erb'
 end
 
