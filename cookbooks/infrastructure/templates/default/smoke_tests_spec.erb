@@ -1,0 +1,20 @@
+require "rspec"
+require 'rest-client'
+require 'json'
+
+describe 'Infrastructure smoke tests' do
+
+  it 'should show all diys for templates' do
+    response = RestClient.get("http://localhost/deployments/index.json?type=template")
+    response.code.should == 200
+    deployments = JSON.parse(response.body)
+    deployments.count.should >= 2
+  end
+
+  it 'should show the documentation' do
+    response = RestClient.get("http://localhost")
+    response.code.should == 200
+    response.body.should include('Welcome to the Infrastructure Services API')
+  end
+
+end

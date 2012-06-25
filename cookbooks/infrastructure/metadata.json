@@ -25,7 +25,8 @@
   "groupings": {
   },
   "recipes": {
-    "infrastructure::api": "Deploys Infrastructure api services"
+    "infrastructure::api": "Deploys Infrastructure api services",
+    "infrastructure::smoke_tests": "Smoke tests"
   },
   "version": "0.0.1"
 }
