@@ -2,6 +2,7 @@ require 'fog'
 require 'fileutils'
 
 revision = '<%= @revision %>'
+s3_bucket = '<%= @s3_bucket %>'
 s3_directory = '<%= @s3_directory %>'
 target_directory = '<%= @target_directory %>'
 
@@ -13,7 +14,7 @@ storage = Fog::Storage.new(
   :aws_secret_access_key => '<%= @aws_secret_access_key %>'
 )
 
-bucket = storage.directories.find { |d| d.key == 'ugfartifacts' }
+bucket = storage.directories.find { |d| d.key == s3_bucket }
 s3_files = bucket.files
 
 install_files = '<%= @artifacts %>'.split(',')

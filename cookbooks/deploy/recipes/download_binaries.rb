@@ -9,6 +9,7 @@ template "#{ruby_scripts_dir}/download_binaries.rb" do
     :artifacts => node[:deploy][:binaries_artifacts],
     :target_directory => node[:binaries_directory],
     :revision => node[:deploy][:binaries_revision],
+    :s3_bucket => node[:deploy][:s3_bucket],
     :s3_repository => node[:deploy][:s3_repository],
     :s3_directory => 'Binaries'
   )

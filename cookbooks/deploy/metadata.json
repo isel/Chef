@@ -443,6 +443,21 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/s3_bucket": {
+      "display_name": "s3 bucket for the UGF platform",
+      "required": "optional",
+      "default": "ugfartifacts",
+      "recipes": [
+        "deploy::download_binaries",
+        "deploy::download_infrastructure",
+        "deploy::download_pims"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/s3_repository": {
       "display_name": "s3 repository for the UGF platform",
       "required": "optional",
