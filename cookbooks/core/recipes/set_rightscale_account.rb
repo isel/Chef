@@ -1,1 +1,1 @@
-ENV['rightscale_account'] = 'hello world!'
+ENV['rightscale_account'] = '33152'
