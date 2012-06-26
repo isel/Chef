@@ -3,9 +3,10 @@ require 'rest-client'
 require 'json'
 
 describe 'Infrastructure smoke tests' do
+  let(:site) { RestClient::Resource.new('http://localhost', {:timeout => 300}) }
 
   it 'should show all diys for templates' do
-    response = RestClient.get("http://localhost/deployments/index.json?type=template")
+    response = site["deployments/index.json?type=template"]
     response.code.should == 200
     deployments = JSON.parse(response.body)
     deployments.count.should >= 2
