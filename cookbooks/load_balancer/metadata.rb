@@ -11,6 +11,7 @@ recipe "load_balancer::configure_load_balancer_forwarding", "Adds an entry vhost
 recipe "load_balancer::deregister_appserver_with_haproxy", "Deregisters an app server with each load balancer"
 recipe "load_balancer::deregister_from_haproxy", "Deregisters from each load balancer"
 recipe "load_balancer::deregister_with_route53", "Deregisters an ip address with a domain in Route53"
+recipe "load_balancer::disconnect_instance_from_haproxy", "Disconnects an instance from the haproxy"
 recipe "load_balancer::register_appserver_with_haproxy", "Registers an app server with each load balancer"
 recipe "load_balancer::register_webserver_with_haproxy", "Registers a web server with each load balancer"
 recipe "load_balancer::register_with_route53", "Registers an ip address with a domain in Route53"
@@ -65,6 +66,12 @@ attribute "load_balancer/health_check_uri",
   :required => "optional",
   :default  => "/HealthCheck.html",
   :recipes  => ["load_balancer::register_appserver_with_haproxy", "load_balancer::register_webserver_with_haproxy"]
+
+attribute "load_balancer/instance_backend_name",
+  :display_name => "instance backend name",
+  :description => "instance backend name to be disconnected from haproxy",
+  :required => "required",
+  :recipes  => ["load_balancer::disconnect_instance_from_haproxy"]
 
 attribute "load_balancer/maintenance_page",
   :display_name => "maintenance page",

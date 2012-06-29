@@ -111,6 +111,19 @@
       "calculated": false,
       "type": "string"
     },
+    "load_balancer/instance_backend_name": {
+      "display_name": "instance backend name",
+      "description": "instance backend name to be disconnected from haproxy",
+      "required": "required",
+      "recipes": [
+        "load_balancer::disconnect_instance_from_haproxy"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "load_balancer/maintenance_page": {
       "display_name": "maintenance page",
       "description": "Optional path for a maintenance page, relative to document root (i.e., .../current/public). The file must exist in the subtree of the vhost, which will be served by the web server if it's present. If ignored, it will default to '/system/maintenance.html'.",
@@ -318,6 +331,7 @@
     "load_balancer::deregister_appserver_with_haproxy": "Deregisters an app server with each load balancer",
     "load_balancer::deregister_from_haproxy": "Deregisters from each load balancer",
     "load_balancer::deregister_with_route53": "Deregisters an ip address with a domain in Route53",
+    "load_balancer::disconnect_instance_from_haproxy": "Disconnects an instance from the haproxy",
     "load_balancer::register_appserver_with_haproxy": "Registers an app server with each load balancer",
     "load_balancer::register_webserver_with_haproxy": "Registers a web server with each load balancer",
     "load_balancer::register_with_route53": "Registers an ip address with a domain in Route53",
