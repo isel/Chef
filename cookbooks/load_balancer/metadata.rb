@@ -149,7 +149,8 @@ attribute "load_balancer/should_register_with_lb",
   :recipes => [
     "load_balancer::register_appserver_with_haproxy",
     "load_balancer::register_webserver_with_haproxy",
-    "load_balancer::deregister_appserver_with_haproxy"
+    "load_balancer::deregister_appserver_with_haproxy",
+    "load_balancer::deregister_from_haproxy"
   ]
 
 attribute "load_balancer/ssl_certificate",
