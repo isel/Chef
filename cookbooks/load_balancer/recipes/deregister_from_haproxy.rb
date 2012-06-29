@@ -3,7 +3,7 @@ template "#{node['ruby_scripts_dir']}/deregister_from_haproxy.rb" do
   variables(
     :deployment_name => node[:deploy][:deployment_name],
     :prefix => node[:load_balancer][:prefix],
-    :instance_backend_name => node[:load_balancer][:backend_name],
+    :instance_backend_name => node[:load_balancer][:backend_name]
   )
 end
 
@@ -19,5 +19,4 @@ else
     source("ruby #{node['ruby_scripts_dir']}/deregister_from_haproxy.rb")
     only_if { node[:load_balancer][:should_register_with_lb] == 'true' }
   end
-
 end
