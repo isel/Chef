@@ -9,10 +9,12 @@ supports "ubuntu"
 
 recipe "load_balancer::configure_load_balancer_forwarding", "Adds an entry vhost (frontend) that forwards requests to the next target"
 recipe "load_balancer::deregister_appserver_with_haproxy", "Deregisters an app server with each load balancer"
+recipe "load_balancer::deregister_from_haproxy", "Deregisters from each load balancer"
 recipe "load_balancer::deregister_with_route53", "Deregisters an ip address with a domain in Route53"
 recipe "load_balancer::register_appserver_with_haproxy", "Registers an app server with each load balancer"
 recipe "load_balancer::register_webserver_with_haproxy", "Registers a web server with each load balancer"
 recipe "load_balancer::register_with_route53", "Registers an ip address with a domain in Route53"
+recipe "load_balancer::tag_lb_role", "Tags the load balancer role"
 
 attribute "load_balancer/app_listener_names",
   :display_name => "app listener names",
@@ -34,7 +36,8 @@ attribute "load_balancer/backend_name",
   :recipes  => [
     "load_balancer::register_appserver_with_haproxy",
     "load_balancer::register_webserver_with_haproxy",
-    "load_balancer::deregister_appserver_with_haproxy"
+    "load_balancer::deregister_appserver_with_haproxy",
+    "load_balancer::deregister_from_haproxy"
   ]
 
 attribute "load_balancer/domain",
@@ -87,7 +90,9 @@ attribute "load_balancer/prefix",
     "load_balancer::deregister_with_route53",
     "load_balancer::register_appserver_with_haproxy",
     "load_balancer::register_webserver_with_haproxy",
-    "load_balancer::deregister_appserver_with_haproxy"
+    "load_balancer::deregister_appserver_with_haproxy",
+    "load_balancer::deregister_from_haproxy",
+    "load_balancer::tag_lb_role"
   ]
 
 attribute "load_balancer/private_ssh_key",
