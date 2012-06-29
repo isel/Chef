@@ -1,14 +1,11 @@
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Cloud/deployment'
-require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/process'
 
 servers = Cloud::Deployment.new.discover_servers('<%= @deployment_name %>')
 
-lbs
-
-Helpers::Process.new(15).run('waiting for load balancers', <%= @timeout %>) do
-  lbs_count = servers.select { |name, server| (server.tags['server:type'] == 'loadbalancer') }
-  lbs_operational = servers.select { |name, server| (server.tags['server:type'] == 'loadbalancer' && server.state == 'operational') }
-  lbs_count.count == lbs_operational.count
+lbs = servers.select { |name, server| server.tags['lb:prefix'] == '<%= @prefix %>' }
+lbs.each_value do |lb|
+  lb.set_current_inputs({ 'load_balancer/instance_backend_name' => 'text:<%= @instance_backend_name %>' })
+  lb.run_recipe('load_balancer::disconnect_instance_from_haproxy')
 end
 
 

@@ -48,6 +48,7 @@ attribute "load_balancer/domain",
   :recipes  => [
     "load_balancer::configure_load_balancer_forwarding",
     "load_balancer::register_with_route53",
+    "load_balancer::deregister_with_haproxy",
     "load_balancer::deregister_with_route53",
     "load_balancer::register_appserver_with_haproxy",
     "load_balancer::register_webserver_with_haproxy",
@@ -95,6 +96,7 @@ attribute "load_balancer/prefix",
     "load_balancer::configure_load_balancer_forwarding",
     "load_balancer::register_with_route53",
     "load_balancer::deregister_with_route53",
+    "load_balancer::deregister_from_haproxy",
     "load_balancer::register_appserver_with_haproxy",
     "load_balancer::register_webserver_with_haproxy",
     "load_balancer::deregister_appserver_with_haproxy",
@@ -177,5 +179,9 @@ attribute "deploy/app_server",
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
   :required => "required",
-  :recipes  => ["load_balancer::register_appserver_with_haproxy", "load_balancer::register_webserver_with_haproxy"]
+  :recipes  => [
+     "load_balancer::register_appserver_with_haproxy",
+     "load_balancer::register_webserver_with_haproxy",
+     "load_balancer::deregister_with_haproxy"
+  ]
 
