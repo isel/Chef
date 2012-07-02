@@ -1,4 +1,5 @@
-node[:load_balancer][:forwarding_ports].reject{|port| port == '443'}.each do |port|
+forwarding_ports = node[:load_balancer][:forwarding_ports].split(',').reject{|port| port == '443'}
+forwarding_ports.each do |port|
   listener_name = "#{node[:load_balancer][:prefix]}#{port}"
   bash 'Removing instance from haproxy configuration' do
     code <<-EOF
