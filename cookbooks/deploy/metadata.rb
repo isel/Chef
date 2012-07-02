@@ -45,7 +45,7 @@ attribute "deploy/activemq_version",
 attribute "deploy/appfabric_caches",
   :display_name => "appfabric caches",
   :required => "optional",
-  :default => "default,TokenStore,SaasPolicy,EntityModel,Securables,Messages,Views,Enumerations",
+  :default => "default,TokenStore,SaasPolicy,EntityModel,Securables,Messages,Views,Enumerations,BusinessProcess",
   :recipes => ["deploy::appfabric_configure", "deploy::appfabric_ensure_is_up"]
 
 attribute "deploy/appfabric_security",
