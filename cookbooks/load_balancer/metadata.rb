@@ -9,7 +9,7 @@ supports "ubuntu"
 
 recipe "load_balancer::configure_load_balancer_forwarding", "Adds an entry vhost (frontend) that forwards requests to the next target"
 recipe "load_balancer::deregister_appserver_with_haproxy", "Deregisters an app server with each load balancer"
-recipe "load_balancer::deregister_from_haproxy", "Deregisters from each load balancer"
+recipe "load_balancer::disconnect_from_haproxy", "Disconnects from each load balancer"
 recipe "load_balancer::deregister_with_route53", "Deregisters an ip address with a domain in Route53"
 recipe "load_balancer::disconnect_instance_from_haproxy", "Disconnects an instance from the haproxy"
 recipe "load_balancer::register_appserver_with_haproxy", "Registers an app server with each load balancer"
@@ -38,7 +38,7 @@ attribute "load_balancer/backend_name",
     "load_balancer::register_appserver_with_haproxy",
     "load_balancer::register_webserver_with_haproxy",
     "load_balancer::deregister_appserver_with_haproxy",
-    "load_balancer::deregister_from_haproxy"
+    "load_balancer::disconnect_from_haproxy"
   ]
 
 attribute "load_balancer/domain",
@@ -99,12 +99,11 @@ attribute "load_balancer/prefix",
     "load_balancer::configure_load_balancer_forwarding",
     "load_balancer::register_with_route53",
     "load_balancer::deregister_with_route53",
-    "load_balancer::deregister_from_haproxy",
+    "load_balancer::disconnect_from_haproxy",
     "load_balancer::disconnect_instance_from_haproxy",
     "load_balancer::register_appserver_with_haproxy",
     "load_balancer::register_webserver_with_haproxy",
     "load_balancer::deregister_appserver_with_haproxy",
-    "load_balancer::deregister_from_haproxy",
     "load_balancer::tag_lb_role"
   ]
 
@@ -154,7 +153,7 @@ attribute "load_balancer/should_register_with_lb",
     "load_balancer::register_appserver_with_haproxy",
     "load_balancer::register_webserver_with_haproxy",
     "load_balancer::deregister_appserver_with_haproxy",
-    "load_balancer::deregister_from_haproxy"
+    "load_balancer::disconnect_from_haproxy"
   ]
 
 attribute "load_balancer/ssl_certificate",
