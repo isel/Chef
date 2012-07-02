@@ -74,7 +74,6 @@
         "load_balancer::register_with_route53",
         "load_balancer::deregister_with_haproxy",
         "load_balancer::deregister_with_route53",
-        "load_balancer::disconnect_instance_from_haproxy",
         "load_balancer::register_appserver_with_haproxy",
         "load_balancer::register_webserver_with_haproxy",
         "load_balancer::deregister_appserver_with_haproxy"
@@ -90,7 +89,8 @@
       "description": "The list of ports to be forwarded by the load balancer (i.e. 80,81,82,443)",
       "required": "required",
       "recipes": [
-        "load_balancer::configure_load_balancer_forwarding"
+        "load_balancer::configure_load_balancer_forwarding",
+        "load_balancer::disconnect_instance_from_haproxy"
       ],
       "choice": [
 
