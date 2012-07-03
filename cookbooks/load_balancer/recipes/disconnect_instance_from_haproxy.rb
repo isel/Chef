@@ -9,6 +9,10 @@ forwarding_ports.each do |port|
       args="-a del -w -s #{node[:load_balancer][:instance_backend_name]} -l #{listener_name}"
 
       /opt/rightscale/sandbox/bin/ruby $script $args
+
+      # NOTE: restarting haproxy for now, we need a cleaner way to do this
+      echo restarting haproxy
+      service haproxy restart
     EOF
   end
 end
