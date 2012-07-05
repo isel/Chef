@@ -2,7 +2,7 @@ require 'rake'
 require 'fileutils'
 
 powershell 'Disable firewall' do
-  parameters ()
+  parameters()
 powershell_script = <<-'EOF'
 write-output "Probing RS_REBOOT=${env:RS_REBOOT}"
 
