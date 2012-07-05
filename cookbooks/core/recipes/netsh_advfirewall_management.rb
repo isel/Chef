@@ -1,22 +1,13 @@
 require 'rake'
 require 'fileutils'
 
-log "Probing RS_REBOOT=#{ENV['RS_REBOOT']}"
-
-if ENV['RS_REBOOT'] == 'true'
-  log 'Skipping firewall configuration change during reboot.'
-  exit(0)
-end
-
-
 powershell 'Disable firewall' do
-  parameters (
-  )
+  parameters ()
 powershell_script = <<-'EOF'
 write-output "Probing RS_REBOOT=${env:RS_REBOOT}"
 
 if ( (${Env:RS_REBOOT} -ne $null) -and (${Env:RS_REBOOT} -match 'true'))  {
-   write-output 'Skipping script execution during reboot'
+   write-output 'Skipping firewall configuration change during reboot.'
    $Error.Clear()
    exit 0
   }
