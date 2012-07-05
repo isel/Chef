@@ -8,15 +8,14 @@ version          "0.0.1"
 supports "ubuntu"
 
 recipe "core::install_gems", "Installs ruby gems"
-recipe "core::tag_server_hostname", "Tags the server host name"
-recipe "core::tag_server_type", "Tags the server type"
+recipe "core::netsh_advfirewall_management", "Disables Windows Firewall"
 recipe "core::set_rightscale_account", "sets the Rightscale account"
 recipe "core::setup_powershell_runtimes", "Allows up the poweshell to run multiple runtimes"
+recipe "core::tag_server_hostname", "Tags the server host name"
+recipe "core::tag_server_type", "Tags the server type"
 
 attribute "core/server_type",
   :display_name => "server type",
   :description => "eg: db, app, web, cache, messaging, or search",
   :required => "required",
   :recipes => ["core::tag_server_type"]
-
-

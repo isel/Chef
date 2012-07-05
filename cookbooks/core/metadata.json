@@ -39,10 +39,11 @@
   },
   "recipes": {
     "core::install_gems": "Installs ruby gems",
-    "core::tag_server_hostname": "Tags the server host name",
-    "core::tag_server_type": "Tags the server type",
+    "core::netsh_advfirewall_management": "Disables Windows Firewall",
     "core::set_rightscale_account": "sets the Rightscale account",
-    "core::setup_powershell_runtimes": "Allows up the poweshell to run multiple runtimes"
+    "core::setup_powershell_runtimes": "Allows up the poweshell to run multiple runtimes",
+    "core::tag_server_hostname": "Tags the server host name",
+    "core::tag_server_type": "Tags the server type"
   },
   "version": "0.0.1"
 }
