@@ -8,18 +8,20 @@ version          "0.0.1"
 supports "ubuntu"
 
 recipe "load_balancer::configure_load_balancer_forwarding", "Adds an entry vhost (frontend) that forwards requests to the next target"
-recipe "load_balancer::deregister_appserver_with_haproxy", "Deregisters an app server with each load balancer"
+recipe "load_balancer::disconnect_from_haproxy", "Disconnects from each load balancer"
 recipe "load_balancer::deregister_with_route53", "Deregisters an ip address with a domain in Route53"
+recipe "load_balancer::disconnect_instance_from_haproxy", "Disconnects an instance from the haproxy"
 recipe "load_balancer::register_appserver_with_haproxy", "Registers an app server with each load balancer"
 recipe "load_balancer::register_webserver_with_haproxy", "Registers a web server with each load balancer"
 recipe "load_balancer::register_with_route53", "Registers an ip address with a domain in Route53"
+recipe "load_balancer::tag_lb_role", "Tags the load balancer role"
 
 attribute "load_balancer/app_listener_names",
   :display_name => "app listener names",
   :description => "specifies which HAProxy servers pool to use",
   :required => "optional",
   :default  => "api80,api81,api82",
-  :recipes => ["load_balancer::register_appserver_with_haproxy", "load_balancer::deregister_appserver_with_haproxy"]
+  :recipes => ["load_balancer::register_appserver_with_haproxy"]
 
 attribute "load_balancer/app_server_ports",
   :display_name => "app server ports",
@@ -34,7 +36,7 @@ attribute "load_balancer/backend_name",
   :recipes  => [
     "load_balancer::register_appserver_with_haproxy",
     "load_balancer::register_webserver_with_haproxy",
-    "load_balancer::deregister_appserver_with_haproxy"
+    "load_balancer::disconnect_from_haproxy"
   ]
 
 attribute "load_balancer/domain",
@@ -44,17 +46,20 @@ attribute "load_balancer/domain",
   :recipes  => [
     "load_balancer::configure_load_balancer_forwarding",
     "load_balancer::register_with_route53",
+    "load_balancer::deregister_with_haproxy",
     "load_balancer::deregister_with_route53",
     "load_balancer::register_appserver_with_haproxy",
-    "load_balancer::register_webserver_with_haproxy",
-    "load_balancer::deregister_appserver_with_haproxy"
+    "load_balancer::register_webserver_with_haproxy"
   ]
 
 attribute "load_balancer/forwarding_ports",
   :display_name => "forwarding ports",
   :description => "The list of ports to be forwarded by the load balancer (i.e. 80,81,82,443)",
   :required => "required",
-  :recipes  => ["load_balancer::configure_load_balancer_forwarding"]
+  :recipes  => [
+    "load_balancer::configure_load_balancer_forwarding",
+    "load_balancer::disconnect_instance_from_haproxy"
+  ]
 
 attribute "load_balancer/health_check_uri",
   :display_name => "health check uri",
@@ -62,6 +67,12 @@ attribute "load_balancer/health_check_uri",
   :required => "optional",
   :default  => "/HealthCheck.html",
   :recipes  => ["load_balancer::register_appserver_with_haproxy", "load_balancer::register_webserver_with_haproxy"]
+
+attribute "load_balancer/instance_backend_name",
+  :display_name => "instance backend name",
+  :description => "instance backend name to be disconnected from haproxy",
+  :required => "required",
+  :recipes  => ["load_balancer::disconnect_instance_from_haproxy"]
 
 attribute "load_balancer/maintenance_page",
   :display_name => "maintenance page",
@@ -85,16 +96,18 @@ attribute "load_balancer/prefix",
     "load_balancer::configure_load_balancer_forwarding",
     "load_balancer::register_with_route53",
     "load_balancer::deregister_with_route53",
+    "load_balancer::disconnect_from_haproxy",
+    "load_balancer::disconnect_instance_from_haproxy",
     "load_balancer::register_appserver_with_haproxy",
     "load_balancer::register_webserver_with_haproxy",
-    "load_balancer::deregister_appserver_with_haproxy"
+    "load_balancer::tag_lb_role"
   ]
 
 attribute "load_balancer/private_ssh_key",
   :display_name => "private ssh key",
   :description => "The ssh key used to connect to the load balancer",
   :required => "optional",
-  :recipes  => ["load_balancer::register_appserver_with_haproxy", "load_balancer::deregister_appserver_with_haproxy"]
+  :recipes  => ["load_balancer::register_appserver_with_haproxy"]
 
 attribute "load_balancer/route53_ip",
   :display_name => "Route 53 ip",
@@ -135,7 +148,7 @@ attribute "load_balancer/should_register_with_lb",
   :recipes => [
     "load_balancer::register_appserver_with_haproxy",
     "load_balancer::register_webserver_with_haproxy",
-    "load_balancer::deregister_appserver_with_haproxy"
+    "load_balancer::disconnect_from_haproxy"
   ]
 
 attribute "load_balancer/ssl_certificate",
@@ -165,5 +178,9 @@ attribute "deploy/app_server",
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
   :required => "required",
-  :recipes  => ["load_balancer::register_appserver_with_haproxy", "load_balancer::register_webserver_with_haproxy"]
+  :recipes  => [
+     "load_balancer::register_appserver_with_haproxy",
+     "load_balancer::register_webserver_with_haproxy",
+     "load_balancer::deregister_with_haproxy"
+  ]
 
