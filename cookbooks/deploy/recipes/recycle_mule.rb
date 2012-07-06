@@ -2,6 +2,7 @@
 # undo just enough changes to workaround mule license expiration
 
 version = node[:deploy][:mule_version]
+complete_removal = 0
 
 bash 'Stop mule service' do
   code <<-EOF
@@ -18,15 +19,14 @@ bash 'Stop mule service' do
   EOF
 end
 
-complete_removal = 0
 
 if File.exists?('/opt/mule')
   bash 'remove mule installation' do
     code <<-EOF
     set +e
     COMPLETE_REMOVAL="#{complete_removal}"
-    if  [ "$COMPLETE_REMOVAL == "1" ] ; then
-      rm ~/Installs/mule-enterprise-standalone-#{version}/* .
+    if  [ "$COMPLETE_REMOVAL" == "1" ] ; then
+      rm $HOME/Installs/mule-enterprise-standalone-#{version}
     fi
     rm -rf /opt/mule
     EOF
