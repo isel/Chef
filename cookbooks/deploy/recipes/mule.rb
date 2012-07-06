@@ -19,9 +19,9 @@ bash 'install mule prerequisites' do
   EOF
 end
 
-local_filename = '/etc/bash.bashrc'
+local_filename = "/etc/bash.bashrc"
 f = File.open(local_filename, 'r+'); contents = f.read; f.close
-append_contents = <<-'EOF'
+append_contents = <<-"EOF"
 export LANG=en_US.UTF-8
 export MULE_HOME=#{mule_home}
 export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
