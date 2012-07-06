@@ -398,7 +398,8 @@
       "required": "optional",
       "default": "3.2.1",
       "recipes": [
-        "deploy::mule"
+        "deploy::mule",
+        "deploy::recycle_mule"
       ],
       "choice": [
 
@@ -608,6 +609,7 @@
     "deploy::mongo": "Deploys mongodb",
     "deploy::mule": "Deploys Mule ESB",
     "deploy::provision": "Provisions basic system data",
+    "deploy::recycle_mule": "Recycle mule",
     "deploy::register_cache_hostname": "Registers the cache hostname and ip in the hosts file",
     "deploy::reindex_elastic_search": "Reindexes ElasticSearch (should be going away)",
     "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server"

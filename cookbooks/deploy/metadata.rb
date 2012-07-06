@@ -26,6 +26,7 @@ recipe "deploy::launch_mule",  "Launches Mule"
 recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::mule", "Deploys Mule ESB"
 recipe "deploy::provision", "Provisions basic system data"
+recipe "deploy::recycle_mule", "Recycle mule"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
 recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
@@ -187,7 +188,7 @@ attribute "deploy/mule_version",
   :display_name => "mule version",
   :required => "optional",
   :default => "3.2.1",
-  :recipes => ["deploy::mule"]
+  :recipes => ["deploy::mule","deploy::recycle_mule"]
 
 attribute "deploy/pims_artifacts",
   :display_name => "pims artifacts",
