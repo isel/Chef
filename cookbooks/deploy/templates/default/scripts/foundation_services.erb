@@ -1,10 +1,10 @@
 require 'rake'
+
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/configuration'
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/io_utils'
 
 messaging_server = '<%= @messaging_server %>'
 messaging_server_port = '<%= @messaging_server_port %>'
-
 
 FileList['/Websites/**'].each do |f|
   FileUtils.remove_entry(f, true)
@@ -44,5 +44,4 @@ IOUtils::replace_text_in_file(active_sts, /:81\/sts/, ':81/')
 Helpers::change_service_authorization_type("/Websites/Services.Help/Web.config",
   "UltimateSoftware.Foundation.IdentityModel.Contracts.WebRequests.USWebRequestDevAuthorizationManager, UltimateSoftware.Foundation.IdentityModel.Contracts")
 
-
-
+# ee42d9a4-ccc4-42a7-9d18-78c1ff4b9f9a
