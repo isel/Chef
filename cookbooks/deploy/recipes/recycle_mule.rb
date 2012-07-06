@@ -8,16 +8,14 @@ bash 'Stop mule service' do
     set +e
     MULE_LAUNCHER=`ps ax |  grep /mule/lib/boot/exec`
     if [ ! -z "$MULE_LAUNCHER" ] ; then
-      echo 'stopping the mule'
+      echo 'Stopping the mule'
       pushd /opt/mule/bin
       ./mule stop
       popd
-      # wait
+    else
+      echo 'Mule service is not running'
     fi
   EOF
-  else
-
-  log 'Mule service is not running'
 end
 
 complete_removal = 0
@@ -45,4 +43,3 @@ if File.exists?("/root/.m2/org/mule/mule/#{version}")
 else
   log 'maven repositories not populated.'
 end
-

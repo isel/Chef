@@ -170,8 +170,8 @@ set -e
 # rm $PATCH_FILE
 popd
   EOF
-  log 'configuration updated.'
 end
+log 'configuration updated.'
 
 
 # add directory to store ultimate.configuration and log4j.configuration files
