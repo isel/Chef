@@ -69,7 +69,8 @@ if !File.exists?("#{mule_home}/bin")
     # patch wrapper.conf from embedded unified diff
     # warning ruby may corrupt certain inputs.
     # review the patch file before commit
-
+    # note that the options are added commented, due to the conflicting options
+    # present in wrapper-additional.conf
     code <<-EOF
   #!/bin/bash
   PATCH_FILE="/tmp/wrapper.conf.patch.$$"
@@ -83,11 +84,11 @@ if !File.exists?("#{mule_home}/bin")
 
    # Debug remotely, the application will wait for the external debugger to connect.
   -#wrapper.java.additional.<n>=-Xdebug
-  +wrapper.java.additional.4=-Xdebug
+  +#wrapper.java.additional.4=-Xdebug
    #wrapper.java.additional.<n>=-Xnoagent
    #wrapper.java.additional.<n>=-Djava.compiler=NONE
   -#wrapper.java.additional.<n>=-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
-  +wrapper.java.additional.5=-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
+  +#wrapper.java.additional.5=-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
 
    # Specify an HTTP proxy if you are behind a firewall.
    #wrapper.java.additional.<n>=-Dhttp.proxyHost=YOUR_HOST
