@@ -105,7 +105,8 @@ if !File.exists?("#{mule_home}/bin")
    #include %MULE_BASE%/conf/wrapper-additional.conf
   +
   +
-  WRAPPER_CONF_PATCH
+WRAPPER_CONF_PATCH
+
   # the updates to wrapper conf applied from the patch file, not direct edit
   #
   pushd #{mule_home}/conf
