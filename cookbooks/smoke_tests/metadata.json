@@ -107,6 +107,18 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/search_server": {
+      "display_name": "search_server",
+      "required": "required",
+      "recipes": [
+        "smoke_tests::local_app"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/elastic_search_port": {
       "display_name": "elastic search port",
       "required": "optional",
