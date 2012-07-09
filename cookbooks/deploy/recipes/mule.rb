@@ -141,8 +141,13 @@ if !File.exists?("#{mule_home}/bin")
   custom_configuration_dir="#{mule_home}/#{configuration_dir}"
 
   if !File.exists?(custom_configuration_dir)
-    log "added custom configuration directory #{custom_configuration_dir}."
-    Dir.mkdir(custom_configuration_dir, 0777)
+ #    Dir.mkdir(custom_configuration_dir, 0777)
+    bash "added custom configuration directory #{custom_configuration_dir}." do
+      code <<-EOF
+      #!/bin/bash
+      mkdir -p -m 0777 #{custom_configuration_dir}
+    EOF
+    end
   end
 
 else
