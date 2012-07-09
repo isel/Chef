@@ -1,4 +1,5 @@
 # Install the Mule_ESB
+require 'fileutils'
 
 version = node[:deploy][:mule_version]
 mule_home = '/opt/mule'
@@ -63,11 +64,92 @@ if !File.exists?("#{mule_home}/bin")
     EOF
   end
   log 'Mule service is installed'
+
+  bash 'Patch Mule configuration wrapper.conf' do
+    # patch wrapper.conf from embedded unified diff
+    # warning ruby may corrupt certain inputs.
+    # review the patch file before commit
+
+    code <<-EOF
+  #!/bin/bash
+  PATCH_FILE="/tmp/wrapper.conf.patch.$$"
+  VERBOSE=${1:-0}
+  echo VERBOSE=$VERBOSE
+  cat <<WRAPPER_CONF_PATCH > $PATCH_FILE
+  --- wrapper.conf.orig
+  +++ wrapper.conf
+  @@ -30,10 +30,10 @@
+   #wrapper.java.additional.<n>=-Dmule.verbose.exceptions=true
+
+   # Debug remotely, the application will wait for the external debugger to connect.
+  -#wrapper.java.additional.<n>=-Xdebug
+  +wrapper.java.additional.4=-Xdebug
+   #wrapper.java.additional.<n>=-Xnoagent
+   #wrapper.java.additional.<n>=-Djava.compiler=NONE
+  -#wrapper.java.additional.<n>=-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
+  +wrapper.java.additional.5=-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
+
+   # Specify an HTTP proxy if you are behind a firewall.
+   #wrapper.java.additional.<n>=-Dhttp.proxyHost=YOUR_HOST
+  @@ -88,6 +88,7 @@
+   wrapper.java.classpath.1=%MULE_LIB%
+   wrapper.java.classpath.2=%MULE_BASE%/conf
+   wrapper.java.classpath.3=%MULE_HOME%/lib/boot/*.jar
+  +wrapper.java.classpath.4=%MULE_HOME%/#{configuration_dir}
+
+   # Java Native Library Path (location of .DLL or .so files)
+   wrapper.java.library.path.1=%LD_LIBRARY_PATH%
+  @@ -200,3 +201,5 @@
+   # This include should point to wrapper-additional.conf file in the same directory as this file
+   # ATTENTION: Path must be either absolute or relative to wrapper executable.
+   #include %MULE_BASE%/conf/wrapper-additional.conf
+  +
+  +
+  WRAPPER_CONF_PATCH
+  # the updates to wrapper conf applied from the patch file, not direct edit
+  #
+  pushd #{mule_home}/conf
+  cp wrapper.conf wrapper.conf.orig
+  mv wrapper.conf wrapper.conf.saved
+  set +e
+  # force, but assume unreversed.
+  echo "applying the patch $PATCH_FILE and if rejected, keep the saved configuration"
+  if [ $VERBOSE == "0" ] ; then
+  QUIET=-s
+  else
+  QUIET=
+  fi
+  patch -p0 $QUIET -f < $PATCH_FILE
+  if  [ "$?"  == "0" ] ; then
+    echo "Save updates"
+    mv wrapper.conf.orig wrapper.conf
+    if [ $VERBOSE != "0" ] ; then
+      diff -u wrapper.conf.saved wrapper.conf
+    fi
+  else
+    echo 'Detected that patch already applied'
+    mv wrapper.conf.saved wrapper.conf
+  fi
+  set -e
+  rm $PATCH_FILE
+  popd
+    EOF
+  end
+  log 'Mule wrapper configuration updated.'
+
+  # add directory to store ultimate.configuration and log4j.configuration files
+  custom_configuration_dir="#{mule_home}/#{configuration_dir}"
+
+  if !File.exists?(custom_configuration_dir)
+    log "added custom configuration directory #{custom_configuration_dir}."
+    Dir.mkdir(custom_configuration_dir, 0777)
+  end
+
 else
   log 'Mule already installed.'
 end
 
-# source bash.bashrc does not seem to work, not used.
+# source bash.bashrc does not seem to work, not using it.
 
 log "Checking project [/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom]."
 
@@ -102,88 +184,10 @@ else
   log 'maven repositories already populated.'
 end
 
-bash 'Patch Mule configuration wrapper.conf' do
-  # patch wrapper.conf from embedded unified diff
-  # warning ruby corrupting certain inputs.
-
-  code <<-EOF
-#!/bin/bash
-PATCH_FILE="/tmp/wrapper.conf.patch.$$"
-VERBOSE=${1:-0}
-echo VERBOSE=$VERBOSE
-cat <<WRAPPER_CONF_PATCH > $PATCH_FILE
---- wrapper.conf.orig
-+++ wrapper.conf
-@@ -30,10 +30,10 @@
- #wrapper.java.additional.<n>=-Dmule.verbose.exceptions=true
-
- # Debug remotely, the application will wait for the external debugger to connect.
--#wrapper.java.additional.<n>=-Xdebug
-+wrapper.java.additional.4=-Xdebug
- #wrapper.java.additional.<n>=-Xnoagent
- #wrapper.java.additional.<n>=-Djava.compiler=NONE
--#wrapper.java.additional.<n>=-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
-+wrapper.java.additional.5=-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
-
- # Specify an HTTP proxy if you are behind a firewall.
- #wrapper.java.additional.<n>=-Dhttp.proxyHost=YOUR_HOST
-@@ -88,6 +88,7 @@
- wrapper.java.classpath.1=%MULE_LIB%
- wrapper.java.classpath.2=%MULE_BASE%/conf
- wrapper.java.classpath.3=%MULE_HOME%/lib/boot/*.jar
-+wrapper.java.classpath.4=%MULE_HOME%/#{configuration_dir}
-
- # Java Native Library Path (location of .DLL or .so files)
- wrapper.java.library.path.1=%LD_LIBRARY_PATH%
-@@ -200,3 +201,5 @@
- # This include should point to wrapper-additional.conf file in the same directory as this file
- # ATTENTION: Path must be either absolute or relative to wrapper executable.
- #include %MULE_BASE%/conf/wrapper-additional.conf
-+
-+
-WRAPPER_CONF_PATCH
-# the updates to wrapper conf applied from the patch file, not direct edit
-#
-pushd #{mule_home}/conf
-cp wrapper.conf wrapper.conf.orig
-mv wrapper.conf wrapper.conf.saved
-set +e
-# force, but assume unreversed.
-echo "applying the patch $PATCH_FILE and if rejected, keep the saved configuration"
-if [ $VERBOSE == "0" ] ; then
-QUIET=-s
-else
-QUIET=
-fi
-patch -p0 $QUIET -f < $PATCH_FILE
-if  [ "$?"  == "0" ] ; then
-  echo "save updates"
-  mv wrapper.conf.orig wrapper.conf
-  if [ $VERBOSE != "0" ] ; then
-    diff -u wrapper.conf.saved wrapper.conf
-  fi
-else
-  echo "detected already applied patch"
-  mv wrapper.conf.saved wrapper.conf
-fi
-set -e
-# rm $PATCH_FILE
-popd
-  EOF
-end
-log 'configuration updated.'
-
-
-# add directory to store ultimate.configuration and log4j.configuration files
-custom_configuration_dir="#{mule_home}/#{configuration_dir}"
-
-if !File.exists?(custom_configuration_dir)
-  log "added custom configuration directory #{custom_configuration_dir}."
-  Dir.mkdir(custom_configuration_dir, 0777)
-end
-
 =begin
-# add debug flag to launcher
+
+# verify the command line flags.
+# detect if debug flag passed by the launcher
 
 cp=.:$MULE_HOME/conf:$groovyJar:$commonsCliJar:$muleModuleLoggingJar:$log4jJar
 
