@@ -1,10 +1,10 @@
 require 'rake'
+
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/configuration'
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/io_utils'
 
 messaging_server = '<%= @messaging_server %>'
 messaging_server_port = '<%= @messaging_server_port %>'
-
 
 FileList['/Websites/**'].each do |f|
   FileUtils.remove_entry(f, true)
@@ -28,7 +28,7 @@ Helpers::change_cert_repo_thumbprint("/Websites/ActiveSTS/configuration/Certific
 
 Helpers::change_all_app_settings(configs, "SigningCertificateName", "CN=localhost")
 Helpers::change_all_app_settings(configs, "ConnectionString", "Server=<%= @db_server %>:<%= @db_port %>")
-Helpers::change_all_app_settings(configs, "SearchUri", "http://<%= @db_server %>:<%= @elastic_search_port %>/ugf/viabot/_search")
+Helpers::change_all_app_settings(configs, "SearchUri", "http://<%= @db_server %>:<%= @elastic_search_port %>/_search")
 Helpers::change_all_app_settings(configs, "EntityFramework.ModelFolder", "C:\\WebSites\\Models\\")
 
 Helpers::change_app_setting("/Websites/Services/Web.config",  "MessagingServer.Uri", "http://#{messaging_server}:#{messaging_server_port}")
@@ -44,5 +44,4 @@ IOUtils::replace_text_in_file(active_sts, /:81\/sts/, ':81/')
 Helpers::change_service_authorization_type("/Websites/Services.Help/Web.config",
   "UltimateSoftware.Foundation.IdentityModel.Contracts.WebRequests.USWebRequestDevAuthorizationManager, UltimateSoftware.Foundation.IdentityModel.Contracts")
 
-
-
+# ee42d9a4-ccc4-42a7-9d18-78c1ff4b9f9a
