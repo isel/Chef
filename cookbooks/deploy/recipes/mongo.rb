@@ -14,7 +14,7 @@ if !File.exists?('/opt/Mongo')
   end
   bash 'Installing vendor drop artifacts' do
     code <<-EOF
-      ruby #{ruby_scripts_dir}/download_vendor_drop.rb
+      ruby -rubygems #{ruby_scripts_dir}/download_vendor_drop.rb
     EOF
   end
 
