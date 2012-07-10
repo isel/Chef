@@ -53,7 +53,7 @@ filelist.split(/[;,]/).each do |filename_expected|
       stream_handle = s3_files.get(resource_key)
       puts "Creating local paths"
 
-      Dir.mkdir(deploy_folder) unless Dir.exists?(deploy_folder)
+      Dir.mkdir(deploy_folder) unless File.exist?(deploy_folder)
       Dir.chdir(deploy_folder)
 
       puts " copying the file"
