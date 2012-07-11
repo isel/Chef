@@ -23,9 +23,10 @@ s3_files = bucket.files
 
 install_files = '<%= @artifacts %>'.split(',')
 
-
-$stderr.puts s3_files.to_yaml
-
+# ruby crashes here with
+# stack level too deep (SystemStackError)
+# $stderr.puts s3_files.to_yaml
+$stderr.puts s3_files.inspect
 # TODO:
 # reveal LATEST revision when arguments provided  no information
 
