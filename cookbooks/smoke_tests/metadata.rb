@@ -52,6 +52,11 @@ attribute "deploy/db_server",
   :required => "required",
   :recipes => ["smoke_tests::global", "smoke_tests::local_app"]
 
+attribute "deploy/search_server",
+  :display_name => "search_server",
+  :required => "required",
+  :recipes => ["smoke_tests::local_app"]
+
 attribute "deploy/elastic_search_port",
   :display_name => "elastic search port",
   :required => "optional",

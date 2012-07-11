@@ -278,6 +278,18 @@
       "type": "string",
       "required": "optional"
     },
+    "deploy/search_server": {
+      "display_name": "search_server",
+      "recipes": [
+        "deploy::foundation_services"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string",
+      "required": "optional"
+    },
     "deploy/elastic_search_port": {
       "display_name": "elastic search port",
       "required": "optional",

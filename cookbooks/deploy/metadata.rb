@@ -133,6 +133,11 @@ attribute "deploy/domain",
   :display_name => "domain",
   :recipes => ["deploy::jspr"]
 
+attribute "deploy/search_server",
+  :display_name => "search_server",
+  :recipes => ["deploy::foundation_services"]
+
+
 attribute "deploy/elastic_search_port",
   :display_name => "elastic search port",
   :required => "optional",
