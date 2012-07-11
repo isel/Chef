@@ -161,7 +161,7 @@ end
  wrapper.java.classpath.2=%MULE_BASE%/conf
  wrapper.java.classpath.3=%MULE_HOME%/lib/boot/*.jar
  wrapper.java.classpath.4=%MULE_BASE%/data-mapper
-+wrapper.java.classpath.5=%MULE_HOME%/configuration_dir
++wrapper.java.classpath.5=%MULE_HOME%/#{configuration_dir}
 
  # Java Native Library Path (location of .DLL or .so files)
  wrapper.java.library.path.1=%LD_LIBRARY_PATH%
@@ -255,18 +255,3 @@ else
   log 'maven repositories already populated.'
 end
 
-=begin
-
-# verify the command line flags.
-# detect if debug flag passed by the launcher
-
-cp=.:$MULE_HOME/conf:$groovyJar:$commonsCliJar:$muleModuleLoggingJar:$log4jJar
-
-JPDA_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,address=5005"
-
-# The string passed to eval must handle spaces in paths correctly.
-COMMAND_LINE="\"${JAVA}\" $JPDA_OPTS -Dmule.home=\"$MULE_HOME\" -Djava.endorsed.dirs=\"$MULE_HOME/lib/endorsed\" -cp \"$cp\" org.codehaus.groovy.tools.GroovyStarter --main groovy.ui.GroovyMain --conf \"$MULE_HOME/bin/launcher.conf\" $@"
-COMMAND_LINE="\"${JAVA}\"            -Dmule.home=\"$MULE_HOME\" -Djava.endorsed.dirs=\"$MULE_HOME/lib/endorsed\" -cp \"$cp\" org.codehaus.groovy.tools.GroovyStarter --main groovy.ui.GroovyMain --conf \"$MULE_HOME/bin/launcher.conf\" $@"
-eval $COMMAND_LINE
-
-=end
