@@ -94,10 +94,16 @@ end
     code <<-EOF
     PRODUCT_DIRECTORY="#{product_directory}"
     pushd /opt
-    echo "probing the directory $PRODUCT_DIRECTORY"
-    if [ -d "$PRODUCT_DIRECTORY"  ] ; then
-      ln -s `pwd`/$PRODUCT_DIRECTORY #{product}
+    if [ -L "#{product}" ] ; then
+      echo "clearing possibly existing link"
+      rm #{product}
     fi
+    echo "probing the directory $PRODUCT_DIRECTORY"
+
+    if [ -d "$PRODUCT_DIRECTORY" ] ; then
+      ln -s $PRODUCT_DIRECTORY #{product}
+    fi
+
     pushd "#{product}"
     chmod -R 777 .
     if [ ! -f /opt/#{product}/bin/#{product} ] ; then
