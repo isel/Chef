@@ -7,7 +7,7 @@ ruby_scripts_dir = node['ruby_scripts_dir']
 product = 'mule'
 mule_home = "/opt/#{product}"
 configuration_dir = 'configuration'
-
+configuration_artifacts='configuration'
 
 # apt-get detects if debian package is already installed - no need to replicate its functionality
 # may need to remove sun java6
@@ -90,10 +90,13 @@ bash 'Downloading artifacts' do
 end
 
   bash 'Setting directory links' do
+    product_directory="mule-enterprise-standalone-#{version}"
     code <<-EOF
+    PRODUCT_DIRECTORY="#{product_directory}"
     pushd /opt
-    if [ -d  "mule-enterprise-standalone-#{version}" ] ; then
-      ln -s mule-enterprise-standalone-#{version} #{product}
+    echo "probing the directory $PRODUCT_DIRECTORY"
+    if [ -d "$PRODUCT_DIRECTORY"  ] ; then
+      ln -s `pwd`/$PRODUCT_DIRECTORY #{product}
     fi
     pushd "#{product}"
     chmod -R 777 .
@@ -111,7 +114,7 @@ template "#{ruby_scripts_dir}/download_configurations.rb" do
   variables(
     :aws_access_key_id => node[:deploy][:aws_access_key_id],
     :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
-    :artifacts => 'configuration',
+    :artifacts =>configuration_artifacts,
     :target_directory => configuration_dir,
     :revision => '27441.9',
     :s3_bucket => node[:deploy][:s3_bucket],
@@ -139,35 +142,29 @@ end
   VERBOSE=${1:-0}
   echo VERBOSE=$VERBOSE
   cat <<WRAPPER_CONF_PATCH > $PATCH_FILE
-  --- wrapper.conf.orig
-  +++ wrapper.conf
-  @@ -30,10 +30,10 @@
-   #wrapper.java.additional.<n>=-Dmule.verbose.exceptions=true
+--- wrapper.conf        2012-06-15 20:06:38.000000000 +0000
++++ wrapper.conf.orig   2012-07-11 18:40:29.000000000 +0000
+@@ -30,10 +30,10 @@
+ #wrapper.java.additional.<n>=-Dmule.verbose.exceptions=true
 
-   # Debug remotely, the application will wait for the external debugger to connect.
-  -#wrapper.java.additional.<n>=-Xdebug
-  +#wrapper.java.additional.4=-Xdebug
-   #wrapper.java.additional.<n>=-Xnoagent
-   #wrapper.java.additional.<n>=-Djava.compiler=NONE
-  -#wrapper.java.additional.<n>=-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
-  +#wrapper.java.additional.5=-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
+ # Debug remotely, the application will wait for the external debugger to connect.
+-#wrapper.java.additional.<n>=-Xdebug
++#wrapper.java.additional.4=-Xdebug
+ #wrapper.java.additional.<n>=-Xnoagent
+ #wrapper.java.additional.<n>=-Djava.compiler=NONE
+-#wrapper.java.additional.<n>=-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
++#wrapper.java.additional.5=-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
 
-   # Specify an HTTP proxy if you are behind a firewall.
-   #wrapper.java.additional.<n>=-Dhttp.proxyHost=YOUR_HOST
-  @@ -88,6 +88,7 @@
-   wrapper.java.classpath.1=%MULE_LIB%
-   wrapper.java.classpath.2=%MULE_BASE%/conf
-   wrapper.java.classpath.3=%MULE_HOME%/lib/boot/*.jar
-  +wrapper.java.classpath.4=%MULE_HOME%/#{configuration_dir}
+ # Specify an HTTP proxy if you are behind a firewall.
+ #wrapper.java.additional.<n>=-Dhttp.proxyHost=YOUR_HOST
+@@ -89,6 +89,7 @@
+ wrapper.java.classpath.2=%MULE_BASE%/conf
+ wrapper.java.classpath.3=%MULE_HOME%/lib/boot/*.jar
+ wrapper.java.classpath.4=%MULE_BASE%/data-mapper
++wrapper.java.classpath.5=%MULE_HOME%/configuration_dir
 
-   # Java Native Library Path (location of .DLL or .so files)
-   wrapper.java.library.path.1=%LD_LIBRARY_PATH%
-  @@ -200,3 +201,5 @@
-   # This include should point to wrapper-additional.conf file in the same directory as this file
-   # ATTENTION: Path must be either absolute or relative to wrapper executable.
-   #include %MULE_BASE%/conf/wrapper-additional.conf
-  +
-  +
+ # Java Native Library Path (location of .DLL or .so files)
+ wrapper.java.library.path.1=%LD_LIBRARY_PATH%
 WRAPPER_CONF_PATCH
 
   # the updates to wrapper conf applied from the patch file, not direct edit
@@ -206,10 +203,15 @@ WRAPPER_CONF_PATCH
 
   if !File.exists?(custom_configuration_dir)
  #    Dir.mkdir(custom_configuration_dir, 0777)
-    bash "added custom configuration directory #{custom_configuration_dir}." do
+    bash "Add / populate custom configuration directory #{custom_configuration_dir}" do
       code <<-EOF
       #!/bin/bash
-      mkdir -p -m 0777 #{custom_configuration_dir}
+      CONFIGURATION_DIRECTORY="#{custom_configuration_dir}"
+      mkdir -p -m 0777 $CONFIGURATION_DIRECTORY
+      echo "Move Mule configurations to $CONFIGURATION_DIRECTORY"
+      pushd $CONFIGURATION_DIRECTORY
+      cp -R /tmp/#{configuration_dir}/#{configuration_artifacts}/*  .
+      chmod -R ogu+w .
     EOF
     end
   end
