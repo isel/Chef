@@ -3,6 +3,68 @@ require 'fileutils'
 
 ruby_scripts_dir = node['ruby_scripts_dir']
 
+powershell 'Setup websites in IIS' do
+  script = <<-EOF
+    $services = "C:\WebSites\Services"
+    $servicesSite = "IIS:\Sites\Default Web Site"
+
+    $activeSTS = "C:\WebSites\ActiveSTS"
+    $activeSTSSite = "IIS:\Sites\ActiveSTS"
+
+    $servicesHelp = "C:\WebSites\Services.Help"
+    $servicesHelpSite = "IIS:\Sites\Services.Help"
+
+    import-module WebAdministration
+    iis:
+
+    if (get-item "$activeSTSSite" -ErrorAction SilentlyContinue)
+    {
+      Write-Output 'Web sites are already configured.  Exiting...'
+      exit 0
+    }
+
+    $error.clear()
+
+    Write-Output "Configuring app pools"
+
+    # see http://msdn.microsoft.com/en-us/library/aa347554(v=VS.90).aspx
+
+    $app_pools = 'ServicesAppPool','ActiveSTSAppPool','ServicesHelpAppPool'
+    foreach ($pool in $app_pools){
+        New-WebAppPool -name $pool
+        Set-ItemProperty "iis:\apppools\$pool" -name processModel -value @{identityType="NetworkService"}
+        Set-ItemProperty "iis:\apppools\$pool" -name managedRuntimeVersion -value v4.0
+    }
+
+    Write-Output 'Configuring web sites'
+
+    mkdir "$services"
+    mkdir "$activeSTS"
+    mkdir "$servicesHelp"
+
+    Set-ItemProperty "$servicesSite" -name physicalPath -value "$services"
+    New-Item "$activeSTSSite" -physicalPath "$activeSTS" -bindings @{protocol="http";bindingInformation=":81:"}
+    New-Item "$servicesHelpSite" -physicalPath "$servicesHelp" -bindings @{protocol="http";bindingInformation=":82:"}
+
+    Set-ItemProperty "$servicesSite" -name applicationPool -value $app_pools[0]
+    Set-ItemProperty "$activeSTSSite" -name applicationPool -value $app_pools[1]
+    Set-ItemProperty "$servicesHelpSite" -name applicationPool -value $app_pools[2]
+  EOF
+  source(script)
+end
+
+powershell 'Stop websites in IIS' do
+  script = <<-EOF
+    import-module WebAdministration
+    iis:
+
+    Stop-WebSite -name 'Default Web Site'
+    Stop-WebSite -name 'ActiveSTS'
+    Stop-WebSite -name 'Services.Help'
+  EOF
+  source(script)
+end
+
 template "#{ruby_scripts_dir}/foundation_services.rb" do
   source 'scripts/foundation_services.erb'
   variables(
@@ -26,6 +88,18 @@ end
 
 powershell "Updating foundation services" do
   source("ruby #{ruby_scripts_dir}/foundation_services.rb")
+end
+
+powershell 'Start websites in IIS' do
+  script = <<-EOF
+    import-module WebAdministration
+    iis:
+
+    Start-WebSite -name 'Default Web Site'
+    Start-WebSite -name 'ActiveSTS'
+    Start-WebSite -name 'Services.Help'
+  EOF
+  source(script)
 end
 
 
