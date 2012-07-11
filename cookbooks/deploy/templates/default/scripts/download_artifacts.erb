@@ -26,7 +26,8 @@ install_files = '<%= @artifacts %>'.split(',')
 # ruby crashes here with
 # stack level too deep (SystemStackError)
 # $stderr.puts s3_files.to_yaml
-$stderr.puts s3_files.inspect
+# $stderr.puts s3_files.inspect
+# free -m shows from 1500 to 500
 # TODO:
 # reveal LATEST revision when arguments provided  no information
 
@@ -46,6 +47,15 @@ end
 
 Dir.mkdir(target_directory)
 missing_files = []
+
+install_directory = "<%= @s3_repository %>/#{s3_directory}"
+
+begin
+  directory_list = s3_files.get(install_directory)
+  $stderr.puts directory_list.inspect
+rescue =>e
+ $.stderr.puts "ignored exception"
+end
 
 s3_path = "<%= @s3_repository %>/#{s3_directory}/#{revision}"
 
