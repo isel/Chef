@@ -1,11 +1,14 @@
 # Install the Mule_ESB
 require 'fileutils'
+require 'yaml'
 
 version = node[:deploy][:mule_version]
-mule_home = '/opt/mule'
-# directory where developer or build copies the configurations
-# /svn/ugf/trunk/Foundation/Java/events/configuration.
+ruby_scripts_dir = node['ruby_scripts_dir']
+product = 'mule'
+mule_home = "/opt/#{product}"
 configuration_dir = 'configuration'
+
+
 # apt-get detects if debian package is already installed - no need to replicate its functionality
 # may need to remove sun java6
 bash 'install mule prerequisites' do
@@ -48,7 +51,6 @@ File.open(local_filename, 'r+') { |f| f.puts contents }
 
 log 'bash profile updated.'
 
-
 if !File.exists?("#{mule_home}/bin")
   bash 'install mule' do
     code <<-EOF
@@ -64,6 +66,53 @@ if !File.exists?("#{mule_home}/bin")
     EOF
   end
   log 'Mule service is installed'
+
+  log 'Overwriting Mule from s3'
+
+#
+# if !File.exists?("/opt/#{product}")
+
+  puts "Processing template " + File.join(File.dirname(__FILE__), '/scripts/download_vendor_drop.erb' )
+template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
+  source 'scripts/download_vendor_drop.erb'
+  variables(
+    :aws_access_key_id => node[:deploy][:aws_access_key_id],
+    :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
+    :product => product,
+    :version => version,
+    :filelist => 'mule',
+    :deploy_folder => '/opt'
+  )
+end
+
+bash 'Downloading artifacts' do
+  code <<-EOF
+    ruby #{ruby_scripts_dir}/download_vendor_drop.rb
+  EOF
+end
+
+log 'download configurations'
+
+template "#{ruby_scripts_dir}/download_configurations.rb" do
+  source 'scripts/download_artifacts.erb'
+  variables(
+    :aws_access_key_id => node[:deploy][:aws_access_key_id],
+    :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
+    :artifacts => 'configuration',
+    :target_directory => configuration_dir,
+    :revision => '27441.9',
+    :s3_bucket => node[:deploy][:s3_bucket],
+    :s3_repository => node[:deploy][:s3_repository],
+    :s3_directory => 'configurations'
+  )
+end
+
+bash 'Downloading artifacts' do
+    code <<-EOF
+      ruby #{ruby_scripts_dir}/download_configurations.rb
+    EOF
+end
+
 
   bash 'Patch Mule configuration wrapper.conf' do
     # patch wrapper.conf from embedded unified diff
