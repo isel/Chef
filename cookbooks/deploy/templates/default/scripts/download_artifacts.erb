@@ -1,12 +1,14 @@
 require 'fog'
 require 'fileutils'
+require 'yaml'
+
 
 revision = '<%= @revision %>'
 s3_bucket = '<%= @s3_bucket %>'
 s3_directory = '<%= @s3_directory %>'
 target_directory = '<%= @target_directory %>'
 
-puts "pulling build scripts from s3_directory: #{s3_directory}, revision: #{revision} to target_directory: #{target_directory}"
+$stderr.puts "pulling build scripts from s3_directory: #{s3_directory}, revision: #{revision} to target_directory: #{target_directory}"
 
 storage = Fog::Storage.new(
   :provider => 'AWS',
@@ -14,10 +16,20 @@ storage = Fog::Storage.new(
   :aws_secret_access_key => '<%= @aws_secret_access_key %>'
 )
 
+$stderr.puts "querying storage for #{s3_bucket}"
+
 bucket = storage.directories.find { |d| d.key == s3_bucket }
 s3_files = bucket.files
 
 install_files = '<%= @artifacts %>'.split(',')
+
+
+$stderr.puts s3_files.to_yaml
+
+# TODO:
+# reveal LATEST revision when arguments provided  no information
+
+# examine marker file for the local directory status
 
 revision_marker_file = File.join(target_directory,'revision.txt')
 
