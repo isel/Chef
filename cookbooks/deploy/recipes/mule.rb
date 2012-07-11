@@ -50,9 +50,11 @@ end
 File.open(local_filename, 'r+') { |f| f.puts contents }
 
 log 'bash profile updated.'
+vendor_download = false
 
 if !File.exists?("#{mule_home}/bin")
-  bash 'install mule' do
+  if vendor_download
+  bash "Download #{product} from vendor site" do
     code <<-EOF
     mkdir -p ~/Installs
     cd ~/Installs
@@ -65,12 +67,8 @@ if !File.exists?("#{mule_home}/bin")
     chmod -R 777 .
     EOF
   end
-  log 'Mule service is installed'
-
-  log 'Overwriting Mule from s3'
-
-#
-# if !File.exists?("/opt/#{product}")
+  else
+  log "Download #{product} from s3"
 
   puts "Processing template " + File.join(File.dirname(__FILE__), '/scripts/download_vendor_drop.erb' )
 template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
@@ -91,6 +89,21 @@ bash 'Downloading artifacts' do
   EOF
 end
 
+  bash 'Setting directory links' do
+    code <<-EOF
+    pushd /opt
+    if [ -d  "mule-enterprise-standalone-#{version}" ] ; then
+      ln -s mule-enterprise-standalone-#{version} #{product}
+    fi
+    pushd "#{product}"
+    chmod -R 777 .
+    if [ ! -f /opt/#{product}/bin/#{product} ] ; then
+      exit 1
+    fi
+  EOF
+  end
+  log 'Mule service is installed'
+end
 log 'download configurations'
 
 template "#{ruby_scripts_dir}/download_configurations.rb" do
