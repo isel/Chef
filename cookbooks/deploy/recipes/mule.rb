@@ -94,6 +94,10 @@ end
     code <<-EOF
     PRODUCT_DIRECTORY="#{product_directory}"
     pushd /opt
+    ls -l .
+    set +e
+    ls -l #{product}
+    set -e
     if [ -L "#{product}" ] ; then
       echo "clearing possibly existing link"
       rm #{product}
