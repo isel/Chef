@@ -61,7 +61,7 @@ else
 puts "RAW:\n" + revision_info.body
 end
 rescue =>e
-$.stderr.puts "ignored exception"
+$stderr.puts "ignored exception"
 end
 
 s3_path = "<%= @s3_repository %>/#{s3_directory}/#{revision}"
