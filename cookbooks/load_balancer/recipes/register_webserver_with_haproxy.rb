@@ -79,7 +79,6 @@ ruby_block "Register web server with HAProxy" do
       cmd = "#{sshcmd} #{cfg_cmd} #{shell_escape(args)}"
 
       puts cmd
-      File.open('/lb_cmd', 'w+') { |file| file.puts(cmd) }
 
       timeout=60*5 #@ 5min
       begin
