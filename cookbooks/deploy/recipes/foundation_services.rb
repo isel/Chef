@@ -5,14 +5,14 @@ ruby_scripts_dir = node['ruby_scripts_dir']
 
 powershell 'Setup websites in IIS' do
   script = <<-EOF
-    $services = "C:\WebSites\Services"
-    $servicesSite = "IIS:\Sites\Default Web Site"
+    $services = 'C:\WebSites\Services'
+    $servicesSite = 'IIS:\Sites\Default Web Site'
 
-    $activeSTS = "C:\WebSites\ActiveSTS"
-    $activeSTSSite = "IIS:\Sites\ActiveSTS"
+    $activeSTS = 'C:\WebSites\ActiveSTS'
+    $activeSTSSite = 'IIS:\Sites\ActiveSTS'
 
-    $servicesHelp = "C:\WebSites\Services.Help"
-    $servicesHelpSite = "IIS:\Sites\Services.Help"
+    $servicesHelp = 'C:\WebSites\Services.Help'
+    $servicesHelpSite = 'IIS:\Sites\Services.Help'
 
     import-module WebAdministration
     iis:
@@ -25,15 +25,15 @@ powershell 'Setup websites in IIS' do
 
     $error.clear()
 
-    Write-Output "Configuring app pools"
+    Write-Output 'Configuring app pools'
 
     # see http://msdn.microsoft.com/en-us/library/aa347554(v=VS.90).aspx
 
     $app_pools = 'ServicesAppPool','ActiveSTSAppPool','ServicesHelpAppPool'
     foreach ($pool in $app_pools){
         New-WebAppPool -name $pool
-        Set-ItemProperty "iis:\apppools\$pool" -name processModel -value @{identityType="NetworkService"}
-        Set-ItemProperty "iis:\apppools\$pool" -name managedRuntimeVersion -value v4.0
+        Set-ItemProperty "iis:\\apppools\\$pool" -name processModel -value @{identityType="NetworkService"}
+        Set-ItemProperty "iis:\\apppools\\$pool" -name managedRuntimeVersion -value v4.0
     }
 
     Write-Output 'Configuring web sites'
