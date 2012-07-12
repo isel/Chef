@@ -145,7 +145,7 @@ if !File.exists?("#{mule_home}/bin")
 
   plugins.each do |file|
     log "Installing mmc plugin package #{file} to mule/apps"
-    FileUtils.move |file|, 'mule/apps', :force => true
+    FileUtils.move file, 'mule/apps', :force => true
   end
   # NOTE: after the mule starts, the zips get exploded.
 
