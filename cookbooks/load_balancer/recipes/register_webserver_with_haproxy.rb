@@ -77,6 +77,7 @@ ruby_block "Register web server with HAProxy" do
       args += " -k on " if node[:load_balancer][:health_check_uri] != nil && node[:load_balancer][:health_check_uri] != ""
 
       cmd = "#{sshcmd} #{cfg_cmd} #{shell_escape(args)}"
+
       puts cmd
 
       timeout=60*5 #@ 5min
