@@ -126,12 +126,11 @@ log 'download configurations'
           :aws_access_key_id => node[:deploy][:aws_access_key_id],
           :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
           :install_dir => '/opt',
-          :deploy_folder => '/opt'
+          :deploy_folder => '/opt',
           :no_explode =>'true',
           :product => product,
           :version => version,
-          :filelist => qw(mmc-agent-mule3-app-3.3.0.zip
-          mmc-distribution-console-app-3.3.0.zip).join(',')
+          :filelist => qw(mmc-agent-mule3-app-3.3.0.zip mmc-distribution-console-app-3.3.0.zip).join(',')
       )
     end
 
