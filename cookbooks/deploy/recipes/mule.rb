@@ -6,7 +6,7 @@ version = node[:deploy][:mule_version]
 ruby_scripts_dir = node['ruby_scripts_dir']
 product = 'mule'
 mule_home = "/opt/#{product}"
-messaging_server_configuration='MessagingServer'              :q
+messaging_server_configuration='MessagingServer'
 
 # shared directory to store ultimate.configuration and log4j.configuration files
 # note the change of the name on the way.
