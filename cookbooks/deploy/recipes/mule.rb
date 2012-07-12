@@ -149,6 +149,7 @@ if !File.exists?("#{mule_home}/bin")
 
   if File.exists?("#{mule_home}/apps")
     log "looking at installed plugins"
+
   else
     log "app directory #{mule_home}/apps was not found"
   end

@@ -40,6 +40,39 @@ bash 'launch mule' do
   EOF
 end
 
+# test the mule status again
+=begin
+         MULE_STATUS=$(./mule status | tail -1| grep -i mule)
+         echo "MULE_STATUS=$MULE_STATUS "
+         MULE_PID=`expr "$MULE_STATUS" : 'Mule.*(\\([0-9][0-9]*\\)).*'`
+         if [ ! -z  $MULE_PID ] ; then
+         echo "mule is already running on PID=$MULE_PID"
+         else
+
+=end
+
+
+
+plugins = %w(mmc-agent-mule3-app-3.3.0.zip mmc-distribution-console-app-3.3.0.zip)
+product = 'mule'
+mule_home = "/opt/#{product}"
+
+plugins.each do |file|
+    log "Checking Installed mmc plugin packages"
+# immediately after launch the deployed plugins  are in the original zip format
+# soon after the launch the plugin file is replaced with the directory
+# with the same basename
+    if !File.exists?("#{mule_home}/apps/#{file}") && !File.exists?("#{mule_home}/apps/#{File.basename(file,'.zip')}")
+      log "plugin #{file} was not found in #{mule_home}/apps. "
+      exit(1)
+    end
+end
+
+
+
+#
+# wget -O /dev/null http://localhost:8585/mmc
+#
 if !verify_completion.nil? && verify_completion != ''
   bash 'verify the launch of mule' do
     code <<-EOF
