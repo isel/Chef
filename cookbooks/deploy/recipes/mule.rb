@@ -119,25 +119,27 @@ end
 end
 log 'download configurations'
 
-template "#{ruby_scripts_dir}/download_configurations.rb" do
-  source 'scripts/download_artifacts.erb'
-  variables(
-    :aws_access_key_id => node[:deploy][:aws_access_key_id],
-    :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
-    :artifacts =>configuration_artifacts,
-    :target_directory => configuration_dir,
-    :revision => '27441.9',
-    :s3_bucket => node[:deploy][:s3_bucket],
-    :s3_repository => node[:deploy][:s3_repository],
-    :s3_directory => 'configurations'
-  )
-end
 
-bash 'Downloading artifacts' do
-    code <<-EOF
-      ruby #{ruby_scripts_dir}/download_configurations.rb
-    EOF
-end
+  template "#{ruby_scripts_dir}/download_plugins.rb" do
+      source 'scripts/download_vendor_drop.erb'
+      variables(
+          :aws_access_key_id => node[:deploy][:aws_access_key_id],
+          :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
+          :install_dir => '/opt',
+          :deploy_folder => '/opt'
+          :no_explode =>'true',
+          :product => product,
+          :version => version,
+          :filelist => qw(mmc-agent-mule3-app-3.3.0.zip
+          mmc-distribution-console-app-3.3.0.zip).join(',')
+      )
+    end
+
+    bash 'Downloading mmc plugin packages' do
+      code <<-EOF
+        ruby #{ruby_scripts_dir}/download_plugins.rb
+      EOF
+    end
 
 
   bash 'Patch Mule configuration wrapper.conf' do
