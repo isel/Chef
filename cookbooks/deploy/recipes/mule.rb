@@ -123,16 +123,17 @@ if !File.exists?("#{mule_home}/bin")
     end
     log 'Mule service is installed'
   end
+
   log 'download configurations'
 
-
+  if File.exists?("#{mule_home}/apps")
   template "#{ruby_scripts_dir}/download_plugins.rb" do
     source 'scripts/download_vendor_drop.erb'
     variables(
         :aws_access_key_id => node[:deploy][:aws_access_key_id],
         :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
-        :install_dir => '/opt',
-        :deploy_folder => '/opt',
+        :install_dir => "#{mule_home}/apps",
+        :deploy_folder => "#{mule_home}/apps",
         :no_explode => 'true',
         :product => product,
         :version => version,
@@ -145,11 +146,8 @@ if !File.exists?("#{mule_home}/bin")
         ruby #{ruby_scripts_dir}/download_plugins.rb
     EOF
   end
-  log 'Downloaded plugins'
-  Dir.chdir("/opt/")
-  plugins.each do |file|
-    log "Installing mmc plugin package #{file} to mule/apps"
-    FileUtils.move file, 'mule/apps', :force => true
+  else
+    log 'app directory was not found'
   end
   # NOTE: after the mule starts, the zips get exploded.
 

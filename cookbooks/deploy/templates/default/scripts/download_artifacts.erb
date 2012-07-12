@@ -20,36 +20,7 @@ storage = Fog::Storage.new(
 bucket = storage.directories.find { |d| d.key == s3_bucket }
 s3_files = bucket.files
 
-
-# reveal LATEST revision when arguments provided  no information
-$stderr.puts "querying storage for \"<%= @s3_repository %>/#{s3_directory}\""
-latest_info_path = "<%= @s3_repository %>/#{s3_directory}/latest.txt"
-latest_available_revison = s3_files.get(latest_info_path)
-$stderr.puts latest_available_revison.inspect
-
-# read revision from s3 marker file
-
-begin
-revision_info = s3_files.get(latest_available_revison)
-if revision_info.nil?
-$stderr.puts "missing_file: #{latest_info_path}"
-else
-puts "public url: #{revision_info.public_url}"
-# puts "RAW:\n#{revision_info.body.to_s}"
-end
-rescue => e
-$stderr.puts "ignored exception"
-$stderr.puts  e.message
-$stderr.puts  e.backtrace.join("\n")
-end
-
-
 install_files = '<%= @artifacts %>'.split(',')
-
-# $stderr.puts s3_files.to_yaml , s3_files.inspect
-# crashes ruby here with
-# stack level too deep (SystemStackError)
-# free -m shows from leaking 1500 to 400
 
 $stderr.puts "From local #{target_directory} examine 'revision.txt' file for the current downloaded status"
 revision_marker_file = File.join(target_directory,'revision.txt')
