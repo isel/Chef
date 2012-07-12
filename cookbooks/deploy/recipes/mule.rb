@@ -143,10 +143,10 @@ if !File.exists?("#{mule_home}/bin")
   end
   log 'Downloaded plugins'
 
-  plugins.each { |file|
+  plugins.each do |file|
     log "Installing mmc plugin package #{file} to mule/apps"
-    Fileutils.move |file|, 'mule/apps', :force => true
-  }
+    FileUtils.move |file|, 'mule/apps', :force => true
+  end
   # NOTE: after the mule starts, the zips get exploded.
 
   bash 'Patch Mule configuration wrapper.conf' do
