@@ -77,6 +77,8 @@ missing_files << "#{s3_path}/#{f}.zip"
 
 else
 $stderr.puts "public url: #{file.public_url}"
+$stderr.puts file.inspect
+
 # $stderr.puts "RAW:\n#{revision_info.body.to_s}"
 
 File.open("#{target_directory}/#{f}.zip", 'wb') do |local_file|
