@@ -6,6 +6,8 @@ version = node[:deploy][:mule_version]
 ruby_scripts_dir = node['ruby_scripts_dir']
 product = 'mule'
 mule_home = "/opt/#{product}"
+# add directory to store ultimate.configuration and log4j.configuration files
+mule_configuration_dir="#{mule_home}/#{configuration_dir}"
 configuration_dir = 'configuration'
 messaging_server_configuration='MessagingServer'
 plugins = %w(mmc-agent-mule3-app-3.3.0.zip mmc-distribution-console-app-3.3.0.zip)
@@ -180,7 +182,7 @@ if !File.exists?("#{mule_home}/bin")
  wrapper.java.classpath.2=%MULE_BASE%/conf
  wrapper.java.classpath.3=%MULE_HOME%/lib/boot/*.jar
  wrapper.java.classpath.4=%MULE_BASE%/data-mapper
-+wrapper.java.classpath.5=%MULE_HOME%/#{mule_configuration_dir}
++wrapper.java.classpath.5=%MULE_HOME%/#{configuration_dir}
 
  # Java Native Library Path (location of .DLL or .so files)
  wrapper.java.library.path.1=%LD_LIBRARY_PATH%
@@ -217,8 +219,6 @@ WRAPPER_CONF_PATCH
   end
   log 'Mule wrapper configuration updated.'
 
-  # add directory to store ultimate.configuration and log4j.configuration files
-  mule_configuration_dir="#{mule_home}/#{configuration_dir}"
 
   if !File.exists?(mule_configuration_dir)
     #    Dir.mkdir(mule_configuration_dir, 0777)
