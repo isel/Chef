@@ -64,7 +64,7 @@ plugins.each do |file|
 # with the same basename
     if !File.exists?("#{mule_home}/apps/#{file}") && !File.exists?("#{mule_home}/apps/#{File.basename(file,'.zip')}")
       log "plugin #{file} was not found in #{mule_home}/apps. "
-      exit(1)
+      exit 1
     end
 end
 
