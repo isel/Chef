@@ -5,13 +5,13 @@ ruby_scripts_dir = node['ruby_scripts_dir']
 
 powershell 'Setup websites in IIS' do
   script = <<-EOF
-    $services = 'C:\WebSites\Services'
+    $services = 'C:\\WebSites\\Services'
     $servicesSite = 'IIS:\\Sites\\Default Web Site'
 
-    $activeSTS = 'C:\WebSites\ActiveSTS'
+    $activeSTS = 'C:\\WebSites\\ActiveSTS'
     $activeSTSSite = 'IIS:\\Sites\\ActiveSTS'
 
-    $servicesHelp = 'C:\WebSites\Services.Help'
+    $servicesHelp = 'C:\\WebSites\\Services.Help'
     $servicesHelpSite = 'IIS:\\Sites\\Services.Help'
 
     import-module WebAdministration
