@@ -6,10 +6,11 @@ version = node[:deploy][:mule_version]
 ruby_scripts_dir = node['ruby_scripts_dir']
 product = 'mule'
 mule_home = "/opt/#{product}"
-# add directory to store ultimate.configuration and log4j.configuration files
-mule_configuration_dir="#{mule_home}/#{configuration_dir}"
-configuration_dir = 'configuration'
 messaging_server_configuration='MessagingServer'
+# shared directory to store ultimate.configuration and log4j.configuration files
+# note the change of the name on the way.
+configuration_dir = 'configuration'
+mule_configuration_dir="#{mule_home}/#{configuration_dir}"
 plugins = %w(mmc-agent-mule3-app-3.3.0.zip mmc-distribution-console-app-3.3.0.zip)
 
 
