@@ -35,7 +35,7 @@ if revision_info.nil?
 $stderr.puts "missing_file: #{latest_info_path}"
 else
 puts "public url: #{revision_info.public_url}"
-puts "RAW:\n#{revision_info.body.to_s}"
+# puts "RAW:\n#{revision_info.body.to_s}"
 end
 rescue => e
 $stderr.puts "ignored exception"
@@ -74,7 +74,11 @@ install_files.each do |f|
 file = s3_files.get("#{s3_path}/#{f}.zip")
 if file.nil?
 missing_files << "#{s3_path}/#{f}.zip"
+
 else
+$stderr.puts "public url: #{file.public_url}"
+# $stderr.puts "RAW:\n#{revision_info.body.to_s}"
+
 File.open("#{target_directory}/#{f}.zip", 'wb') do |local_file|
 local_file.write(file.body)
 end
