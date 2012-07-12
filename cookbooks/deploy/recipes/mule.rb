@@ -8,6 +8,8 @@ product = 'mule'
 mule_home = "/opt/#{product}"
 configuration_dir = 'configuration'
 configuration_artifacts='configuration'
+plugins = %w(mmc-agent-mule3-app-3.3.0.zip mmc-distribution-console-app-3.3.0.zip)
+
 
 # apt-get detects if debian package is already installed - no need to replicate its functionality
 # may need to remove sun java6
@@ -54,8 +56,8 @@ vendor_download = false
 
 if !File.exists?("#{mule_home}/bin")
   if vendor_download
-  bash "Download #{product} from vendor site" do
-    code <<-EOF
+    bash "Download #{product} from vendor site" do
+      code <<-EOF
     mkdir -p ~/Installs
     cd ~/Installs
     # initial version - upload 200 MB from the web
@@ -65,33 +67,33 @@ if !File.exists?("#{mule_home}/bin")
     pushd #{mule_home}
     cp -R ~/Installs/mule-enterprise-standalone-#{version}/* .
     chmod -R 777 .
-    EOF
-  end
+      EOF
+    end
   else
-  log "Download #{product} from s3"
+    log "Download #{product} from s3"
 
-  puts "Processing template " + File.join(File.dirname(__FILE__), '/scripts/download_vendor_drop.erb' )
-template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
-  source 'scripts/download_vendor_drop.erb'
-  variables(
-    :aws_access_key_id => node[:deploy][:aws_access_key_id],
-    :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
-    :product => product,
-    :version => version,
-    :filelist => 'mule',
-    :deploy_folder => '/opt'
-  )
-end
+    puts "Processing template " + File.join(File.dirname(__FILE__), '/scripts/download_vendor_drop.erb')
+    template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
+      source 'scripts/download_vendor_drop.erb'
+      variables(
+          :aws_access_key_id => node[:deploy][:aws_access_key_id],
+          :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
+          :product => product,
+          :version => version,
+          :filelist => 'mule',
+          :deploy_folder => '/opt'
+      )
+    end
 
-bash 'Downloading artifacts' do
-  code <<-EOF
+    bash 'Downloading artifacts' do
+      code <<-EOF
     ruby #{ruby_scripts_dir}/download_vendor_drop.rb
-  EOF
-end
+      EOF
+    end
 
-  bash 'Setting directory links' do
-    product_directory="mule-enterprise-standalone-#{version}"
-    code <<-EOF
+    bash 'Setting directory links' do
+      product_directory="mule-enterprise-standalone-#{version}"
+      code <<-EOF
     PRODUCT_DIRECTORY="#{product_directory}"
     pushd /opt
     ls -l .
@@ -113,33 +115,37 @@ end
     if [ ! -f /opt/#{product}/bin/#{product} ] ; then
       exit 1
     fi
-  EOF
+      EOF
+    end
+    log 'Mule service is installed'
   end
-  log 'Mule service is installed'
-end
-log 'download configurations'
+  log 'download configurations'
 
 
   template "#{ruby_scripts_dir}/download_plugins.rb" do
-      source 'scripts/download_vendor_drop.erb'
-      variables(
-          :aws_access_key_id => node[:deploy][:aws_access_key_id],
-          :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
-          :install_dir => '/opt',
-          :deploy_folder => '/opt',
-          :no_explode =>'true',
-          :product => product,
-          :version => version,
-          :filelist => %w(mmc-agent-mule3-app-3.3.0.zip mmc-distribution-console-app-3.3.0.zip).join(',')
-      )
-    end
+    source 'scripts/download_vendor_drop.erb'
+    variables(
+        :aws_access_key_id => node[:deploy][:aws_access_key_id],
+        :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
+        :install_dir => '/opt',
+        :deploy_folder => '/opt',
+        :no_explode => 'true',
+        :product => product,
+        :version => version,
+        :filelist => plugins.join(',')
+    )
+  end
 
-    bash 'Downloading mmc plugin packages' do
-      code <<-EOF
+  bash 'Downloading mmc plugin packages' do
+    code <<-EOF
         ruby #{ruby_scripts_dir}/download_plugins.rb
-      EOF
-    end
+    EOF
+  end
+  log 'Downloaded plugins'
 
+  log 'Installing mmc plugin packages'
+  plugins.each { |file| Fileutils.move |file|, 'mule/apps', :force => true }
+  # NOTE: after the mule starts, the zips get exploded.
 
   bash 'Patch Mule configuration wrapper.conf' do
     # patch wrapper.conf from embedded unified diff
@@ -213,7 +219,7 @@ WRAPPER_CONF_PATCH
   custom_configuration_dir="#{mule_home}/#{configuration_dir}"
 
   if !File.exists?(custom_configuration_dir)
- #    Dir.mkdir(custom_configuration_dir, 0777)
+    #    Dir.mkdir(custom_configuration_dir, 0777)
     bash "Add / populate custom configuration directory #{custom_configuration_dir}" do
       code <<-EOF
       #!/bin/bash
@@ -223,7 +229,7 @@ WRAPPER_CONF_PATCH
       pushd $CONFIGURATION_DIRECTORY
       cp -R /tmp/#{configuration_dir}/#{configuration_artifacts}/*  .
       chmod -R ogu+w .
-    EOF
+      EOF
     end
   end
 
