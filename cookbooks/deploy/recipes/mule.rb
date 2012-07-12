@@ -146,7 +146,7 @@ if !File.exists?("#{mule_home}/bin")
     EOF
   end
   log 'Downloaded plugins'
-
+  Dir.chdir("/opt/")
   plugins.each do |file|
     log "Installing mmc plugin package #{file} to mule/apps"
     FileUtils.move file, 'mule/apps', :force => true
@@ -229,8 +229,8 @@ WRAPPER_CONF_PATCH
       #!/bin/bash
 
       MULE_CONFIGURATION_DIR="#{mule_configuration_dir}"
-      mkdir -p -m 0777 $CONFIGURATION_DIR
-      pushd $CONFIGURATION_DIR
+      mkdir -p -m 0777 $MULE_CONFIGURATION_DIR
+      pushd $MULE_CONFIGURATION_DIR
       cp -R /DeployScripts_Binaries/#{messaging_server_configuration}/*  .
       chmod -R ogu+w .
       ls -l
