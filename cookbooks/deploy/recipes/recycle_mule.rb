@@ -1,8 +1,8 @@
 # Stop and remove Mule_ESB
-# undo just enough changes to workaround mule license expiration
 
 version = node[:deploy][:mule_version]
-complete_removal = 0
+complete_removal = 1
+# TODO - process cleanup
 
 bash 'Stop mule service' do
   code <<-EOF
@@ -34,12 +34,4 @@ if File.exists?('/opt/mule')
   log 'Recycled Mule install directory.'
 else
   log 'Mule was not installed.'
-end
-
-log "Removing maven repositories [/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom]."
-
-if File.exists?("/root/.m2/org/mule/mule/#{version}")
-  log 'maven repositories successfully recycled. just kidding'
-else
-  log 'maven repositories not populated.'
 end
