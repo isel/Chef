@@ -7,7 +7,7 @@ ruby_scripts_dir = node['ruby_scripts_dir']
 product = 'mule'
 mule_home = "/opt/#{product}"
 configuration_dir = 'configuration'
-configuration_artifacts='configuration'
+messaging_server_configuration='MessagingServer'
 plugins = %w(mmc-agent-mule3-app-3.3.0.zip mmc-distribution-console-app-3.3.0.zip)
 
 
@@ -143,8 +143,10 @@ if !File.exists?("#{mule_home}/bin")
   end
   log 'Downloaded plugins'
 
-  log 'Installing mmc plugin packages'
-  plugins.each { |file| Fileutils.move |file|, 'mule/apps', :force => true }
+  plugins.each { |file|
+    log "Installing mmc plugin package #{file} to mule/apps"
+    Fileutils.move |file|, 'mule/apps', :force => true
+  }
   # NOTE: after the mule starts, the zips get exploded.
 
   bash 'Patch Mule configuration wrapper.conf' do
@@ -178,7 +180,7 @@ if !File.exists?("#{mule_home}/bin")
  wrapper.java.classpath.2=%MULE_BASE%/conf
  wrapper.java.classpath.3=%MULE_HOME%/lib/boot/*.jar
  wrapper.java.classpath.4=%MULE_BASE%/data-mapper
-+wrapper.java.classpath.5=%MULE_HOME%/#{configuration_dir}
++wrapper.java.classpath.5=%MULE_HOME%/#{mule_configuration_dir}
 
  # Java Native Library Path (location of .DLL or .so files)
  wrapper.java.library.path.1=%LD_LIBRARY_PATH%
@@ -216,19 +218,20 @@ WRAPPER_CONF_PATCH
   log 'Mule wrapper configuration updated.'
 
   # add directory to store ultimate.configuration and log4j.configuration files
-  custom_configuration_dir="#{mule_home}/#{configuration_dir}"
+  mule_configuration_dir="#{mule_home}/#{configuration_dir}"
 
-  if !File.exists?(custom_configuration_dir)
-    #    Dir.mkdir(custom_configuration_dir, 0777)
-    bash "Add / populate custom configuration directory #{custom_configuration_dir}" do
+  if !File.exists?(mule_configuration_dir)
+    #    Dir.mkdir(mule_configuration_dir, 0777)
+    bash "Populate Mule configurations  #{mule_configuration_dir} from /DeployScripts_Binaries/#{messaging_server_configuration}" do
       code <<-EOF
       #!/bin/bash
-      CONFIGURATION_DIRECTORY="#{custom_configuration_dir}"
-      mkdir -p -m 0777 $CONFIGURATION_DIRECTORY
-      echo "Move Mule configurations to $CONFIGURATION_DIRECTORY"
-      pushd $CONFIGURATION_DIRECTORY
-      cp -R /tmp/#{configuration_dir}/#{configuration_artifacts}/*  .
+
+      MULE_CONFIGURATION_DIR="#{mule_configuration_dir}"
+      mkdir -p -m 0777 $CONFIGURATION_DIR
+      pushd $CONFIGURATION_DIR
+      cp -R /DeployScripts_Binaries/#{messaging_server_configuration}/*  .
       chmod -R ogu+w .
+      ls -l
       EOF
     end
   end
