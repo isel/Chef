@@ -130,7 +130,7 @@ log 'download configurations'
           :no_explode =>'true',
           :product => product,
           :version => version,
-          :filelist => qw(mmc-agent-mule3-app-3.3.0.zip mmc-distribution-console-app-3.3.0.zip).join(',')
+          :filelist => %w(mmc-agent-mule3-app-3.3.0.zip mmc-distribution-console-app-3.3.0.zip).join(',')
       )
     end
 
