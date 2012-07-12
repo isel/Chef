@@ -126,7 +126,6 @@ if !File.exists?("#{mule_home}/bin")
 
   log 'download configurations'
 
-  if File.exists?("#{mule_home}/apps")
   template "#{ruby_scripts_dir}/download_plugins.rb" do
     source 'scripts/download_vendor_drop.erb'
     variables(
@@ -146,8 +145,12 @@ if !File.exists?("#{mule_home}/bin")
         ruby #{ruby_scripts_dir}/download_plugins.rb
     EOF
   end
+
+
+  if File.exists?("#{mule_home}/apps")
+    log "looking at installed plugins"
   else
-    log 'app directory was not found'
+    log "app directory #{mule_home}/apps was not found"
   end
   # NOTE: after the mule starts, the zips get exploded.
 
