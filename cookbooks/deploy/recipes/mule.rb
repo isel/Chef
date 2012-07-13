@@ -168,17 +168,13 @@ plugins.each do |package_file|
     package_directory = File.basename(package_file,'.zip')
     if !File.exists?("#{plugin_home}/#{package_file}") && !File.directory?("#{plugin_home}/#{package_directory}")
       log "Neither Plugin file #{package_file} nor directory #{package_directory} was found in #{plugin_home}."
-      d = Dir.new(plugin_home)
-      log d.entries.to_yaml
-      raise 1
+      # d = Dir.new(plugin_home)
+      # log d.entries.to_yaml
+      # raise 1
     end
 end
-
   else
     log "Plugin app directory #{plugin_home} was not found under #{mule_home}"
-    d = Dir.new(mule_home)
-    log d.entries.to_yaml
-    # raise 1
   end
   # NOTE: after the mule starts, the zips get exploded.
 
@@ -267,10 +263,9 @@ WRAPPER_CONF_PATCH
     end
   else
     log "Mule configuration directory #{mule_configuration_dir} was not found under #{mule_home}"
-    d = Dir.new(mule_home)
-    log d.entries.to_yaml
-    raise 1
-
+    # d = Dir.new(mule_home)
+    # log d.entries.to_yaml
+    # raise 1
   end
 
 else
