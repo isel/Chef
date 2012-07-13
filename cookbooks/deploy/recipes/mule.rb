@@ -12,7 +12,12 @@ messaging_server_configuration='MessagingServer'
 # note the change of the name on the way.
 configuration_dir = 'configuration'
 mule_configuration_dir="#{mule_home}/#{configuration_dir}"
-plugins = %w(mmc-agent-mule3-app-3.3.0.zip mmc-distribution-console-app-3.3.0.zip)
+# MMC plugins
+plugins = %w(
+             mmc-agent-mule3-app-3.3.0.zip
+             mmc-distribution-console-app-3.3.0.zip
+            )
+plugin_home = '/opt/mule/apps'
 
 
 # apt-get detects if debian package is already installed - no need to replicate its functionality
@@ -108,7 +113,7 @@ if !File.exists?("#{mule_home}/bin")
       echo "clearing possibly existing link"
       rm #{product}
     fi
-    echo "probing the directory $PRODUCT_DIRECTORY"
+    echo "Probing the directory $PRODUCT_DIRECTORY"
 
     if [ -d "$PRODUCT_DIRECTORY" ] ; then
       ln -s $PRODUCT_DIRECTORY #{product}
@@ -147,11 +152,28 @@ if !File.exists?("#{mule_home}/bin")
   end
 
 
-  if File.exists?("#{mule_home}/apps")
+  if File.exists?(plugin_home)
     log "looking at installed plugins"
+# shortly after launch the deployed plugins are exploded from the original zip format
+# and become directory with the same basename
+
+plugins.each do |package_file|
+    log "Inspecting mmc plugin package: #{package_file}"
+    package_directory = File.basename(package_file,'.zip')
+    if !File.exists?("#{plugin_home}/#{package_file}") && !File.directory?("#{plugin_home}/#{package_directory}")
+      log "Neither Plugin file #{package_file} nor directory #{package_directory} was found in #{plugin_home}."
+      d = Dir.new(plugin_home)
+      log d.entries.to_yaml
+      raise 1
+    end
+end
 
   else
-    log "app directory #{mule_home}/apps was not found"
+    log "Plugin app directory #{plugin_home} was not found under #{mule_home}"
+    d = Dir.new(mule_home)
+    log d.entries.to_yaml
+    raise 1
+
   end
   # NOTE: after the mule starts, the zips get exploded.
 
@@ -238,6 +260,12 @@ WRAPPER_CONF_PATCH
       ls -l
       EOF
     end
+  else
+    log "Mule configuration directory #{mule_configuration_dir} was not found under #{mule_home}"
+    d = Dir.new(mule_home)
+    log d.entries.to_yaml
+    raise 1
+
   end
 
 else

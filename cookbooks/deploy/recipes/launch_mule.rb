@@ -1,8 +1,18 @@
+require 'fileutils'
+require 'yaml'
+
+
 hostname = node[:hostname]
 ulimit_files = node[:deploy][:ulimit_files]
 mule_port = node[:deploy][:mule_port]
 verify_completion = node[:deploy][:verify_completion]
 sleep_interval = 10
+# inspect plugins
+plugins = %w(
+             mmc-agent-mule3-app-3.3.0.zip
+             mmc-distribution-console-app-3.3.0.zip
+            )
+plugin_home = '/opt/mule/apps'
 
 bash 'launch mule' do
       code <<-EOF
@@ -52,23 +62,19 @@ end
 =end
 
 
+# shortly after launch the deployed plugins are exploded from the original zip format
+# and become directory with the same basename
 
-plugins = %w(mmc-agent-mule3-app-3.3.0.zip mmc-distribution-console-app-3.3.0.zip)
-product = 'mule'
-mule_home = "/opt/#{product}"
-
-plugins.each do |file|
-    log "Checking Installed mmc plugin packages"
-# immediately after launch the deployed plugins  are in the original zip format
-# soon after the launch the plugin file is replaced with the directory
-# with the same basename
-    if !File.exists?("#{mule_home}/apps/#{file}") && !File.exists?("#{mule_home}/apps/#{File.basename(file,'.zip')}")
-      log "plugin #{file} was not found in #{mule_home}/apps. "
-      # exit 1
+plugins.each do |package_file|
+    log "Inspecting mmc plugin package: #{package_file}"
+    package_directory = File.basename(package_file,'.zip')
+    if !File.exists?("#{plugin_home}/#{package_file}") && !File.directory?("#{plugin_home}/#{package_directory}")
+      log "Neither Plugin file #{package_file} nor directory #{package_directory} was found in #{plugin_home}."
+      d = Dir.new(plugin_home)
+      log d.entries.to_yaml
+      raise 1
     end
 end
-
-
 
 #
 # wget -O /dev/null http://localhost:8585/mmc
