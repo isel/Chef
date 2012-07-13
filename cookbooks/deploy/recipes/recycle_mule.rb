@@ -25,6 +25,7 @@ bash 'Stop mule service' do
         sleep 1
         SERVICE_PROCESS=`ps ax | grep mule | grep -v grep | awk '{print $1}'|tail -1`
         done
+      fi
     else
       echo 'Mule service is not running'
     fi
