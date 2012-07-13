@@ -7,11 +7,14 @@ ulimit_files = node[:deploy][:ulimit_files]
 mule_port = node[:deploy][:mule_port]
 verify_completion = node[:deploy][:verify_completion]
 sleep_interval = 10
-# inspect plugins
+# MMC plugins
+plugins = node[:deploy][:mule_plugins].split(',')
+if plugins.nil? || plugins.length == 0
 plugins = %w(
              mmc-agent-mule3-app-3.3.0.zip
              mmc-distribution-console-app-3.3.0.zip
             )
+end
 plugin_home = '/opt/mule/apps'
 
 bash 'launch mule' do
@@ -72,7 +75,7 @@ plugins.each do |package_file|
       log "Neither Plugin file #{package_file} nor directory #{package_directory} was found in #{plugin_home}."
       d = Dir.new(plugin_home)
       log d.entries.to_yaml
-      raise 1
+      # raise 1
     end
 end
 

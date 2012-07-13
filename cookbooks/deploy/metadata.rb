@@ -40,7 +40,7 @@ attribute "deploy/activemq_port",
 attribute "deploy/activemq_version",
   :display_name => "activeMQ version",
   :required => "optional",
-  :default  => "5.4.3",
+  :default  => "5.6.0",
   :recipes  => ["deploy::activemq"]
 
 attribute "deploy/appfabric_caches",
@@ -192,8 +192,15 @@ attribute "deploy/messaging_server_port",
 attribute "deploy/mule_version",
   :display_name => "mule version",
   :required => "optional",
-  :default => "3.2.1",
+  :default => "3.3.0",
   :recipes => ["deploy::mule","deploy::recycle_mule"]
+
+attribute "deploy/mule_plugins",
+  :display_name => "Mule plugins",
+  :description => "List of Mule plugins to install",
+  :required    => "optional",
+  :default     => "mmc-agent-mule3-app-3.3.0.zip,mmc-distribution-console-app-3.3.0.zip",
+  :recipes     => ["deploy::mule","deploy::launch_mule"]
 
 attribute "deploy/pims_artifacts",
   :display_name => "pims artifacts",
@@ -222,13 +229,6 @@ attribute "deploy/s3_repository",
   :required => "optional",
   :default  => "GlobalIncite",
   :recipes  => ["deploy::download_binaries", "deploy::download_pims"]
-
-attribute "deploy/server_manager_features",
-  :display_name => "MSMQ features",
-  :description => "List of windows MSMQ features to install",
-  :required    => "optional",
-  :default     => "MSMQ-Server,MSMQ-HTTP-Support,MSMQ-Directory",
-  :recipes     => ["deploy::enable_msmq","deploy::event_router_service"]
 
 attribute "deploy/service_platform",
   :display_name => "EventRouter HTTP runtime",

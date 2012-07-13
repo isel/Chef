@@ -13,10 +13,13 @@ messaging_server_configuration='MessagingServer'
 configuration_dir = 'configuration'
 mule_configuration_dir="#{mule_home}/#{configuration_dir}"
 # MMC plugins
+plugins = node[:deploy][:mule_plugins].split(',')
+if plugins.nil? || plugins.length == 0
 plugins = %w(
              mmc-agent-mule3-app-3.3.0.zip
              mmc-distribution-console-app-3.3.0.zip
             )
+end
 plugin_home = '/opt/mule/apps'
 
 
@@ -172,8 +175,7 @@ end
     log "Plugin app directory #{plugin_home} was not found under #{mule_home}"
     d = Dir.new(mule_home)
     log d.entries.to_yaml
-    raise 1
-
+    # raise 1
   end
   # NOTE: after the mule starts, the zips get exploded.
 
