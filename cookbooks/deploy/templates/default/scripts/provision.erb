@@ -3,11 +3,6 @@ require '<%= node['binaries_directory'] %>/CI/BuildScripts/Deployment/provision'
 
 exe = '/Provision/bin/UltimateSoftware.Provisioning.Runner.exe'
 
-if Dir.exist?('/Provision') && '<%= @force_provision %>' != 'true'
-  puts 'Deployment has already been provisioned'
-  exit
-end
-
 puts 'Provisioning deployment'
 
 provision = Deployment::Provision.new(
