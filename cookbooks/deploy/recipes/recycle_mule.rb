@@ -20,7 +20,8 @@ bash 'Stop mule service' do
         ./mule stop
         echo "waiting on mule service stop "
         sleep 10
-      popd
+        popd
+      fi
     fi
     echo "Detect orphaned mule process still running"
     while [ ! -z $SERVICE_PROCESS ] ; do

@@ -7,15 +7,20 @@ ulimit_files = node[:deploy][:ulimit_files]
 mule_port = node[:deploy][:mule_port]
 verify_completion = node[:deploy][:verify_completion]
 sleep_interval = 10
-# MMC plugins
-plugins = node[:deploy][:mule_plugins].split(',')
-if plugins.nil? || plugins.length == 0
-plugins = %w(
+plugin_home = '/opt/mule/apps'
+
+# MMC plugins. List of plugins is read from server input.
+# There is a mmc plugins which are required.
+plugins = node[:deploy][:mule_plugins]
+if !plugins.nil?
+  plugins = plugins.split(',')
+  if  plugins.length == 0
+    plugins = %w(
              mmc-agent-mule3-app-3.3.0.zip
              mmc-distribution-console-app-3.3.0.zip
             )
+  end
 end
-plugin_home = '/opt/mule/apps'
 
 bash 'launch mule' do
       code <<-EOF

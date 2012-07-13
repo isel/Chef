@@ -7,20 +7,23 @@ ruby_scripts_dir = node['ruby_scripts_dir']
 product = 'mule'
 mule_home = "/opt/#{product}"
 messaging_server_configuration='MessagingServer'
+plugin_home = '/opt/mule/apps'
 
 # shared directory to store ultimate.configuration and log4j.configuration files
 # note the change of the name on the way.
 configuration_dir = 'configuration'
 mule_configuration_dir="#{mule_home}/#{configuration_dir}"
 # MMC plugins
-plugins = node[:deploy][:mule_plugins].split(',')
-if plugins.nil? || plugins.length == 0
-plugins = %w(
+plugins = node[:deploy][:mule_plugins]
+if !plugins.nil?
+  plugins = plugins.split(',')
+  if  plugins.length == 0
+    plugins = %w(
              mmc-agent-mule3-app-3.3.0.zip
              mmc-distribution-console-app-3.3.0.zip
             )
+  end
 end
-plugin_home = '/opt/mule/apps'
 
 
 # apt-get detects if debian package is already installed - no need to replicate its functionality
