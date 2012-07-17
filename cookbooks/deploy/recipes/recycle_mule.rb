@@ -43,15 +43,17 @@ if File.exists?(mule_home)
     export MULE_HOME=#{mule_home}
     PRODUCT_DIRECTORY="#{product_directory}"
     COMPLETE_REMOVAL="#{complete_removal}"
-    if [ -L "$MULE_HOME" ] ; then
-    rm $MULE_HOME
-    else
-    rm -rf $MULE_HOME
-    fi
     if  [ "$COMPLETE_REMOVAL" == "1" ] ; then
       rm -f -r $PRODUCT_DIRECTORY
     fi
+    # remove the directory or soft link
+    if [ -L "$MULE_HOME" ] ; then
+      rm $MULE_HOME
+    else
+      rm -rf $MULE_HOME
+    fi
     popd
+
     EOF
   end
   log 'Recycled Mule install directory.'
