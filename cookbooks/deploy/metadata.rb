@@ -7,8 +7,8 @@ version          "0.0.1"
 
 supports "ubuntu"
 
-recipe "deploy::update_configuration_tokens.rb" , "Updates Mule properties file"
-recipe "deploy::validate_configuration_tokens.rb" , "Validates that inputs in Mule properties file are current"
+recipe "deploy::update_configuration_tokens" , "Updates Mule properties file"
+recipe "deploy::validate_configuration_tokens" , "Validates that inputs in Mule properties file are current"
 recipe "deploy::activemq", "Deploys ActiveMQ"
 recipe "deploy::adjust_ulimit", "Adjusts open files limit for log4j"
 recipe "deploy::appfabric_configure", "Configures AppFabric"
