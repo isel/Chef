@@ -1,37 +1,37 @@
-# replace the tokens in the properties file in place
+# validate that the cluster inputs are provided in the properties file
 require 'fileutils'
 require 'yaml'
 
-$DEBUG = true
+$DEBUG = false
 
-local_filename = 'ultimate.properties'
+local_filename = $DEBUG ? 'ultimate.properties' :
+    '/opt/mule/configuration/ultimate.properties'
 
-node = {:deploy => {:cache_server => '10.81.19.190',
-                    :admin_password => '_P@SSw0rd',
-                    :db_server => '10.81.16.153',
-                    :db_port => '27017',
-                    :appserver => '10.81.19.116',
-                    :app_server => '10.81.19.116',
-                    :search_port => '9200',
-                    :search_server => '10.81.23.107',
-                    :messaging_server_port => '8081',
-                    :messaging_server => '10.81.30.54',
-                    :engine_server => '10.81.26.150',
-                    :engine_port => '8888',
-                    :web_server => '10.81.28.45',
-}}
+if $DEBUG
+  node = {:deploy => {:cache_server => '10.81.19.190',
+                      :admin_password => '_P@SSw0rd',
+                      :db_server => '10.81.16.153',
+                      :db_port => '27017',
+                      :app_server => '10.81.19.116',
+                      :search_port => '9200',
+                      :search_server => '10.81.23.107',
+                      :messaging_server_port => '8081',
+                      :messaging_server => '10.81.30.54',
+                      :engine_server => '10.81.26.150',
+                      :engine_port => '8080',
+                      :web_server => '10.81.28.45',
+  }}
+end
 
 # NOTE - passing the string keyed hash instead of variable reference
 # to allow name collision.
 token_values = {'cache_server' => node[:deploy][:cache_server],
                 'db_server' => node[:deploy][:db_server],
                 'db_port' => node[:deploy][:db_port],
-                'appserver' => node[:deploy][:app_server],
                 'app_server' => node[:deploy][:app_server],
                 'search_port' => node[:deploy][:elastic_search_port],
                 'search_server' => node[:deploy][:search_server],
                 'messaging_server_port' => node[:deploy][:messaging_server_port],
-                #  new inputs
                 'messaging_server' => node[:deploy][:messaging_server],
                 'engine_server' => node[:deploy][:engine_server],
                 'engine_port' => node[:deploy][:engine_port],
@@ -54,7 +54,7 @@ messaging.host={messaging_server}
 search.host={search_server}
 webserver.host={web_server}
 service.droolz.port={engine_port}
-server.application.host={appserver}   )
+server.application.host={app_server}   )
 
 
 def validate_properties(local_filename, token_values, validation_patterns)
@@ -64,13 +64,10 @@ def validate_properties(local_filename, token_values, validation_patterns)
     validation_patterns.each do |contents|
       if matcher.match(contents)
         # build the Regular expression negative lookahead pattern
-        # to detect settings without expected values
-
+        # to detect settings without or with wrong values
         entry_miss = '(?!' + entry + ')'
-        $stderr.puts "Will scan for #{matcher.named_captures[:token].to_s} with #{entry}" if $DEBUG
+        # $stderr.puts "Will scan for #{matcher.named_captures[:token].to_s} with #{entry}" if $DEBUG
         contents.gsub!(matcher, entry_miss)
-
-        # ( contents  )
       end
     end
   end
