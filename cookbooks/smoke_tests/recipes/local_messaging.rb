@@ -1,8 +1,7 @@
 ruby_scripts_dir = node['ruby_scripts_dir']
 
-
 $DEBUG = false
-local_filename =  '/opt/mule/configuration/ultimate.properties'
+properties_filename =  '/opt/mule/configuration/ultimate.properties'
 
 # using tokens instead of variable reference in the hash
 # to allow for name collision.
@@ -94,5 +93,9 @@ end
 # new smoke tests:
 # validate that the cluster inputs are provided in the properties file
 
+# replace tokens in mule properties file
+if File.exists?(properties_filename)
+  log "validating properties file #{properties_filename}"
+  validate_properties(properties_filename, token_values, validation_patterns)
+end
 
-validate_properties(local_filename, token_values, validation_patterns)
