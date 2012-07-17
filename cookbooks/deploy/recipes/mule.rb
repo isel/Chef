@@ -301,13 +301,16 @@ WRAPPER_CONF_PATCH
     end
     # replace the tokens in the properties file
     # Chef converge failed
+
+    if File.exists?(mule_configuration_dir)
+
     if !File.exists?(properties_backup_filename)
       # FileUtils.cp(properties_filename, properties_backup_filename)
       log "properties file backed up"
     end
     update_properties(properties_filename, token_values)
     log "Properties updated"
-
+    end
 
   else
     log "Mule configuration directory #{mule_configuration_dir} was found, kept intact"
