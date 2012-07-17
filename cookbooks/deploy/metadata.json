@@ -259,7 +259,7 @@
       "calculated": false,
       "type": "string"
     },
-    "smoke_tests/engine_server": {
+    "deploy/engine_server": {
       "display_name": "engine server",
       "required": "required",
       "recipes": [
@@ -284,7 +284,7 @@
       "calculated": false,
       "type": "string"
     },
-    "smoke_tests/web_server": {
+    "deploy/web_server": {
       "display_name": "web server",
       "required": "required",
       "recipes": [

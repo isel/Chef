@@ -124,7 +124,7 @@ attribute "deploy/db_server",
   :required => "required",
   :recipes => ["deploy::event_router_service", "deploy::foundation_services", "deploy::provision", "deploy:mule"]
 
-attribute "smoke_tests/engine_server",
+attribute "deploy/engine_server",
   :display_name => "engine server",
   :required => "required",
   :recipes => ["deploy::mule"]
@@ -135,7 +135,7 @@ attribute "deploy/engine_port",
   :default => "8080",
   :recipes => ["deploy::mule"]
 
-attribute "smoke_tests/web_server",
+attribute "deploy/web_server",
   :display_name => "web server",
   :required => "required",
   :recipes => ["deploy::mule"]
