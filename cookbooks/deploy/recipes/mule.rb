@@ -48,6 +48,9 @@ token_values = {
 }
 
 def update_properties(local_filename, token_values)
+  $stderr.puts "local_filename=#{local_filename}"
+  $stderr.puts "token_values=\n" + token_values.to_yaml
+
   f = File.open(local_filename, 'r+'); contents = f.read; f.close
   token_values.each do |token, entry|
     matcher = Regexp.new('(\{' + token + '\})', Regexp::MULTILINE)
@@ -56,6 +59,7 @@ def update_properties(local_filename, token_values)
       contents=contents.gsub(matcher, entry)
     end
   end
+  $stderr.puts "updated contents\n" + contents
   File.open(local_filename, 'r+') { |f| f.puts contents }
 end
 
