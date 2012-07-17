@@ -635,6 +635,8 @@
   "groupings": {
   },
   "recipes": {
+    "deploy::update_configuration_tokens.rb": "Updates Mule properties file",
+    "deploy::validate_configuration_tokens.rb": "Validates that inputs in Mule properties file are current",
     "deploy::activemq": "Deploys ActiveMQ",
     "deploy::adjust_ulimit": "Adjusts open files limit for log4j",
     "deploy::appfabric_configure": "Configures AppFabric",
