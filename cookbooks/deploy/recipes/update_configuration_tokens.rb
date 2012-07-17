@@ -2,7 +2,7 @@
 require 'fileutils'
 require 'yaml'
 
-$DEBUG = false
+$DEBUG = true
 
 local_filename = $DEBUG ? 'ultimate.properties' :
     '/opt/mule/configuration/ultimate.properties'
@@ -46,9 +46,9 @@ token_values = {
 def update_properties(local_filename, token_values)
   f = File.open(local_filename, 'r+'); contents = f.read; f.close
   token_values.each do |token, entry|
-    matcher = Regexp.new('(?<token>\{' + token + '\})', Regexp::MULTILINE)
+    matcher = Regexp.new('(\{' + token + '\})', Regexp::MULTILINE)
     while matcher.match(contents) # multiline ?
-      $stderr.puts "Will replace #{matcher.source} #{matcher.named_captures[:token].to_s} with #{entry}" if $DEBUG
+      $stderr.puts "Will replace #{matcher.source} with #{entry}" if $DEBUG
       contents=contents.gsub(matcher, entry)
     end
   end

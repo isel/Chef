@@ -50,9 +50,9 @@ token_values = {
 def update_properties(local_filename, token_values)
   f = File.open(local_filename, 'r+'); contents = f.read; f.close
   token_values.each do |token, entry|
-    matcher = Regexp.new('(?<token>\{' + token + '\})', Regexp::MULTILINE)
+    matcher = Regexp.new('(\{' + token + '\})', Regexp::MULTILINE)
     while matcher.match(contents) # multiline ?
-      $stderr.puts "Will replace #{matcher.source} #{matcher.named_captures[:token].to_s} with #{entry}"
+      $stderr.puts "Will replace #{matcher.source}} with #{entry}"
       contents=contents.gsub(matcher, entry)
     end
   end

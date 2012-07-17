@@ -45,18 +45,17 @@ server.application.host={app_server}   )
 def validate_properties(local_filename, token_values, validation_patterns)
 
   token_values.each do |token, entry|
-    matcher = Regexp.new('(?<token>\{' + token + '\})', Regexp::MULTILINE)
+    matcher = Regexp.new('(\{' + token + '\})', Regexp::MULTILINE)
     validation_patterns.each do |contents|
       if matcher.match(contents)
         # build the Regular expression negative lookahead pattern
         # to detect settings without or with wrong values
         entry_miss = '(?!' + entry + ')'
-        # $stderr.puts "Will scan for #{matcher.named_captures[:token].to_s} with #{entry}" if $DEBUG
         contents.gsub!(matcher, entry_miss)
       end
     end
   end
-  $stderr.puts "Validation patterns:\n" + validation_patterns.to_yaml if $DEBUG
+  $stderr.puts "Validation patterns:\n" + validation_patterns.to_yaml
 
   # prune commented lines
   lines = []
