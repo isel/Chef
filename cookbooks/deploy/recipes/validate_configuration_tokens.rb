@@ -40,7 +40,8 @@ token_values = {'cache_server' => node[:deploy][:cache_server],
 
 # validation pattern dictionary s constructed from the actual
 # 'ultimate.properties'
-# and will need updates if the file evolves
+# via command findstr "{" ultimate.properties
+# The list needs to be kep up to date with that file
 
 validation_patterns = %w(
 dbserver.host={db_server}

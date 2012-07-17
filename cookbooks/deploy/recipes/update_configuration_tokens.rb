@@ -24,7 +24,7 @@ node = {:deploy => {:cache_server => '10.81.19.190',
 
 # NOTE - passing the string keyed hash instead of variable reference
 # to allow name collision.
-token_values = {'cache_server' => node[:deploy][:cache_server],
+token_values = {
                 'db_server' => node[:deploy][:db_server],
                 'db_port' => node[:deploy][:db_port],
                 'appserver' => node[:deploy][:app_server],
@@ -32,9 +32,11 @@ token_values = {'cache_server' => node[:deploy][:cache_server],
                 'search_port' => node[:deploy][:elastic_search_port],
                 'search_server' => node[:deploy][:search_server],
                 'messaging_server_port' => node[:deploy][:messaging_server_port],
-                #  new inputs
-                'messaging_server' => node[:deploy][:messaging_server],
                 'engine_server' => node[:deploy][:engine_server],
+
+                #  new inputs
+                'cache_server' => node[:deploy][:cache_server],
+                'messaging_server' => node[:deploy][:messaging_server],
                 'engine_port' => node[:deploy][:engine_port],
                 'web_server' => node[:deploy][:web_server],
 }
