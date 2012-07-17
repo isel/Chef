@@ -26,7 +26,7 @@ if !plugins.nil?
 end
 
 $DEBUG = false
-local_filename =  '/opt/mule/configuration/ultimate.properties'
+local_filename = '/opt/mule/configuration/ultimate.properties'
 backup_filename = "#{local_filename}.BAK"
 
 # using tokens instead of variable reference in the hash
@@ -197,16 +197,16 @@ if !File.exists?("#{mule_home}/bin")
 # shortly after launch the deployed plugins are exploded from the original zip format
 # and become directory with the same basename
 
-plugins.each do |package_file|
-    log "Inspecting mmc plugin package: #{package_file}"
-    package_directory = File.basename(package_file,'.zip')
-    if !File.exists?("#{plugin_home}/#{package_file}") && !File.directory?("#{plugin_home}/#{package_directory}")
-      log "Neither Plugin file #{package_file} nor directory #{package_directory} was found in #{plugin_home}."
-      # d = Dir.new(plugin_home)
-      # log d.entries.to_yaml
-      # raise 1
+    plugins.each do |package_file|
+      log "Inspecting mmc plugin package: #{package_file}"
+      package_directory = File.basename(package_file, '.zip')
+      if !File.exists?("#{plugin_home}/#{package_file}") && !File.directory?("#{plugin_home}/#{package_directory}")
+        log "Neither Plugin file #{package_file} nor directory #{package_directory} was found in #{plugin_home}."
+        # d = Dir.new(plugin_home)
+        # log d.entries.to_yaml
+        # raise 1
+      end
     end
-end
   else
     log "Plugin app directory #{plugin_home} was not found under #{mule_home}"
   end
@@ -295,21 +295,22 @@ WRAPPER_CONF_PATCH
       ls -l
       EOF
     end
+    # replace the tokens in the properties file
+    # Chef converge failed
+    if !File.exists?(backup_filename)
+      FileUtils.cp(local_filename, backup_filename)
+      log "propertied file backed up"
+    end
+    update_properties(local_filename, token_values)
+    log "properties updated"
+
+
   else
     log "Mule configuration directory #{mule_configuration_dir} was not found under #{mule_home}"
     # d = Dir.new(mule_home)
     # log d.entries.to_yaml
     # raise 1
   end
-
-  # replace the tokens in the properties file
-  # Chef converge failed
-  FileUtils.cp(local_filename, backup_filename) if !File.exists?(backup_filename)
-  log "propertied file backed up"
-
-  update_properties(local_filename, token_values)
-  log "properties updated"
-
 
 else
   log 'Mule already installed.'
