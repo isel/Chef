@@ -298,15 +298,15 @@ WRAPPER_CONF_PATCH
     # replace the tokens in the properties file
     # Chef converge failed
     if !File.exists?(backup_filename)
-      FileUtils.cp(local_filename, backup_filename)
-      log "propertied file backed up"
+      # FileUtils.cp(local_filename, backup_filename)
+      log "properties file backed up"
     end
     update_properties(local_filename, token_values)
     log "properties updated"
 
 
   else
-    log "Mule configuration directory #{mule_configuration_dir} was not found under #{mule_home}"
+    log "Mule configuration directory #{mule_configuration_dir} was found, kept intact"
     # d = Dir.new(mule_home)
     # log d.entries.to_yaml
     # raise 1
