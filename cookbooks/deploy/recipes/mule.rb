@@ -26,8 +26,8 @@ if !plugins.nil?
 end
 
 $DEBUG = false
-local_filename = '/opt/mule/configuration/ultimate.properties'
-backup_filename = "#{local_filename}.BAK"
+properties_filename = '/opt/mule/configuration/ultimate.properties'
+properties_backup_filename = "#{local_filename}.BAK"
 
 # using tokens instead of variable reference in the hash
 # to allow for name collision.
@@ -301,12 +301,12 @@ WRAPPER_CONF_PATCH
     end
     # replace the tokens in the properties file
     # Chef converge failed
-    if !File.exists?(backup_filename)
-      # FileUtils.cp(local_filename, backup_filename)
+    if !File.exists?(properties_backup_filename)
+      # FileUtils.cp(properties_filename, properties_backup_filename)
       log "properties file backed up"
     end
-    update_properties(local_filename, token_values)
-    log "properties updated"
+    update_properties(properties_filename, token_values)
+    log "Properties updated"
 
 
   else
