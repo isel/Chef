@@ -5,7 +5,6 @@ require 'yaml'
 $DEBUG = true
 
 local_filename = 'ultimate.properties'
-backup_filename = "#{local_filename}.BAK"
 
 node = {:deploy => {:cache_server => '10.81.19.190',
                     :admin_password => '_P@SSw0rd',
@@ -39,17 +38,59 @@ token_values = {'cache_server' => node[:deploy][:cache_server],
                 'web_server' => node[:deploy][:web_server],
 }
 
-def update_properties(local_filename, token_values)
-  f = File.open(local_filename, 'r+'); contents = f.read; f.close
+# validation pattern dictionary s constructed from the actual
+# 'ultimate.properties'
+# and will need updates if the file evolves
+
+validation_patterns = %w(
+dbserver.host={db_server}
+dbserver.port={db_port}
+server.engine.host={engine_server}
+server.engine.port={engine_port}
+app.host={app_server}
+cache.host={cache_server}
+messaging.host={messaging_server}
+search.host={search_server}
+webserver.host={web_server}
+service.droolz.port={engine_port}
+server.application.host={appserver}   )
+
+
+def validate_properties(local_filename, token_values, validation_patterns)
+
   token_values.each do |token, entry|
     matcher = Regexp.new('(?<token>\{' + token + '\})', Regexp::MULTILINE)
-    while matcher.match(contents) # multiline ?
-      $stderr.puts "Will replace #{matcher.source} #{matcher.named_captures[:token].to_s} with #{entry}" if $DEBUG
-      contents=contents.gsub(matcher, entry)
+    validation_patterns.each do |contents|
+      if matcher.match(contents)
+        # build the Regular expression negative lookahead pattern
+        # to detect settings without expected values
+
+        entry_miss = '(?!' + entry + ')'
+        $stderr.puts "Will scan for #{matcher.named_captures[:token].to_s} with #{entry}" if $DEBUG
+        contents.gsub!(matcher, entry_miss)
+
+        # ( contents  )
+      end
     end
   end
-  File.open(local_filename, 'r+') { |f| f.puts contents }
+  $stderr.puts "Validation patterns:\n" + validation_patterns.to_yaml if $DEBUG
+
+  # prune commented lines
+  lines = []
+  File.open(local_filename, 'r+') do |file|
+    file.each do |line|
+      lines << line unless line =~ /^#/
+    end
+  end
+
+  contents = lines.join("\n")
+  validation_patterns.each do |validation_expr|
+    matcher = Regexp.new(validation_expr, Regexp::MULTILINE)
+    if matcher.match(contents)
+      $stderr.puts "Mismatch with #{validation_expr}" if $DEBUG
+    end
+  end
+  return
 end
 
-FileUtils.cp(local_filename,) if !File.exists?(backup_filename)
-update_properties(local_filename, token_values)
+validate_properties(local_filename, token_values, validation_patterns)
