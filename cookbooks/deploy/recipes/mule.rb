@@ -27,7 +27,7 @@ end
 
 $DEBUG = false
 properties_filename = '/opt/mule/configuration/ultimate.properties'
-properties_backup_filename = "#{local_filename}.BAK"
+properties_backup_filename = "#{properties_filename}.BAK"
 
 # using tokens instead of variable reference in the hash
 # to allow for name collision.
