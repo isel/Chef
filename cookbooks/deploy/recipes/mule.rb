@@ -302,6 +302,15 @@ WRAPPER_CONF_PATCH
     # raise 1
   end
 
+  # replace the tokens in the properties file
+  # Chef converge failed
+  FileUtils.cp(local_filename, backup_filename) if !File.exists?(backup_filename)
+  log "propertied file backed up"
+
+  update_properties(local_filename, token_values)
+  log "properties updated"
+
+
 else
   log 'Mule already installed.'
 end
@@ -341,10 +350,3 @@ else
   log 'maven repositories already populated.'
 end
 
-# replace the tokens in the properties file
-
-FileUtils.cp(local_filename, backup_filename) if !File.exists?(backup_filename)
-log "propertied file backed up"
-
-update_properties(local_filename, token_values)
-log "properties updated"
