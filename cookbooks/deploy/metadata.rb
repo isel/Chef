@@ -83,12 +83,12 @@ attribute "deploy/messaging_server",
 :display_name => "messaging_server",
 :description => "Private IP address messaging_server host in this deployment",
 :required => "required",
-:recipes  => ["deploy::event_router_service", "deploy::foundation_services", "deploy:mule"]
+:recipes  => ["deploy::event_router_service", "deploy::foundation_services", "deploy::mule", "deploy::update_configuration_tokens"]
 
 attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
-  :recipes  => ["deploy::engine", "deploy::jspr", "deploy::provision", "deploy:mule"]
+  :recipes  => ["deploy::engine", "deploy::jspr", "deploy::provision", "deploy::mule", "deploy::update_configuration_tokens"]
 
 attribute "deploy/aws_access_key_id",
   :display_name => "aws access key id",
@@ -113,34 +113,34 @@ attribute "deploy/binaries_revision",
 attribute "deploy/cache_server",
   :display_name => "cache server",
   :required => "required",
-  :recipes => ["deploy::foundation_services", "deploy::register_cache_hostname", "deploy:mule"]
+  :recipes => ["deploy::foundation_services", "deploy::register_cache_hostname", "deploy::mule", "deploy::update_configuration_tokens"]
 
 attribute "deploy/db_port",
   :display_name => "db port",
   :required => "optional",
   :default  => "27017",
-  :recipes  => ["deploy::event_router_service", "deploy::foundation_services", "deploy::mongo", "deploy::provision", "deploy:mule"]
+  :recipes  => ["deploy::event_router_service", "deploy::foundation_services", "deploy::mongo", "deploy::provision", "deploy::mule", "deploy::update_configuration_tokens" ]
 
 attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
-  :recipes => ["deploy::event_router_service", "deploy::foundation_services", "deploy::provision", "deploy:mule"]
+  :recipes => ["deploy::event_router_service", "deploy::foundation_services", "deploy::provision", "deploy::mule", "deploy::update_configuration_tokens"]
 
 attribute "deploy/engine_server",
   :display_name => "engine server",
   :required => "required",
-  :recipes => ["deploy::mule"]
+  :recipes => ["deploy::mule", "deploy::update_configuration_tokens"]
 
 attribute "deploy/engine_port",
   :display_name => "droolz engine port",
   :required => "optional",
   :default => "8080",
-  :recipes => ["deploy::mule"]
+  :recipes => ["deploy::mule", "deploy::update_configuration_tokens"]
 
 attribute "deploy/web_server",
   :display_name => "web server",
   :required => "required",
-  :recipes => ["deploy::mule"]
+  :recipes => ["deploy::mule", "deploy::update_configuration_tokens"]
 
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
@@ -153,13 +153,13 @@ attribute "deploy/domain",
 
 attribute "deploy/search_server",
   :display_name => "search_server",
-  :recipes => ["deploy::foundation_services", "deploy:mule"]
+  :recipes => ["deploy::foundation_services", "deploy::mule", "deploy::update_configuration_tokens"]
 
 attribute "deploy/elastic_search_port",
   :display_name => "elastic search port",
   :required => "optional",
   :default => "9200",
-  :recipes => ["deploy::foundation_services", "deploy:mule"]
+  :recipes => ["deploy::foundation_services", "deploy::mule", "deploy::update_configuration_tokens"]
 
 attribute "deploy/elastic_search_version",
   :display_name => "elastic search version",
@@ -199,7 +199,7 @@ attribute "deploy/messaging_server_port",
   :display_name => "messaging server port",
   :required => "optional",
   :default  => "8081",
-  :recipes  => ["deploy::event_router_service", "deploy::foundation_services", "deploy::mule"]
+  :recipes  => ["deploy::event_router_service", "deploy::foundation_services", "deploy::mule", "deploy::update_configuration_tokens"]
 
 attribute "deploy/mule_version",
   :display_name => "mule version",

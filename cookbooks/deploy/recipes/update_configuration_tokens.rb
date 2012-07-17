@@ -1,33 +1,18 @@
-# replace the tokens in the properties file in place
+# replace tokens in mule properties file
+
 require 'fileutils'
 require 'yaml'
 
-$DEBUG = true
+$DEBUG = false
 
-local_filename = $DEBUG ? 'ultimate.properties' :
-    '/opt/mule/configuration/ultimate.properties'
+mule_configuration_dir='/opt/mule/configuration'
+properties_filename = '/opt/mule/configuration/ultimate.properties'
+properties_backup_filename = "#{properties_filename}.BAK"
 
-backup_filename = "#{local_filename}.BAK"
-if $DEBUG
 
-  node = {:deploy => {:cache_server => '10.81.19.190',
-                      :admin_password => '_P@SSw0rd',
-                      :db_server => '10.81.16.153',
-                      :db_port => '27017',
-                      :app_server => '10.81.19.116',
-                      :search_port => '9200',
-                      :search_server => '10.81.23.107',
-                      :messaging_server_port => '8081',
-                      :messaging_server => '10.81.30.54',
-                      :engine_server => '10.81.26.150',
-                      :engine_port => '8080',
-                      :web_server => '10.81.28.45',
-  }}
+# using tokens instead of variable reference in the hash
+# to allow for name collision.
 
-end
-
-# NOTE - passing the string keyed hash instead of variable reference
-# to allow name collision.
 token_values = {
     'db_server' => node[:deploy][:db_server],
     'db_port' => node[:deploy][:db_port],
@@ -43,6 +28,7 @@ token_values = {
     'web_server' => node[:deploy][:web_server],
 }
 
+
 def update_properties(local_filename, token_values)
   f = File.open(local_filename, 'r+'); contents = f.read; f.close
   token_values.each do |token, entry|
@@ -55,5 +41,13 @@ def update_properties(local_filename, token_values)
   File.open(local_filename, 'r+') { |f| f.puts contents }
 end
 
-FileUtils.cp(local_filename, backup_filename) if !File.exists?(backup_filename)
-update_properties(local_filename, token_values)
+# replace tokens in mule properties file
+if File.exists?(mule_configuration_dir)
+
+  if !File.exists?(properties_backup_filename)
+    FileUtils.cp(properties_filename, properties_backup_filename)
+    log "properties file backed up"
+  end
+  update_properties(properties_filename, token_values)
+  log "Properties updated"
+end

@@ -25,44 +25,6 @@ if !plugins.nil?
   end
 end
 
-$DEBUG = false
-properties_filename = '/opt/mule/configuration/ultimate.properties'
-properties_backup_filename = "#{properties_filename}.BAK"
-
-# using tokens instead of variable reference in the hash
-# to allow for name collision.
-
-token_values = {
-    'db_server' => node[:deploy][:db_server],
-    'db_port' => node[:deploy][:db_port],
-    'appserver' => node[:deploy][:app_server],
-    'app_server' => node[:deploy][:app_server],
-    'search_port' => node[:deploy][:elastic_search_port],
-    'search_server' => node[:deploy][:search_server],
-    'messaging_server_port' => node[:deploy][:messaging_server_port],
-    'engine_server' => node[:deploy][:engine_server],
-    'cache_server' => node[:deploy][:cache_server],
-    'messaging_server' => node[:deploy][:messaging_server],
-    'engine_port' => node[:deploy][:engine_port],
-    'web_server' => node[:deploy][:web_server],
-}
-
-def update_properties(local_filename, token_values)
-  $stderr.puts "local_filename=#{local_filename}"
-  $stderr.puts "token_values=\n" + token_values.to_yaml
-
-  f = File.open(local_filename, 'r+'); contents = f.read; f.close
-  token_values.each do |token, entry|
-    matcher = Regexp.new('(\{' + token + '\})', Regexp::MULTILINE)
-    while matcher.match(contents) # multiline ?
-      $stderr.puts "Will replace #{matcher.source}} with #{entry}"
-      contents=contents.gsub(matcher, entry)
-    end
-  end
-  $stderr.puts "updated contents\n" + contents
-  File.open(local_filename, 'r+') { |f| f.puts contents }
-end
-
 
 # apt-get detects if debian package is already installed - no need to replicate its functionality
 # may need to remove sun java6
@@ -201,16 +163,16 @@ if !File.exists?("#{mule_home}/bin")
 # shortly after launch the deployed plugins are exploded from the original zip format
 # and become directory with the same basename
 
-    plugins.each do |package_file|
-      log "Inspecting mmc plugin package: #{package_file}"
-      package_directory = File.basename(package_file, '.zip')
-      if !File.exists?("#{plugin_home}/#{package_file}") && !File.directory?("#{plugin_home}/#{package_directory}")
-        log "Neither Plugin file #{package_file} nor directory #{package_directory} was found in #{plugin_home}."
-        # d = Dir.new(plugin_home)
-        # log d.entries.to_yaml
-        # raise 1
-      end
+plugins.each do |package_file|
+    log "Inspecting mmc plugin package: #{package_file}"
+    package_directory = File.basename(package_file,'.zip')
+    if !File.exists?("#{plugin_home}/#{package_file}") && !File.directory?("#{plugin_home}/#{package_directory}")
+      log "Neither Plugin file #{package_file} nor directory #{package_directory} was found in #{plugin_home}."
+      # d = Dir.new(plugin_home)
+      # log d.entries.to_yaml
+      # raise 1
     end
+end
   else
     log "Plugin app directory #{plugin_home} was not found under #{mule_home}"
   end
@@ -299,21 +261,8 @@ WRAPPER_CONF_PATCH
       ls -l
       EOF
     end
-    # replace the tokens in the properties file
-    # Chef converge failed
-
-    if File.exists?(mule_configuration_dir)
-
-    if !File.exists?(properties_backup_filename)
-      # FileUtils.cp(properties_filename, properties_backup_filename)
-      log "properties file backed up"
-    end
-    update_properties(properties_filename, token_values)
-    log "Properties updated"
-    end
-
   else
-    log "Mule configuration directory #{mule_configuration_dir} was found, kept intact"
+    log "Mule configuration directory #{mule_configuration_dir} was found and left intact"
     # d = Dir.new(mule_home)
     # log d.entries.to_yaml
     # raise 1
