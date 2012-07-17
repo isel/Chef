@@ -25,6 +25,40 @@ if !plugins.nil?
   end
 end
 
+$DEBUG = false
+local_filename =  '/opt/mule/configuration/ultimate.properties'
+backup_filename = "#{local_filename}.BAK"
+
+# using tokens instead of variable reference in the hash
+# to allow for name collision.
+
+token_values = {
+    'db_server' => node[:deploy][:db_server],
+    'db_port' => node[:deploy][:db_port],
+    'appserver' => node[:deploy][:app_server],
+    'app_server' => node[:deploy][:app_server],
+    'search_port' => node[:deploy][:elastic_search_port],
+    'search_server' => node[:deploy][:search_server],
+    'messaging_server_port' => node[:deploy][:messaging_server_port],
+    'engine_server' => node[:deploy][:engine_server],
+    'cache_server' => node[:deploy][:cache_server],
+    'messaging_server' => node[:deploy][:messaging_server],
+    'engine_port' => node[:deploy][:engine_port],
+    'web_server' => node[:deploy][:web_server],
+}
+
+def update_properties(local_filename, token_values)
+  f = File.open(local_filename, 'r+'); contents = f.read; f.close
+  token_values.each do |token, entry|
+    matcher = Regexp.new('(?<token>\{' + token + '\})', Regexp::MULTILINE)
+    while matcher.match(contents) # multiline ?
+      $stderr.puts "Will replace #{matcher.source} #{matcher.named_captures[:token].to_s} with #{entry}"
+      contents=contents.gsub(matcher, entry)
+    end
+  end
+  File.open(local_filename, 'r+') { |f| f.puts contents }
+end
+
 
 # apt-get detects if debian package is already installed - no need to replicate its functionality
 # may need to remove sun java6
@@ -307,3 +341,10 @@ else
   log 'maven repositories already populated.'
 end
 
+# replace the tokens in the properties file
+
+FileUtils.cp(local_filename, backup_filename) if !File.exists?(backup_filename)
+log "propertied file backed up"
+
+update_properties(local_filename, token_values)
+log "properties updated"
