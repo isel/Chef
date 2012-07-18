@@ -6,7 +6,6 @@ mule_home = "/opt/#{product}"
 version = node[:deploy][:mule_version]
 complete_removal = 1
 # TODO - process cleanup
-
 bash 'Stop mule service' do
   code <<-EOF
     set +e
@@ -47,11 +46,8 @@ if File.exists?(mule_home)
       rm -f -r $PRODUCT_DIRECTORY
     fi
     # remove the directory or soft link
-    if [ -L "$MULE_HOME" ] ; then
-      rm $MULE_HOME
-    else
-      rm -rf $MULE_HOME
-    fi
+    # does not properly recycle mule directory.
+    rm -rf $MULE_HOME
     popd
 
     EOF
