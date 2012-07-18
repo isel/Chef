@@ -28,6 +28,8 @@ $DEBUG ?
    'cache_server' => '10.81.19.190',
    'messaging_server' => '10.81.28.155',
    'web_server' => '10.81.28.45',
+   'engine_port' => '8080',
+
 }
 :
 {
@@ -39,6 +41,7 @@ $DEBUG ?
     'search_server' => '<%= @search_server %>',
     'messaging_server_port' => '<%= @messaging_server_port %>',
     'engine_server' => '<%= @engine_server %>',
+    'engine_port' => '<%= @engine_port %>',
     'cache_server' => '<%= @cache_server %>',
     'messaging_server' => '<%= @messaging_server %>',
     'web_server' => '<%= @web_server %>',
@@ -53,7 +56,6 @@ validation_patterns = %w(
 dbserver.host={db_server}
 dbserver.port={db_port}
 server.engine.host={engine_server}
-server.engine.port={engine_port}
 app.host={app_server}
 cache.host={cache_server}
 messaging.host={messaging_server}
