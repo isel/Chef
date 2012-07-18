@@ -1,3 +1,5 @@
+ruby_scripts_dir = node['ruby_scripts_dir']
+
 template "#{ruby_scripts_dir}/update_configuration_tokens.rb" do
    source 'scripts/update_configuration_tokens.erb'
    variables(
