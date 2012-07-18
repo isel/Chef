@@ -23,7 +23,7 @@ template "#{ruby_scripts_dir}/update_configuration_tokens.rb" do
 
  bash 'Updating tokens in Mule configuration' do
     code <<-EOF
-     rake --rakefile #{ruby_scripts_dir}/update_configuration_tokens.rb
+     ruby #{ruby_scripts_dir}/update_configuration_tokens.rb
    EOF
  end
  log "updated tokens in Mule configuration"
