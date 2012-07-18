@@ -132,7 +132,7 @@
         "deploy::event_router_service",
         "deploy::foundation_services",
         "deploy::mule",
-        "deploy::update_configuration_tokens"
+        "deploy::update_configuration"
       ],
       "choice": [
 
@@ -148,7 +148,7 @@
         "deploy::jspr",
         "deploy::provision",
         "deploy::mule",
-        "deploy::update_configuration_tokens"
+        "deploy::update_configuration"
       ],
       "choice": [
 
@@ -222,7 +222,7 @@
         "deploy::foundation_services",
         "deploy::register_cache_hostname",
         "deploy::mule",
-        "deploy::update_configuration_tokens"
+        "deploy::update_configuration"
       ],
       "choice": [
 
@@ -240,7 +240,7 @@
         "deploy::mongo",
         "deploy::provision",
         "deploy::mule",
-        "deploy::update_configuration_tokens"
+        "deploy::update_configuration"
       ],
       "choice": [
 
@@ -256,7 +256,7 @@
         "deploy::foundation_services",
         "deploy::provision",
         "deploy::mule",
-        "deploy::update_configuration_tokens"
+        "deploy::update_configuration"
       ],
       "choice": [
 
@@ -269,7 +269,7 @@
       "required": "required",
       "recipes": [
         "deploy::mule",
-        "deploy::update_configuration_tokens"
+        "deploy::update_configuration"
       ],
       "choice": [
 
@@ -283,7 +283,7 @@
       "default": "8080",
       "recipes": [
         "deploy::mule",
-        "deploy::update_configuration_tokens"
+        "deploy::update_configuration"
       ],
       "choice": [
 
@@ -296,7 +296,7 @@
       "required": "required",
       "recipes": [
         "deploy::mule",
-        "deploy::update_configuration_tokens"
+        "deploy::update_configuration"
       ],
       "choice": [
 
@@ -333,7 +333,7 @@
       "recipes": [
         "deploy::foundation_services",
         "deploy::mule",
-        "deploy::update_configuration_tokens"
+        "deploy::update_configuration"
       ],
       "choice": [
 
@@ -349,7 +349,7 @@
       "recipes": [
         "deploy::foundation_services",
         "deploy::mule",
-        "deploy::update_configuration_tokens"
+        "deploy::update_configuration"
       ],
       "choice": [
 
@@ -441,7 +441,7 @@
         "deploy::event_router_service",
         "deploy::foundation_services",
         "deploy::mule",
-        "deploy::update_configuration_tokens"
+        "deploy::update_configuration"
       ],
       "choice": [
 
@@ -646,7 +646,7 @@
   "groupings": {
   },
   "recipes": {
-    "deploy::update_configuration_tokens": "Updates Mule properties file",
+    "deploy::update_configuration": "Updates Mule properties file",
     "deploy::validate_configuration_tokens": "Validates that inputs in Mule properties file are current",
     "deploy::activemq": "Deploys ActiveMQ",
     "deploy::adjust_ulimit": "Adjusts open files limit for log4j",

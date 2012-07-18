@@ -6,7 +6,7 @@ require 'yaml'
 $DEBUG = false
 
 mule_configuration_dir='/opt/mule/configuration'
-properties_filename = '/opt/mule/configuration/ultimate.properties'
+properties_filename = "#{mule_configuration_dir}/ultimate.properties"
 properties_backup_filename = "#{properties_filename}.BAK"
 
 
@@ -14,18 +14,18 @@ properties_backup_filename = "#{properties_filename}.BAK"
 # to allow for name collision.
 
 token_values = {
-    'db_server' => node[:deploy][:db_server],
-    'db_port' => node[:deploy][:db_port],
-    'appserver' => node[:deploy][:app_server],
-    'app_server' => node[:deploy][:app_server],
-    'search_port' => node[:deploy][:elastic_search_port],
-    'search_server' => node[:deploy][:search_server],
-    'messaging_server_port' => node[:deploy][:messaging_server_port],
-    'engine_server' => node[:deploy][:engine_server],
-    'cache_server' => node[:deploy][:cache_server],
-    'messaging_server' => node[:deploy][:messaging_server],
-    'engine_port' => node[:deploy][:engine_port],
-    'web_server' => node[:deploy][:web_server],
+    'db_server' => '<%= @db_server %>',
+    'db_port' => '<%= @db_port %>',
+    'appserver' => '<%= @app_server %>',
+    'app_server' => '<%= @app_server %>',
+    'search_port' => '<%= @elastic_search_port %>',
+    'search_server' => '<%= @search_server %>',
+    'messaging_server_port' => '<%= @messaging_server_port %>',
+    'engine_server' => '<%= @engine_server %>',
+    'cache_server' => '<%= @cache_server %>',
+    'messaging_server' => '<%= @messaging_server %>',
+    'engine_port' => '<%= @engine_port %>',
+    'web_server' => '<%= @web_server %>',
 }
 
 
@@ -34,7 +34,7 @@ def update_properties(local_filename, token_values)
   token_values.each do |token, entry|
     matcher = Regexp.new('(\{' + token + '\})', Regexp::MULTILINE)
     while matcher.match(contents) # multiline ?
-      $stderr.puts "Will replace #{matcher.source} with #{entry}" if $DEBUG
+      $stderr.puts "Will replace #{matcher.source} with #{entry}"
       contents=contents.gsub(matcher, entry)
     end
   end
@@ -47,7 +47,11 @@ if File.exists?(mule_configuration_dir)
   if !File.exists?(properties_backup_filename)
     FileUtils.cp(properties_filename, properties_backup_filename)
     log "properties file backed up"
+  else
+    log "backup already exists: #{properties_backup_filename}"
   end
   update_properties(properties_filename, token_values)
   log "Properties updated"
+else
+  log "Directory does not exist #{mule_configuration_dir}"
 end
