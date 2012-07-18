@@ -46,12 +46,12 @@ if File.exists?(mule_configuration_dir)
 
   if !File.exists?(properties_backup_filename)
     FileUtils.cp(properties_filename, properties_backup_filename)
-    log "properties file backed up"
+    $stderr.puts  "properties file backed up"
   else
-    log "backup already exists: #{properties_backup_filename}"
+    $stderr.puts  "backup already exists: #{properties_backup_filename}"
   end
   update_properties(properties_filename, token_values)
-  log "Properties updated"
+  $stderr.puts  "Properties updated"
 else
-  log "Directory does not exist #{mule_configuration_dir}"
+  $stderr.puts  "Directory does not exist #{mule_configuration_dir}"
 end
