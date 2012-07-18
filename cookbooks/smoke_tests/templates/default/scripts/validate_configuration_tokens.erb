@@ -23,23 +23,6 @@ token_values = {
     'web_server' => '<%= @web_server %>',
 }
 
-
-
-# NOTE - passing the string keyed hash instead of variable reference
-# to allow name collision.
-token_values = {'cache_server' => node[:deploy][:cache_server],
-                'db_server' => node[:deploy][:db_server],
-                'db_port' => node[:deploy][:db_port],
-                'app_server' => node[:deploy][:app_server],
-                'search_port' => node[:deploy][:elastic_search_port],
-                'search_server' => node[:deploy][:search_server],
-                'messaging_server_port' => node[:deploy][:messaging_server_port],
-                'messaging_server' => node[:deploy][:messaging_server],
-                'engine_server' => node[:deploy][:engine_server],
-                'engine_port' => node[:deploy][:engine_port],
-                'web_server' => node[:deploy][:web_server],
-}
-
 # validation pattern dictionary s constructed from the actual
 # 'ultimate.properties'
 # via command findstr "{" ultimate.properties
