@@ -1,4 +1,4 @@
-# replace tokens in mule properties file
+# find and replace tokens in mule properties file
 
 require 'fileutils'
 require 'yaml'
@@ -9,10 +9,7 @@ mule_configuration_dir='/opt/mule/configuration'
 properties_filename = "#{mule_configuration_dir}/ultimate.properties"
 properties_backup_filename = "#{properties_filename}.BAK"
 
-
-# using tokens instead of variable reference in the hash
-# to allow for name collision.
-
+# using tokens instead of variable reference as hash keys
 token_values = {
     'db_server' => '<%= @db_server %>',
     'db_port' => '<%= @db_port %>',

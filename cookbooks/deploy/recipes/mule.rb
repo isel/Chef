@@ -10,7 +10,7 @@ messaging_server_configuration='MessagingServer'
 plugin_home = '/opt/mule/apps'
 
 # shared directory to store ultimate.configuration and log4j.configuration files
-# note the change of the name on the way.
+# note the change of the name in transit from s3 folder to mule
 configuration_dir = 'configuration'
 mule_configuration_dir="#{mule_home}/#{configuration_dir}"
 # MMC plugins
@@ -135,7 +135,7 @@ if !File.exists?("#{mule_home}/bin")
     log 'Mule service is installed'
   end
 
-  log 'download configurations'
+  log 'Download configurations'
 
   template "#{ruby_scripts_dir}/download_plugins.rb" do
     source 'scripts/download_vendor_drop.erb'
@@ -163,16 +163,13 @@ if !File.exists?("#{mule_home}/bin")
 # shortly after launch the deployed plugins are exploded from the original zip format
 # and become directory with the same basename
 
-plugins.each do |package_file|
-    log "Inspecting mmc plugin package: #{package_file}"
-    package_directory = File.basename(package_file,'.zip')
-    if !File.exists?("#{plugin_home}/#{package_file}") && !File.directory?("#{plugin_home}/#{package_directory}")
-      log "Neither Plugin file #{package_file} nor directory #{package_directory} was found in #{plugin_home}."
-      # d = Dir.new(plugin_home)
-      # log d.entries.to_yaml
-      # raise 1
+    plugins.each do |package_file|
+      log "Inspecting mmc plugin package: #{package_file}"
+      package_directory = File.basename(package_file, '.zip')
+      if !File.exists?("#{plugin_home}/#{package_file}") && !File.directory?("#{plugin_home}/#{package_directory}")
+        log "Neither Plugin file #{package_file} nor directory #{package_directory} was found in #{plugin_home}."
+      end
     end
-end
   else
     log "Plugin app directory #{plugin_home} was not found under #{mule_home}"
   end
@@ -180,10 +177,10 @@ end
 
   bash 'Patch Mule configuration wrapper.conf' do
     # patch wrapper.conf from embedded unified diff
-    # warning ruby may corrupt certain inputs.
+    # warning ruby processor may corrupt certain inputs.
     # review the patch file before commit
-    # note that the options are added commented, due to the conflicting options
-    # present in wrapper-additional.conf
+    # note that few options are added commented, due to the conflicting options
+    # observed in wrapper-additional.conf
     code <<-EOF
   #!/bin/bash
   PATCH_FILE="/tmp/wrapper.conf.patch.$$"
@@ -261,18 +258,16 @@ WRAPPER_CONF_PATCH
       ls -l
       EOF
     end
+    log "Mule configuration directory #{mule_configuration_dir} created"
   else
     log "Mule configuration directory #{mule_configuration_dir} was found and left intact"
-    # d = Dir.new(mule_home)
-    # log d.entries.to_yaml
-    # raise 1
   end
 
 else
   log 'Mule already installed.'
 end
 
-# source bash.bashrc does not seem to work, not using it.
+# source bash.bashrc does not seem to  produce desired effect -  not using it.
 
 log "Checking project [/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom]."
 

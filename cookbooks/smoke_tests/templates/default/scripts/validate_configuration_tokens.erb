@@ -1,3 +1,5 @@
+require 'yaml'
+
 # validate that the cluster inputs are provided in the properties file
 
 require 'rake'
@@ -5,10 +7,30 @@ require 'rspec/core/rake_task'
 require 'fileutils'
 require 'yaml'
 
+
+$DEBUG = false
+
+
 # using tokens instead of variable reference in the hash
 # to allow for name collision.
 
-token_values = {
+token_values =
+$DEBUG ?
+{
+   'db_server' => '10.81.16.153',
+   'db_port' => '27017',
+   'appserver' => '10.81.19.116',
+   'app_server' => '10.81.19.116',
+   'search_port' => '<%= @elastic_search_port %>',
+   'search_server' => '10.81.23.107',
+   'messaging_server_port' => '<%= @messaging_server_port %>',
+   'engine_server' => '10.81.26.150',
+   'cache_server' => '10.81.19.190',
+   'messaging_server' => '10.81.28.155',
+   'web_server' => '10.81.28.45',
+}
+:
+{
     'db_server' => '<%= @db_server %>',
     'db_port' => '<%= @db_port %>',
     'appserver' => '<%= @app_server %>',
@@ -41,14 +63,17 @@ service.droolz.port={engine_port}
 server.application.host={app_server}   )
 
 
-def validate_properties(local_filename, token_values, validation_patterns)
 
+def validate_properties(local_filename, token_values, validation_patterns, validation_misses)
+  validation_passed = true
   token_values.each do |token, entry|
     matcher = Regexp.new('(\{' + token + '\})', Regexp::MULTILINE)
     validation_patterns.each do |contents|
       if matcher.match(contents)
         # build the Regular expression negative lookahead pattern
         # to detect settings without or with wrong values
+        # not using capture tags: 'Chef converge failed'
+
         entry_miss = '(?!' + entry + ')'
         contents.gsub!(matcher, entry_miss)
       end
@@ -69,19 +94,31 @@ def validate_properties(local_filename, token_values, validation_patterns)
     matcher = Regexp.new(validation_expr, Regexp::MULTILINE)
     if matcher.match(contents)
       $stderr.puts "Mismatch with #{validation_expr}" if $DEBUG
+      validation_misses << validation_expr
+      validation_passed = false
     end
   end
-  return
+  return validation_passed
 end
+
+# next step to turn into rspec callback.
 
 task :default do
 
-$DEBUG = false
+  mule_configuration_dir= $DEBUG ? '.' : '/opt/mule/configuration'
 
-mule_configuration_dir='/opt/mule/configuration'
-properties_filename = "#{mule_configuration_dir}/ultimate.properties"
-properties_backup_filename = "#{properties_filename}.BAK"
+  properties_filename = "#{mule_configuration_dir}/ultimate.properties"
+  properties_backup_filename = "#{properties_filename}.BAK"
+  validation_misses = [ ]
+  status_ok = validate_properties(properties_filename, token_values, validation_patterns,validation_misses)
+  if !status_ok
+    $stderr.puts "Error(s) in configuration:"
+    $stderr.puts validation_misses.to_yaml
+    exit 1
+  else
+    $stderr.puts "Validation of configuration complete"
 
-validate_properties(properties_filename, token_values, validation_patterns)
+  end
 
 end
+
