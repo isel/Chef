@@ -1,27 +1,29 @@
 # validate that the cluster inputs are provided in the properties file
+
+require 'rake'
+require 'rspec/core/rake_task'
 require 'fileutils'
 require 'yaml'
 
-$DEBUG = true
+# using tokens instead of variable reference in the hash
+# to allow for name collision.
 
-local_filename = $DEBUG ? 'ultimate.properties' :
-    '/opt/mule/configuration/ultimate.properties'
+token_values = {
+    'db_server' => '<%= @db_server %>',
+    'db_port' => '<%= @db_port %>',
+    'appserver' => '<%= @app_server %>',
+    'app_server' => '<%= @app_server %>',
+    'search_port' => '<%= @elastic_search_port %>',
+    'search_server' => '<%= @search_server %>',
+    'messaging_server_port' => '<%= @messaging_server_port %>',
+    'engine_server' => '<%= @engine_server %>',
+    'cache_server' => '<%= @cache_server %>',
+    'messaging_server' => '<%= @messaging_server %>',
+    'engine_port' => '<%= @engine_port %>',
+    'web_server' => '<%= @web_server %>',
+}
 
-if $DEBUG
-  node = {:deploy => {:cache_server => '10.81.19.190',
-                      :admin_password => '_P@SSw0rd',
-                      :db_server => '10.81.16.153',
-                      :db_port => '27017',
-                      :app_server => '10.81.19.116',
-                      :search_port => '9200',
-                      :search_server => '10.81.23.107',
-                      :messaging_server_port => '8081',
-                      :messaging_server => '10.81.30.54',
-                      :engine_server => '10.81.26.150',
-                      :engine_port => '8080',
-                      :web_server => '10.81.28.45',
-  }}
-end
+
 
 # NOTE - passing the string keyed hash instead of variable reference
 # to allow name collision.
@@ -90,4 +92,14 @@ def validate_properties(local_filename, token_values, validation_patterns)
   return
 end
 
+task :default do
+
+$DEBUG = false
+
+mule_configuration_dir='/opt/mule/configuration'
+properties_filename = "#{mule_configuration_dir}/ultimate.properties"
+properties_backup_filename = "#{properties_filename}.BAK"
+
 validate_properties(local_filename, token_values, validation_patterns)
+
+end
