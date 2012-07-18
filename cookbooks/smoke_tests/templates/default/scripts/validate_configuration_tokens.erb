@@ -19,7 +19,6 @@ token_values = {
     'engine_server' => '<%= @engine_server %>',
     'cache_server' => '<%= @cache_server %>',
     'messaging_server' => '<%= @messaging_server %>',
-    'engine_port' => '<%= @engine_port %>',
     'web_server' => '<%= @web_server %>',
 }
 
@@ -83,6 +82,6 @@ mule_configuration_dir='/opt/mule/configuration'
 properties_filename = "#{mule_configuration_dir}/ultimate.properties"
 properties_backup_filename = "#{properties_filename}.BAK"
 
-validate_properties(local_filename, token_values, validation_patterns)
+validate_properties(properties_filename, token_values, validation_patterns)
 
 end
