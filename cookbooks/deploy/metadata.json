@@ -131,7 +131,6 @@
       "recipes": [
         "deploy::event_router_service",
         "deploy::foundation_services",
-        "deploy::mule",
         "deploy::update_configuration"
       ],
       "choice": [
@@ -147,7 +146,6 @@
         "deploy::engine",
         "deploy::jspr",
         "deploy::provision",
-        "deploy::mule",
         "deploy::update_configuration"
       ],
       "choice": [
@@ -221,7 +219,6 @@
       "recipes": [
         "deploy::foundation_services",
         "deploy::register_cache_hostname",
-        "deploy::mule",
         "deploy::update_configuration"
       ],
       "choice": [
@@ -239,7 +236,6 @@
         "deploy::foundation_services",
         "deploy::mongo",
         "deploy::provision",
-        "deploy::mule",
         "deploy::update_configuration"
       ],
       "choice": [
@@ -255,7 +251,6 @@
         "deploy::event_router_service",
         "deploy::foundation_services",
         "deploy::provision",
-        "deploy::mule",
         "deploy::update_configuration"
       ],
       "choice": [
@@ -268,7 +263,6 @@
       "display_name": "engine server",
       "required": "required",
       "recipes": [
-        "deploy::mule",
         "deploy::update_configuration"
       ],
       "choice": [
@@ -282,7 +276,6 @@
       "required": "optional",
       "default": "8080",
       "recipes": [
-        "deploy::mule",
         "deploy::update_configuration"
       ],
       "choice": [
@@ -295,7 +288,6 @@
       "display_name": "web server",
       "required": "required",
       "recipes": [
-        "deploy::mule",
         "deploy::update_configuration"
       ],
       "choice": [
@@ -332,7 +324,6 @@
       "display_name": "search_server",
       "recipes": [
         "deploy::foundation_services",
-        "deploy::mule",
         "deploy::update_configuration"
       ],
       "choice": [
@@ -348,7 +339,6 @@
       "default": "9200",
       "recipes": [
         "deploy::foundation_services",
-        "deploy::mule",
         "deploy::update_configuration"
       ],
       "choice": [
@@ -440,7 +430,6 @@
       "recipes": [
         "deploy::event_router_service",
         "deploy::foundation_services",
-        "deploy::mule",
         "deploy::update_configuration"
       ],
       "choice": [
