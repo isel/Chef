@@ -6,9 +6,8 @@ version = node[:deploy][:mule_version]
 ruby_scripts_dir = node['ruby_scripts_dir']
 product = 'mule'
 mule_home = "/opt/#{product}"
-messaging_server_configuration='MessagingServer'
-plugin_home = '/opt/mule/apps'
-
+messaging_server_directory='MessagingServer'
+plugin_home = "#{mule_home}/apps"
 # shared directory to store ultimate.configuration and log4j.configuration files
 # note the change of the name in transit from s3 folder to mule
 configuration_dir = 'configuration'
@@ -246,14 +245,14 @@ WRAPPER_CONF_PATCH
 
   if !File.exists?(mule_configuration_dir)
     #    Dir.mkdir(mule_configuration_dir, 0777)
-    bash "Populate Mule configurations  #{mule_configuration_dir} from /DeployScripts_Binaries/#{messaging_server_configuration}" do
+    bash "Populate Mule configurations  #{mule_configuration_dir} from /DeployScripts_Binaries/#{messaging_server_directory}" do
       code <<-EOF
       #!/bin/bash
 
       MULE_CONFIGURATION_DIR="#{mule_configuration_dir}"
       mkdir -p -m 0777 $MULE_CONFIGURATION_DIR
       pushd $MULE_CONFIGURATION_DIR
-      cp -R /DeployScripts_Binaries/#{messaging_server_configuration}/*  .
+      cp /DeployScripts_Binaries/#{messaging_server_directory}/*  .
       chmod -R ogu+w .
       ls -l
       EOF
@@ -263,7 +262,36 @@ WRAPPER_CONF_PATCH
     log "Mule configuration directory #{mule_configuration_dir} was found and left intact"
   end
 
-else
+  bash "Installl Mule applications from /DeployScripts_Binaries/#{messaging_server_directory}/apps to #{plugin_home}" do
+    code <<-EOF
+#!/bin/bash
+
+APPLICATION_DIR='/DeployScripts_Binaries/MessagingServer/apps'
+MULE_PLUGIN_HOME='/opt/mule/apps'
+if [ ! -d "$MULE_PLUGIN_HOME" ]
+then
+mkdir -p -m 0777 $MULE_PLUGIN_HOME
+fi
+
+
+pushd $APPLICATION_DIR
+# no need for basename!
+APP_LIST=`find . -type f`
+for APP_PATH in $APP_LIST  ; do
+echo Copying `basename $APP_PATH` from $APPLICATION_DIR/`dirname $APP_PATH` to "$MULE_PLUGIN_HOME"
+done
+find . -type f -exec echo cp {} "$MULE_PLUGIN_HOME" \\;
+popd
+    pushd $MULE_PLUGIN_HOME
+
+    chmod -R ogu+w .
+    ls -l
+
+    EOF
+  end
+  log "Mule custom applications installed"
+
+  else
   log 'Mule already installed.'
 end
 
