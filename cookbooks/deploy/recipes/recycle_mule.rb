@@ -5,7 +5,7 @@ product = 'mule'
 mule_home = "/opt/#{product}"
 version = node[:deploy][:mule_version]
 complete_removal = 1
-product_vendor_directory="mule-enterprise-standalone-#{version}"
+product_vendor_directory="/opt/mule-enterprise-standalone-#{version}"
 
 # TODO - process cleanup
 bash 'Stop mule service' do
@@ -48,7 +48,6 @@ bash 'remove mule installation' do
     exit 0
     else
 
-    pushd /opt
     PRODUCT_VENDOR_DIRECTORY="#{product_vendor_directory}"
     COMPLETE_REMOVAL="#{complete_removal}"
     if  [ "$COMPLETE_REMOVAL" == "1" ] ; then
@@ -62,8 +61,6 @@ bash 'remove mule installation' do
     if [ -L $MULE_HOME ] ; then
     rm -f $MULE_HOME
     fi
-
-    popd
     popd
     fi
     EOF
