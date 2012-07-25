@@ -5,6 +5,8 @@ product = 'mule'
 mule_home = "/opt/#{product}"
 version = node[:deploy][:mule_version]
 complete_removal = 1
+product_vendor_directory="mule-enterprise-standalone-#{version}"
+
 # TODO - process cleanup
 bash 'Stop mule service' do
   code <<-EOF
@@ -32,27 +34,46 @@ bash 'Stop mule service' do
   EOF
 end
 
+bash 'remove mule installation' do
 
-if File.exists?(mule_home)
-  product_directory="mule-enterprise-standalone-#{version}"
-  bash 'remove mule installation' do
+  if File.exists?(mule_home)
     code <<-EOF
     set +e
     pushd /opt
     export MULE_HOME=#{mule_home}
-    PRODUCT_DIRECTORY="#{product_directory}"
+    PRODUCT_VENDOR_DIRECTORY="#{product_vendor_directory}"
     COMPLETE_REMOVAL="#{complete_removal}"
     if  [ "$COMPLETE_REMOVAL" == "1" ] ; then
-      rm -f -r $PRODUCT_DIRECTORY
+      rm -f -r $PRODUCT_VENDOR_DIRECTORY
     fi
     # remove the directory or soft link
     # does not properly recycle mule directory.
+    if [ -d $MULE_HOME ] ; then
     rm -rf $MULE_HOME
-    popd
+    fi
+    if [ -L $MULE_HOME ] ; then
+    rm -f $MULE_HOME
+    fi
 
+    popd
     EOF
   end
+
   log 'Recycled Mule install directory.'
-else
-  log 'Mule was not installed.'
-end
+
+=begin
+misdetection of the mule directory leads to
+unability to recycle mule.
+The leftover directory contents are shown below. Two rns
+total 12
+drwxr-xr-x 3 root root 4096 2012-07-25 14:51 .
+drwxr-xr-x 6 root root 4096 2012-07-25 14:51 ..
+drwxr-xr-x 4 root root 4096 2012-07-25 14:51 .mule
+root@ip-10-81-31-138:/opt# ls -la mule/.mule/
+total 16
+drwxr-xr-x 4 root root 4096 2012-07-25 14:51 .
+drwxr-xr-x 3 root root 4096 2012-07-25 14:51 ..
+drwxr-xr-x 3 root root 4096 2012-07-25 14:51 mmc-agent-mule3-app-3.3.0
+drwxr-xr-x 3 root root 4096 2012-07-25 14:51 mmc-distribution-console-app-3.3.0
+
+=end
