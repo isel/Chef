@@ -281,7 +281,7 @@ fi
 # no need for basename!
 APP_LIST=`find . -type f`
 for APP_PATH in $APP_LIST  ; do
-echo "Copying `basename $APP_PATH` from $APPLICATION_DIR/`dirname $APP_PATH` to "$MULE_PLUGIN_HOME"
+echo "Copying `basename $APP_PATH` from $APPLICATION_DIR/`dirname $APP_PATH` to $MULE_PLUGIN_HOME"
 done
 find . -type f -exec cp {} "$MULE_PLUGIN_HOME" \\;
 popd
