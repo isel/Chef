@@ -22,13 +22,15 @@ bash 'Stop mule service' do
         echo "waiting on mule service stop "
         sleep 10
         popd
+      else
+        echo "No Mule bin directory detected"
       fi
     fi
-    echo "Detect orphaned mule process still running"
+    echo "Terminate orphaned mule process still running"
     while [ ! -z $SERVICE_PROCESS ] ; do
       echo "Killing the service process $SERVICE_PROCESS"
       kill -KILL  $SERVICE_PROCESS
-      sleep 1
+      sleep 10
       SERVICE_PROCESS=`ps ax | grep $MULE_SIGNATURE | grep -v grep | awk '{print $1}'|tail -1`
     done
   EOF
@@ -39,10 +41,13 @@ bash 'remove mule installation' do
     code <<-EOF
     export MULE_HOME=#{mule_home}
     set +e
-
     pushd $MULE_HOME
     if [ "$?" -ne "0" ]
     then
+    echo "No Mule install directory detected"
+    exit 0
+    else
+
     pushd /opt
     PRODUCT_VENDOR_DIRECTORY="#{product_vendor_directory}"
     COMPLETE_REMOVAL="#{complete_removal}"
@@ -60,8 +65,6 @@ bash 'remove mule installation' do
 
     popd
     popd
-    else
-    echo "No Mule install directory detected"
     fi
     EOF
   end
