@@ -36,11 +36,14 @@ end
 
 bash 'remove mule installation' do
 
-  if File.exists?(mule_home)
     code <<-EOF
-    set +e
-    pushd /opt
     export MULE_HOME=#{mule_home}
+    set +e
+
+    pushd $MULE_HOME
+    if [ "$?" -ne "0" ]
+    then
+    pushd /opt
     PRODUCT_VENDOR_DIRECTORY="#{product_vendor_directory}"
     COMPLETE_REMOVAL="#{complete_removal}"
     if  [ "$COMPLETE_REMOVAL" == "1" ] ; then
@@ -56,12 +59,17 @@ bash 'remove mule installation' do
     fi
 
     popd
+    popd
+    else
+    echo "No Mule install directory detected"
+    fi
     EOF
   end
 
   log 'Recycled Mule install directory.'
 
 =begin
+
 misdetection of the mule directory leads to
 unability to recycle mule.
 The leftover directory contents are shown below. Two rns
