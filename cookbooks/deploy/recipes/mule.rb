@@ -272,21 +272,23 @@ if [ ! -d "$MULE_PLUGIN_HOME" ]
 then
 mkdir -p -m 0777 $MULE_PLUGIN_HOME
 fi
-
-
 pushd $APPLICATION_DIR
+if [ "$?" -ne "0" ] ; then
+echo "No $APPLICATION_DIR found. Aborting with error"
+exit 1
+fi
+
 # no need for basename!
 APP_LIST=`find . -type f`
 for APP_PATH in $APP_LIST  ; do
-echo Copying `basename $APP_PATH` from $APPLICATION_DIR/`dirname $APP_PATH` to "$MULE_PLUGIN_HOME"
+echo "Copying `basename $APP_PATH` from $APPLICATION_DIR/`dirname $APP_PATH` to "$MULE_PLUGIN_HOME"
 done
 find . -type f -exec cp {} "$MULE_PLUGIN_HOME" \\;
 popd
     pushd $MULE_PLUGIN_HOME
-
     chmod -R ogu+w .
+    echo "Contents of $MULE_PLUGIN_HOME"
     ls -l
-
     EOF
   end
   log "Mule custom applications installed"
