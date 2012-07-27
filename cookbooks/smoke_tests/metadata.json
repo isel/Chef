@@ -23,8 +23,7 @@
   "attributes": {
     "smoke_tests/activemq_console_port": {
       "display_name": "activemq console port",
-      "required": "optional",
-      "default": "8161",
+      "required": "required",
       "recipes": [
         "smoke_tests::local_messaging",
         "smoke_tests::global"
@@ -53,6 +52,18 @@
     },
     "deploy/web_server": {
       "display_name": "web server",
+      "required": "required",
+      "recipes": [
+        "smoke_tests::local_messaging"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/messaging_server": {
+      "display_name": "messaging server",
       "required": "required",
       "recipes": [
         "smoke_tests::local_messaging"
