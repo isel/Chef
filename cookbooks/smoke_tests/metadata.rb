@@ -17,6 +17,12 @@ recipe "smoke_tests::local_loadbalancer", "Runs local load balancer server smoke
 recipe "smoke_tests::local_messaging", "Runs local messaging server smoke tests"
 recipe "smoke_tests::local_web", "Runs local web server smoke tests"
 
+### attributes specific to smoke tests cookbooks
+
+attribute "smoke_tests/activemq_console_port",
+  :display_name => "activemq console port",
+  :required => "required",
+  :recipes => ["smoke_tests::local_messaging","smoke_tests::global"]
 
 ### attributes used from other cookbooks
 
@@ -30,10 +36,15 @@ attribute "deploy/web_server",
   :required => "required",
   :recipes => ["smoke_tests::local_messaging" ]
 
-attribute "deploy/messaging_server",
+attribute "deploy/messaging_server_port",
   :display_name => "messaging server",
   :required => "required",
-  :recipes => ["smoke_tests::local_messaging"]
+  :recipes => ["smoke_tests::local_messaging","smoke_tests::global"]
+
+attribute "deploy/messaging_server_port",
+  :display_name => "messaging server port",
+  :required => "required",
+  :recipes => ["smoke_tests::local_messaging","smoke_tests::global"]
 
 attribute "deploy/db_port",
   :display_name => "db port",
@@ -56,7 +67,6 @@ attribute "deploy/elastic_search_port",
   :required => "optional",
   :default => "9200",
   :recipes => ["smoke_tests::local_search","smoke_tests::local_app","smoke_tests::local_messaging"]
-
 
 attribute "deploy/cache_server",
   :display_name => "cache server",

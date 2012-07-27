@@ -9,6 +9,10 @@ ENV['db_port'] = '<%= @db_port %>'
 ENV['engine_server'] = '<%= @engine_server %>'
 ENV['tenant'] = '<%= @tenant %>'
 
+
+ENV['messaging_server'] = '<%= @messaging_server %>'
+ENV['messaging_server_port'] = '<%= @messaging_server_port %>'
+
 smoke_tests_dir = '<%= node['binaries_directory'] %>/CI/spec/Smoke'
 
 RSpec::Core::RakeTask.new(:spec) do |t|
