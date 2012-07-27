@@ -18,20 +18,12 @@ recipe "smoke_tests::local_messaging", "Runs local messaging server smoke tests"
 recipe "smoke_tests::local_web", "Runs local web server smoke tests"
 
 
-### attributes specific to smoke tests cookbooks
-
-attribute "smoke_tests/activemq_console_port",
-  :display_name => "activemq console port",
-  :required => "required",
-  :recipes => ["smoke_tests::local_messaging","smoke_tests::global"]
-
-
 ### attributes used from other cookbooks
 
 attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
-  :recipes => ["smoke_tests::global", "smoke_tests::local_app","smoke_tests::local_engine","smoke_tests::local_web","smoke_tests::local_messaging" ]
+  :recipes => ["smoke_tests::global", "smoke_tests::local_app","smoke_tests::local_engine", "smoke_tests::local_web","smoke_tests::local_messaging" ]
 
 attribute "deploy/web_server",
   :display_name => "web server",
@@ -42,11 +34,6 @@ attribute "deploy/messaging_server",
   :display_name => "messaging server",
   :required => "required",
   :recipes => ["smoke_tests::local_messaging"]
-
-attribute "deploy/messaging_server_port",
-          :display_name => "messaging server port",
-          :required => "required",
-          :recipes => ["smoke_tests::local_messaging", "smoke_tests::global"]
 
 attribute "deploy/db_port",
   :display_name => "db port",
