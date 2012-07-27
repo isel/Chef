@@ -20,9 +20,10 @@ recipe "smoke_tests::local_web", "Runs local web server smoke tests"
 ### attributes specific to smoke tests cookbooks
 
 attribute "smoke_tests/activemq_console_port",
-  :display_name => "activemq console port",
-  :required => "required",
-  :recipes => ["smoke_tests::local_messaging","smoke_tests::global"]
+          :display_name => "activemq console port",
+          :required => "optional",
+          :default => "8161",
+          :recipes => ["smoke_tests::local_messaging", "smoke_tests::global"]
 
 ### attributes used from other cookbooks
 

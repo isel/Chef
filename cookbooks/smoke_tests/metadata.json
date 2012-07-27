@@ -23,7 +23,8 @@
   "attributes": {
     "smoke_tests/activemq_console_port": {
       "display_name": "activemq console port",
-      "required": "required",
+      "required": "optional",
+      "default": "8161",
       "recipes": [
         "smoke_tests::local_messaging",
         "smoke_tests::global"
