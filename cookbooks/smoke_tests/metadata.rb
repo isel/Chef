@@ -37,14 +37,15 @@ attribute "deploy/web_server",
   :required => "required",
   :recipes => ["smoke_tests::local_messaging" ]
 
-attribute "deploy/messaging_server_port",
+attribute "deploy/messaging_server",
   :display_name => "messaging server",
   :required => "required",
   :recipes => ["smoke_tests::local_messaging","smoke_tests::global"]
 
 attribute "deploy/messaging_server_port",
   :display_name => "messaging server port",
-  :required => "required",
+  :required => "optional",
+  :default  => "8081",
   :recipes => ["smoke_tests::local_messaging","smoke_tests::global"]
 
 attribute "deploy/db_port",
