@@ -91,7 +91,7 @@ if !verify_completion.nil? && verify_completion != ''
   bash 'verify the launch of mule' do
     code <<-EOF
     LAST_RETRY=0
-    RETRY_CNT=20
+    RETRY_CNT=60
     HTTP_STATUS=0
     RESULT=1
     echo 'waiting for mule to be serving HTTP on #{mule_port}'
