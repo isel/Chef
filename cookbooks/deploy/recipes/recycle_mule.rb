@@ -37,6 +37,17 @@ bash 'Stop mule service' do
   EOF
 end
 
+=begin
+
+Leftover directory cfound after recycling mule:
+
+ls -la mule/.mule/
+drwxr-xr-x 3 root root 4096 2012-07-25 14:51 mmc-agent-mule3-app-3.3.0
+drwxr-xr-x 3 root root 4096 2012-07-25 14:51 mmc-distribution-console-app-3.3.0
+
+=end
+sleep 60
+
 bash 'remove mule installation' do
 
     code <<-EOF
@@ -63,7 +74,7 @@ bash 'remove mule installation' do
     exit 0
     else
     popd
-    log "Detected that $MULE_HOME directory was still present"
+    echo "Detected that $MULE_HOME directory was still present"
     rm -rf $MULE_HOME
     fi
     EOF
@@ -71,13 +82,3 @@ bash 'remove mule installation' do
 
   log 'Recycled Mule install directory.'
 
-=begin
-
-The leftover directory contents are shown below.
-
-
-root@ip-10-81-31-138:/opt# ls -la mule/.mule/
-drwxr-xr-x 3 root root 4096 2012-07-25 14:51 mmc-agent-mule3-app-3.3.0
-drwxr-xr-x 3 root root 4096 2012-07-25 14:51 mmc-distribution-console-app-3.3.0
-
-=end
