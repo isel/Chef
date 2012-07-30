@@ -262,37 +262,6 @@ WRAPPER_CONF_PATCH
     log "Mule configuration directory #{mule_configuration_dir} was found and left intact"
   end
 
-  bash "Installl Mule applications from /DeployScripts_Binaries/#{messaging_server_directory}/apps to #{plugin_home}" do
-    code <<-EOF
-#!/bin/bash
-
-APPLICATION_DIR='/DeployScripts_Binaries/MessagingServer/apps'
-MULE_PLUGIN_HOME='/opt/mule/apps'
-if [ ! -d "$MULE_PLUGIN_HOME" ]
-then
-mkdir -p -m 0777 $MULE_PLUGIN_HOME
-fi
-pushd $APPLICATION_DIR
-if [ "$?" -ne "0" ] ; then
-echo "No $APPLICATION_DIR found. Aborting with error"
-exit 1
-fi
-
-# no need for basename!
-APP_LIST=`find . -type f`
-for APP_PATH in $APP_LIST  ; do
-echo "Copying `basename $APP_PATH` from $APPLICATION_DIR/`dirname $APP_PATH` to $MULE_PLUGIN_HOME"
-done
-find . -type f -exec cp {} "$MULE_PLUGIN_HOME" \\;
-popd
-    pushd $MULE_PLUGIN_HOME
-    chmod -R ogu+w .
-    echo "Contents of $MULE_PLUGIN_HOME"
-    ls -l
-    EOF
-  end
-  log "Mule custom applications installed"
-
   else
   log 'Mule already installed.'
 end
@@ -332,3 +301,53 @@ else
   log 'maven repositories already populated.'
 end
 
+
+bash "Installl Mule applications from /DeployScripts_Binaries/#{messaging_server_directory}/apps to #{plugin_home}" do
+  code <<-EOF
+#!/bin/bash
+APPLICATION_DIR='/DeployScripts_Binaries/#{messaging_server_directory}/apps'
+MULE_PLUGIN_HOME="#{plugin_home}"
+
+if [ ! -d "$MULE_PLUGIN_HOME" ]
+then
+mkdir -p -m 0777 $MULE_PLUGIN_HOME
+fi
+pushd $APPLICATION_DIR
+if [ "$?" -ne "0" ] ; then
+echo "No $APPLICATION_DIR found. Aborting with error"
+exit 1
+fi
+
+APP_LIST=`find . -type f`
+for APP_RELATIVE_PATH in $APP_LIST  ; do
+APP_ZIP=`basename $APP_RELATIVE_PATH`
+APP_DIR=${APP_ZIP%%.zip}
+APP_ANCHOR="$APP_DIR-anchor.txt"
+APP_PATH=`dirname $APP_RELATIVE_PATH`
+
+if [ -f "$MULE_PLUGIN_HOME/$APP_ANCHOR" ] ; then
+echo "Deleting the anchor file $APP_ANCHOR to undeploy application in a clean way"
+rm "$MULE_PLUGIN_HOME/$APP_ANCHOR"
+sleep 10
+fi
+
+if [ -d  "$MULE_PLUGIN_HOME/$APP_DIR" ] ; then
+echo "Removing old application directory $APP_DIR"
+rm -r -f "$MULE_PLUGIN_HOME/$APP_DIR"
+fi
+
+echo "Copying $APP_ZIP from $APPLICATION_DIR/$APP_PATH to $MULE_PLUGIN_HOME"
+cp $APP_RELATIVE_PATH "$MULE_PLUGIN_HOME"
+done
+# bash embedded in ruby - double the backslash
+find . -type f -exec cp {} "$MULE_PLUGIN_HOME" \\;
+popd
+  pushd $MULE_PLUGIN_HOME
+  chmod -R ogu+w .
+  echo "Contents of $MULE_PLUGIN_HOME"
+  ls -l
+
+  EOF
+end
+
+log "Mule custom applications installed"
