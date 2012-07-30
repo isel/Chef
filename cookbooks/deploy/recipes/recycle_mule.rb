@@ -26,6 +26,7 @@ bash 'Stop mule service' do
         echo "No Mule bin directory detected"
       fi
     fi
+    sleep 10
     echo "Terminate orphaned mule process still running"
     while [ ! -z $SERVICE_PROCESS ] ; do
       echo "Killing the service process $SERVICE_PROCESS"
@@ -39,29 +40,31 @@ end
 bash 'remove mule installation' do
 
     code <<-EOF
-    export MULE_HOME=#{mule_home}
     set +e
-    pushd $MULE_HOME
-    if [ "$?" -ne "0" ]
-    then
-    echo "No Mule install directory detected"
-    exit 0
-    else
-
+    export MULE_HOME=#{mule_home}
     PRODUCT_VENDOR_DIRECTORY="#{product_vendor_directory}"
-    COMPLETE_REMOVAL="#{complete_removal}"
-    if  [ "$COMPLETE_REMOVAL" == "1" ] ; then
-      rm -f -r $PRODUCT_VENDOR_DIRECTORY
-    fi
+    rm -f -r $PRODUCT_VENDOR_DIRECTORY
+
     # remove the directory or soft link
     # does not properly recycle mule directory.
+
     if [ -d $MULE_HOME ] ; then
     rm -rf $MULE_HOME
     fi
     if [ -L $MULE_HOME ] ; then
     rm -f $MULE_HOME
     fi
+
+    log "Check if $MULE_HOME directory is still present"
+    pushd $MULE_HOME
+    if [ "$?" -ne "0" ]
+    then
+    echo "No Mule install directory detected"
+    exit 0
+    else
     popd
+    log "Detected that $MULE_HOME directory was still present"
+    rm -rf $MULE_HOME
     fi
     EOF
   end
@@ -70,17 +73,10 @@ bash 'remove mule installation' do
 
 =begin
 
-misdetection of the mule directory leads to
-unability to recycle mule.
-The leftover directory contents are shown below. Two rns
-total 12
-drwxr-xr-x 3 root root 4096 2012-07-25 14:51 .
-drwxr-xr-x 6 root root 4096 2012-07-25 14:51 ..
-drwxr-xr-x 4 root root 4096 2012-07-25 14:51 .mule
+The leftover directory contents are shown below.
+
+
 root@ip-10-81-31-138:/opt# ls -la mule/.mule/
-total 16
-drwxr-xr-x 4 root root 4096 2012-07-25 14:51 .
-drwxr-xr-x 3 root root 4096 2012-07-25 14:51 ..
 drwxr-xr-x 3 root root 4096 2012-07-25 14:51 mmc-agent-mule3-app-3.3.0
 drwxr-xr-x 3 root root 4096 2012-07-25 14:51 mmc-distribution-console-app-3.3.0
 
