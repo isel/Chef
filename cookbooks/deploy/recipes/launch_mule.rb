@@ -71,18 +71,33 @@ bash 'detect the mule status change' do
     echo "MULE_STATUS=$MULE_STATUS "
     MULE_PID=`expr "$MULE_STATUS" : 'Mule.*(\\([0-9][0-9]*\\)).*'`
     if [ ! -z  $MULE_PID ] ; then
-         echo "Mule is launched with PID=$MULE_PID"
+      echo "Mule is launched with PID=$MULE_PID"
     fi
     RETRY_CNT=`expr $RETRY_CNT - 1`
     if [ "$RETRY_CNT" -eq "$LAST_RETRY" ] ; then
-         echo "Exhausted retries"
-         exit 1
+      echo "Exhausted retries, ignoring the error"
+      exit 0
     fi
     echo "Retries left: $RETRY_CNT"
     sleep #{sleep_interval}
     done
     popd
 
+  EOF
+end
+end
+
+bash 'show the mule_ee.log from the current launch' do
+  code <<-EOF
+
+MULE_EE_LOG="/opt/mule/logs/mule_ee.log"
+
+LINE_LAST_LAUNCH=$(grep -n 'initialization started' $MULE_EE_LOG | grep 'Root WebApplicationContext'| tail -1 | cut -d: -f1)
+if [ ! -z $LINE_LAST_LAUNCH ] ; then
+sed -n "$LINE_LAST_LAUNCH,\\$p" $MULE_EE_LOG
+else
+cat $MULE_EE_LOG
+fi
   EOF
 end
 end
@@ -119,8 +134,8 @@ if !verify_completion.nil? && verify_completion != ''
       echo "get HTTP status code $HTTP_STATUS, $RESULT"
       RETRY_CNT=`expr $RETRY_CNT - 1`
       if [ "$RETRY_CNT" -eq "$LAST_RETRY" ] ; then
-         echo "Exhausted retries"
-         exit 1
+        echo "Exhausted retries"
+        exit 1
       fi
       echo "Retries left: $RETRY_CNT"
       sleep #{sleep_interval}
@@ -128,20 +143,6 @@ if !verify_completion.nil? && verify_completion != ''
     EOF
   end
 
-  bash 'show the mule_ee.log from the current launch' do
-    code <<-EOF
-
-  MULE_EE_LOG="/opt/mule/logs/mule_ee.log"
-
-  LINE_LAST_LAUNCH=$(grep -n 'initialization started' $MULE_EE_LOG | grep 'Root WebApplicationContext'| tail -1 | cut -d: -f1)
-  if [ ! -z $LINE_LAST_LAUNCH ] ; then
-  sed -n "$LINE_LAST_LAUNCH,\\$p" $MULE_EE_LOG
-  else
-  cat $MULE_EE_LOG
-  fi
-    EOF
-  end
-end
 
 log 'mule successfully launched'
 

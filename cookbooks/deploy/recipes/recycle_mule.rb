@@ -10,6 +10,7 @@ sleep_interval = 10
 bash 'Remove plugin  and app anchors' do
   code <<-EOF
     set +e
+    export LANG=en_US.UTF-8
     MULE_HOME="#{mule_home}"
     MULE_PLUGIN_HOME="$MULE_HOME/apps"
     if [ ! -d "$MULE_PLUGIN_HOME" ] ; then
@@ -32,6 +33,7 @@ end
 bash 'Stop mule service' do
   code <<-EOF
     set +e
+    export LANG=en_US.UTF-8
     MULE_HOME="#{mule_home}"
     MULE_SIGNATURE='/mule/lib/boot/exec'
     SERVICE_PROCESS=`ps ax | grep $MULE_SIGNATURE | grep -v grep | awk '{print $1}'|tail -1`
@@ -53,6 +55,7 @@ end
 bash 'Detect mule stops clean' do
 
   code <<-EOF
+  export LANG=en_US.UTF-8
   MULE_HOME="#{mule_home}"
   pushd $MULE_HOME/bin
   LAST_RETRY=0
@@ -84,7 +87,7 @@ end
 bash 'Terminate stray mule processes' do
   code <<-EOF
     set +e
-    sleep 10
+    export LANG=en_US.UTF-8
     MULE_SIGNATURE='/mule/lib/boot/exec'
     SERVICE_PROCESS=`ps ax | grep $MULE_SIGNATURE | grep -v grep | awk '{print $1}'|tail -1`
     if [ ! -z "$SERVICE_PROCESS" ] ; then
@@ -104,6 +107,7 @@ bash 'remove mule installation' do
 
   code <<-EOF
     set +e
+    export LANG=en_US.UTF-8
     export MULE_HOME=#{mule_home}
     PRODUCT_VENDOR_DIRECTORY="#{product_vendor_directory}"
     rm -f -r $PRODUCT_VENDOR_DIRECTORY
