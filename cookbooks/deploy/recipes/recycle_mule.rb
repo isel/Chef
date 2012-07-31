@@ -29,7 +29,6 @@ bash 'Remove plugin  and app anchors' do
 end
 
 
-# TODO - process cleanup
 bash 'Stop mule service' do
   code <<-EOF
     set +e
@@ -48,19 +47,12 @@ bash 'Stop mule service' do
         echo "No Mule bin directory detected"
       fi
     fi
-    sleep 10
-    echo "Terminate orphaned mule process still running"
-    while [ ! -z $SERVICE_PROCESS ] ; do
-      echo "Killing the service process $SERVICE_PROCESS"
-      kill -KILL  $SERVICE_PROCESS
-      sleep 10
-      SERVICE_PROCESS=`ps ax | grep $MULE_SIGNATURE | grep -v grep | awk '{print $1}'|tail -1`
-    done
   EOF
 end
 
+bash 'Detect mule stops clean' do
 
-code <<-EOF
+  code <<-EOF
   pushd $MULE_HOME/bin
   LAST_RETRY=0
   RETRY_CNT=30
@@ -85,11 +77,27 @@ code <<-EOF
   done
   popd
 
-EOF
+  EOF
 end
 
+bash 'Terminate stray mule processes' do
+  code <<-EOF
+    set +e
+    sleep 10
+    MULE_SIGNATURE='/mule/lib/boot/exec'
+    SERVICE_PROCESS=`ps ax | grep $MULE_SIGNATURE | grep -v grep | awk '{print $1}'|tail -1`
+    if [ ! -z "$SERVICE_PROCESS" ] ; then
+    echo "Terminate orphaned mule process still running"
+    while [ ! -z $SERVICE_PROCESS ] ; do
+      echo "Killing the service process $SERVICE_PROCESS"
+      kill -KILL  $SERVICE_PROCESS
+      sleep 10
+      SERVICE_PROCESS=`ps ax | grep $MULE_SIGNATURE | grep -v grep | awk '{print $1}'|tail -1`
+    done
+    fi
+  EOF
+end
 
-sleep 60
 
 bash 'remove mule installation' do
 
