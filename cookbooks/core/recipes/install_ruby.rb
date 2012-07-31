@@ -12,9 +12,15 @@ template "#{node['ruby_scripts_dir']}/download_ruby.rb" do
   )
 end
 
+bash 'Install fog' do
+  code <<-EOF
+    ENV['RUBYGEMS_BINARY_PATH'] ||= 'gem'
+    gem install fog -v 1.1.1 --no-rdoc --no-ri
+  EOF
+end
+
 bash 'Download ruby' do
   code <<-EOF
-    gem install fog -v 1.1.1 --no-rdoc --no-ri
     /opt/rightscale/sandbox/bin/ruby -rubygems #{node['ruby_scripts_dir']}/download_ruby.rb
   EOF
 end
