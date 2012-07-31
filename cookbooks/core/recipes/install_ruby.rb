@@ -43,6 +43,7 @@ bash 'Install ruby from source' do
 
     cd ~/src/ruby
     chmod 777 configure
+    chmod 777 tool/ifchange
 
     ./configure --enable-shared --prefix=/opt/ruby/#{ruby_version} 2>&1 | tee log-1-configure.txt
 
