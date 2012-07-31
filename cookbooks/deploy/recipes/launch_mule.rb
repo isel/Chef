@@ -141,7 +141,7 @@ if !verify_completion.nil? && verify_completion != ''
     done
     EOF
   end
-
+end
 
 log 'mule successfully launched'
 
