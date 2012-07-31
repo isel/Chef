@@ -64,7 +64,7 @@ bash 'detect the mule status change' do
   code <<-EOF
     pushd /opt/mule/bin
     LAST_RETRY=0
-    RETRY_CNT=10
+    RETRY_CNT=30
     MULE_PID=
     while  [ -z  $MULE_PID ] ; do
     MULE_STATUS=$(./mule status | tail -1| grep -i mule)
