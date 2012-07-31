@@ -57,14 +57,13 @@ filelist.split(/[;,]/).each do |filename_expected|
       Dir.chdir(deploy_folder)
 
       puts " copying the file"
-       File.open("#{deploy_folder}/#{basename_local_file}", 'wb') do
-        |local_file|
+       File.open("#{deploy_folder}/#{basename_local_file}", 'wb') do |local_file|
         local_file.write(stream_handle.body)
        end
       unless ( no_explode ) then
-      puts "exploding and unlinking the file #{basename_local_file}"
-       `unzip -d #{deploy_folder}/#{product} #{basename_local_file}`
-       # `rm "#{basename_local_file}"`
+        puts "exploding and unlinking the file #{basename_local_file}"
+         `unzip -d #{deploy_folder}/#{product} #{basename_local_file}`
+         # `rm "#{basename_local_file}"`
       end
     end
   end
