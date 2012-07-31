@@ -64,7 +64,7 @@ filelist.split(/[;,]/).each do |filename_expected|
       unless ( no_explode ) then
       puts "exploding and unlinking the file #{basename_local_file}"
        `tar xf #{basename_local_file}`
-       `rm "#{basename_local_file}"`
+       # `rm "#{basename_local_file}"`
       end
     end
   end
