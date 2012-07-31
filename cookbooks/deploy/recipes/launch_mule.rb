@@ -1,7 +1,7 @@
 require 'fileutils'
 require 'yaml'
 
-
+# rs_agent_dev:download_cookbooks_once=true
 hostname = node[:hostname]
 ulimit_files = node[:deploy][:ulimit_files]
 mule_port = node[:deploy][:mule_port]
@@ -51,13 +51,16 @@ bash 'launch mule' do
          if [ ! -z  $MULE_PID ] ; then
          echo "mule is already running on PID=$MULE_PID"
          else
-    echo "current directory: `pwd`"
-    echo "user $UID"
-    echo "effective $EUID"
-
+            echo "current directory: `pwd`"
+            echo "user: $UID"
+            echo "effective user: $EUID"
+            date +"%Y/%m/%W %z %H:%M:%S"
             echo 'starting the mule'
+            ls -lA .
             /usr/bin/nohup ./mule start -debug
-            ls -la /opt/mule/bin
+            echo 'started the mule'
+            ls -lA .
+#            ls -la /opt/mule/bin
          fi
       fi
   EOF
@@ -69,8 +72,11 @@ bash 'detect the mule status change' do
   code <<-EOF
     pushd "/opt/mule/bin"
     echo "current directory: `pwd`"
-    echo "user $UID"
-    echo "effective $EUID"
+    echo "user: $UID"
+    echo "effective user: $EUID"
+    date +"%Y/%m/%W %z %H:%M:%S"
+    echo "Checking mule service status"
+    ls -lA .
     LAST_RETRY=0
     RETRY_CNT=10
     MULE_PID=
