@@ -7,8 +7,6 @@ version          "0.0.1"
 
 supports "ubuntu"
 
-depends 'deploy'
-
 recipe "core::install_gems", "Installs ruby gems"
 recipe "core::install_ruby", "Installs ruby from source"
 recipe "core::netsh_advfirewall_management", "Disables Windows Firewall"
