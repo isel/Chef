@@ -329,18 +329,6 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/force_provision": {
-      "display_name": "force provision",
-      "required": "required",
-      "recipes": [
-        "deploy::provision"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
     "deploy/infrastructure_artifacts": {
       "display_name": "infrastructure artifacts",
       "required": "required",

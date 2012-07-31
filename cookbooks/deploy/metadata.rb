@@ -155,11 +155,6 @@ attribute "deploy/elastic_search_plugins",
   :default => "bigdesk,elasticsearch-head,analysis-phonetic,analysis-icu",
   :recipes => ["deploy::elastic_search"]
 
-attribute "deploy/force_provision",
-  :display_name => "force provision",
-  :required => "required",
-  :recipes => ["deploy::provision"]
-
 attribute "deploy/infrastructure_artifacts",
   :display_name => "infrastructure artifacts",
   :required => "required",
