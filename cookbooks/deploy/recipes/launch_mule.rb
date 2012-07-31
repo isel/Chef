@@ -60,7 +60,10 @@ bash 'launch mule' do
             /usr/bin/nohup ./mule start -debug
             echo 'started the mule'
             ls -lA .
-#            ls -la /opt/mule/bin
+            MULE_EE_PIDFILE=".mule_ee.pid"
+            if [ -f $MULE_EE_PIDFILE ] ; then
+            echo "Mule pidfile has $( cat $MULE_EE_PIDFILE )"
+            fi
          fi
       fi
   EOF
