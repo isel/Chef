@@ -7,6 +7,8 @@ version          "0.0.1"
 
 supports "ubuntu"
 
+depends 'core'
+
 recipe "deploy::activemq", "Deploys ActiveMQ"
 recipe "deploy::adjust_ulimit", "Adjusts open files limit for log4j"
 recipe "deploy::appfabric_configure", "Configures AppFabric"

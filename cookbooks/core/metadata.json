@@ -62,6 +62,7 @@
   "groupings": {
   },
   "recipes": {
+    "core::download_vendor_artifacts_prereqs": "Sets up prereqs for downloading vendor artifacts",
     "core::install_gems": "Installs ruby gems",
     "core::install_ruby": "Installs ruby from source",
     "core::netsh_advfirewall_management": "Disables Windows Firewall",

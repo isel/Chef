@@ -7,6 +7,7 @@ version          "0.0.1"
 
 supports "ubuntu"
 
+recipe "core::download_vendor_artifacts_prereqs", "Sets up prereqs for downloading vendor artifacts"
 recipe "core::install_gems", "Installs ruby gems"
 recipe "core::install_ruby", "Installs ruby from source"
 recipe "core::netsh_advfirewall_management", "Disables Windows Firewall"
