@@ -54,7 +54,13 @@ bash 'Install ruby from source' do
     cd /opt/ruby
     rm -f active && ln -sf #{ruby_version} active
 
-    export PATH="/opt/ruby/active/bin:$PATH"
-    export MANPATH="/opt/ruby/active/share/man"
+    export PATH=/opt/ruby/active/bin:$PATH
+    export MANPATH=/opt/ruby/active/share/man
+  EOF
+end
+
+bash 'test rs_run_right_script' do
+  code <<-EOF
+    rs_run_right_script --help
   EOF
 end
