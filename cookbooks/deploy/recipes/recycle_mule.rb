@@ -53,6 +53,7 @@ end
 bash 'Detect mule stops clean' do
 
   code <<-EOF
+  MULE_HOME="#{mule_home}"
   pushd $MULE_HOME/bin
   LAST_RETRY=0
   RETRY_CNT=30
