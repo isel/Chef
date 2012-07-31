@@ -9,7 +9,7 @@ template "#{node['ruby_scripts_dir']}/download_ruby.rb" do
     :product => 'ruby',
     :version => '1.9.2-p320',
     :filelist => 'ruby',
-    :deploy_folder => '~/src'
+    :deploy_folder => '/root/src'
   )
 end
 
