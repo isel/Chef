@@ -9,6 +9,7 @@
     "ubuntu": ">= 0.0.0"
   },
   "dependencies": {
+    "deploy": ">= 0.0.0"
   },
   "recommendations": {
   },
