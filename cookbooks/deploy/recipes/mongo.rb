@@ -5,7 +5,7 @@ if !File.exists?('/opt/Mongo')
   version = node[:deploy][:mongo_version]
   install_directory="/opt/Mongo/mongodb-linux-x86_64-#{version}"
   template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
-    source 'scripts/download_vendor_drop.erb'
+    source "#{ruby_scripts_dir}/download_vendor_drop.erb"
     variables(
       :aws_access_key_id => node[:deploy][:aws_access_key_id],
       :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
