@@ -57,9 +57,10 @@ bash 'launch mule' do
       fi
   EOF
 end
-
-# detect the mule status change
 if !verify_completion.nil? && verify_completion != ''
+
+bash 'detect the mule status change' do
+
   code <<-EOF
     pushd /opt/mule/bin
     LAST_RETRY=0
