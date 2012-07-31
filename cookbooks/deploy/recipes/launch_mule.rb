@@ -100,7 +100,6 @@ cat $MULE_EE_LOG
 fi
   EOF
 end
-end
 
 # shortly after launch the deployed plugins are exploded from the original zip format
 # and become directory with the same basename
