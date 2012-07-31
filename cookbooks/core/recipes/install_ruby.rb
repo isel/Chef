@@ -1,7 +1,8 @@
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
 template "#{node['ruby_scripts_dir']}/download_ruby.rb" do
-  path "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
+  local true
+  source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
   variables(
     :aws_access_key_id => node[:core][:aws_access_key_id],
     :aws_secret_access_key => node[:core][:aws_secret_access_key],
