@@ -10,8 +10,8 @@ template "#{node['ruby_scripts_dir']}/download_ruby.rb" do
     :aws_secret_access_key => node[:core][:aws_secret_access_key],
     :product => 'ruby',
     :version => ruby_version,
-    :filelist => 'ruby',
-    :deploy_folder => '/root/src'
+    :artifacts => 'ruby',
+    :target_directory => '/root/src'
   )
 end
 
@@ -42,11 +42,9 @@ bash 'Install ruby from source' do
                tk-dev
 
     cd ~/src/ruby
+    chmod 777 configure
 
-    ../ruby/configure \
-            --enable-shared \
-            --prefix=/opt/ruby/#{ruby_version} 2>&1 \
-            | tee log-1-configure.txt
+    ./configure --enable-shared --prefix=/opt/ruby/#{ruby_version} 2>&1 | tee log-1-configure.txt
 
     make all 2>&1 | tee log-2-build.txt
     make test 2>&1 | tee log-3-test.txt
