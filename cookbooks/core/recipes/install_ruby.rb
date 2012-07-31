@@ -5,6 +5,7 @@ cookbook_file "#{ruby_scripts_dir}/download_vendor_drop.erb" do
   source "scripts/download_vendor_drop.erb" # this is the value that would be inferred from the path parameter
   mode "0644"
   cookbook "deploy"
+  path "templates"
 end
 
 #template "#{ruby_scripts_dir}/download_ruby.rb" do
