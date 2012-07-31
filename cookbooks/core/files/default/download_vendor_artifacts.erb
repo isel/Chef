@@ -17,7 +17,7 @@ s3_files = storage.directories.find { |d| d.key == 'ugfinfrastructure' }.files
 
 install_files = '<%= @artifacts %>'.split(',')
 
-if Dir.exist? "#{target_directory}/#{product}"
+if File.exist? "#{target_directory}/#{product}"
   puts "Found #{product} (#{version}) already on the system"
   exit 0
 end
