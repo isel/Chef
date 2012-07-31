@@ -4,20 +4,42 @@ require 'yaml'
 product = 'mule'
 mule_home = "/opt/#{product}"
 version = node[:deploy][:mule_version]
-complete_removal = 1
 product_vendor_directory="/opt/mule-enterprise-standalone-#{version}"
+sleep_interval = 10
+
+bash 'Remove plugin  and app anchors' do
+  code <<-EOF
+    set +e
+    MULE_HOME="#{mule_home}"
+    MULE_PLUGIN_HOME="$MULE_HOME/apps"
+    if [ ! -d "$MULE_PLUGIN_HOME" ] ; then
+    edit 0
+    fi
+    pushd "$MULE_PLUGIN_HOME"
+    APP_ANCHOR_LIST=`find . -type f  -a -name '*-anchor.txt'`
+    for APP_ANCHOR_FILE in $APP_ANCHOR_LIST ; do
+      echo "Deleting the anchor file $APP_ANCHOR_FILE to tell mule to undeploy application in a clean way"
+      rm "$MULE_PLUGIN_HOME/$APP_ANCHOR_FILE"
+      pushd $MULE_HOME/bin
+      ./mule restart
+      popd
+      sleep 30
+    done
+  EOF
+end
+
 
 # TODO - process cleanup
 bash 'Stop mule service' do
   code <<-EOF
     set +e
-    MULE_HOME=
+    MULE_HOME="#{mule_home}"
     MULE_SIGNATURE='/mule/lib/boot/exec'
     SERVICE_PROCESS=`ps ax | grep $MULE_SIGNATURE | grep -v grep | awk '{print $1}'|tail -1`
     if [ ! -z "$SERVICE_PROCESS" ] ; then
       echo 'Stopping the mule via launcher script call'
-      if [ -d "/opt/mule/bin" ] ; then
-        pushd /opt/mule/bin
+      if [ -d "$MULE_HOME/bin" ] ; then
+        pushd $MULE_HOME/bin
         ./mule stop
         echo "waiting on mule service stop "
         sleep 10
@@ -37,20 +59,41 @@ bash 'Stop mule service' do
   EOF
 end
 
-=begin
 
-Leftover directory cfound after recycling mule:
+code <<-EOF
+  pushd $MULE_HOME/bin
+  LAST_RETRY=0
+  RETRY_CNT=30
+  MULE_STATUS=$(./mule status | tail -1| grep -i mule)
+  echo "MULE_STATUS=$MULE_STATUS "
+  MULE_PID=`expr "$MULE_STATUS" : 'Mule.*(\\([0-9][0-9]*\\)).*'`
+  while  [ ! -z  $MULE_PID ] ; do
+  MULE_STATUS=$(./mule status | tail -1| grep -i mule)
+  echo "MULE_STATUS=$MULE_STATUS "
+  MULE_PID=`expr "$MULE_STATUS" : 'Mule.*(\\([0-9][0-9]*\\)).*'`
+  if [ -z  $MULE_PID ] ; then
+    echo "Mule is terminated"
+    exit 0
+  fi
+  RETRY_CNT=`expr $RETRY_CNT - 1`
+  if [ "$RETRY_CNT" -eq "$LAST_RETRY" ] ; then
+    echo "Exhausted retries"
+    exit 1
+  fi
+  echo "Retries left: $RETRY_CNT"
+  sleep #{sleep_interval}
+  done
+  popd
 
-ls -la mule/.mule/
-drwxr-xr-x 3 root root 4096 2012-07-25 14:51 mmc-agent-mule3-app-3.3.0
-drwxr-xr-x 3 root root 4096 2012-07-25 14:51 mmc-distribution-console-app-3.3.0
+EOF
+end
 
-=end
+
 sleep 60
 
 bash 'remove mule installation' do
 
-    code <<-EOF
+  code <<-EOF
     set +e
     export MULE_HOME=#{mule_home}
     PRODUCT_VENDOR_DIRECTORY="#{product_vendor_directory}"
@@ -66,7 +109,7 @@ bash 'remove mule installation' do
     rm -f $MULE_HOME
     fi
 
-    log "Check if $MULE_HOME directory is still present"
+    echo "Check if $MULE_HOME directory is still present"
     pushd $MULE_HOME
     if [ "$?" -ne "0" ]
     then
@@ -77,8 +120,17 @@ bash 'remove mule installation' do
     echo "Detected that $MULE_HOME directory was still present"
     rm -rf $MULE_HOME
     fi
-    EOF
-  end
+  EOF
+end
 
-  log 'Recycled Mule install directory.'
+log 'Recycled Mule install directory.'
 
+=begin
+
+Leftover directory cfound after recycling mule:
+
+ls -la mule/.mule/
+drwxr-xr-x 3 root root 4096 2012-07-25 14:51 mmc-agent-mule3-app-3.3.0
+drwxr-xr-x 3 root root 4096 2012-07-25 14:51 mmc-distribution-console-app-3.3.0
+
+=end
