@@ -21,6 +21,30 @@
   "replacing": {
   },
   "attributes": {
+    "core/aws_access_key_id": {
+      "display_name": "aws access key id",
+      "required": "required",
+      "recipes": [
+        "core::install_ruby"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "core/aws_secret_access_key": {
+      "display_name": "aws secret access key",
+      "required": "required",
+      "recipes": [
+        "core::install_ruby"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "core/server_type": {
       "display_name": "server type",
       "description": "eg: db, app, web, cache, messaging, or search",
@@ -39,6 +63,7 @@
   },
   "recipes": {
     "core::install_gems": "Installs ruby gems",
+    "core::install_ruby": "Installs ruby from source",
     "core::netsh_advfirewall_management": "Disables Windows Firewall",
     "core::set_rightscale_account": "sets the Rightscale account",
     "core::setup_powershell_runtimes": "Allows up the poweshell to run multiple runtimes",
