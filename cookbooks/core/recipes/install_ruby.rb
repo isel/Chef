@@ -12,11 +12,11 @@ template "#{node['ruby_scripts_dir']}/download_ruby.rb" do
   )
 end
 
-bash 'Install fog' do
-  code <<-EOF
+ruby_block 'Install fog' do
+  block do
     ENV['RUBYGEMS_BINARY_PATH'] ||= 'gem'
-    gem install fog -v 1.1.1 --no-rdoc --no-ri
-  EOF
+    system("/opt/rightscale/sandbox/bin/gem install fog -v 1.1.1 --no-rdoc --no-ri")
+  end
 end
 
 bash 'Download ruby' do
