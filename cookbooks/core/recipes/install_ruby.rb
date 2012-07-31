@@ -1,5 +1,7 @@
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
+ruby_scripts_dir = node['ruby_scripts_dir']
+
 template "#{ruby_scripts_dir}/download_ruby.rb" do
   source "#{ruby_scripts_dir}/download_vendor_artifacts.erb"
   variables(
