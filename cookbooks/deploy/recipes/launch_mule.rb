@@ -51,8 +51,13 @@ bash 'launch mule' do
          if [ ! -z  $MULE_PID ] ; then
          echo "mule is already running on PID=$MULE_PID"
          else
+    echo "current directory: `pwd`"
+    echo "user $UID"
+    echo "effective $EUID"
+
             echo 'starting the mule'
             /usr/bin/nohup ./mule start -debug
+            ls -la /opt/mule/bin
          fi
       fi
   EOF
@@ -62,9 +67,12 @@ if !verify_completion.nil? && verify_completion != ''
 bash 'detect the mule status change' do
 
   code <<-EOF
-    pushd /opt/mule/bin
+    pushd "/opt/mule/bin"
+    echo "current directory: `pwd`"
+    echo "user $UID"
+    echo "effective $EUID"
     LAST_RETRY=0
-    RETRY_CNT=30
+    RETRY_CNT=10
     MULE_PID=
     while  [ -z  $MULE_PID ] ; do
     MULE_STATUS=$(./mule status | tail -1| grep -i mule)
