@@ -1,28 +1,32 @@
-ruby_scripts_dir = node['ruby_scripts_dir']
-Dir.mkdir(ruby_scripts_dir) unless File.exist? ruby_scripts_dir
+include_recipe 'core::download_vendor_artifacts_prereqs'
 
-if !File.exists?('/opt/Mongo')
+if !File.exists?('/opt/mongo')
   version = node[:deploy][:mongo_version]
-  install_directory="/opt/Mongo/mongodb-linux-x86_64-#{version}"
-  template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
-    source 'scripts/download_vendor_drop.erb'
+  install_directory="/opt/mongo"
+
+  template "#{ruby_scripts_dir}/download_mongo.rb" do
+    local true
+    source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
     variables(
       :aws_access_key_id => node[:core][:aws_access_key_id],
       :aws_secret_access_key => node[:core][:aws_secret_access_key],
-      :product => 'Mongo',
+      :s3_bucket => node[:core][:s3_bucket],
+      :s3_repository => 'Vendor',
+      :product => 'mongo',
       :version => version,
-      :filelist => 'mongo'
+      :artifacts => 'mongo',
+      :target_directory => install_directory
     )
   end
-  bash 'Installing vendor drop artifacts' do
+  bash 'Downloading mongo' do
     code <<-EOF
-      /opt/rightscale/sandbox/bin/ruby -rubygems #{ruby_scripts_dir}/download_vendor_drop.rb
+      ruby -rubygems #{ruby_scripts_dir}/download_mongo.rb
     EOF
   end
 
   bash 'Setting directory links' do
     code <<-EOF
-      pushd /opt/Mongo
+      pushd /opt/mongo
       ln -s #{install_directory} current
       mkdir -p /data/db
     EOF

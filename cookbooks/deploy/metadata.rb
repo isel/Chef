@@ -46,6 +46,12 @@ attribute "core/aws_secret_access_key",
   :required => "required",
   :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_infrastructure", "deploy::download_pims", "deploy::elastic_search", "deploy::mongo"]
 
+attribute "core/s3_bucket",
+  :display_name => "s3 bucket for the UGF platform",
+  :required => "optional",
+  :default  => "ugfartifacts",
+  :recipes  => ["deploy::mongo"]
+
 # Attributes from deploy cookbook
 attribute "deploy/activemq_port",
   :display_name => "activemq port",
