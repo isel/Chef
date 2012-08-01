@@ -91,7 +91,7 @@ bash 'detect the mule status change' do
     fi
 
     LAST_RETRY=0
-    RETRY_CNT=10
+    RETRY_CNT=10                                    t
     MULE_PID=
     while  [ -z  $MULE_PID ] ; do
     echo "current directory: `pwd`"
@@ -103,7 +103,7 @@ bash 'detect the mule status change' do
     else
       echo "No mule pidfile"
     fi
-
+    ./mule status
     MULE_STATUS=$(./mule status | tail -1| grep -i mule)
 
     echo "MULE_STATUS=$MULE_STATUS "
