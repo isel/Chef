@@ -21,7 +21,8 @@ if !plugins.nil?
             )
   end
 end
-
+# put a marker in the log .
+#(0..16).to_a.map{|a| rand(16).to_s(16)}.join
 bash 'launch mule' do
   code <<-EOF
       cd /opt/mule/bin
@@ -31,6 +32,8 @@ bash 'launch mule' do
       export MAVEN_HOME=/usr/share/maven2
       export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
       export PATH=$PATH:$MULE_HOME/bin:$JAVA_HOME/bin
+      export MULE_EE_PIDFILE=".mule_ee.pid"
+
       FILE_LIMIT=#{ulimit_files}
       if [ ! -z $FILE_LIMIT ];      then
       FILE_LIMIT=`expr $FILE_LIMIT : '^\\([0-9][0-9]*\\)$'`
@@ -60,7 +63,6 @@ bash 'launch mule' do
             /usr/bin/nohup ./mule start -debug
             echo 'started the mule'
             ls -lA .
-            MULE_EE_PIDFILE=".mule_ee.pid"
             if [ -f $MULE_EE_PIDFILE ] ; then
             echo "Mule pidfile has $( cat $MULE_EE_PIDFILE )"
             fi
@@ -73,18 +75,37 @@ if !verify_completion.nil? && verify_completion != ''
 bash 'detect the mule status change' do
 
   code <<-EOF
-    pushd "/opt/mule/bin"
-    echo "current directory: `pwd`"
+    cd /opt/mule/bin
+    export MULE_EE_PIDFILE=".mule_ee.pid"
     echo "user: $UID"
     echo "effective user: $EUID"
+
+    echo "current directory: `pwd`"
     date +"%Y/%m/%W %z %H:%M:%S"
     echo "Checking mule service status"
     ls -lA .
+    if [ -f $MULE_EE_PIDFILE ] ; then
+      echo "Mule pidfile has $( cat $MULE_EE_PIDFILE )"
+    else
+      echo "No mule pidfile"
+    fi
+
     LAST_RETRY=0
     RETRY_CNT=10
     MULE_PID=
     while  [ -z  $MULE_PID ] ; do
+    echo "current directory: `pwd`"
+    date +"%Y/%m/%W %z %H:%M:%S"
+    echo "Checking mule service status"
+    ls -lA .
+    if [ -f $MULE_EE_PIDFILE ] ; then
+      echo "Mule pidfile has $( cat $MULE_EE_PIDFILE )"
+    else
+      echo "No mule pidfile"
+    fi
+
     MULE_STATUS=$(./mule status | tail -1| grep -i mule)
+
     echo "MULE_STATUS=$MULE_STATUS "
     MULE_PID=`expr "$MULE_STATUS" : 'Mule.*(\\([0-9][0-9]*\\)).*'`
     if [ ! -z  $MULE_PID ] ; then
