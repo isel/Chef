@@ -6,6 +6,7 @@ hostname = node[:hostname]
 ulimit_files = node[:deploy][:ulimit_files]
 mule_port = node[:deploy][:mule_port]
 verify_completion = node[:deploy][:verify_completion]
+show_mule_log=false
 sleep_interval = 10
 plugin_home = '/opt/mule/apps'
 
@@ -22,10 +23,12 @@ if !plugins.nil?
   end
 end
 # put a marker in the log .
-#(0..16).to_a.map{|a| rand(16).to_s(16)}.join
+launch_marker = (0..8).to_a.map { |a| rand(16).to_s(16) }.join
+
 bash 'launch mule' do
   code <<-EOF
-      cd /opt/mule/bin
+    set +e
+
       export LANG=en_US.UTF-8
       export MULE_HOME=/opt/mule
       export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
@@ -33,6 +36,8 @@ bash 'launch mule' do
       export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
       export PATH=$PATH:$MULE_HOME/bin:$JAVA_HOME/bin
       export MULE_EE_PIDFILE=".mule_ee.pid"
+      export LAUNCH_MARKER="-- #{launch_marker} launched --"
+      export LAUNCH_TIMESTAMP=
 
       FILE_LIMIT=#{ulimit_files}
       if [ ! -z $FILE_LIMIT ];      then
@@ -47,35 +52,33 @@ bash 'launch mule' do
         echo 'no meaningful FILE_LIMIT provided'
       fi
       ulimit -a
-      if [ -x mule ] ; then
-         MULE_STATUS=$(./mule status | tail -1| grep -i mule)
-         echo "MULE_STATUS=$MULE_STATUS "
-         MULE_PID=`expr "$MULE_STATUS" : 'Mule.*(\\([0-9][0-9]*\\)).*'`
-         if [ ! -z  $MULE_PID ] ; then
-         echo "mule is already running on PID=$MULE_PID"
-         else
-            echo "current directory: `pwd`"
-            echo "user: $UID"
-            echo "effective user: $EUID"
-            date +"%Y/%m/%W %z %H:%M:%S"
-            echo 'starting the mule'
-            ls -lA .
-            /usr/bin/nohup ./mule start -debug
-            echo 'started the mule'
-            ls -lA .
-            if [ -f $MULE_EE_PIDFILE ] ; then
-            echo "Mule pidfile has $( cat $MULE_EE_PIDFILE )"
-            fi
-         fi
+
+      cd "$MULE_HOME/bin"
+
+      if [ -x "mule" ] ; then
+        MULE_STATUS=$(./mule status | tail -1| grep -i mule)
+        echo "MULE_STATUS=$MULE_STATUS "
+        MULE_PID=`expr "$MULE_STATUS" : 'Mule.*(\\([0-9][0-9]*\\)).*'`
+        if [ ! -z  $MULE_PID ] ; then
+          echo "mule is already running on PID=$MULE_PID"
+        else
+          echo 'starting the mule'
+          LAUNCH_TIMESTAMP=$(date +"%Y/%m/%W %z %H:%M:%S")
+          /usr/bin/nohup ./mule start -debug
+          if [ -f $MULE_EE_PIDFILE ] ; then
+            echo "Started the Mule process $( cat $MULE_EE_PIDFILE ) on $LAUNCH_TIMESTAMP"
+          fi
+        fi
       fi
   EOF
 end
+
 if !verify_completion.nil? && verify_completion != ''
 
-bash 'detect the mule status change' do
+  bash 'detect the mule status change' do
 
+    code <<-EOF
 
-  code <<-EOF
   set +e
 
   export LANG=en_US.UTF-8
@@ -88,32 +91,18 @@ bash 'detect the mule status change' do
 
   cd "$MULE_HOME/bin"
 
-  echo "current directory: `pwd`"
-  date +"%Y/%m/%W %z %H:%M:%S"
-  echo "Checking mule service status"
-  ls -lA .
-  if [ -f $MULE_EE_PIDFILE ] ; then
-    echo "Mule pidfile has $( cat $MULE_EE_PIDFILE )"
-  else
-    echo "No mule pidfile"
-  fi
-
   LAST_RETRY=0
   RETRY_CNT=5
   MULE_PID=
-  while  [ -z  $MULE_PID ] ; do
-    echo "current directory: `pwd`"
+  while  [ -z $MULE_PID ] ; do
     date +"%Y/%m/%W %z %H:%M:%S"
     echo "Checking mule service status"
-    ls -lA .
     if [ -f $MULE_EE_PIDFILE ] ; then
       echo "Mule pidfile has $( cat $MULE_EE_PIDFILE )"
     else
       echo "No mule pidfile"
     fi
-    ./mule status
     MULE_STATUS=$(./mule status | tail -1| grep -i mule)
-
     echo "MULE_STATUS=$MULE_STATUS "
     MULE_PID=`expr "$MULE_STATUS" : 'Mule.*(\\([0-9][0-9]*\\)).*'`
     if [ ! -z  $MULE_PID ] ; then
@@ -129,27 +118,35 @@ bash 'detect the mule status change' do
     done
 
 
-  EOF
+    EOF
+  end
 end
-end
 
-bash 'show the mule_ee.log from the current launch' do
-  code <<-EOF
-
-MULE_EE_LOG="/opt/mule/logs/mule_ee.log"
-
-LINE_LAST_LAUNCH=$(grep -n 'initialization started' $MULE_EE_LOG | grep 'Root WebApplicationContext'| tail -1 | cut -d: -f1)
-if [ ! -z $LINE_LAST_LAUNCH ] ; then
-sed -n "$LINE_LAST_LAUNCH,\\$p" $MULE_EE_LOG
-else
-cat $MULE_EE_LOG
-fi
-  EOF
+if  show_mule_log
+  bash 'show the mule_ee.log from the current launch' do
+    code <<-EOF
+    export MULE_EE_LOG="/opt/mule/logs/mule_ee.log"
+    export LAUNCH_MARKER_TAG="#{launch_marker}"
+    export SHOW_LOG_LINES=25
+    if [ ! -z $LAUNCH_MARKER_TAG ] ; then
+      LINE_LAST_LAUNCH=$(grep -n "$LAUNCH_MARKER_TAG" $MULE_EE_LOG |  tail -1 | cut -d: -f1)
+    else
+      LINE_LAST_LAUNCH=$(grep -n 'initialization started' $MULE_EE_LOG | grep 'Root WebApplicationContext'| tail -1 | cut -d: -f1)
+    fi
+    if  [ ! -z $LINE_LAST_LAUNCH ] ; then
+      echo "launch marker tag found at $LINE_LAST_LAUNCH"
+      sed -n "$LINE_LAST_LAUNCH,\\$p" $MULE_EE_LOG | tail -$SHOW_LOG_LINES
+    else
+      echo "found no launch marker tag, showing $SHOW_LOG_LINES lines"
+      tail -$SHOW_LOG_LINES $MULE_EE_LOG
+    fi
+    EOF
+  end
 end
 
 # shortly after launch the deployed plugins are exploded from the original zip format
 # and become directory with the same basename
-
+# this has to become erb template to work as intended.
 plugins.each do |package_file|
   log "Inspecting mmc plugin package: #{package_file}"
   package_directory = File.basename(package_file, '.zip')

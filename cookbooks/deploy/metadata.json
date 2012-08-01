@@ -467,6 +467,19 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/mule_complete_removal": {
+      "display_name": "Mule plugins",
+      "description": "Completely recycle Mule application",
+      "required": "optional",
+      "recipes": [
+        "deploy::recycle_mule"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/pims_artifacts": {
       "display_name": "pims artifacts",
       "required": "required",

@@ -214,6 +214,12 @@ attribute "deploy/mule_plugins",
   :default     => "mmc-agent-mule3-app-3.3.0.zip,mmc-distribution-console-app-3.3.0.zip",
   :recipes     => ["deploy::mule","deploy::launch_mule"]
 
+attribute "deploy/mule_complete_removal",
+  :display_name => "Mule plugins",
+  :description => "Completely recycle Mule application",
+  :required    => "optional",
+  :recipes     => ["deploy::recycle_mule"]
+
 attribute "deploy/pims_artifacts",
   :display_name => "pims artifacts",
   :required => "required",
