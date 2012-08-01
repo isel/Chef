@@ -10,6 +10,8 @@ if !File.exists?('/opt/ruby')
     variables(
         :aws_access_key_id => node[:core][:aws_access_key_id],
         :aws_secret_access_key => node[:core][:aws_secret_access_key],
+        :s3_bucket => node[:core][:s3_bucket],
+        :s3_repository => 'Vendor',
         :product => 'ruby',
         :version => ruby_version,
         :artifacts => 'ruby',

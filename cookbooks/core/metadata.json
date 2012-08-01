@@ -57,6 +57,20 @@
       ],
       "calculated": false,
       "type": "string"
+    },
+    "core/s3_bucket": {
+      "display_name": "s3 bucket for the UGF platform",
+      "description": "i.e. ugfartifacts, ugfproduction",
+      "required": "optional",
+      "default": "ugfartifacts",
+      "recipes": [
+        "core::install_ruby"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
     }
   },
   "groupings": {

@@ -31,3 +31,10 @@ attribute "core/server_type",
   :description => "eg: db, app, web, cache, messaging, or search",
   :required => "required",
   :recipes => ["core::tag_server_type"]
+
+attribute "core/s3_bucket",
+  :display_name => "s3 bucket for the UGF platform",
+  :description => "i.e. ugfartifacts, ugfproduction",
+  :required => "optional",
+  :default  => "ugfartifacts",
+  :recipes => ["core::install_ruby"]

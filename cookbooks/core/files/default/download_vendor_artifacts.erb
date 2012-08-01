@@ -1,6 +1,7 @@
 require 'fog'
 require 'fileutils'
 
+s3_repository = '<%= @s3_repository %>'
 product = '<%= @product %>'
 version = '<%= @version %>'
 target_directory = '<%= @target_directory %>'
@@ -13,7 +14,7 @@ storage = Fog::Storage.new(
   :aws_secret_access_key => '<%= @aws_secret_access_key %>'
 )
 
-s3_files = storage.directories.find { |d| d.key == 'ugfinfrastructure' }.files
+s3_files = storage.directories.find { |d| d.key == '<%= @s3_bucket %>' }.files
 
 install_files = '<%= @artifacts %>'.split(',')
 
@@ -25,7 +26,7 @@ end
 Dir.mkdir(target_directory)
 missing_files = []
 
-s3_path = "#{product}/#{version}"
+s3_path = "#{s3_repository}/#{product}/#{version}"
 
 install_files.each do |f|
   file = s3_files.get("#{s3_path}/#{f}.zip")
