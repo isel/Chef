@@ -59,8 +59,8 @@ if !File.exists?('/opt/ruby')
     rm /usr/bin/gem
 
     ln -fs #{ruby_version} active
-    ln -fs /opt/ruby/active/bin/ruby /usr/local/bin/ruby
-    ln -fs /opt/ruby/active/bin/gem /usr/local/bin/gem
+    ln -fs /opt/ruby/active/bin/ruby /usr/bin/ruby
+    ln -fs /opt/ruby/active/bin/gem /usr/bin/gem
 
     # this is not working
     # export PATH=/opt/ruby/active/bin:$PATH
