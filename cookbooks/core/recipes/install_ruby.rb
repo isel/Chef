@@ -1,35 +1,36 @@
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
-ruby_version = '1.9.2-p320'
+if !File.exists?('/opt/ruby')
+  ruby_version = '1.9.2-p320'
 
-template "#{node['ruby_scripts_dir']}/download_ruby.rb" do
-  local true
-  source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
-  variables(
-    :aws_access_key_id => node[:core][:aws_access_key_id],
-    :aws_secret_access_key => node[:core][:aws_secret_access_key],
-    :product => 'ruby',
-    :version => ruby_version,
-    :artifacts => 'ruby',
-    :target_directory => '/root/src'
-  )
-end
-
-ruby_block 'Install fog' do
-  block do
-    ENV['RUBYGEMS_BINARY_PATH'] ||= 'gem'
-    system("/opt/rightscale/sandbox/bin/gem install fog -v 1.1.1 --no-rdoc --no-ri")
+  template "#{node['ruby_scripts_dir']}/download_ruby.rb" do
+    local true
+    source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
+    variables(
+        :aws_access_key_id => node[:core][:aws_access_key_id],
+        :aws_secret_access_key => node[:core][:aws_secret_access_key],
+        :product => 'ruby',
+        :version => ruby_version,
+        :artifacts => 'ruby',
+        :target_directory => '/root/src'
+    )
   end
-end
 
-bash 'Download ruby' do
-  code <<-EOF
+  ruby_block 'Install fog' do
+    block do
+      ENV['RUBYGEMS_BINARY_PATH'] ||= 'gem'
+      system("/opt/rightscale/sandbox/bin/gem install fog -v 1.1.1 --no-rdoc --no-ri")
+    end
+  end
+
+  bash 'Download ruby' do
+    code <<-EOF
     /opt/rightscale/sandbox/bin/ruby -rubygems #{node['ruby_scripts_dir']}/download_ruby.rb
-  EOF
-end
+    EOF
+  end
 
-bash 'Install ruby from source' do
-  code <<-EOF
+  bash 'Install ruby from source' do
+    code <<-EOF
     apt-get -y install \
                build-essential \
                libreadline-dev \
@@ -52,13 +53,13 @@ bash 'Install ruby from source' do
     make install 2>&1 | tee log-4-install.txt
 
     cd /opt/ruby
-    # rm -f active && ln -sf #{ruby_version} active
-    # ln -fs /usr/bin/ruby /opt/ruby/active/ruby
+    rm -f active
+    ln -sf #{ruby_version} active
+    ln -fs /usr/local/bin/ruby /opt/ruby/active/bin/ruby
 
     # this is not working
     export PATH=/opt/ruby/active/bin:$PATH
     export MANPATH=/opt/ruby/active/share/man
-  EOF
+    EOF
+  end
 end
-
-
