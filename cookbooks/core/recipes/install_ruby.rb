@@ -52,9 +52,10 @@ bash 'Install ruby from source' do
     make install 2>&1 | tee log-4-install.txt
 
     cd /opt/ruby
-    rm -f active && ln -sf #{ruby_version} active
-    ln -fs /usr/local/bin/ruby /opt/ruby/active/ruby
+    # rm -f active && ln -sf #{ruby_version} active
+    # ln -fs /usr/bin/ruby /opt/ruby/active/ruby
 
+    # this is not working
     export PATH=/opt/ruby/active/bin:$PATH
     export MANPATH=/opt/ruby/active/share/man
   EOF
