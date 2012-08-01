@@ -53,8 +53,12 @@ if !File.exists?('/opt/ruby')
     make install 2>&1 | tee log-4-install.txt
 
     cd /opt/ruby
+
     rm -f active
-    ln -sf #{ruby_version} active
+    rm /usr/bin/ruby
+    rm /usr/bin/gem
+
+    ln -fs #{ruby_version} active
     ln -fs /opt/ruby/active/bin/ruby /usr/local/bin/ruby
     ln -fs /opt/ruby/active/bin/gem /usr/local/bin/gem
 
