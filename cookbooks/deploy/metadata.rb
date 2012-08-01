@@ -35,6 +35,18 @@ recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip i
 recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
 
+# Attributes from core cookbook
+attribute "core/aws_access_key_id",
+  :display_name => "aws access key id",
+  :required => "required",
+  :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_infrastructure", "deploy::download_pims", "deploy::elastic_search", "deploy::mongo"]
+
+attribute "core/aws_secret_access_key",
+  :display_name => "aws secret access key",
+  :required => "required",
+  :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_infrastructure", "deploy::download_pims", "deploy::elastic_search", "deploy::mongo"]
+
+# Attributes from deploy cookbook
 attribute "deploy/activemq_port",
   :display_name => "activemq port",
   :required => "optional",
@@ -91,16 +103,6 @@ attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
   :recipes  => ["deploy::engine", "deploy::jspr", "deploy::provision", "deploy::update_configuration"]
-
-attribute "deploy/aws_access_key_id",
-  :display_name => "aws access key id",
-  :required => "required",
-  :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_infrastructure", "deploy::download_pims", "deploy::elastic_search", "deploy::mongo"]
-
-attribute "deploy/aws_secret_access_key",
-  :display_name => "aws secret access key",
-  :required => "required",
-  :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_infrastructure", "deploy::download_pims", "deploy::elastic_search", "deploy::mongo"]
 
 attribute "deploy/binaries_artifacts",
   :display_name => "binaries artifacts",

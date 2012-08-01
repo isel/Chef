@@ -22,6 +22,40 @@
   "replacing": {
   },
   "attributes": {
+    "core/aws_access_key_id": {
+      "display_name": "aws access key id",
+      "required": "required",
+      "recipes": [
+        "deploy::activemq",
+        "deploy::download_binaries",
+        "deploy::download_infrastructure",
+        "deploy::download_pims",
+        "deploy::elastic_search",
+        "deploy::mongo"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "core/aws_secret_access_key": {
+      "display_name": "aws secret access key",
+      "required": "required",
+      "recipes": [
+        "deploy::activemq",
+        "deploy::download_binaries",
+        "deploy::download_infrastructure",
+        "deploy::download_pims",
+        "deploy::elastic_search",
+        "deploy::mongo"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/activemq_port": {
       "display_name": "activemq port",
       "required": "optional",
@@ -148,40 +182,6 @@
         "deploy::jspr",
         "deploy::provision",
         "deploy::update_configuration"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/aws_access_key_id": {
-      "display_name": "aws access key id",
-      "required": "required",
-      "recipes": [
-        "deploy::activemq",
-        "deploy::download_binaries",
-        "deploy::download_infrastructure",
-        "deploy::download_pims",
-        "deploy::elastic_search",
-        "deploy::mongo"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/aws_secret_access_key": {
-      "display_name": "aws secret access key",
-      "required": "required",
-      "recipes": [
-        "deploy::activemq",
-        "deploy::download_binaries",
-        "deploy::download_infrastructure",
-        "deploy::download_pims",
-        "deploy::elastic_search",
-        "deploy::mongo"
       ],
       "choice": [
 

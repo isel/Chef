@@ -90,8 +90,8 @@ if !File.exists?("#{mule_home}/bin")
     template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
       source 'scripts/download_vendor_drop.erb'
       variables(
-          :aws_access_key_id => node[:deploy][:aws_access_key_id],
-          :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
+          :aws_access_key_id => node[:core][:aws_access_key_id],
+          :aws_secret_access_key => node[:core][:aws_secret_access_key],
           :product => product,
           :version => version,
           :filelist => 'mule',
@@ -139,8 +139,8 @@ if !File.exists?("#{mule_home}/bin")
   template "#{ruby_scripts_dir}/download_plugins.rb" do
     source 'scripts/download_vendor_drop.erb'
     variables(
-        :aws_access_key_id => node[:deploy][:aws_access_key_id],
-        :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
+        :aws_access_key_id => node[:core][:aws_access_key_id],
+        :aws_secret_access_key => node[:core][:aws_secret_access_key],
         :install_dir => "#{mule_home}/apps",
         :deploy_folder => "#{mule_home}/apps",
         :no_explode => 'true',

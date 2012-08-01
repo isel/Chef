@@ -7,8 +7,8 @@ puts "Processing template (need a different path for rvm cookbook) " + File.join
 template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
   source 'scripts/download_vendor_drop.erb'
   variables(
-    :aws_access_key_id => node[:deploy][:aws_access_key_id],
-    :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
+    :aws_access_key_id => node[:core][:aws_access_key_id],
+    :aws_secret_access_key => node[:core][:aws_secret_access_key],
     :product => product,
     :version => version,
     :filelist => 'activemq',
