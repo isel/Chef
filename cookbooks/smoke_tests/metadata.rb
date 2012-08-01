@@ -17,12 +17,63 @@ recipe "smoke_tests::local_loadbalancer", "Runs local load balancer server smoke
 recipe "smoke_tests::local_messaging", "Runs local messaging server smoke tests"
 recipe "smoke_tests::local_web", "Runs local web server smoke tests"
 
-attribute "smoke_tests/engine_server",
-  :display_name => "engine server",
-  :required => "required",
-  :recipes => ["smoke_tests::global"]
 
 ### attributes used from other cookbooks
+
+attribute "deploy/app_server",
+  :display_name => "app server",
+  :required => "required",
+  :recipes => ["smoke_tests::global", "smoke_tests::local_app","smoke_tests::local_engine", "smoke_tests::local_web","smoke_tests::local_messaging" ]
+
+attribute "deploy/web_server",
+  :display_name => "web server",
+  :required => "required",
+  :recipes => ["smoke_tests::local_messaging" ]
+
+attribute "deploy/messaging_server",
+  :display_name => "messaging server",
+  :required => "required",
+  :recipes => ["smoke_tests::local_messaging"]
+
+attribute "deploy/db_port",
+  :display_name => "db port",
+  :required => "optional",
+  :default => "27017",
+  :recipes => ["smoke_tests::global", "smoke_tests::local_app","smoke_tests::local_messaging"]
+
+attribute "deploy/db_server",
+  :display_name => "db server",
+  :required => "required",
+  :recipes => ["smoke_tests::global", "smoke_tests::local_app","smoke_tests::local_messaging"]
+
+attribute "deploy/search_server",
+  :display_name => "search_server",
+  :required => "required",
+  :recipes => ["smoke_tests::local_app","smoke_tests::local_messaging"]
+
+attribute "deploy/elastic_search_port",
+  :display_name => "elastic search port",
+  :required => "optional",
+  :default => "9200",
+  :recipes => ["smoke_tests::local_search","smoke_tests::local_app","smoke_tests::local_messaging"]
+
+
+attribute "deploy/cache_server",
+  :display_name => "cache server",
+  :required => "required",
+  :recipes => ["smoke_tests::local_messaging"]
+
+attribute "deploy/engine_server",
+  :display_name => "engine server",
+  :required => "required",
+  :recipes => ["smoke_tests::global", "smoke_tests::local_messaging"]
+
+attribute "deploy/engine_port",
+  :display_name => "droolz engine port",
+  :required => "optional",
+  :default => "8080",
+  :recipes => ["smoke_tests::local_messaging"]
+
 attribute "core/server_type",
   :display_name => "server type",
   :description => "eg: db, app, web, cache",
@@ -35,33 +86,6 @@ attribute "deploy/activemq_port",
   :required => "optional",
   :default => "61616",
   :recipes => ["smoke_tests::local_messaging"]
-
-attribute "deploy/app_server",
-  :display_name => "app server",
-  :required => "required",
-  :recipes => ["smoke_tests::global", "smoke_tests::local_app","smoke_tests::local_engine", "smoke_tests::local_web"]
-
-attribute "deploy/db_port",
-  :display_name => "db port",
-  :required => "optional",
-  :default => "27017",
-  :recipes => ["smoke_tests::global", "smoke_tests::local_app"]
-
-attribute "deploy/db_server",
-  :display_name => "db server",
-  :required => "required",
-  :recipes => ["smoke_tests::global", "smoke_tests::local_app"]
-
-attribute "deploy/search_server",
-  :display_name => "search_server",
-  :required => "required",
-  :recipes => ["smoke_tests::local_app"]
-
-attribute "deploy/elastic_search_port",
-  :display_name => "elastic search port",
-  :required => "optional",
-  :default => "9200",
-  :recipes => ["smoke_tests::local_search","smoke_tests::local_app"]
 
 attribute "deploy/elastic_search_plugins",
   :display_name => "elastic search plugins",
