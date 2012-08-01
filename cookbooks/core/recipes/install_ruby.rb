@@ -2,6 +2,7 @@ include_recipe 'core::download_vendor_artifacts_prereqs'
 
 if !File.exists?('/opt/ruby')
   ruby_version = '1.9.2-p320'
+  executables = ['ruby', 'gem', 'rake', 'rspec', 'rdoc', 'ri']
 
   template "#{node['ruby_scripts_dir']}/download_ruby.rb" do
     local true
@@ -60,13 +61,7 @@ if !File.exists?('/opt/ruby')
     rm /usr/bin/rake
 
     ln -fs #{ruby_version} active
-    ln -fs /opt/ruby/active/bin/ruby /usr/bin/ruby
-    ln -fs /opt/ruby/active/bin/gem /usr/bin/gem
-    ln -fs /opt/ruby/active/bin/rake /usr/bin/rake
-
-    # this is not working
-    # export PATH=/opt/ruby/active/bin:$PATH
-    # export MANPATH=/opt/ruby/active/share/man
+    #{executables.each { |exe| "ln -fs /opt/ruby/active/bin/#{exe} /usr/bin/#{exe} \n" }.join}
     EOF
   end
 end
