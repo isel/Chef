@@ -10,14 +10,14 @@
 ### END INIT INFO
 
 
-MONGO_BIN=/opt/mongo/current/bin
+MONGO_BIN=/opt/mongo/bin
 MONGO_LOG=/mnt/logs/mongo.log
 MONGO_START="$MONGO_BIN/mongod --fork --port <%= @port %> -vvvvv --logpath $MONGO_LOG --cpu"
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 
 . /lib/init/vars.sh
 
-START_LOG=/opt/mongo/current/START.log
+START_LOG=/opt/mongo/START.log
 echo "Starting Mongo: runlevel=$RUNLEVEL param=$1"  >> $START_LOG
 date    >> $START_LOG
 who -r  >> $START_LOG

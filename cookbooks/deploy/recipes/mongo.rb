@@ -15,7 +15,7 @@ if !File.exists?('/opt/mongo')
       :product => 'mongo',
       :version => version,
       :artifacts => 'mongo',
-      :target_directory => install_directory
+      :target_directory => '/opt'
     )
   end
   bash 'Downloading mongo' do
@@ -26,8 +26,6 @@ if !File.exists?('/opt/mongo')
 
   bash 'Setting directory links' do
     code <<-EOF
-      pushd /opt/mongo
-      ln -s #{install_directory} current
       mkdir -p /data/db
     EOF
   end
