@@ -55,11 +55,12 @@ if !File.exists?('/opt/ruby')
     cd /opt/ruby
     rm -f active
     ln -sf #{ruby_version} active
-    ln -fs /usr/local/bin/ruby /opt/ruby/active/bin/ruby
+    ln -fs /opt/ruby/active/bin/ruby /usr/local/bin/ruby
+    #ln -fs /usr/bin/ruby /opt/ruby/active/bin/ruby
 
     # this is not working
-    export PATH=/opt/ruby/active/bin:$PATH
-    export MANPATH=/opt/ruby/active/share/man
+    # export PATH=/opt/ruby/active/bin:$PATH
+    # export MANPATH=/opt/ruby/active/share/man
     EOF
   end
 end
