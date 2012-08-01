@@ -127,7 +127,7 @@ bash 'detect the mule status change' do
     echo "Retries left: $RETRY_CNT"
     sleep #{sleep_interval}
     done
-    popd
+
 
   EOF
 end
