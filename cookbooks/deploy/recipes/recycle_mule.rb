@@ -10,16 +10,28 @@ complete_removal = node[:deploy][:mule_complete_removal]
 
 if !complete_removal.nil? && complete_removal != ''
 
-bash 'Tell mule to undeploy plugins and applications in a clean way' do
+# passing all settings before launching mule script run to detect or change the service status is critical.
+# The status is read wrong when settings are not provided.
+# The pidfile is deleted if mule fails to verify its status.
+
+  bash 'Tell mule to undeploy plugins and applications in a clean way' do
   code <<-EOF
     set +e
+
     export LANG=en_US.UTF-8
-    MULE_HOME="#{mule_home}"
-    MULE_PLUGIN_HOME="$MULE_HOME/apps"
+    export MULE_HOME="#{mule_home}"
+    export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
+    export MAVEN_HOME=/usr/share/maven2
+    export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
+    export PATH=$PATH:$MULE_HOME/bin:$JAVA_HOME/bin
+    export MULE_EE_PIDFILE=".mule_ee.pid"
+    export MULE_PLUGIN_HOME="$MULE_HOME/apps"
+
+
     if [ ! -d "$MULE_PLUGIN_HOME" ] ; then
       edit 0
     fi
-    pushd "$MULE_PLUGIN_HOME"
+    cd "$MULE_PLUGIN_HOME"
     APP_ANCHOR_LIST=`find . -type f  -a -name '*-anchor.txt'`
     for APP_ANCHOR_FILE in $APP_ANCHOR_LIST ; do
       echo "Deleting the anchor file $APP_ANCHOR_FILE"
@@ -37,7 +49,12 @@ bash 'Stop mule service' do
   code <<-EOF
     set +e
     export LANG=en_US.UTF-8
-    MULE_HOME="#{mule_home}"
+    export MULE_HOME="#{mule_home}"
+    export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
+    export MAVEN_HOME=/usr/share/maven2
+    export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
+    export PATH=$PATH:$MULE_HOME/bin:$JAVA_HOME/bin
+    export MULE_EE_PIDFILE=".mule_ee.pid"
     MULE_SIGNATURE='/mule/lib/boot/exec'
     SERVICE_PROCESS=`ps ax | grep $MULE_SIGNATURE | grep -v grep | awk '{print $1}'|tail -1`
     if [ ! -z "$SERVICE_PROCESS" ] ; then
@@ -58,9 +75,13 @@ end
 bash 'Detect mule stops clean' do
 
   code <<-EOF
-  export LANG=en_US.UTF-8
-  MULE_HOME="#{mule_home}"
 
+  export LANG=en_US.UTF-8
+  export MULE_HOME="#{mule_home}"
+  export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
+  export MAVEN_HOME=/usr/share/maven2
+  export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
+  export PATH=$PATH:$MULE_HOME/bin:$JAVA_HOME/bin
   pushd "$MULE_HOME/bin"
 
   LAST_RETRY=0

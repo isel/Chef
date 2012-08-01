@@ -6,7 +6,7 @@ hostname = node[:hostname]
 ulimit_files = node[:deploy][:ulimit_files]
 mule_port = node[:deploy][:mule_port]
 verify_completion = node[:deploy][:verify_completion]
-show_mule_log=false
+show_mule_log=true
 sleep_interval = 10
 plugin_home = '/opt/mule/apps'
 
@@ -88,22 +88,22 @@ if !verify_completion.nil? && verify_completion != ''
   export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
   export PATH=$PATH:$MULE_HOME/bin:$JAVA_HOME/bin
   export MULE_EE_PIDFILE=".mule_ee.pid"
-
+  export MULE_STATUS_CHECK_TIMESTAMP=
   cd "$MULE_HOME/bin"
 
   LAST_RETRY=0
   RETRY_CNT=5
   MULE_PID=
   while  [ -z $MULE_PID ] ; do
-    date +"%Y/%m/%W %z %H:%M:%S"
-    echo "Checking mule service status"
+
     if [ -f $MULE_EE_PIDFILE ] ; then
       echo "Mule pidfile has $( cat $MULE_EE_PIDFILE )"
     else
       echo "No mule pidfile"
     fi
+    MULE_STATUS_CHECK_TIMESTAMP=$(date +"%Y/%m/%W %z %H:%M:%S")
     MULE_STATUS=$(./mule status | tail -1| grep -i mule)
-    echo "MULE_STATUS=$MULE_STATUS "
+    echo "Mule service status at ${MULE_STATUS_CHECK_TIMESTAMP}: $MULE_STATUS "
     MULE_PID=`expr "$MULE_STATUS" : 'Mule.*(\\([0-9][0-9]*\\)).*'`
     if [ ! -z  $MULE_PID ] ; then
       echo "Mule is launched with PID=$MULE_PID"
@@ -122,7 +122,7 @@ if !verify_completion.nil? && verify_completion != ''
   end
 end
 
-if  show_mule_log
+if show_mule_log
   bash 'show the mule_ee.log from the current launch' do
     code <<-EOF
     export MULE_EE_LOG="/opt/mule/logs/mule_ee.log"

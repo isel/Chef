@@ -215,7 +215,7 @@ attribute "deploy/mule_plugins",
   :recipes     => ["deploy::mule","deploy::launch_mule"]
 
 attribute "deploy/mule_complete_removal",
-  :display_name => "Mule plugins",
+  :display_name => "Complete Mule removal",
   :description => "Completely recycle Mule application",
   :required    => "optional",
   :recipes     => ["deploy::recycle_mule"]
