@@ -61,7 +61,7 @@ if !File.exists?('/opt/ruby')
     rm /usr/bin/rake
 
     ln -fs #{ruby_version} active
-    #{executables.each { |exe| "ln -fs /opt/ruby/active/bin/#{exe} /usr/bin/#{exe} \n" }.join}
+    #{executables.map { |exe| "ln -fs /opt/ruby/active/bin/#{exe} /usr/bin/#{exe} \n" }.join}
     EOF
   end
 end
