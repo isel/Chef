@@ -74,31 +74,34 @@ if !verify_completion.nil? && verify_completion != ''
 
 bash 'detect the mule status change' do
 
+
   code <<-EOF
-      export LANG=en_US.UTF-8
-      export MULE_HOME=/opt/mule
-      export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
-      export MAVEN_HOME=/usr/share/maven2
-      export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
-      export PATH=$PATH:$MULE_HOME/bin:$JAVA_HOME/bin
-      export MULE_EE_PIDFILE=".mule_ee.pid"
+  set +e
 
-    cd "$MULE_HOME/bin"
+  export LANG=en_US.UTF-8
+  export MULE_HOME=/opt/mule
+  export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
+  export MAVEN_HOME=/usr/share/maven2
+  export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
+  export PATH=$PATH:$MULE_HOME/bin:$JAVA_HOME/bin
+  export MULE_EE_PIDFILE=".mule_ee.pid"
 
-    echo "current directory: `pwd`"
-    date +"%Y/%m/%W %z %H:%M:%S"
-    echo "Checking mule service status"
-    ls -lA .
-    if [ -f $MULE_EE_PIDFILE ] ; then
-      echo "Mule pidfile has $( cat $MULE_EE_PIDFILE )"
-    else
-      echo "No mule pidfile"
-    fi
+  cd "$MULE_HOME/bin"
 
-    LAST_RETRY=0
-    RETRY_CNT=10                                    t
-    MULE_PID=
-    while  [ -z  $MULE_PID ] ; do
+  echo "current directory: `pwd`"
+  date +"%Y/%m/%W %z %H:%M:%S"
+  echo "Checking mule service status"
+  ls -lA .
+  if [ -f $MULE_EE_PIDFILE ] ; then
+    echo "Mule pidfile has $( cat $MULE_EE_PIDFILE )"
+  else
+    echo "No mule pidfile"
+  fi
+
+  LAST_RETRY=0
+  RETRY_CNT=5
+  MULE_PID=
+  while  [ -z  $MULE_PID ] ; do
     echo "current directory: `pwd`"
     date +"%Y/%m/%W %z %H:%M:%S"
     echo "Checking mule service status"
