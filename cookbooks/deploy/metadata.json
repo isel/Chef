@@ -534,6 +534,21 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/server_manager_features": {
+      "display_name": "MSMQ features",
+      "description": "List of windows MSMQ features to install",
+      "required": "optional",
+      "default": "MSMQ-Server,MSMQ-HTTP-Support,MSMQ-Directory",
+      "recipes": [
+        "deploy::enable_msmq",
+        "deploy::event_router_service"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/service_platform": {
       "display_name": "EventRouter HTTP runtime",
       "description": "The .net runtime / affinity the  EventRouter service is hosted",

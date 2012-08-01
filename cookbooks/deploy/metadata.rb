@@ -246,6 +246,13 @@ attribute "deploy/s3_repository",
   :default  => "GlobalIncite",
   :recipes  => ["deploy::download_binaries", "deploy::download_pims"]
 
+attribute "deploy/server_manager_features",
+  :display_name => "MSMQ features",
+  :description => "List of windows MSMQ features to install",
+  :required    => "optional",
+  :default     => "MSMQ-Server,MSMQ-HTTP-Support,MSMQ-Directory",
+  :recipes     => ["deploy::enable_msmq","deploy::event_router_service"]
+
 attribute "deploy/service_platform",
   :display_name => "EventRouter HTTP runtime",
   :description => "The .net runtime / affinity the  EventRouter service is hosted",
