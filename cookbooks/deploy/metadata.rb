@@ -220,6 +220,12 @@ attribute "deploy/mule_complete_removal",
   :required    => "optional",
   :recipes     => ["deploy::recycle_mule"]
 
+attribute "deploy/show_mule_log",
+  :display_name => "show mule log",
+  :description => "Show mule log of the launch",
+  :required    => "optional",
+  :recipes     => ["deploy::launch_mule"]
+
 attribute "deploy/pims_artifacts",
   :display_name => "pims artifacts",
   :required => "required",

@@ -6,7 +6,8 @@ hostname = node[:hostname]
 ulimit_files = node[:deploy][:ulimit_files]
 mule_port = node[:deploy][:mule_port]
 verify_completion = node[:deploy][:verify_completion]
-show_mule_log=true
+# show_mule_log = node[:deploy][:show_mule_log]
+show_mule_log = true
 sleep_interval = 10
 plugin_home = '/opt/mule/apps'
 
@@ -127,7 +128,7 @@ if show_mule_log
     code <<-EOF
     export MULE_EE_LOG="/opt/mule/logs/mule_ee.log"
     export LAUNCH_MARKER_TAG="#{launch_marker}"
-    export SHOW_LOG_LINES=25
+    export SHOW_LOG_LINES=1024
     if [ ! -z $LAUNCH_MARKER_TAG ] ; then
       LINE_LAST_LAUNCH=$(grep -n "$LAUNCH_MARKER_TAG" $MULE_EE_LOG |  tail -1 | cut -d: -f1)
     else

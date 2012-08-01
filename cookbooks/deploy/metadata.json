@@ -480,6 +480,19 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/show_mule_log": {
+      "display_name": "show mule log",
+      "description": "Show mule log of the launch",
+      "required": "optional",
+      "recipes": [
+        "deploy::launch_mule"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/pims_artifacts": {
       "display_name": "pims artifacts",
       "required": "required",
