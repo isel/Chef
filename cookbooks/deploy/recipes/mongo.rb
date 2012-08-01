@@ -4,7 +4,7 @@ if !File.exists?('/opt/mongo')
   version = node[:deploy][:mongo_version]
   install_directory="/opt/mongo"
 
-  template "#{ruby_scripts_dir}/download_mongo.rb" do
+  template "#{node['ruby_scripts_dir']}/download_mongo.rb" do
     local true
     source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
     variables(
@@ -20,7 +20,7 @@ if !File.exists?('/opt/mongo')
   end
   bash 'Downloading mongo' do
     code <<-EOF
-      ruby -rubygems #{ruby_scripts_dir}/download_mongo.rb
+      ruby -rubygems #{node['ruby_scripts_dir']}/download_mongo.rb
     EOF
   end
 
