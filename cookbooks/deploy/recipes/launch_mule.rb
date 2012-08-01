@@ -75,10 +75,15 @@ if !verify_completion.nil? && verify_completion != ''
 bash 'detect the mule status change' do
 
   code <<-EOF
-    cd /opt/mule/bin
-    export MULE_EE_PIDFILE=".mule_ee.pid"
-    echo "user: $UID"
-    echo "effective user: $EUID"
+      export LANG=en_US.UTF-8
+      export MULE_HOME=/opt/mule
+      export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
+      export MAVEN_HOME=/usr/share/maven2
+      export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
+      export PATH=$PATH:$MULE_HOME/bin:$JAVA_HOME/bin
+      export MULE_EE_PIDFILE=".mule_ee.pid"
+
+    cd "$MULE_HOME/bin"
 
     echo "current directory: `pwd`"
     date +"%Y/%m/%W %z %H:%M:%S"
