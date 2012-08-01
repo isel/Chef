@@ -35,6 +35,38 @@
       "calculated": false,
       "type": "string"
     },
+    "core/server_type": {
+      "display_name": "server type",
+      "description": "eg: db, app, web, cache",
+      "required": "required",
+      "recipes": [
+        "smoke_tests::local_app",
+        "smoke_tests::local_cache",
+        "smoke_tests::local_db",
+        "smoke_tests::local_engine",
+        "smoke_tests::local_loadbalancer",
+        "smoke_tests::local_messaging",
+        "smoke_tests::local_web"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/activemq_port": {
+      "display_name": "activemq port",
+      "required": "optional",
+      "default": "61616",
+      "recipes": [
+        "smoke_tests::local_messaging"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/app_server": {
       "display_name": "app server",
       "required": "required",
@@ -42,47 +74,8 @@
         "smoke_tests::global",
         "smoke_tests::local_app",
         "smoke_tests::local_engine",
-        "smoke_tests::local_web",
-        "smoke_tests::local_messaging"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/web_server": {
-      "display_name": "web server",
-      "required": "required",
-      "recipes": [
-        "smoke_tests::local_messaging"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/messaging_server": {
-      "display_name": "messaging server",
-      "required": "required",
-      "recipes": [
         "smoke_tests::local_messaging",
-        "smoke_tests::global"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/messaging_server_port": {
-      "display_name": "messaging server port",
-      "required": "optional",
-      "default": "8081",
-      "recipes": [
-        "smoke_tests::local_messaging",
-        "smoke_tests::global"
+        "smoke_tests::local_web"
       ],
       "choice": [
 
@@ -119,12 +112,24 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/search_server": {
-      "display_name": "search_server",
+    "deploy/cache_server": {
+      "display_name": "cache server",
       "required": "required",
       "recipes": [
-        "smoke_tests::local_app",
         "smoke_tests::local_messaging"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/elastic_search_plugins": {
+      "display_name": "elastic search plugins",
+      "required": "optional",
+      "default": "bigdesk,elasticsearch-head,analysis-phonetic,analysis-icu",
+      "recipes": [
+        "smoke_tests::local_search"
       ],
       "choice": [
 
@@ -137,21 +142,9 @@
       "required": "optional",
       "default": "9200",
       "recipes": [
-        "smoke_tests::local_search",
         "smoke_tests::local_app",
-        "smoke_tests::local_messaging"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/cache_server": {
-      "display_name": "cache server",
-      "required": "required",
-      "recipes": [
-        "smoke_tests::local_messaging"
+        "smoke_tests::local_messaging",
+        "smoke_tests::local_search"
       ],
       "choice": [
 
@@ -185,30 +178,11 @@
       "calculated": false,
       "type": "string"
     },
-    "core/server_type": {
-      "display_name": "server type",
-      "description": "eg: db, app, web, cache",
+    "deploy/messaging_server": {
+      "display_name": "messaging server",
       "required": "required",
       "recipes": [
-        "smoke_tests::local_app",
-        "smoke_tests::local_cache",
-        "smoke_tests::local_db",
-        "smoke_tests::local_engine",
-        "smoke_tests::local_loadbalancer",
-        "smoke_tests::local_messaging",
-        "smoke_tests::local_web"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/activemq_port": {
-      "display_name": "activemq port",
-      "required": "optional",
-      "default": "61616",
-      "recipes": [
+        "smoke_tests::global",
         "smoke_tests::local_messaging"
       ],
       "choice": [
@@ -217,12 +191,13 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/elastic_search_plugins": {
-      "display_name": "elastic search plugins",
+    "deploy/messaging_server_port": {
+      "display_name": "messaging server port",
       "required": "optional",
-      "default": "bigdesk,elasticsearch-head,analysis-phonetic,analysis-icu",
+      "default": "8081",
       "recipes": [
-        "smoke_tests::local_search"
+        "smoke_tests::global",
+        "smoke_tests::local_messaging"
       ],
       "choice": [
 
@@ -243,11 +218,36 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/search_server": {
+      "display_name": "search_server",
+      "required": "required",
+      "recipes": [
+        "smoke_tests::local_app",
+        "smoke_tests::local_messaging"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/tenant": {
       "display_name": "tenant",
       "required": "required",
       "recipes": [
         "smoke_tests::global"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/web_server": {
+      "display_name": "web server",
+      "required": "required",
+      "recipes": [
+        "smoke_tests::local_messaging"
       ],
       "choice": [
 
@@ -263,10 +263,10 @@
     "smoke_tests::local_app": "Runs local app server smoke tests",
     "smoke_tests::local_cache": "Runs local cache server smoke tests",
     "smoke_tests::local_db": "Runs local db server smoke tests",
-    "smoke_tests::local_search": "Runs local elasticsearch smoke tests",
     "smoke_tests::local_engine": "Runs local engine server smoke tests",
     "smoke_tests::local_loadbalancer": "Runs local load balancer server smoke tests",
     "smoke_tests::local_messaging": "Runs local messaging server smoke tests",
+    "smoke_tests::local_search": "Runs local elasticsearch smoke tests",
     "smoke_tests::local_web": "Runs local web server smoke tests"
   },
   "version": "0.0.1"

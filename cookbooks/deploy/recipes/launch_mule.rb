@@ -6,8 +6,7 @@ hostname = node[:hostname]
 ulimit_files = node[:deploy][:ulimit_files]
 mule_port = node[:deploy][:mule_port]
 verify_completion = node[:deploy][:verify_completion]
-# show_mule_log = node[:deploy][:show_mule_log]
-show_mule_log = true
+show_mule_log = node[:deploy][:show_mule_log]
 sleep_interval = 10
 plugin_home = '/opt/mule/apps'
 
