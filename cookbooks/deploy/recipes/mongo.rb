@@ -1,11 +1,11 @@
-include_recipe 'core::download_vendor_artifacts_prereqs'
+ruby_scripts_dir = node['ruby_scripts_dir']
+Dir.mkdir(ruby_scripts_dir) unless File.exist? ruby_scripts_dir
 
 if !File.exists?('/opt/Mongo')
   version = node[:deploy][:mongo_version]
   install_directory="/opt/Mongo/mongodb-linux-x86_64-#{version}"
-
-  template "#{node['ruby_scripts_dir']}/download_mongo.rb" do
-    source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
+  template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
+    source 'scripts/download_vendor_drop.erb'
     variables(
       :aws_access_key_id => node[:deploy][:aws_access_key_id],
       :aws_secret_access_key => node[:deploy][:aws_secret_access_key],
@@ -16,7 +16,7 @@ if !File.exists?('/opt/Mongo')
   end
   bash 'Installing vendor drop artifacts' do
     code <<-EOF
-      /opt/rightscale/sandbox/bin/ruby -rubygems #{node['ruby_scripts_dir']}/download_mongo.rb
+      /opt/rightscale/sandbox/bin/ruby -rubygems #{ruby_scripts_dir}/download_vendor_drop.rb
     EOF
   end
 
