@@ -64,4 +64,6 @@ if !File.exists?('/opt/ruby')
     #{executables.map { |exe| "ln -fs /opt/ruby/active/bin/#{exe} /usr/bin/#{exe} \n" }.join}
     EOF
   end
+else
+  log 'Ruby already installed'
 end
