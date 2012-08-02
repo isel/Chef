@@ -63,7 +63,8 @@
       "recipes": [
         "deploy::activemq",
         "deploy::elastic_search",
-        "deploy::mongo"
+        "deploy::mongo",
+        "deploy::mule"
       ],
       "choice": [
 
@@ -90,98 +91,6 @@
       "default": "5.6.0",
       "recipes": [
         "deploy::activemq"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/appfabric_caches": {
-      "display_name": "appfabric caches",
-      "required": "optional",
-      "default": "default,TokenStore,SaasPolicy,EntityModel,Securables,Messages,Views,Enumerations,BusinessProcess",
-      "recipes": [
-        "deploy::appfabric_configure",
-        "deploy::appfabric_ensure_is_up"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/appfabric_security": {
-      "display_name": "appfabric security",
-      "required": "required",
-      "recipes": [
-        "deploy::appfabric_configure"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/appfabric_service_user": {
-      "display_name": "appfabric service user",
-      "required": "optional",
-      "default": "appfabric",
-      "recipes": [
-        "deploy::appfabric_configure"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/appfabric_service_password": {
-      "display_name": "appfabric service password",
-      "required": "required",
-      "recipes": [
-        "deploy::appfabric_configure"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/appfabric_shared_drive": {
-      "display_name": "appfabric shared drive",
-      "required": "optional",
-      "default": "appfabric_caching",
-      "recipes": [
-        "deploy::appfabric_configure"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/appfabric_shared_folder": {
-      "display_name": "appfabric shared folder",
-      "required": "optional",
-      "default": "c:\\appfabric_caching",
-      "recipes": [
-        "deploy::appfabric_configure"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/messaging_server": {
-      "display_name": "messaging_server",
-      "description": "Private IP address messaging_server host in this deployment",
-      "required": "required",
-      "recipes": [
-        "deploy::event_router_service",
-        "deploy::foundation_services",
-        "deploy::update_configuration"
       ],
       "choice": [
 
@@ -275,43 +184,6 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/engine_server": {
-      "display_name": "engine server",
-      "required": "required",
-      "recipes": [
-        "deploy::update_configuration"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/engine_port": {
-      "display_name": "droolz engine port",
-      "required": "optional",
-      "default": "8080",
-      "recipes": [
-        "deploy::update_configuration"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/web_server": {
-      "display_name": "web server",
-      "required": "required",
-      "recipes": [
-        "deploy::update_configuration"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
     "deploy/deployment_name": {
       "display_name": "deployment name",
       "required": "required",
@@ -336,18 +208,30 @@
       "type": "string",
       "required": "optional"
     },
-    "deploy/search_server": {
-      "display_name": "search_server",
+    "deploy/engine_port": {
+      "display_name": "droolz engine port",
+      "required": "optional",
+      "default": "8080",
       "recipes": [
-        "deploy::foundation_services",
         "deploy::update_configuration"
       ],
       "choice": [
 
       ],
       "calculated": false,
-      "type": "string",
-      "required": "optional"
+      "type": "string"
+    },
+    "deploy/engine_server": {
+      "display_name": "engine server",
+      "required": "required",
+      "recipes": [
+        "deploy::update_configuration"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
     },
     "deploy/elastic_search_port": {
       "display_name": "elastic search port",
@@ -363,10 +247,10 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/elastic_search_version": {
-      "display_name": "elastic search version",
+    "deploy/elastic_search_plugins": {
+      "display_name": "elastic search plugins",
       "required": "optional",
-      "default": "0.19.3",
+      "default": "bigdesk,elasticsearch-head,analysis-phonetic,analysis-icu",
       "recipes": [
         "deploy::elastic_search"
       ],
@@ -376,10 +260,10 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/elastic_search_plugins": {
-      "display_name": "elastic search plugins",
+    "deploy/elastic_search_version": {
+      "display_name": "elastic search version",
       "required": "optional",
-      "default": "bigdesk,elasticsearch-head,analysis-phonetic,analysis-icu",
+      "default": "0.19.3",
       "recipes": [
         "deploy::elastic_search"
       ],
@@ -413,25 +297,14 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/mongo_version": {
-      "display_name": "mongo version",
-      "required": "optional",
-      "default": "2.0.1",
+    "deploy/messaging_server": {
+      "display_name": "messaging_server",
+      "description": "Private IP address messaging_server host in this deployment",
+      "required": "required",
       "recipes": [
-        "deploy::mongo"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/mule_port": {
-      "display_name": "mule port",
-      "required": "optional",
-      "default": "8585",
-      "recipes": [
-        "deploy::launch_mule"
+        "deploy::event_router_service",
+        "deploy::foundation_services",
+        "deploy::update_configuration"
       ],
       "choice": [
 
@@ -454,12 +327,24 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/mule_version": {
-      "display_name": "mule version",
+    "deploy/mongo_version": {
+      "display_name": "mongo version",
       "required": "optional",
-      "default": "3.3.0",
+      "default": "2.0.1",
       "recipes": [
-        "deploy::mule",
+        "deploy::mongo"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/mule_complete_removal": {
+      "display_name": "Complete Mule removal",
+      "description": "Completely recycle Mule application",
+      "required": "optional",
+      "recipes": [
         "deploy::recycle_mule"
       ],
       "choice": [
@@ -476,6 +361,33 @@
       "recipes": [
         "deploy::mule",
         "deploy::launch_mule"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/mule_port": {
+      "display_name": "mule port",
+      "required": "optional",
+      "default": "8585",
+      "recipes": [
+        "deploy::launch_mule"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/mule_version": {
+      "display_name": "mule version",
+      "required": "optional",
+      "default": "3.3.0",
+      "recipes": [
+        "deploy::mule",
+        "deploy::recycle_mule"
       ],
       "choice": [
 
@@ -549,20 +461,18 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/server_manager_features": {
-      "display_name": "MSMQ features",
-      "description": "List of windows MSMQ features to install",
-      "required": "optional",
-      "default": "MSMQ-Server,MSMQ-HTTP-Support,MSMQ-Directory",
+    "deploy/search_server": {
+      "display_name": "search_server",
       "recipes": [
-        "deploy::enable_msmq",
-        "deploy::event_router_service"
+        "deploy::foundation_services",
+        "deploy::update_configuration"
       ],
       "choice": [
 
       ],
       "calculated": false,
-      "type": "string"
+      "type": "string",
+      "required": "optional"
     },
     "deploy/service_platform": {
       "display_name": "EventRouter HTTP runtime",
@@ -585,6 +495,19 @@
       "default": "8989",
       "recipes": [
         "deploy::event_router_service"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/show_mule_log": {
+      "display_name": "show mule log",
+      "description": "Show mule log of the launch",
+      "required": "optional",
+      "recipes": [
+        "deploy::launch_mule"
       ],
       "choice": [
 
@@ -634,13 +557,11 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/verify_completion": {
-      "display_name": "run checks",
-      "required": "optional",
-      "default": "1",
+    "deploy/web_server": {
+      "display_name": "web server",
+      "required": "required",
       "recipes": [
-        "deploy::launch_activemq",
-        "deploy::launch_mule"
+        "deploy::update_configuration"
       ],
       "choice": [
 
@@ -652,13 +573,8 @@
   "groupings": {
   },
   "recipes": {
-    "deploy::update_configuration": "Updates Mule properties file",
-    "deploy::validate_configuration_tokens": "Validates that inputs in Mule properties file are current",
     "deploy::activemq": "Deploys ActiveMQ",
     "deploy::adjust_ulimit": "Adjusts open files limit for log4j",
-    "deploy::appfabric_configure": "Configures AppFabric",
-    "deploy::appfabric_ensure_is_up": "Ensures AppFabric cache are working",
-    "deploy::appfabric_powershell": "Deploys AppFabric Powershell cmdlets",
     "deploy::download_binaries": "Downloads binaries",
     "deploy::download_infrastructure": "Downloads infrastructure api",
     "deploy::download_pims": "Downloads pims",
@@ -676,7 +592,9 @@
     "deploy::recycle_mule": "Recycle mule",
     "deploy::register_cache_hostname": "Registers the cache hostname and ip in the hosts file",
     "deploy::reindex_elastic_search": "Reindexes ElasticSearch (should be going away)",
-    "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server"
+    "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server",
+    "deploy::update_configuration": "Updates Mule properties file",
+    "deploy::validate_configuration_tokens": "Validates that inputs in Mule properties file are current"
   },
   "version": "0.0.1"
 }

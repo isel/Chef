@@ -11,9 +11,6 @@ depends 'core'
 
 recipe "deploy::activemq", "Deploys ActiveMQ"
 recipe "deploy::adjust_ulimit", "Adjusts open files limit for log4j"
-recipe "deploy::appfabric_configure", "Configures AppFabric"
-recipe "deploy::appfabric_ensure_is_up", "Ensures AppFabric cache are working"
-recipe "deploy::appfabric_powershell", "Deploys AppFabric Powershell cmdlets"
 recipe "deploy::download_binaries", "Downloads binaries"
 recipe "deploy::download_infrastructure", "Downloads infrastructure api"
 recipe "deploy::download_pims", "Downloads pims"
@@ -50,7 +47,7 @@ attribute "core/s3_bucket",
   :display_name => "s3 bucket for the UGF platform",
   :required => "optional",
   :default  => "ugfartifacts",
-  :recipes  => ["deploy::activemq", "deploy::elastic_search", "deploy::mongo"]
+  :recipes  => ["deploy::activemq", "deploy::elastic_search", "deploy::mongo", "deploy::mule"]
 
 # Attributes from deploy cookbook
 attribute "deploy/activemq_port",
@@ -64,40 +61,6 @@ attribute "deploy/activemq_version",
   :required => "optional",
   :default  => "5.6.0",
   :recipes  => ["deploy::activemq"]
-
-attribute "deploy/appfabric_caches",
-  :display_name => "appfabric caches",
-  :required => "optional",
-  :default => "default,TokenStore,SaasPolicy,EntityModel,Securables,Messages,Views,Enumerations,BusinessProcess",
-  :recipes => ["deploy::appfabric_configure", "deploy::appfabric_ensure_is_up"]
-
-attribute "deploy/appfabric_security",
-  :display_name => "appfabric security",
-  :required => "required",
-  :recipes => ["deploy::appfabric_configure"]
-
-attribute "deploy/appfabric_service_password",
-  :display_name => "appfabric service password",
-  :required => "required",
-  :recipes  => ["deploy::appfabric_configure"]
-
-attribute "deploy/appfabric_service_user",
-  :display_name => "appfabric service user",
-  :required => "optional",
-  :default => "appfabric",
-  :recipes => ["deploy::appfabric_configure"]
-
-attribute "deploy/appfabric_shared_drive",
-  :display_name => "appfabric shared drive",
-  :required => "optional",
-  :default => "appfabric_caching",
-  :recipes => ["deploy::appfabric_configure"]
-
-attribute "deploy/appfabric_shared_folder",
-  :display_name => "appfabric shared folder",
-  :required => "optional",
-  :default => "c:\\appfabric_caching",
-  :recipes => ["deploy::appfabric_configure"]
 
 attribute "deploy/app_server",
   :display_name => "app server",

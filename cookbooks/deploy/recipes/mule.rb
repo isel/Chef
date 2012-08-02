@@ -88,22 +88,24 @@ if !File.exists?("#{mule_home}/bin")
   else
     log "Download #{product} from s3"
 
-    puts "Processing template " + File.join(File.dirname(__FILE__), '/scripts/download_vendor_drop.erb')
-    template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
-      source 'scripts/download_vendor_drop.erb'
+    template "#{node['ruby_scripts_dir']}/download_mule.rb" do
+      local true
+      source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
       variables(
           :aws_access_key_id => node[:core][:aws_access_key_id],
           :aws_secret_access_key => node[:core][:aws_secret_access_key],
+          :s3_bucket => node[:core][:s3_bucket],
+          :s3_repository => 'Vendor',
           :product => product,
           :version => version,
-          :filelist => 'mule',
-          :deploy_folder => '/opt'
+          :artifacts => 'mule',
+          :target_directory => '/opt'
       )
     end
 
     bash 'Downloading artifacts' do
       code <<-EOF
-    ruby #{ruby_scripts_dir}/download_vendor_drop.rb
+    ruby #{ruby_scripts_dir}/download_mule.rb
       EOF
     end
 

@@ -1,7 +1,7 @@
 powershell "Install AppFabric" do
   parameters (
     {
-      'APPFABRIC_SHARED_FOLDER' => node[:deploy][:appfabric_shared_folder]
+      'APPFABRIC_SHARED_FOLDER' => node[:deploy][:shared_folder]
     }
   )
   powershell_script = <<'POWERSHELL_SCRIPT'
@@ -23,11 +23,11 @@ end
 powershell "Setup AppFabric shared folder" do
   parameters (
     {
-      'APPFABRIC_SECURITY' => node[:deploy][:appfabric_security],
-      'APPFABRIC_SERVICE_USER' => node[:deploy][:appfabric_service_user],
-      'APPFABRIC_SERVICE_PASSWORD' => node[:deploy][:appfabric_service_password],
-      'APPFABRIC_SHARED_DRIVE' => node[:deploy][:appfabric_shared_drive],
-      'APPFABRIC_SHARED_FOLDER' => node[:deploy][:appfabric_shared_folder]
+      'APPFABRIC_SECURITY' => node[:deploy][:security],
+      'APPFABRIC_SERVICE_USER' => node[:deploy][:service_user],
+      'APPFABRIC_SERVICE_PASSWORD' => node[:deploy][:service_password],
+      'APPFABRIC_SHARED_DRIVE' => node[:deploy][:shared_drive],
+      'APPFABRIC_SHARED_FOLDER' => node[:deploy][:shared_folder]
     }
   )
   powershell_script = <<'POWERSHELL_SCRIPT'
@@ -73,12 +73,12 @@ end
 powershell "Configure AppFabric" do
   parameters(
     {
-      'APPFABRIC_CACHES' => node[:deploy][:appfabric_caches],
-      'APPFABRIC_SECURITY' => node[:deploy][:appfabric_security],
-      'APPFABRIC_SERVICE_USER' => node[:deploy][:appfabric_service_user],
-      'APPFABRIC_SERVICE_PASSWORD' => node[:deploy][:appfabric_service_password],
-      'APPFABRIC_SHARED_DRIVE' => node[:deploy][:appfabric_shared_drive],
-      'APPFABRIC_SHARED_FOLDER' => node[:deploy][:appfabric_shared_folder]
+      'APPFABRIC_CACHES' => node[:deploy][:caches],
+      'APPFABRIC_SECURITY' => node[:deploy][:security],
+      'APPFABRIC_SERVICE_USER' => node[:deploy][:service_user],
+      'APPFABRIC_SERVICE_PASSWORD' => node[:deploy][:service_password],
+      'APPFABRIC_SHARED_DRIVE' => node[:deploy][:shared_drive],
+      'APPFABRIC_SHARED_FOLDER' => node[:deploy][:shared_folder]
     }
   )
   powershell_script = <<'POWERSHELL_SCRIPT'
