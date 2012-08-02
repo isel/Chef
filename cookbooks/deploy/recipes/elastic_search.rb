@@ -1,7 +1,6 @@
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
 elastic_search_port = node[:deploy][:elastic_search_port]
-install_via_git_download = node[:deploy][:install_via_git_download]
 verify_completion = node[:deploy][:verify_completion]
 deploy_folder = '/opt/elasticsearch'
 elastic_search_plugins = node[:deploy][:elastic_search_plugins]
@@ -27,7 +26,7 @@ if !File.exists?(deploy_folder)
       :product => 'elasticsearch',
       :version => node[:deploy][:elastic_search_version],
       :artifacts => "#{elastic_search_files},#{elastic_search_plugins}",
-      :target_directory => '/opt'
+      :target_directory => '/downloads'
     )
   end
 
@@ -39,10 +38,10 @@ if !File.exists?(deploy_folder)
 
   bash 'Configure elastic search' do
     code <<-EOF
-      pushd #{deploy_folder}
+      mv /downloads/elasticsearch /opt
+      mv /downloads/servicewrapper/service /opt/elasticsearch/bin
 
-      mv *servicewrapper*/service bin/
-      rm -Rf *servicewrapper*
+      pushd #{deploy_folder}
 
       bin/service/elasticsearch install
 
@@ -54,7 +53,6 @@ if !File.exists?(deploy_folder)
       service elasticsearch start
     EOF
   end
-  log 'Elastic Search service is installed and started.'
 
   @plugin_directories = {'elasticsearch-head' => 'plugins/head/_site',
                          'bigdesk' => 'plugins/bigdesk/_site',
@@ -66,34 +64,16 @@ if !File.exists?(deploy_folder)
     bash "set up plugin #{plugin}" do
       code <<-EOF
       set +e
-      DEPLOY_FOLDER="#{deploy_folder}"
-      PLUGIN_FOLDER="#{plugin_directory}"
-      pushd $DEPLOY_FOLDER
-      mkdir -p $PLUGIN_FOLDER
+      pushd #{deploy_folder}
+      mkdir -p #{plugin_directory}
 
-      PLUGIN_DIR=`find . -maxdepth 1 -type d -name '*#{plugin}*'`
-      echo "Copying the #{plugin} directory $PLUGIN_DIR contents to $PLUGIN_FOLDER"
-      cp -R $PLUGIN_DIR/* $PLUGIN_FOLDER
+      cp -R /downloads/#{plugin}/* #{plugin_directory}
       popd
       echo 'Restarting the service'
       service elasticsearch restart
       EOF
       not_if { plugin_directory.nil? }
     end
-  end
-  log "Elastic Search Plugins installed: #{elastic_search_plugins}"
-
-  bash 'reinstall plugins from developer github' do
-    code <<-EOF
-    set +e
-    pushd #{deploy_folder}
-    ./bin/plugin -install bigdesk
-    ./bin/plugin -install elasticsearch-head
-    ./bin/plugin -install elasticsearch/elasticsearch-analysis-phonetic/1.2.0
-    ./bin/plugin -install elasticsearch/elasticsearch-analysis-icu/1.5.0
-    popd
-    EOF
-    not_if { install_via_git_download.nil? || install_via_git_download == '' }
   end
 else
   log 'ElasticSearch is already installed.'
