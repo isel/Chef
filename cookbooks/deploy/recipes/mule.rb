@@ -1,3 +1,5 @@
+include_recipe 'core::download_vendor_artifacts_prereqs'
+
 # Install the Mule_ESB
 require 'fileutils'
 require 'yaml'

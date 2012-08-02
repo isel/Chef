@@ -291,12 +291,6 @@ attribute "deploy/use_mocked_website",
   :default => "false",
   :recipes => ["deploy::jspr"]
 
-attribute "deploy/verify_completion",
-  :display_name => "run checks",
-  :required => "optional",
-  :default  => "1",
-  :recipes  => ["deploy::launch_mule"]
-
 attribute "deploy/web_server",
   :display_name => "web server",
   :required => "required",
