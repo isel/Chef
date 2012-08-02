@@ -295,4 +295,4 @@ attribute "deploy/verify_completion",
   :display_name => "run checks",
   :required => "optional",
   :default  => "1",
-  :recipes  => ["deploy::launch_activemq", "deploy::launch_mule","deploy::elastic_search"]
+  :recipes  => ["deploy::launch_activemq", "deploy::launch_mule"]

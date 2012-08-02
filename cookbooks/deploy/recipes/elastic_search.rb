@@ -1,12 +1,10 @@
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
 elastic_search_port = node[:deploy][:elastic_search_port]
-verify_completion = node[:deploy][:verify_completion]
 deploy_folder = '/opt/elasticsearch'
 elastic_search_plugins = node[:deploy][:elastic_search_plugins]
 elastic_search_files = 'elasticsearch,servicewrapper'
 cluster_name = 'UFCluster'
-sleep_interval = 10
 
 if !File.exists?(deploy_folder)
   bash 'Install elastic search prerequisites' do
@@ -56,8 +54,8 @@ if !File.exists?(deploy_folder)
   end
 
   @plugin_directories = {
-    'elasticsearch-head' => 'plugins/elasticsearch-head',
-    'bigdesk' => 'plugins/bigdesk',
+    'elasticsearch-head' => 'plugins/head/_site',
+    'bigdesk' => 'plugins/bigdesk/_site',
     'analysis-icu' => 'plugins/analysis-icu',
     'analysis-phonetic' => 'plugins/analysis-phonetic'
   }
@@ -97,9 +95,8 @@ bash 'Confirm Elastic Search is operational' do
        exit 1
     fi
     echo "Retries left: $RETRY_CNT"
-    sleep #{sleep_interval}
+    sleep 10
   done
   EOF
-  not_if { verify_completion.nil? || verify_completion == '' }
 end
 
