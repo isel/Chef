@@ -56,8 +56,8 @@ if !File.exists?(deploy_folder)
   end
 
   @plugin_directories = {
-    'elasticsearch-head' => 'plugins/head/_site',
-    'bigdesk' => 'plugins/bigdesk/_site',
+    'elasticsearch-head' => 'plugins/elasticsearch-head',
+    'bigdesk' => 'plugins/bigdesk',
     'analysis-icu' => 'plugins/analysis-icu',
     'analysis-phonetic' => 'plugins/analysis-phonetic'
   }
