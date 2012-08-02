@@ -1,6 +1,5 @@
 activemq_port = node[:deploy][:activemq_port]
-verify_completion = node[:deploy][:verify_completion]
-sleep_interval = 4
+
 bash 'launch activeMQ' do
   code <<-EOF
   pushd /opt/activemq/bin
@@ -8,8 +7,7 @@ bash 'launch activeMQ' do
   EOF
 end
 
-if !verify_completion.nil? && verify_completion != ''
-  bash 'verify the launch of activemq' do
+bash 'verify the launch of activemq' do
   code <<-EOF
   LAST_RETRY=0
   RETRY_CNT=20
@@ -23,9 +21,8 @@ if !verify_completion.nil? && verify_completion != ''
        exit 1
     fi
     echo "Retries left: $RETRY_CNT"
-    sleep #{sleep_interval}
+    sleep 4
   done
   EOF
-  end
 end
-log 'launched activeMQ'
+
