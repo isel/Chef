@@ -18,12 +18,12 @@ s3_files = storage.directories.find { |d| d.key == '<%= @s3_bucket %>' }.files
 
 install_files = '<%= @artifacts %>'.split(',')
 
-if File.exist? "#{target_directory}/#{product}"
+if File.exist?("#{target_directory}/#{product}")
   puts "Found #{product} (#{version}) already on the system"
   exit 0
 end
 
-Dir.mkdir(target_directory)
+Dir.mkdir(target_directory) unless File.exist?(target_directory)
 missing_files = []
 
 s3_path = "#{s3_repository}/#{product}/#{version}"
