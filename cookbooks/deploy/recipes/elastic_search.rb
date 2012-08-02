@@ -42,6 +42,7 @@ if !File.exists?(deploy_folder)
       mv /downloads/servicewrapper/service /opt/elasticsearch/bin
 
       pushd #{deploy_folder}
+      chmod -R +x+X bin/**
 
       bin/service/elasticsearch install
 
@@ -54,10 +55,12 @@ if !File.exists?(deploy_folder)
     EOF
   end
 
-  @plugin_directories = {'elasticsearch-head' => 'plugins/head/_site',
-                         'bigdesk' => 'plugins/bigdesk/_site',
-                         'analysis-icu' => 'plugins/analysis-icu',
-                         'analysis-phonetic' => 'plugins/analysis-phonetic'}
+  @plugin_directories = {
+    'elasticsearch-head' => 'plugins/head/_site',
+    'bigdesk' => 'plugins/bigdesk/_site',
+    'analysis-icu' => 'plugins/analysis-icu',
+    'analysis-phonetic' => 'plugins/analysis-phonetic'
+  }
 
   elastic_search_plugins.split(',').each do |plugin|
     plugin_directory = @plugin_directories[plugin]
