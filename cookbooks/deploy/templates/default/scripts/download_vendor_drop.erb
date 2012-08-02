@@ -36,40 +36,40 @@ if !dirname_found
 end
 
 puts "Reading the directory #{product}/#{version}/"
-filelist.split(/[;,]/).each do |filename_expected|
-  next if filename_expected.nil?
-  filename_found = false
-  puts "searching for #{filename_expected}"
-  regexp_capture = Regexp.new("#{product}\/#{version}\/(#{filename_expected}.*)$")
-  s3_files.each do
-    |obj_ptr|
-    # no control over multiple matches
-    if regexp_capture.match(obj_ptr.key)
-      filename_found = true
-      basename_local_file =  $1
-      resource_key = obj_ptr.key
-      puts "Downloading: #{resource_key} => #{deploy_folder}/#{basename_local_file}"
-      # need a checksum !
-      stream_handle = s3_files.get(resource_key)
-      puts "Creating local paths"
+  filelist.split(/[;,]/).each do |filename_expected|
+    next if filename_expected.nil?
+    filename_found = false
+    puts "searching for #{filename_expected}"
+    regexp_capture = Regexp.new("#{product}\/#{version}\/(#{filename_expected}.*)$")
+    s3_files.each do
+      |obj_ptr|
+      # no control over multiple matches
+      if regexp_capture.match(obj_ptr.key)
+        filename_found = true
+        basename_local_file =  $1
+        resource_key = obj_ptr.key
+        puts "Downloading: #{resource_key} => #{deploy_folder}/#{basename_local_file}"
+        # need a checksum !
+        stream_handle = s3_files.get(resource_key)
+        puts "Creating local paths"
 
-      Dir.mkdir(deploy_folder) unless File.exist?(deploy_folder)
-      Dir.chdir(deploy_folder)
+        Dir.mkdir(deploy_folder) unless Dir.exists?(deploy_folder)
+        Dir.chdir(deploy_folder)
 
-      puts " copying the file"
-       File.open("#{deploy_folder}/#{basename_local_file}", 'wb') do
-        |local_file|
-        local_file.write(stream_handle.body)
-       end
-      unless ( no_explode ) then
-      puts "exploding and unlinking the file #{basename_local_file}"
-       `tar xf #{basename_local_file}`
-       `rm "#{basename_local_file}"`
+        puts " copying the file"
+         File.open("#{deploy_folder}/#{basename_local_file}", 'wb') do
+          |local_file|
+          local_file.write(stream_handle.body)
+         end
+        unless ( no_explode ) then
+        puts "Exploding and unlinking the file #{basename_local_file}"
+         `tar x --no-same-owner -f #{basename_local_file}`
+         `rm "#{basename_local_file}"`
+        end
       end
     end
-  end
-  if !filename_found
-    puts "Cannot find file like  #{filename_expected} in S3..."
-  end
+    if !filename_found
+      puts "Cannot find file like  #{filename_expected} in S3..."
+    end
 
-end
+  end

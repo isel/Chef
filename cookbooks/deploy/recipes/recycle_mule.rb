@@ -4,20 +4,63 @@ require 'yaml'
 product = 'mule'
 mule_home = "/opt/#{product}"
 version = node[:deploy][:mule_version]
-complete_removal = 1
 product_vendor_directory="/opt/mule-enterprise-standalone-#{version}"
+sleep_interval = 10
+complete_removal = node[:deploy][:mule_complete_removal]
 
-# TODO - process cleanup
+if !complete_removal.nil? && complete_removal != ''
+
+# passing all settings before launching mule script run to detect or change the service status is critical.
+# The status is read wrong when settings are not provided.
+# The pidfile is deleted if mule fails to verify its status.
+
+  bash 'Tell mule to undeploy plugins and applications in a clean way' do
+  code <<-EOF
+    set +e
+
+    export LANG=en_US.UTF-8
+    export MULE_HOME="#{mule_home}"
+    export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
+    export MAVEN_HOME=/usr/share/maven2
+    export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
+    export PATH=$PATH:$MULE_HOME/bin:$JAVA_HOME/bin
+    export MULE_EE_PIDFILE=".mule_ee.pid"
+    export MULE_PLUGIN_HOME="$MULE_HOME/apps"
+
+
+    if [ ! -d "$MULE_PLUGIN_HOME" ] ; then
+      edit 0
+    fi
+    cd "$MULE_PLUGIN_HOME"
+    APP_ANCHOR_LIST=`find . -type f  -a -name '*-anchor.txt'`
+    for APP_ANCHOR_FILE in $APP_ANCHOR_LIST ; do
+      echo "Deleting the anchor file $APP_ANCHOR_FILE"
+      rm "$MULE_PLUGIN_HOME/$APP_ANCHOR_FILE"
+      pushd $MULE_HOME/bin
+      ./mule restart
+      popd
+      sleep 30
+    done
+  EOF
+end
+end
+
 bash 'Stop mule service' do
   code <<-EOF
     set +e
-    MULE_HOME=
+    export LANG=en_US.UTF-8
+    export MULE_HOME="#{mule_home}"
+    export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
+    export MAVEN_HOME=/usr/share/maven2
+    export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
+    export PATH=$PATH:$MULE_HOME/bin:$JAVA_HOME/bin
+    export MULE_EE_PIDFILE=".mule_ee.pid"
     MULE_SIGNATURE='/mule/lib/boot/exec'
     SERVICE_PROCESS=`ps ax | grep $MULE_SIGNATURE | grep -v grep | awk '{print $1}'|tail -1`
     if [ ! -z "$SERVICE_PROCESS" ] ; then
       echo 'Stopping the mule via launcher script call'
-      if [ -d "/opt/mule/bin" ] ; then
-        pushd /opt/mule/bin
+      if [ -d "$MULE_HOME/bin" ] ; then
+        pushd $MULE_HOME/bin
         ./mule stop
         echo "waiting on mule service stop "
         sleep 10
@@ -26,7 +69,56 @@ bash 'Stop mule service' do
         echo "No Mule bin directory detected"
       fi
     fi
-    sleep 10
+  EOF
+end
+
+bash 'Detect mule stops clean' do
+
+  code <<-EOF
+
+  export LANG=en_US.UTF-8
+  export MULE_HOME="#{mule_home}"
+  export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
+  export MAVEN_HOME=/usr/share/maven2
+  export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
+  export PATH=$PATH:$MULE_HOME/bin:$JAVA_HOME/bin
+  pushd "$MULE_HOME/bin"
+
+  LAST_RETRY=0
+  RETRY_CNT=5
+  MULE_STATUS=$(./mule status | tail -1| grep -i mule)
+  echo "MULE_STATUS=$MULE_STATUS"
+  MULE_PID=`expr "$MULE_STATUS" : 'Mule.*(\\([0-9][0-9]*\\)).*'`
+  while  [ ! -z $MULE_PID ] ; do
+    MULE_STATUS=$(./mule status | tail -1| grep -i mule)
+    echo "MULE_STATUS=$MULE_STATUS "
+    MULE_PID=`expr "$MULE_STATUS" : 'Mule.*(\\([0-9][0-9]*\\)).*'`
+    if [ -z  $MULE_PID ] ; then
+      echo "Mule is terminated"
+      exit 0
+    fi
+    RETRY_CNT=`expr $RETRY_CNT - 1`
+    if [ "$RETRY_CNT" -eq "$LAST_RETRY" ] ; then
+      echo "Exhausted retries"
+      exit 1
+    fi
+    echo "Retries left: $RETRY_CNT"
+    sleep #{sleep_interval}
+  done
+  popd
+
+  EOF
+end
+
+if !complete_removal.nil? && complete_removal != ''
+
+bash 'Terminate stray mule processes' do
+  code <<-EOF
+    set +e
+    export LANG=en_US.UTF-8
+    MULE_SIGNATURE='/mule/lib/boot/exec'
+    SERVICE_PROCESS=`ps ax | grep $MULE_SIGNATURE | grep -v grep | awk '{print $1}'|tail -1`
+    if [ ! -z "$SERVICE_PROCESS" ] ; then
     echo "Terminate orphaned mule process still running"
     while [ ! -z $SERVICE_PROCESS ] ; do
       echo "Killing the service process $SERVICE_PROCESS"
@@ -34,24 +126,16 @@ bash 'Stop mule service' do
       sleep 10
       SERVICE_PROCESS=`ps ax | grep $MULE_SIGNATURE | grep -v grep | awk '{print $1}'|tail -1`
     done
+    fi
   EOF
 end
 
-=begin
-
-Leftover directory cfound after recycling mule:
-
-ls -la mule/.mule/
-drwxr-xr-x 3 root root 4096 2012-07-25 14:51 mmc-agent-mule3-app-3.3.0
-drwxr-xr-x 3 root root 4096 2012-07-25 14:51 mmc-distribution-console-app-3.3.0
-
-=end
-sleep 60
 
 bash 'remove mule installation' do
 
-    code <<-EOF
+  code <<-EOF
     set +e
+    export LANG=en_US.UTF-8
     export MULE_HOME=#{mule_home}
     PRODUCT_VENDOR_DIRECTORY="#{product_vendor_directory}"
     rm -f -r $PRODUCT_VENDOR_DIRECTORY
@@ -66,7 +150,7 @@ bash 'remove mule installation' do
     rm -f $MULE_HOME
     fi
 
-    log "Check if $MULE_HOME directory is still present"
+    echo "Check if $MULE_HOME directory is still present"
     pushd $MULE_HOME
     if [ "$?" -ne "0" ]
     then
@@ -77,8 +161,19 @@ bash 'remove mule installation' do
     echo "Detected that $MULE_HOME directory was still present"
     rm -rf $MULE_HOME
     fi
-    EOF
-  end
+  EOF
+end
 
-  log 'Recycled Mule install directory.'
+log 'Recycled Mule install directory.'
 
+end
+
+=begin
+
+Leftover directory cfound after recycling mule:
+
+ls -la mule/.mule/
+drwxr-xr-x 3 root root 4096 2012-07-25 14:51 mmc-agent-mule3-app-3.3.0
+drwxr-xr-x 3 root root 4096 2012-07-25 14:51 mmc-distribution-console-app-3.3.0
+
+=end

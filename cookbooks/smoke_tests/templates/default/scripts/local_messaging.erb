@@ -1,25 +1,26 @@
 require 'rake'
 require 'rspec/core/rake_task'
 
-
-#  environment for core tests
-
 ENV['mule_port'] = '<%= @mule_port %>'
 ENV['activemq_port'] = '<%= @activemq_port %>'
-
-# environment for property token tests
+ENV['activemq_console_port'] = '<%= @activemq_console_port %>'
 
 ENV['db_server'] = '<%= @db_server %>'
 ENV['db_port'] = '<%= @db_port %>'
-ENV['appserver'] = '<%= @app_server %>'
+
 ENV['app_server'] = '<%= @app_server %>'
-ENV['search_port'] = '<%= @elastic_search_port %>'
+
+ENV['search_port'] = '<%= @search_port %>'
 ENV['search_server'] = '<%= @search_server %>'
-ENV['messaging_server_port'] = '<%= @messaging_server_port %>'
+
 ENV['engine_server'] = '<%= @engine_server %>'
 ENV['engine_port'] = '<%= @engine_port %>'
+
 ENV['cache_server'] = '<%= @cache_server %>'
+
 ENV['messaging_server'] = '<%= @messaging_server %>'
+ENV['messaging_server_port'] = '<%= @messaging_server_port %>'
+
 ENV['web_server'] = '<%= @web_server %>'
 
 RSpec::Core::RakeTask.new(:spec) do |t|

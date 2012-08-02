@@ -9,8 +9,6 @@ supports "ubuntu"
 
 depends 'core'
 
-recipe "deploy::update_configuration" , "Updates Mule properties file"
-recipe "deploy::validate_configuration_tokens" , "Validates that inputs in Mule properties file are current"
 recipe "deploy::activemq", "Deploys ActiveMQ"
 recipe "deploy::adjust_ulimit", "Adjusts open files limit for log4j"
 recipe "deploy::appfabric_configure", "Configures AppFabric"
@@ -26,7 +24,7 @@ recipe "deploy::event_router_service", "Installs Event Router Service"
 recipe "deploy::foundation_services", "Deploys the foundation rest services"
 recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::launch_activemq", "Launches ActiveMQ"
-recipe "deploy::launch_mule",  "Launches Mule"
+recipe "deploy::launch_mule", "Launches Mule"
 recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::mule", "Deploys Mule ESB"
 recipe "deploy::provision", "Provisions basic system data"
@@ -34,6 +32,8 @@ recipe "deploy::recycle_mule", "Recycle mule"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
 recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
+recipe "deploy::update_configuration", "Updates Mule properties file"
+recipe "deploy::validate_configuration_tokens", "Validates that inputs in Mule properties file are current"
 
 # Attributes from core cookbook
 attribute "core/aws_access_key_id",
@@ -76,15 +76,15 @@ attribute "deploy/appfabric_security",
   :required => "required",
   :recipes => ["deploy::appfabric_configure"]
 
+attribute "deploy/appfabric_service_password",
+  :display_name => "appfabric service password",
+  :required => "required",
+  :recipes  => ["deploy::appfabric_configure"]
+
 attribute "deploy/appfabric_service_user",
   :display_name => "appfabric service user",
   :required => "optional",
   :default => "appfabric",
-  :recipes => ["deploy::appfabric_configure"]
-
-attribute "deploy/appfabric_service_password",
-  :display_name => "appfabric service password",
-  :required => "required",
   :recipes => ["deploy::appfabric_configure"]
 
 attribute "deploy/appfabric_shared_drive",
@@ -98,12 +98,6 @@ attribute "deploy/appfabric_shared_folder",
   :required => "optional",
   :default => "c:\\appfabric_caching",
   :recipes => ["deploy::appfabric_configure"]
-
-attribute "deploy/messaging_server",
-:display_name => "messaging_server",
-:description => "Private IP address messaging_server host in this deployment",
-:required => "required",
-:recipes  => ["deploy::event_router_service", "deploy::foundation_services", "deploy::update_configuration"]
 
 attribute "deploy/app_server",
   :display_name => "app server",
@@ -136,22 +130,6 @@ attribute "deploy/db_server",
   :required => "required",
   :recipes => ["deploy::event_router_service", "deploy::foundation_services", "deploy::provision", "deploy::update_configuration"]
 
-attribute "deploy/engine_server",
-  :display_name => "engine server",
-  :required => "required",
-  :recipes => ["deploy::update_configuration"]
-
-attribute "deploy/engine_port",
-  :display_name => "droolz engine port",
-  :required => "optional",
-  :default => "8080",
-  :recipes => ["deploy::update_configuration"]
-
-attribute "deploy/web_server",
-  :display_name => "web server",
-  :required => "required",
-  :recipes => ["deploy::update_configuration"]
-
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
   :required => "required",
@@ -161,9 +139,16 @@ attribute "deploy/domain",
   :display_name => "domain",
   :recipes => ["deploy::jspr"]
 
-attribute "deploy/search_server",
-  :display_name => "search_server",
-  :recipes => ["deploy::foundation_services", "deploy::update_configuration"]
+attribute "deploy/engine_port",
+  :display_name => "droolz engine port",
+  :required => "optional",
+  :default => "8080",
+  :recipes => ["deploy::update_configuration"]
+
+attribute "deploy/engine_server",
+  :display_name => "engine server",
+  :required => "required",
+  :recipes => ["deploy::update_configuration"]
 
 attribute "deploy/elastic_search_port",
   :display_name => "elastic search port",
@@ -171,16 +156,16 @@ attribute "deploy/elastic_search_port",
   :default => "9200",
   :recipes => ["deploy::foundation_services", "deploy::update_configuration"]
 
-attribute "deploy/elastic_search_version",
-  :display_name => "elastic search version",
-  :required => "optional",
-  :default => "0.19.3",
-  :recipes => ["deploy::elastic_search"]
-
 attribute "deploy/elastic_search_plugins",
   :display_name => "elastic search plugins",
   :required => "optional",
   :default => "bigdesk,elasticsearch-head,analysis-phonetic,analysis-icu",
+  :recipes => ["deploy::elastic_search"]
+
+attribute "deploy/elastic_search_version",
+  :display_name => "elastic search version",
+  :required => "optional",
+  :default => "0.19.3",
   :recipes => ["deploy::elastic_search"]
 
 attribute "deploy/infrastructure_artifacts",
@@ -193,17 +178,11 @@ attribute "deploy/infrastructure_revision",
   :required => "required",
   :recipes => ["deploy::download_infrastructure"]
 
-attribute "deploy/mongo_version",
-  :display_name => "mongo version",
-  :required => "optional",
-  :default => "2.0.1",
-  :recipes => ["deploy::mongo"]
-
-attribute "deploy/mule_port",
-  :display_name => "mule port",
-  :required => "optional",
-  :default  => "8585",
-  :recipes  => ["deploy::launch_mule"]
+attribute "deploy/messaging_server",
+  :display_name => "messaging_server",
+  :description => "Private IP address messaging_server host in this deployment",
+  :required => "required",
+  :recipes => ["deploy::event_router_service", "deploy::foundation_services", "deploy::update_configuration"]
 
 attribute "deploy/messaging_server_port",
   :display_name => "messaging server port",
@@ -211,11 +190,17 @@ attribute "deploy/messaging_server_port",
   :default  => "8081",
   :recipes  => ["deploy::event_router_service", "deploy::foundation_services", "deploy::update_configuration"]
 
-attribute "deploy/mule_version",
-  :display_name => "mule version",
+attribute "deploy/mongo_version",
+  :display_name => "mongo version",
   :required => "optional",
-  :default => "3.3.0",
-  :recipes => ["deploy::mule","deploy::recycle_mule"]
+  :default => "2.0.1",
+  :recipes => ["deploy::mongo"]
+
+attribute "deploy/mule_complete_removal",
+  :display_name => "Complete Mule removal",
+  :description => "Completely recycle Mule application",
+  :required => "optional",
+  :recipes => ["deploy::recycle_mule"]
 
 attribute "deploy/mule_plugins",
   :display_name => "Mule plugins",
@@ -223,6 +208,18 @@ attribute "deploy/mule_plugins",
   :required    => "optional",
   :default     => "mmc-agent-mule3-app-3.3.0.zip,mmc-distribution-console-app-3.3.0.zip",
   :recipes     => ["deploy::mule","deploy::launch_mule"]
+
+attribute "deploy/mule_port",
+  :display_name => "mule port",
+  :required => "optional",
+  :default => "8585",
+  :recipes => ["deploy::launch_mule"]
+
+attribute "deploy/mule_version",
+  :display_name => "mule version",
+  :required => "optional",
+  :default => "3.3.0",
+  :recipes => ["deploy::mule", "deploy::recycle_mule"]
 
 attribute "deploy/pims_artifacts",
   :display_name => "pims artifacts",
@@ -252,12 +249,9 @@ attribute "deploy/s3_repository",
   :default  => "GlobalIncite",
   :recipes  => ["deploy::download_binaries", "deploy::download_pims"]
 
-attribute "deploy/server_manager_features",
-  :display_name => "MSMQ features",
-  :description => "List of windows MSMQ features to install",
-  :required    => "optional",
-  :default     => "MSMQ-Server,MSMQ-HTTP-Support,MSMQ-Directory",
-  :recipes     => ["deploy::enable_msmq","deploy::event_router_service"]
+attribute "deploy/search_server",
+  :display_name => "search_server",
+  :recipes => ["deploy::foundation_services", "deploy::update_configuration"]
 
 attribute "deploy/service_platform",
   :display_name => "EventRouter HTTP runtime",
@@ -272,6 +266,12 @@ attribute "deploy/service_port",
   :required    => "optional",
   :default     => "8989",
   :recipes     => ["deploy::event_router_service"]
+
+attribute "deploy/show_mule_log",
+  :display_name => "show mule log",
+  :description => "Show mule log of the launch",
+  :required => "optional",
+  :recipes => ["deploy::launch_mule"]
 
 attribute "deploy/tenant",
   :display_name => "tenant",
@@ -296,3 +296,8 @@ attribute "deploy/verify_completion",
   :required => "optional",
   :default  => "1",
   :recipes  => ["deploy::launch_activemq", "deploy::launch_mule"]
+
+attribute "deploy/web_server",
+  :display_name => "web server",
+  :required => "required",
+  :recipes  => ["deploy::update_configuration"]
