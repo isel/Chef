@@ -24,9 +24,10 @@ if !File.exists?('/opt/mongo')
     EOF
   end
 
-  bash 'Setting directory links' do
+  bash 'Setting permissions and creating data directory' do
     code <<-EOF
-      mkdir -p /data/db
+      chmod a+x #{install_directory}/bin/*
+      mkdir --parents /data/db
     EOF
   end
 else
