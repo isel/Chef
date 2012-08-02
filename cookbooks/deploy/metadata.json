@@ -62,6 +62,7 @@
       "default": "ugfartifacts",
       "recipes": [
         "deploy::activemq",
+        "deploy::elastic_search",
         "deploy::mongo"
       ],
       "choice": [

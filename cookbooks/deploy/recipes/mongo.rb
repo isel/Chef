@@ -18,6 +18,7 @@ if !File.exists?('/opt/mongo')
       :target_directory => '/opt'
     )
   end
+
   bash 'Downloading mongo' do
     code <<-EOF
       ruby -rubygems #{node['ruby_scripts_dir']}/download_mongo.rb

@@ -50,7 +50,7 @@ attribute "core/s3_bucket",
   :display_name => "s3 bucket for the UGF platform",
   :required => "optional",
   :default  => "ugfartifacts",
-  :recipes  => ["deploy::activemq", "deploy::mongo"]
+  :recipes  => ["deploy::activemq", "deploy::elastic_search", "deploy::mongo"]
 
 # Attributes from deploy cookbook
 attribute "deploy/activemq_port",

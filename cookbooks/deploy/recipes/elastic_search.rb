@@ -1,72 +1,65 @@
-ruby_scripts_dir = node['ruby_scripts_dir']
-hostname = node[:hostname]
+include_recipe 'core::download_vendor_artifacts_prereqs'
+
 elastic_search_port = node[:deploy][:elastic_search_port]
 install_via_git_download = node[:deploy][:install_via_git_download]
 verify_completion = node[:deploy][:verify_completion]
-deploy_folder = '/opt/ElasticSearch'
+deploy_folder = '/opt/elasticsearch'
 elastic_search_plugins = node[:deploy][:elastic_search_plugins]
-elastic_search_plugins = '' if elastic_search_plugins.nil?
-elastic_search_files = node['elastic_search_files']
+elastic_search_files = 'elasticsearch,servicewrapper'
 cluster_name = 'UFCluster'
 sleep_interval = 10
 
 if !File.exists?(deploy_folder)
-  install_dir = "elasticsearch-#{node[:deploy][:elastic_search_version]}"
   bash 'Install elastic search prerequisites' do
     code <<-EOF
       apt-get -yqq install openjdk-6-jre
     EOF
   end
 
-  template "#{ruby_scripts_dir}/download_vendor_drop.rb" do
-    source 'scripts/download_vendor_drop.erb'
+  template "#{node['ruby_scripts_dir']}/download_elastic_search.rb" do
+    local true
+    source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
     variables(
-        :aws_access_key_id => node[:core][:aws_access_key_id],
-        :aws_secret_access_key => node[:core][:aws_secret_access_key],
-        :install_dir => install_dir,
-        :product => 'ElasticSearch',
-        :version => node[:deploy][:elastic_search_version],
-        :filelist => [elastic_search_files, elastic_search_plugins].join(',')
+      :aws_access_key_id => node[:core][:aws_access_key_id],
+      :aws_secret_access_key => node[:core][:aws_secret_access_key],
+      :s3_bucket => node[:core][:s3_bucket],
+      :s3_repository => 'Vendor',
+      :product => 'elasticsearch',
+      :version => node[:deploy][:elastic_search_version],
+      :artifacts => "#{elastic_search_files},#{elastic_search_plugins}",
+      :target_directory => '/opt'
     )
   end
 
-  bash 'Downloading artifacts' do
+  bash 'Downloading elastic search' do
     code <<-EOF
-      ruby #{ruby_scripts_dir}/download_vendor_drop.rb
+      ruby #{node['ruby_scripts_dir']}/download_elastic_search.rb
     EOF
   end
 
-  bash 'set up directory  links' do
+  bash 'Configure elastic search' do
     code <<-EOF
       pushd #{deploy_folder}
-      ln -s #{install_dir} current
-      mv *servicewrapper*/service current/bin/
+
+      mv *servicewrapper*/service bin/
       rm -Rf *servicewrapper*
-    EOF
-  end
 
-  bash 'configure Elastic Search as a service' do
-    code <<-EOF
-      pushd #{deploy_folder}
-      current/bin/service/elasticsearch install
+      bin/service/elasticsearch install
 
-      echo 'Set up rcelasticsearch as a shortcut to the service wrapper'
-      ln -s `readlink -f current/bin/service/elasticsearch` /usr/local/bin/rcelasticsearch
+      ln -s `readlink -f bin/service/elasticsearch` /usr/local/bin/rcelasticsearch
 
-      echo 'Configuring Cluster'
-      echo "cluster.name: #{cluster_name}" >> #{deploy_folder}/current/config/elasticsearch.yml
-      sed -i "s@set.default.ES_HOME=@#set.default.ES_HOME=@" #{deploy_folder}/current/bin/service/elasticsearch.conf
+      echo "cluster.name: #{cluster_name}" >> #{deploy_folder}/config/elasticsearch.yml
+      sed -i "s@set.default.ES_HOME=@#set.default.ES_HOME=@" #{deploy_folder}/bin/service/elasticsearch.conf
 
-      echo 'Starting the service'
       service elasticsearch start
     EOF
   end
   log 'Elastic Search service is installed and started.'
 
-  @plugin_directories = {'elasticsearch-head' => 'current/plugins/head/_site',
-                         'bigdesk' => 'current/plugins/bigdesk/_site',
-                         'analysis-icu' => 'current/plugins/analysis-icu',
-                         'analysis-phonetic' => 'current/plugins/analysis-phonetic'}
+  @plugin_directories = {'elasticsearch-head' => 'plugins/head/_site',
+                         'bigdesk' => 'plugins/bigdesk/_site',
+                         'analysis-icu' => 'plugins/analysis-icu',
+                         'analysis-phonetic' => 'plugins/analysis-phonetic'}
 
   elastic_search_plugins.split(',').each do |plugin|
     plugin_directory = @plugin_directories[plugin]
@@ -93,15 +86,11 @@ if !File.exists?(deploy_folder)
   bash 'reinstall plugins from developer github' do
     code <<-EOF
     set +e
-    DEPLOY_FOLDER="#{deploy_folder}"
-    pushd $DEPLOY_FOLDER
-    cd current
-    echo "run the install"
-    ./bin/plugin -install lukas-vlcek/bigdesk
-    ./bin/plugin -install Aconex/elasticsearch-head
+    pushd #{deploy_folder}
+    ./bin/plugin -install bigdesk
+    ./bin/plugin -install elasticsearch-head
     ./bin/plugin -install elasticsearch/elasticsearch-analysis-phonetic/1.2.0
     ./bin/plugin -install elasticsearch/elasticsearch-analysis-icu/1.5.0
-    echo 'ElasticSearch Plugins are reinstalled from developer git repositories.'
     popd
     EOF
     not_if { install_via_git_download.nil? || install_via_git_download == '' }
