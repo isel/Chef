@@ -14,18 +14,7 @@ plugin_home = "#{mule_home}/apps"
 # note the change of the name in transit from s3 folder to mule
 configuration_dir = 'configuration'
 mule_configuration_dir="#{mule_home}/#{configuration_dir}"
-# MMC plugins
 plugins = node[:deploy][:mule_plugins]
-if !plugins.nil?
-  plugins = plugins.split(',')
-  if  plugins.length == 0
-    plugins = %w(
-             mmc-agent-mule3-app-3.3.0.zip
-             mmc-distribution-console-app-3.3.0.zip
-            )
-  end
-end
-
 
 # apt-get detects if debian package is already installed - no need to replicate its functionality
 # may need to remove sun java6
@@ -131,7 +120,7 @@ if !File.exists?("#{mule_home}/bin")
       :s3_repository => 'Vendor',
       :product => product,
       :version => version,
-      :artifacts => plugins.join(','),
+      :artifacts => plugins,
       :target_directory => "#{mule_home}/apps",
       :unzip => false
     )
@@ -142,23 +131,6 @@ if !File.exists?("#{mule_home}/bin")
         ruby #{ruby_scripts_dir}/download_mule_plugins.rb
     EOF
   end
-
-  if File.exists?(plugin_home)
-    log "looking at installed plugins"
-# shortly after launch the deployed plugins are exploded from the original zip format
-# and become directory with the same basename
-
-    plugins.each do |package_file|
-      log "Inspecting mmc plugin package: #{package_file}"
-      package_directory = File.basename(package_file, '.zip')
-      if !File.exists?("#{plugin_home}/#{package_file}") && !File.directory?("#{plugin_home}/#{package_directory}")
-        log "Neither Plugin file #{package_file} nor directory #{package_directory} was found in #{plugin_home}."
-      end
-    end
-  else
-    log "Plugin app directory #{plugin_home} was not found under #{mule_home}"
-  end
-  # NOTE: after the mule starts, the zips get exploded.
 
   bash 'Patch Mule configuration wrapper.conf' do
     # patch wrapper.conf from embedded unified diff

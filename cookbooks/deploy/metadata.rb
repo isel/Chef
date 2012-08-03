@@ -169,7 +169,7 @@ attribute "deploy/mule_plugins",
   :display_name => "Mule plugins",
   :description => "List of Mule plugins to install",
   :required    => "optional",
-  :default     => "mmc-agent-mule3-app-3.3.0.zip,mmc-distribution-console-app-3.3.0.zip",
+  :default     => "mmc-agent-mule3-app-3.3.0,mmc-distribution-console-app-3.3.0",
   :recipes     => ["deploy::mule","deploy::launch_mule"]
 
 attribute "deploy/mule_port",
@@ -215,6 +215,13 @@ attribute "deploy/s3_repository",
 attribute "deploy/search_server",
   :display_name => "search_server",
   :recipes => ["deploy::foundation_services", "deploy::update_configuration"]
+
+attribute "deploy/server_manager_features",
+  :display_name => "MSMQ features",
+  :description => "List of windows MSMQ features to install",
+  :required    => "optional",
+  :default     => "MSMQ-Server,MSMQ-HTTP-Support,MSMQ-Directory",
+  :recipes     => ["deploy::enable_msmq","deploy::event_router_service"]
 
 attribute "deploy/service_platform",
   :display_name => "EventRouter HTTP runtime",
