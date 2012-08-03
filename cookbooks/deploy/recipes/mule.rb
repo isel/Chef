@@ -85,7 +85,8 @@ if !File.exists?("#{mule_home}/bin")
 
   bash 'Setting file permissions' do
     code <<-EOF
-      chmod -R 777 #{product}
+      pushd "#{product}"
+      chmod -R 777 .
     EOF
   end
 
