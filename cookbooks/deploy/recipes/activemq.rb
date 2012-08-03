@@ -15,7 +15,8 @@ if !File.exists?("/opt/#{product}")
       :product => product,
       :version => version,
       :artifacts => product,
-      :target_directory => '/opt'
+      :target_directory => '/opt',
+      :unzip => true
     )
   end
 

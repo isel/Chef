@@ -15,7 +15,8 @@ if !File.exists?('/opt/mongo')
       :product => 'mongo',
       :version => version,
       :artifacts => 'mongo',
-      :target_directory => '/opt'
+      :target_directory => '/opt',
+      :unzip => true
     )
   end
 

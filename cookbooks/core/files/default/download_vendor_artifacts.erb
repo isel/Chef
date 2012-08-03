@@ -5,6 +5,7 @@ s3_repository = '<%= @s3_repository %>'
 product = '<%= @product %>'
 version = '<%= @version %>'
 target_directory = '<%= @target_directory %>'
+unzip = <%= @unzip %>
 
 puts "downloading #{product} (#{version}) to #{target_directory}"
 
@@ -36,7 +37,7 @@ install_files.each do |f|
     File.open("#{target_directory}/#{f}.zip", 'wb') do |local_file|
       local_file.write(file.body)
     end
-    `unzip -d #{target_directory}/#{f} #{target_directory}/#{f}.zip`
+    `unzip -d #{target_directory}/#{f} #{target_directory}/#{f}.zip` if unzip
   end
 end
 

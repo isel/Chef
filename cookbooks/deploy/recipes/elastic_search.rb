@@ -24,7 +24,8 @@ if !File.exists?(deploy_folder)
       :product => 'elasticsearch',
       :version => node[:deploy][:elastic_search_version],
       :artifacts => "#{elastic_search_files},#{elastic_search_plugins}",
-      :target_directory => '/downloads'
+      :target_directory => '/downloads',
+      :unzip => true
     )
   end
 

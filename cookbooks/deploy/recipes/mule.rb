@@ -99,7 +99,8 @@ if !File.exists?("#{mule_home}/bin")
           :product => product,
           :version => version,
           :artifacts => 'mule',
-          :target_directory => '/opt'
+          :target_directory => '/opt',
+          :unzip => true
       )
     end
 
