@@ -79,34 +79,13 @@ if !File.exists?("#{mule_home}/bin")
 
   bash 'Downloading artifacts' do
     code <<-EOF
-  ruby #{ruby_scripts_dir}/download_mule.rb
+      ruby #{ruby_scripts_dir}/download_mule.rb
     EOF
   end
 
-  bash 'Setting directory links' do
-    product_directory="mule-enterprise-standalone-#{version}"
+  bash 'Setting file permissions' do
     code <<-EOF
-      PRODUCT_DIRECTORY="#{product_directory}"
-      pushd /opt
-      ls -l .
-      set +e
-      ls -l #{product}
-      set -e
-      if [ -L "#{product}" ] ; then
-        echo "clearing possibly existing link"
-        rm #{product}
-      fi
-      echo "Probing the directory $PRODUCT_DIRECTORY"
-
-      if [ -d "$PRODUCT_DIRECTORY" ] ; then
-        ln -s $PRODUCT_DIRECTORY #{product}
-      fi
-
-      pushd "#{product}"
-      chmod -R 777 .
-      if [ ! -f /opt/#{product}/bin/#{product} ] ; then
-        exit 1
-      fi
+      chmod -R 777 #{product}
     EOF
   end
 

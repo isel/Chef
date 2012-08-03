@@ -50,7 +50,7 @@ if !File.exists?(deploy_folder)
       echo "cluster.name: #{cluster_name}" >> #{deploy_folder}/config/elasticsearch.yml
       sed -i "s@set.default.ES_HOME=@#set.default.ES_HOME=@" #{deploy_folder}/bin/service/elasticsearch.conf
 
-      service elasticsearch start
+      # service elasticsearch start
     EOF
   end
 
@@ -71,11 +71,14 @@ if !File.exists?(deploy_folder)
 
       cp -R /downloads/#{plugin}/* #{plugin_directory}
       popd
-      echo 'Restarting the service'
-      service elasticsearch restart
+      # service elasticsearch restart
       EOF
       not_if { plugin_directory.nil? }
     end
+  end
+
+  bash 'starting elastic search' do
+    code 'service elasticsearch start'
   end
 else
   log 'ElasticSearch is already installed.'
