@@ -68,99 +68,80 @@ end
 File.open(local_filename, 'r+') { |f| f.puts contents }
 
 log 'bash profile updated.'
-vendor_download = false
 
 if !File.exists?("#{mule_home}/bin")
-  if vendor_download
-    bash "Download #{product} from vendor site" do
-      code <<-EOF
-    mkdir -p ~/Installs
-    cd ~/Installs
-    # initial version - upload 200 MB from the web
-    wget -q http://s3.amazonaws.com/MuleEE/mule-ee-distribution-standalone-mmc-#{version}.tar.gz
-    tar xf mule-ee-distribution-standalone-mmc-#{version}.tar.gz
-    mkdir -p #{mule_home}
-    pushd #{mule_home}
-    cp -R ~/Installs/mule-enterprise-standalone-#{version}/* .
-    chmod -R 777 .
-      EOF
-    end
-  else
-    log "Download #{product} from s3"
+  log "Download #{product} from s3"
 
-    template "#{node['ruby_scripts_dir']}/download_mule.rb" do
-      local true
-      source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
-      variables(
-          :aws_access_key_id => node[:core][:aws_access_key_id],
-          :aws_secret_access_key => node[:core][:aws_secret_access_key],
-          :s3_bucket => node[:core][:s3_bucket],
-          :s3_repository => 'Vendor',
-          :product => product,
-          :version => version,
-          :artifacts => 'mule',
-          :target_directory => '/opt',
-          :unzip => true
-      )
-    end
-
-    bash 'Downloading artifacts' do
-      code <<-EOF
-    ruby #{ruby_scripts_dir}/download_mule.rb
-      EOF
-    end
-
-    bash 'Setting directory links' do
-      product_directory="mule-enterprise-standalone-#{version}"
-      code <<-EOF
-    PRODUCT_DIRECTORY="#{product_directory}"
-    pushd /opt
-    ls -l .
-    set +e
-    ls -l #{product}
-    set -e
-    if [ -L "#{product}" ] ; then
-      echo "clearing possibly existing link"
-      rm #{product}
-    fi
-    echo "Probing the directory $PRODUCT_DIRECTORY"
-
-    if [ -d "$PRODUCT_DIRECTORY" ] ; then
-      ln -s $PRODUCT_DIRECTORY #{product}
-    fi
-
-    pushd "#{product}"
-    chmod -R 777 .
-    if [ ! -f /opt/#{product}/bin/#{product} ] ; then
-      exit 1
-    fi
-      EOF
-    end
-    log 'Mule service is installed'
-  end
-
-  log 'Download configurations'
-
-  template "#{ruby_scripts_dir}/download_plugins.rb" do
-    source 'scripts/download_vendor_drop.erb'
+  template "#{node['ruby_scripts_dir']}/download_mule.rb" do
+    local true
+    source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
     variables(
-        :aws_access_key_id => node[:core][:aws_access_key_id],
-        :aws_secret_access_key => node[:core][:aws_secret_access_key],
-        :install_dir => "#{mule_home}/apps",
-        :deploy_folder => "#{mule_home}/apps",
-        :no_explode => 'true',
-        :product => product,
-        :version => version,
-        :filelist => plugins.join(',')
+      :aws_access_key_id => node[:core][:aws_access_key_id],
+      :aws_secret_access_key => node[:core][:aws_secret_access_key],
+      :s3_bucket => node[:core][:s3_bucket],
+      :s3_repository => 'Vendor',
+      :product => product,
+      :version => version,
+      :artifacts => 'mule',
+      :target_directory => '/opt',
+      :unzip => true
     )
   end
 
-  bash 'Downloading mmc plugin packages' do
+  bash 'Downloading artifacts' do
     code <<-EOF
-        ruby #{ruby_scripts_dir}/download_plugins.rb
+  ruby #{ruby_scripts_dir}/download_mule.rb
     EOF
   end
 
+  bash 'Setting directory links' do
+    product_directory="mule-enterprise-standalone-#{version}"
+    code <<-EOF
+      PRODUCT_DIRECTORY="#{product_directory}"
+      pushd /opt
+      ls -l .
+      set +e
+      ls -l #{product}
+      set -e
+      if [ -L "#{product}" ] ; then
+        echo "clearing possibly existing link"
+        rm #{product}
+      fi
+      echo "Probing the directory $PRODUCT_DIRECTORY"
+
+      if [ -d "$PRODUCT_DIRECTORY" ] ; then
+        ln -s $PRODUCT_DIRECTORY #{product}
+      fi
+
+      pushd "#{product}"
+      chmod -R 777 .
+      if [ ! -f /opt/#{product}/bin/#{product} ] ; then
+        exit 1
+      fi
+    EOF
+  end
+
+  template "#{node['ruby_scripts_dir']}/download_mule_plugins.rb" do
+    local true
+    source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
+    variables(
+      :aws_access_key_id => node[:core][:aws_access_key_id],
+      :aws_secret_access_key => node[:core][:aws_secret_access_key],
+      :s3_bucket => node[:core][:s3_bucket],
+      :s3_repository => 'Vendor',
+      :product => product,
+      :version => version,
+      :artifacts => plugins.join(','),
+      :target_directory => "#{mule_home}/apps",
+      :unzip => false
+    )
+  end
+
+  bash 'Downloading mule plugins' do
+    code <<-EOF
+        ruby #{ruby_scripts_dir}/download_mule_plugins.rb
+    EOF
+  end
 
   if File.exists?(plugin_home)
     log "looking at installed plugins"
