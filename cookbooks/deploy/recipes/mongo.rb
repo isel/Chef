@@ -23,6 +23,7 @@ if !File.exists?('/usr/local/mongodb')
     code <<-EOF
       ruby #{node['ruby_scripts_dir']}/download_mongo.rb
       mv /usr/local/mongo /usr/local/mongodb
+      chmod a+x /usr/local/mongodb/bin/*
     EOF
   end
 else
