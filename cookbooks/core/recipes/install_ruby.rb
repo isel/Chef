@@ -2,7 +2,7 @@ include_recipe 'core::download_vendor_artifacts_prereqs'
 
 if !File.exists?('/opt/ruby')
   ruby_version = '1.9.2-p320'
-  executables = ['ruby', 'gem', 'rake', 'rspec', 'rdoc', 'ri']
+  executables = ['ruby', 'gem', 'rake', 'rspec', 'rdoc', 'ri', 'bundle']
 
   template "#{node['ruby_scripts_dir']}/download_ruby.rb" do
     local true
