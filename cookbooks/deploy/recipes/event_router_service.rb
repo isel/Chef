@@ -38,10 +38,6 @@ powershell_script = <<-'EOF'
 
 $serviceDisplayName = "Ultimate Software Event Router Service"
 
-if ( (${Env:RS_REBOOT} -ne $null) -and (${Env:RS_REBOOT} -match  "true"))  {
-  write-output  "Skipping installation of ${serviceDisplayName} execution on reboot: ${Env:RS_REBOOT}."
-  exit 0;
-}
 write-output "REBOOT=${Env:RS_REBOOT}"
 
 $install_logFile = 'service_install.log'
@@ -73,7 +69,8 @@ Write-Output "Check if prerequisite Windows Feature set is installed"
 $features_array = $Env:SERVER_MANAGER_FEATURES -split ','
 $installutil_command_fullpath = $installer_tools[$Env:SERVICE_PLATROFM]
 
-$scInterval = 5
+$scInterval = 30
+Write-Output "Using sleep time: $scInterval"
 
 # origin
 # http://msdn.microsoft.com/en-us/library/50614e95(v=vs.80).aspx
