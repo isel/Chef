@@ -1,8 +1,7 @@
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
-if !File.exists?('/opt/mongo')
+if !File.exists?('/usr/local/mongodb')
   version = node[:deploy][:mongo_version]
-  install_directory="/opt/mongo"
 
   template "#{node['ruby_scripts_dir']}/download_mongo.rb" do
     local true
@@ -15,82 +14,17 @@ if !File.exists?('/opt/mongo')
       :product => 'mongo',
       :version => version,
       :artifacts => 'mongo',
-      :target_directory => '/opt',
+      :target_directory => '/usr/local',
       :unzip => true
     )
   end
 
   bash 'Downloading mongo' do
     code <<-EOF
-      ruby -rubygems #{node['ruby_scripts_dir']}/download_mongo.rb
-    EOF
-  end
-
-  bash 'Setting permissions and creating data directory' do
-    code <<-EOF
-      chmod a+x #{install_directory}/bin/*
-      mkdir --parents /data/db
+      ruby #{node['ruby_scripts_dir']}/download_mongo.rb
+      mv /usr/local/mongo /usr/local/mongodb
     EOF
   end
 else
-  log 'Mongo already installed.'
-end
-
-bash 'Setup log directory on ephemeral drive' do
-  code <<-EOF
-    mkdir --parents /mnt/logs
-  EOF
-end
-
-if !File.exists?('/etc/cron.daily/recycle_logs')
-  template '/etc/cron.daily/recycle_logs' do
-    source 'recycle_logs.erb'
-    mode 0755
-  end
-end
-
-
-template '/etc/crontab' do
-  source 'database_crontab.erb'
-  mode 0644
-end
-
-bash 'Restarting cron' do
-  code <<-EOF
-    rm /etc/cron.daily/apt
-    service cron restart
-  EOF
-end
-
-if !File.exists?('/etc/init.d/mongo')
-  template '/etc/init.d/mongo' do
-    source 'mongo.erb'
-    mode 0755
-    variables(
-      :port => node[:deploy][:db_port]
-    )
-  end
-
-  bash 'Registering mongo service' do
-    code <<-EOF
-      update-rc.d mongo defaults
-    EOF
-  end
-else
-  log 'Mongo service is already registered.'
-end
-
-ruby_block 'Starting mongo service' do
-  block do
-    puts `service mongo start`
-
-    sleep_time = 5
-    done = false
-    elapsed = 0
-    until done || elapsed >= 300
-      sleep sleep_time
-      done = `service mongo status`.include?('Mongo is running with pid=')
-      elapsed += sleep_time
-    end
-  end
+  log 'Mongo already downloaded.'
 end
