@@ -25,9 +25,9 @@ token_values = {
     'web_server' => '<%= @web_server %>',
 }
 
-
-def update_properties(local_filename, token_values)
-  f = File.open(local_filename, 'r+'); contents = f.read; f.close
+def update_properties(source_file, target_file, token_values)
+  contents = ''
+  File.open(source_file, 'r+') { |f| contents = f.read }
   token_values.each do |token, entry|
     matcher = Regexp.new('(\{' + token + '\})', Regexp::MULTILINE)
     while matcher.match(contents) # multiline ?
@@ -35,7 +35,7 @@ def update_properties(local_filename, token_values)
       contents=contents.gsub(matcher, entry)
     end
   end
-  File.open(local_filename, 'r+') { |f| f.puts contents }
+  File.open(target_file, 'w') { |f| f.puts contents }
 end
 
 # replace tokens in mule properties file
@@ -47,7 +47,7 @@ if File.exists?(mule_configuration_dir)
   else
     $stderr.puts  "backup already exists: #{properties_backup_filename}"
   end
-  update_properties(properties_filename, token_values)
+  update_properties(properties_backup_filename, properties_filename, token_values)
   $stderr.puts  "Properties updated"
 else
   $stderr.puts  "Directory does not exist #{mule_configuration_dir}"
