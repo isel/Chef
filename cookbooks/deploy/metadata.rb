@@ -50,18 +50,6 @@ attribute "core/s3_bucket",
   :recipes  => ["deploy::activemq", "deploy::elastic_search", "deploy::mongo", "deploy::mule"]
 
 # Attributes from deploy cookbook
-attribute "deploy/activemq_port",
-  :display_name => "activemq port",
-  :required => "optional",
-  :default  => "61616",
-  :recipes  => ["deploy::launch_activemq"]
-
-attribute "deploy/activemq_version",
-  :display_name => "activemq version",
-  :required => "optional",
-  :default  => "5.6.0",
-  :recipes  => ["deploy::activemq"]
-
 attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
@@ -82,12 +70,6 @@ attribute "deploy/cache_server",
   :required => "required",
   :recipes => ["deploy::foundation_services", "deploy::register_cache_hostname", "deploy::update_configuration"]
 
-attribute "deploy/db_port",
-  :display_name => "db port",
-  :required => "optional",
-  :default  => "27017",
-  :recipes  => ["deploy::event_router_service", "deploy::foundation_services", "deploy::mongo", "deploy::provision", "deploy::update_configuration" ]
-
 attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
@@ -102,34 +84,10 @@ attribute "deploy/domain",
   :display_name => "domain",
   :recipes => ["deploy::jspr"]
 
-attribute "deploy/engine_port",
-  :display_name => "engine port",
-  :required => "optional",
-  :default => "8080",
-  :recipes => ["deploy::update_configuration"]
-
 attribute "deploy/engine_server",
   :display_name => "engine server",
   :required => "required",
-  :recipes => ["deploy::update_configuration"]
-
-attribute "deploy/elastic_search_port",
-  :display_name => "elastic search port",
-  :required => "optional",
-  :default => "9200",
-  :recipes => ["deploy::foundation_services", "deploy::update_configuration"]
-
-attribute "deploy/elastic_search_plugins",
-  :display_name => "elastic search plugins",
-  :required => "optional",
-  :default => "bigdesk,elasticsearch-head,analysis-phonetic,analysis-icu",
-  :recipes => ["deploy::elastic_search"]
-
-attribute "deploy/elastic_search_version",
-  :display_name => "elastic search version",
-  :required => "optional",
-  :default => "0.19.3",
-  :recipes => ["deploy::elastic_search"]
+  :recipes  => ["deploy::update_configuration"]
 
 attribute "deploy/infrastructure_artifacts",
   :display_name => "infrastructure artifacts",
@@ -147,42 +105,11 @@ attribute "deploy/messaging_server",
   :required => "required",
   :recipes => ["deploy::event_router_service", "deploy::foundation_services", "deploy::update_configuration"]
 
-attribute "deploy/messaging_server_port",
-  :display_name => "messaging server port",
-  :required => "optional",
-  :default  => "8081",
-  :recipes  => ["deploy::event_router_service", "deploy::foundation_services", "deploy::update_configuration"]
-
 attribute "deploy/mongo_version",
   :display_name => "mongo version",
   :required => "optional",
   :default => "2.0.1",
   :recipes => ["deploy::mongo"]
-
-attribute "deploy/mule_complete_removal",
-  :display_name => "complete mule removal",
-  :description => "Completely recycle Mule application",
-  :required => "optional",
-  :recipes => ["deploy::recycle_mule"]
-
-attribute "deploy/mule_plugins",
-  :display_name => "mule plugins",
-  :description => "List of Mule plugins to install",
-  :required    => "optional",
-  :default     => "mmc-agent-mule3-app-3.3.0,mmc-distribution-console-app-3.3.0",
-  :recipes     => ["deploy::mule","deploy::launch_mule"]
-
-attribute "deploy/mule_port",
-  :display_name => "mule port",
-  :required => "optional",
-  :default => "8585",
-  :recipes => ["deploy::launch_mule"]
-
-attribute "deploy/mule_version",
-  :display_name => "mule version",
-  :required => "optional",
-  :default => "3.3.0",
-  :recipes => ["deploy::mule", "deploy::recycle_mule"]
 
 attribute "deploy/pims_artifacts",
   :display_name => "pims artifacts",
@@ -216,43 +143,10 @@ attribute "deploy/search_server",
   :display_name => "search_server",
   :recipes => ["deploy::foundation_services", "deploy::update_configuration"]
 
-attribute "deploy/server_manager_features",
-  :display_name => "msmq features",
-  :description => "List of windows MSMQ features to install",
-  :required    => "optional",
-  :default     => "MSMQ-Server,MSMQ-HTTP-Support,MSMQ-Directory",
-  :recipes     => ["deploy::enable_msmq","deploy::event_router_service"]
-
-attribute "deploy/service_platform",
-  :display_name => "eventrouter http runtime",
-  :description => "The .net runtime / affinity the  EventRouter service is hosted",
-  :required    => "optional",
-  :default     => "v4.0_x86",
-  :recipes     => ["deploy::event_router_service"]
-
-attribute "deploy/service_port",
-  :display_name => "eventrouter http port",
-  :description => "HTTP Port the WCF EventRouter service is listening",
-  :required    => "optional",
-  :default     => "8989",
-  :recipes     => ["deploy::event_router_service"]
-
-attribute "deploy/show_mule_log",
-  :display_name => "show mule log",
-  :description => "Show mule log of the launch",
-  :required => "optional",
-  :recipes => ["deploy::launch_mule"]
-
 attribute "deploy/tenant",
   :display_name => "tenant",
   :required => "required",
   :recipes => ["deploy::engine", "deploy::jspr", "deploy::provision"]
-
-attribute "deploy/ulimit_files",
-  :display_name => "setting for log4j",
-  :required => "optional",
-  :default  => "8192",
-  :recipes  => ["deploy::adjust_ulimit", "deploy::launch_mule"]
 
 attribute "deploy/use_mocked_website",
   :display_name => "use mocked website",

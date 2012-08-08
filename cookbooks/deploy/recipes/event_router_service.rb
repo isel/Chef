@@ -7,13 +7,13 @@ template "#{ruby_scripts_dir}/event_router_service.rb" do
 
   source 'scripts/event_router_service.erb'
   variables(
-    :source_directory  => File.join( node[:binaries_directory] , 'AppServer/Services/Messaging.EventRouter').gsub(/\\/,'/'),
-    :target_directory => File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' ).gsub(/\\/,'/'),
-    :messaging_server  => node[:deploy][:messaging_server],
-    :messaging_server_port  => node[:deploy][:messaging_server_port],
+    :binaries_directory => node[:binaries_directory],
+    :db_port  => node[:db_port],
     :db_server  => node[:deploy][:db_server],
-    :db_port  => node[:deploy][:db_port],
-    :binaries_directory =>    node[:binaries_directory]
+    :messaging_port  => node[:messaging_port],
+    :messaging_server  => node[:deploy][:messaging_server],
+    :source_directory  => File.join( node[:binaries_directory] , 'AppServer/Services/Messaging.EventRouter').gsub(/\\/,'/'),
+    :target_directory => File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' ).gsub(/\\/,'/')
   )
 end
 
@@ -25,9 +25,8 @@ powershell 'Install Event Router Service' do
   parameters (
     {
       'SOURCE_PATH' => File.join( ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter' ).gsub('/','\\'),
-      'SERVER_MANAGER_FEATURES' => node[:deploy][:server_manager_features],
-      'SERVICE_PORT' => node[:deploy][:service_port],
-      'SERVICE_PLATROFM' => node[:deploy][:service_platform]
+      'SERVER_MANAGER_FEATURES' => node[:msmq_features],
+      'SERVICE_PORT' => node[:event_router_port]
     }
   )
 
@@ -47,14 +46,6 @@ $installPath = "${Env:\ProgramData}\Windows Services\Messaging Event Router"
 $assemblyFileSet = '*.*'
 $assemblyFileName = 'UltimateSoftware.Foundation.Messaging.EventRouter.exe'
 
-# Choose the proper installer or the 32 bit .net 4.x runtime
-$installer_tools = @{
-  'v4.0_x86' = 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe';
-  'v4.0_x64' = 'c:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe';
-  'v2.0_x86' = 'c:\Windows\Microsoft.NET\Framework\v2.0.50727\InstallUtil.exe';
-  'v2.0_x64' = 'c:\Windows\Microsoft.NET\Framework64\v2.0.50727\InstallUtil.exe'
-}
-
 Write-Output "creating directory ""${sourcePath}"""
 New-Item -Path "${sourcePath}" -Type Directory -Force -ErrorAction SilentlyContinue
 Write-Output "creating directory ""${installPath}"""
@@ -62,20 +53,14 @@ New-Item -Path "${installPath}" -Type Directory -Force -ErrorAction SilentlyCont
 
 chdir "${sourcePath}"
 Get-ChildItem
-# need to verify if the files are in place.
 
 Write-Output "Check if prerequisite Windows Feature set is installed"
 
 $features_array = $Env:SERVER_MANAGER_FEATURES -split ','
-$installutil_command_fullpath = $installer_tools[$Env:SERVICE_PLATROFM]
+$installutil_command_fullpath = 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe'
 
 $scInterval = 30
 Write-Output "Using sleep time: $scInterval"
-
-# origin
-# http://msdn.microsoft.com/en-us/library/50614e95(v=vs.80).aspx
-# http://msdn.microsoft.com/en-us/library/windows/desktop/ms682053%28v=vs.85%29.aspx
-# http://web.me.com/stefsewell/TechEd2010/ASI02-INT/Entries/2010/9/19_Part_2_-_Installing_a_new_service.html
 
 Import-Module ServerManager
 

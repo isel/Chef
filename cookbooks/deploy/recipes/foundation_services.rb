@@ -69,12 +69,12 @@ template "#{ruby_scripts_dir}/foundation_services.rb" do
   source 'scripts/foundation_services.erb'
   variables(
     :cache_server => node[:deploy][:cache_server],
+    :db_port => node[:db_port],
     :db_server => node[:deploy][:db_server],
-    :elastic_search_port => node[:deploy][:elastic_search_port],
-    :search_server => node[:deploy][:search_server],
-    :db_port => node[:deploy][:db_port],
+    :messaging_port => node[:messaging_port],
     :messaging_server => node[:deploy][:messaging_server],
-    :messaging_server_port => node[:deploy][:messaging_server_port]
+    :search_port => node[:search_port],
+    :search_server => node[:deploy][:search_server]
   )
 end
 

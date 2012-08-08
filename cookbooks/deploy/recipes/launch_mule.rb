@@ -3,24 +3,10 @@ require 'yaml'
 
 # rs_agent_dev:download_cookbooks_once=true
 hostname = node[:hostname]
-ulimit_files = node[:deploy][:ulimit_files]
-mule_port = node[:deploy][:mule_port]
-show_mule_log = node[:deploy][:show_mule_log]
+ulimit_files = node[:ulimit_files]
 sleep_interval = 10
 plugin_home = '/opt/mule/apps'
 
-# MMC plugins. List of plugins is read from server input.
-# There is a mmc plugins which are required.
-plugins = node[:deploy][:mule_plugins]
-if !plugins.nil?
-  plugins = plugins.split(',')
-  if  plugins.length == 0
-    plugins = %w(
-             mmc-agent-mule3-app-3.3.0.zip
-             mmc-distribution-console-app-3.3.0.zip
-            )
-  end
-end
 # put a marker in the log .
 launch_marker = (0..8).to_a.map { |a| rand(16).to_s(16) }.join
 
@@ -114,32 +100,9 @@ bash 'detect the mule status change' do
   EOF
 end
 
-if show_mule_log
-  bash 'show the mule_ee.log from the current launch' do
-    code <<-EOF
-    export MULE_EE_LOG="/opt/mule/logs/mule_ee.log"
-    export LAUNCH_MARKER_TAG="#{launch_marker}"
-    export SHOW_LOG_LINES=1024
-    if [ ! -z $LAUNCH_MARKER_TAG ] ; then
-      LINE_LAST_LAUNCH=$(grep -n "$LAUNCH_MARKER_TAG" $MULE_EE_LOG |  tail -1 | cut -d: -f1)
-    else
-      LINE_LAST_LAUNCH=$(grep -n 'initialization started' $MULE_EE_LOG | grep 'Root WebApplicationContext'| tail -1 | cut -d: -f1)
-    fi
-    if  [ ! -z $LINE_LAST_LAUNCH ] ; then
-      echo "launch marker tag found at $LINE_LAST_LAUNCH"
-      sed -n "$LINE_LAST_LAUNCH,\\$p" $MULE_EE_LOG | tail -$SHOW_LOG_LINES
-    else
-      echo "found no launch marker tag, showing $SHOW_LOG_LINES lines"
-      tail -$SHOW_LOG_LINES $MULE_EE_LOG
-    fi
-    EOF
-  end
-end
-
 # shortly after launch the deployed plugins are exploded from the original zip format
-# and become directory with the same basename
-# this has to become erb template to work as intended.
-plugins.each do |package_file|
+# and become directory with the same basename this has to become erb template to work as intended.
+node[:mule_plugins].each do |package_file|
   log "Inspecting mmc plugin package: #{package_file}"
   package_directory = File.basename(package_file, '.zip')
   if !File.exists?("#{plugin_home}/#{package_file}") && !File.directory?("#{plugin_home}/#{package_directory}")
@@ -153,9 +116,9 @@ bash 'verify the launch of mule' do
     RETRY_CNT=60
     HTTP_STATUS=0
     RESULT=1
-    echo 'waiting for mule to be serving HTTP on #{mule_port}'
+    echo 'waiting for mule to be serving HTTP on #{node[:mule_port]}'
     while  [ "$RESULT" -ne "0" ] ; do
-      HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://#{hostname}:#{mule_port}/mmc`
+      HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://#{hostname}:#{node[:mule_port]}/mmc`
       expr $HTTP_STATUS : '302\\|200' > /dev/null
       RESULT=$?
       echo "get HTTP status code $HTTP_STATUS, $RESULT"

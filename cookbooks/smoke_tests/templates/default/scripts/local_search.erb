@@ -1,8 +1,9 @@
 require 'rake'
 require 'rspec/core/rake_task'
 
-ENV['elastic_search_plugins'] = '<%= @elastic_search_plugins %>'
-ENV['elastic_search_port'] = '<%= @elastic_search_port %>'
+#todo: remove the leaky abstraction in favor of the two lines below these
+ENV['elastic_search_port'] = '<%= @search_port %>'
+ENV['search_port'] = '<%= @search_port %>'
 
 
 RSpec::Core::RakeTask.new(:spec) do |t|

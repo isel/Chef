@@ -1,8 +1,6 @@
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
-elastic_search_port = node[:deploy][:elastic_search_port]
 deploy_folder = '/opt/elasticsearch'
-elastic_search_plugins = node[:deploy][:elastic_search_plugins]
 elastic_search_files = 'elasticsearch,servicewrapper'
 cluster_name = 'UFCluster'
 
@@ -22,8 +20,8 @@ if !File.exists?(deploy_folder)
       :s3_bucket => node[:core][:s3_bucket],
       :s3_repository => 'Vendor',
       :product => 'elasticsearch',
-      :version => node[:deploy][:elastic_search_version],
-      :artifacts => "#{elastic_search_files},#{elastic_search_plugins}",
+      :version => node[:search_version],
+      :artifacts => "#{elastic_search_files},#{node[:search_plugins]}",
       :target_directory => '/downloads',
       :unzip => true
     )
@@ -61,7 +59,7 @@ if !File.exists?(deploy_folder)
     'analysis-phonetic' => 'plugins/analysis-phonetic'
   }
 
-  elastic_search_plugins.split(',').each do |plugin|
+  node[:search_plugins].split(',').each do |plugin|
     plugin_directory = @plugin_directories[plugin]
     bash "set up plugin #{plugin}" do
       code <<-EOF
@@ -90,9 +88,9 @@ bash 'Confirm Elastic Search is operational' do
   LAST_RETRY=0
   RETRY_CNT=20
   STATUS=
-  echo 'Waiting for ElasticSearch to become available on port #{elastic_search_port}'
+  echo 'Waiting for ElasticSearch to become available on port #{node[:search_port]}'
   while  [ "-$STATUS" = '-' ] ; do
-    STATUS=`netstat -an | grep :#{elastic_search_port}`
+    STATUS=`netstat -an | grep :#{node[:search_port]}`
     RETRY_CNT=`expr $RETRY_CNT - 1`
     if [ "$RETRY_CNT" -eq "$LAST_RETRY" ] ; then
        echo "Exhausted retries"

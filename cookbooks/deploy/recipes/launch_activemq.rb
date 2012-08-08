@@ -1,5 +1,3 @@
-activemq_port = node[:deploy][:activemq_port]
-
 bash 'launch activeMQ' do
   code <<-EOF
   pushd /opt/activemq/bin
@@ -12,9 +10,9 @@ bash 'verify the launch of activemq' do
   LAST_RETRY=0
   RETRY_CNT=20
   STATUS=
-  echo 'waiting for achiveMQ to become available on port #{activemq_port}'
+  echo 'waiting for achiveMQ to become available on port #{node[:activemq_port]}'
   while  [ "-$STATUS" = '-' ] ; do
-    STATUS=`netstat -an | grep :#{activemq_port}`
+    STATUS=`netstat -an | grep :#{node[:activemq_port]}`
     RETRY_CNT=`expr $RETRY_CNT - 1`
     if [ "$RETRY_CNT" -eq "$LAST_RETRY" ] ; then
        echo "Exhausted retries"

@@ -4,7 +4,7 @@ include_recipe 'core::download_vendor_artifacts_prereqs'
 require 'fileutils'
 require 'yaml'
 
-version = node[:deploy][:mule_version]
+version = node[:mule_version]
 ruby_scripts_dir = node['ruby_scripts_dir']
 product = 'mule'
 mule_home = "/opt/#{product}"
@@ -14,8 +14,6 @@ plugin_home = "#{mule_home}/apps"
 # note the change of the name in transit from s3 folder to mule
 configuration_dir = 'configuration'
 mule_configuration_dir="#{mule_home}/#{configuration_dir}"
-plugins = node[:deploy][:mule_plugins]
-
 # apt-get detects if debian package is already installed - no need to replicate its functionality
 # may need to remove sun java6
 bash 'install mule prerequisites' do
@@ -120,7 +118,7 @@ if !File.exists?("#{mule_home}/bin")
       :s3_repository => 'Vendor',
       :product => product,
       :version => version,
-      :artifacts => plugins,
+      :artifacts => node[:mule_plugins].join(','),
       :target_directory => "#{mule_home}/apps",
       :unzip => false
     )

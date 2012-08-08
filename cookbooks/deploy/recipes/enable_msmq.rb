@@ -1,7 +1,7 @@
 powershell 'Enable MSMQ' do
   parameters (
     {
-      'SERVER_MANAGER_FEATURES' => node[:deploy][:server_manager_features]
+      'SERVER_MANAGER_FEATURES' => node[:msmq_features]
     }
   )
 

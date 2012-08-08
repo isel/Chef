@@ -11,18 +11,17 @@ properties_backup_filename = "#{properties_filename}.BAK"
 
 # using tokens instead of variable reference as hash keys
 token_values = {
-    'db_server' => '<%= @db_server %>',
-    'db_port' => '<%= @db_port %>',
-    'appserver' => '<%= @app_server %>',
-    'app_server' => '<%= @app_server %>',
-    'search_port' => '<%= @search_port %>',
-    'search_server' => '<%= @search_server %>',
-    'messaging_server_port' => '<%= @messaging_server_port %>',
-    'engine_server' => '<%= @engine_server %>',
-    'cache_server' => '<%= @cache_server %>',
-    'messaging_server' => '<%= @messaging_server %>',
-    'engine_port' => '<%= @engine_port %>',
-    'web_server' => '<%= @web_server %>',
+  'app_server' => '<%= @app_server %>',
+  'cache_server' => '<%= @cache_server %>',
+  'db_port' => '<%= @db_port %>',
+  'db_server' => '<%= @db_server %>',
+  'engine_port' => '<%= @engine_port %>',
+  'engine_server' => '<%= @engine_server %>',
+  'messaging_port' => '<%= @messaging_port %>',
+  'messaging_server' => '<%= @messaging_server %>',
+  'search_port' => '<%= @search_port %>',
+  'search_server' => '<%= @search_server %>',
+  'web_server' => '<%= @web_server %>'
 }
 
 def update_properties(source_file, target_file, token_values)

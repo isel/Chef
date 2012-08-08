@@ -6,7 +6,10 @@ ENV['app_server'] = '<%= @app_server %>'
 ENV['db_server'] = '<%= @db_server %>'
 ENV['db_port'] = '<%= @db_port %>'
 ENV['search_server'] = '<%= @search_server %>'
-ENV['elastic_search_port'] = '<%= @elastic_search_port %>'
+
+#todo: remove following line once all deployments are >= rev 10 of search server
+ENV['elastic_search_port'] = '<%= @search_port %>'
+ENV['search_port'] = '<%= @search_port %>'
 
 puts "ENV['rightscale_account'] = #{ENV['rightscale_account']}"
 

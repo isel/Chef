@@ -7,7 +7,7 @@ puts "Launched the event_router_setup.rb"
 source_directory = '<%= @source_directory %>'
 target_directory = '<%= @target_directory %>'
 messaging_server = '<%= @messaging_server %>'
-messaging_server_port = '<%= @messaging_server_port %>'
+messaging_port = '<%= @messaging_port %>'
 db_server = '<%= @db_server %>'
 db_port = '<%= @db_port %>'
 
@@ -51,7 +51,7 @@ Dir.chdir(target_directory)
 
 
 puts "Updating configuration file #{app_config} with #{messaging_server}"
-Helpers::change_app_setting(app_config, "MessagingServer.Uri", "http://#{messaging_server}:#{messaging_server_port}")
+Helpers::change_app_setting(app_config, "MessagingServer.Uri", "http://#{messaging_server}:#{messaging_port}")
 
 puts "Updating configuration file #{app_config} with #{db_server}"
 Helpers::change_app_setting(app_config, "ConnectionString", "Server=#{db_server}:#{db_port}")

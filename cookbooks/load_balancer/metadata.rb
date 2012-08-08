@@ -16,19 +16,6 @@ recipe "load_balancer::register_webserver_with_haproxy", "Registers a web server
 recipe "load_balancer::register_with_route53", "Registers an ip address with a domain in Route53"
 recipe "load_balancer::tag_lb_role", "Tags the load balancer role"
 
-attribute "load_balancer/app_listener_names",
-  :display_name => "app listener names",
-  :description => "specifies which HAProxy servers pool to use",
-  :required => "optional",
-  :default  => "api80,api81,api82",
-  :recipes => ["load_balancer::register_appserver_with_haproxy"]
-
-attribute "load_balancer/app_server_ports",
-  :display_name => "app server ports",
-  :required => "optional",
-  :default  => "80,81,82",
-  :recipes  => ["load_balancer::register_appserver_with_haproxy"]
-
 attribute "load_balancer/backend_name",
   :display_name => "backend name",
   :description => "A unique name for each back end e.g. (RS_INSTANCE_UUID)",
@@ -61,32 +48,11 @@ attribute "load_balancer/forwarding_ports",
     "load_balancer::disconnect_instance_from_haproxy"
   ]
 
-attribute "load_balancer/health_check_uri",
-  :display_name => "health check uri",
-  :description => "Page to report the heart beat so the lb knows whether the server is up or not",
-  :required => "optional",
-  :default  => "/HealthCheck.html",
-  :recipes  => ["load_balancer::register_appserver_with_haproxy", "load_balancer::register_webserver_with_haproxy"]
-
 attribute "load_balancer/instance_backend_name",
   :display_name => "instance backend name",
   :description => "instance backend name to be disconnected from haproxy",
   :required => "required",
   :recipes  => ["load_balancer::disconnect_instance_from_haproxy"]
-
-attribute "load_balancer/maintenance_page",
-  :display_name => "maintenance page",
-  :description => "Optional path for a maintenance page, relative to document root (i.e., "".../current/public""). The file must exist in the subtree of the vhost, which will be served by the web server if it's present. If ignored, it will default to '/system/maintenance.html'.",
-  :required => "optional",
-  :default => "/system/maintenance.html",
-  :recipes => ["load_balancer::configure_load_balancer_forwarding"]
-
-attribute "load_balancer/max_connections_per_lb",
-  :display_name => "max connection per load balancer",
-  :description => "Maximum number of connections per server",
-  :required => "optional",
-  :default  => "255",
-  :recipes  => ["load_balancer::register_appserver_with_haproxy", "load_balancer::register_webserver_with_haproxy"]
 
 attribute "load_balancer/prefix",
   :display_name => "prefix",
@@ -127,19 +93,6 @@ attribute "load_balancer/route53_additional_ip",
     "load_balancer::register_with_route53"
   ]
 
-attribute "load_balancer/server_timeout",
-  :display_name => "server timeout",
-  :description => "Set the HAProxy cfg file's srvtimeout setting",
-  :required    => "optional",
-  :default     => "50000",
-  :recipes     => ["load_balancer::configure_load_balancer_forwarding"]
-
-attribute "load_balancer/session_stickiness",
-  :display_name => "session stickiness",
-  :required => "optional",
-  :default  => "false",
-  :recipes  => ["load_balancer::register_appserver_with_haproxy", "load_balancer::register_webserver_with_haproxy"]
-
 attribute "load_balancer/should_register_with_lb",
   :display_name => "should register with load balancer",
   :description => "This environment uses loadbalancers (true/false)",
@@ -163,11 +116,6 @@ attribute "load_balancer/ssl_key",
   :required => "required",
   :recipes => ["load_balancer::configure_load_balancer_forwarding"]
 
-attribute "load_balancer/web_server_port",
-  :display_name => "web server port",
-  :required => "optional",
-  :default  => "80",
-  :recipes  => ["load_balancer::register_webserver_with_haproxy"]
 
 ### attributes used from other cookbooks
 attribute "deploy/app_server",

@@ -1,6 +1,6 @@
 bash 'Set HAProxy timeout' do
   code <<-EOF
-    sed -i "s@srvtimeout[ \t]*[0-9]*@srvtimeout      #{node[:load_balancer][:server_timeout]}@" /home/haproxy/rightscale_lb.cfg
+    sed -i "s@srvtimeout[ \t]*[0-9]*@srvtimeout      #{node[:server_timeout]}@" /home/haproxy/rightscale_lb.cfg
   EOF
 end
 
@@ -34,7 +34,7 @@ mkdir -p $deploy_dir
 mkdir -p $log_dir
 ln -nfs $deploy_dir $doc_root
 
-apache_maint_page="#{node[:load_balancer][:maintenance_page]}"
+apache_maint_page="#{node[:maintenance_page]}"
 
 # Pass the listener target of the next hop proxy (haproxy)
 bind_address='127.0.0.1'

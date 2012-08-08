@@ -21,17 +21,17 @@ ruby_block "Register web server with HAProxy" do
     require 'resolv'
     require 'timeout'
 
-  #Temporary, require. These will be automatically passed in soon.
+    #Temporary, require. These will be automatically passed in soon.
     require '/var/spool/cloud/meta-data.rb'
     os_info=`lsb_release -a`.downcase + `uname`.downcase
     ENV['RS_DISTRO']="ubuntu"
 
-  #Escape the 4 problematic shell characters: ", $, `, and \ to get through the ssh command correctly
+    #Escape the 4 problematic shell characters: ", $, `, and \ to get through the ssh command correctly
     def shell_escape(string)
       return string.gsub(/\\/, "\\\\\\").gsub(/\"/, "\\\"").gsub(/\$/, "\\\$").gsub(/\`/, "\\\\\`")
     end
 
-  # Connect server machine to load balancer to start receiving traffic
+    # Connect server machine to load balancer to start receiving traffic
     web_listener = "#{node[:load_balancer][:prefix]}80"
     backend_name = node[:load_balancer][:backend_name]
 
@@ -41,16 +41,13 @@ ruby_block "Register web server with HAProxy" do
       lb_host = "#{node[:load_balancer][:prefix]}.#{node[:load_balancer][:domain]}"
     end
 
-  # Use cookies?
-    sess_sticky = node[:load_balancer][:session_stickiness].downcase
+    # Use cookies?
+    sess_sticky = node[:session_stickiness].downcase
     if sess_sticky && sess_sticky.match(/^(true|yes|on)$/)
       cookie_options = "-c #{ENV['EC2_INSTANCE_ID']}"
     end
 
-  # How many conns do we tell the LB to bring to the AJP port?
-    max_conn_per_svr = node[:load_balancer][:max_connections_per_lb] || 255
-
-  # Connect the app to all running instances of the lb host
+    # Connect the app to all running instances of the lb host
     addrs = Array.new
     lb_host.split.each do |item|
       addresses = Resolv.getaddresses(item)
@@ -72,9 +69,8 @@ ruby_block "Register web server with HAProxy" do
       puts "ENV['EC2_LOCAL_IPV4'] = #{ENV['EC2_LOCAL_IPV4']}"
       puts "node[:ipaddress] = #{node[:ipaddress]}"
 
-      target="#{ENV['EC2_LOCAL_IPV4']}:#{node[:load_balancer][:web_server_port]}"
-      args= "-a add -w -l \"#{web_listener}\" -s \"#{backend_name}\" -t \"#{target}\" #{cookie_options} -e \" inter 3000 rise 2 fall 3 maxconn #{max_conn_per_svr}\" "
-      args += " -k on " if node[:load_balancer][:health_check_uri] != nil && node[:load_balancer][:health_check_uri] != ""
+      target="#{ENV['EC2_LOCAL_IPV4']}:#{node[:web_server_port]}"
+      args= "-a add -w -l \"#{web_listener}\" -s \"#{backend_name}\" -t \"#{target}\" #{cookie_options} -e \" inter 3000 rise 2 fall 3 maxconn #{node[:max_connections_per_lb]}\" -k on "
 
       cmd = "#{sshcmd} #{cfg_cmd} #{shell_escape(args)}"
 

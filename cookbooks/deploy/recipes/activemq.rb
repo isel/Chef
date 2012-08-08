@@ -1,6 +1,5 @@
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
-version  = node[:deploy][:activemq_version]
 product = 'activemq'
 
 if !File.exists?("/opt/#{product}")
@@ -13,7 +12,7 @@ if !File.exists?("/opt/#{product}")
       :s3_bucket => node[:core][:s3_bucket],
       :s3_repository => 'Vendor',
       :product => product,
-      :version => version,
+      :version => node[:activemq_version],
       :artifacts => product,
       :target_directory => '/opt',
       :unzip => true

@@ -1,6 +1,6 @@
 # Adjust ulimit settings
 
-ulimit_files = node[:deploy][:ulimit_files]
+ulimit_files = node[:ulimit_files]
 bash 'adjust ulimit settings' do
   code <<-EOF
 

@@ -3,18 +3,14 @@ require 'fileutils'
 require 'yaml'
 product = 'mule'
 mule_home = "/opt/#{product}"
-version = node[:deploy][:mule_version]
-product_vendor_directory="/opt/mule-enterprise-standalone-#{version}"
+product_vendor_directory="/opt/mule-enterprise-standalone-#{node[:mule_version]}"
 sleep_interval = 10
-complete_removal = node[:deploy][:mule_complete_removal]
-
-if !complete_removal.nil? && complete_removal != ''
 
 # passing all settings before launching mule script run to detect or change the service status is critical.
 # The status is read wrong when settings are not provided.
 # The pidfile is deleted if mule fails to verify its status.
 
-  bash 'Tell mule to undeploy plugins and applications in a clean way' do
+bash 'Tell mule to undeploy plugins and applications in a clean way' do
   code <<-EOF
     set +e
 
@@ -42,7 +38,6 @@ if !complete_removal.nil? && complete_removal != ''
       sleep 30
     done
   EOF
-end
 end
 
 bash 'Stop mule service' do
@@ -110,8 +105,6 @@ bash 'Detect mule stops clean' do
   EOF
 end
 
-if !complete_removal.nil? && complete_removal != ''
-
 bash 'Terminate stray mule processes' do
   code <<-EOF
     set +e
@@ -129,7 +122,6 @@ bash 'Terminate stray mule processes' do
     fi
   EOF
 end
-
 
 bash 'remove mule installation' do
 
@@ -165,8 +157,6 @@ bash 'remove mule installation' do
 end
 
 log 'Recycled Mule install directory.'
-
-end
 
 =begin
 
