@@ -7,7 +7,7 @@ template "#{ruby_scripts_dir}/global.rb" do
       :db_server => node[:deploy][:db_server],
       :engine_server => node[:deploy][:engine_server],
       :db_port => node[:db_port],
-      :messaging_port => node[:messaging_server_port],
+      :messaging_port => node[:messaging_port],
       :messaging_server => node[:deploy][:messaging_server],
       :tenant => node[:deploy][:tenant],
       :server_type => node[:core][:server_type]
