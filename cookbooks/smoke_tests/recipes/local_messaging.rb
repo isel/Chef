@@ -11,7 +11,7 @@ template "#{ruby_scripts_dir}/local_messaging.rb" do
     :db_server => node[:deploy][:db_server],
     :engine_port => node[:engine_port],
     :engine_server => node[:deploy][:engine_server],
-    :messaging_port => node[:messaging_server_port],
+    :messaging_port => node[:messaging_port],
     :messaging_server => node[:deploy][:messaging_server],
     :mule_port => node[:mule_port],
     :search_port => node[:search_port],
