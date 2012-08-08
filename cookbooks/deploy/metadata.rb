@@ -57,7 +57,7 @@ attribute "deploy/activemq_port",
   :recipes  => ["deploy::launch_activemq"]
 
 attribute "deploy/activemq_version",
-  :display_name => "activeMQ version",
+  :display_name => "activemq version",
   :required => "optional",
   :default  => "5.6.0",
   :recipes  => ["deploy::activemq"]
@@ -103,7 +103,7 @@ attribute "deploy/domain",
   :recipes => ["deploy::jspr"]
 
 attribute "deploy/engine_port",
-  :display_name => "droolz engine port",
+  :display_name => "engine port",
   :required => "optional",
   :default => "8080",
   :recipes => ["deploy::update_configuration"]
@@ -142,7 +142,7 @@ attribute "deploy/infrastructure_revision",
   :recipes => ["deploy::download_infrastructure"]
 
 attribute "deploy/messaging_server",
-  :display_name => "messaging_server",
+  :display_name => "messaging server",
   :description => "Private IP address messaging_server host in this deployment",
   :required => "required",
   :recipes => ["deploy::event_router_service", "deploy::foundation_services", "deploy::update_configuration"]
@@ -160,13 +160,13 @@ attribute "deploy/mongo_version",
   :recipes => ["deploy::mongo"]
 
 attribute "deploy/mule_complete_removal",
-  :display_name => "Complete Mule removal",
+  :display_name => "complete mule removal",
   :description => "Completely recycle Mule application",
   :required => "optional",
   :recipes => ["deploy::recycle_mule"]
 
 attribute "deploy/mule_plugins",
-  :display_name => "Mule plugins",
+  :display_name => "mule plugins",
   :description => "List of Mule plugins to install",
   :required    => "optional",
   :default     => "mmc-agent-mule3-app-3.3.0,mmc-distribution-console-app-3.3.0",
@@ -217,21 +217,21 @@ attribute "deploy/search_server",
   :recipes => ["deploy::foundation_services", "deploy::update_configuration"]
 
 attribute "deploy/server_manager_features",
-  :display_name => "MSMQ features",
+  :display_name => "msmq features",
   :description => "List of windows MSMQ features to install",
   :required    => "optional",
   :default     => "MSMQ-Server,MSMQ-HTTP-Support,MSMQ-Directory",
   :recipes     => ["deploy::enable_msmq","deploy::event_router_service"]
 
 attribute "deploy/service_platform",
-  :display_name => "EventRouter HTTP runtime",
+  :display_name => "eventrouter http runtime",
   :description => "The .net runtime / affinity the  EventRouter service is hosted",
   :required    => "optional",
   :default     => "v4.0_x86",
   :recipes     => ["deploy::event_router_service"]
 
 attribute "deploy/service_port",
-  :display_name => "EventRouter HTTP Port",
+  :display_name => "eventrouter http port",
   :description => "HTTP Port the WCF EventRouter service is listening",
   :required    => "optional",
   :default     => "8989",
