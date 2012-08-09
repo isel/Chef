@@ -2,7 +2,7 @@
 powershell "Ensuring AppFabric caches are available" do
   parameters(
     {
-      'APPFABRIC_CACHES' => node[:appfabric][:caches]
+      'APPFABRIC_CACHES' => node[:caches]
     }
   )
   powershell_script = <<'POWERSHELL_SCRIPT'

@@ -1,7 +1,7 @@
 powershell "Install AppFabric" do
   parameters (
     {
-      'APPFABRIC_SHARED_FOLDER' => node[:appfabric][:shared_folder]
+      'APPFABRIC_SHARED_FOLDER' => node[:shared_folder]
     }
   )
   powershell_script = <<'POWERSHELL_SCRIPT'
@@ -24,10 +24,10 @@ powershell "Setup AppFabric shared folder" do
   parameters (
     {
       'APPFABRIC_SECURITY' => node[:appfabric][:security],
-      'APPFABRIC_SERVICE_USER' => node[:appfabric][:service_user],
+      'APPFABRIC_SERVICE_USER' => node[:service_user],
       'APPFABRIC_SERVICE_PASSWORD' => node[:appfabric][:service_password],
-      'APPFABRIC_SHARED_DRIVE' => node[:appfabric][:shared_drive],
-      'APPFABRIC_SHARED_FOLDER' => node[:appfabric][:shared_folder]
+      'APPFABRIC_SHARED_DRIVE' => node[:shared_drive],
+      'APPFABRIC_SHARED_FOLDER' => node[:shared_folder]
     }
   )
   powershell_script = <<'POWERSHELL_SCRIPT'
@@ -73,12 +73,12 @@ end
 powershell "Configure AppFabric" do
   parameters(
     {
-      'APPFABRIC_CACHES' => node[:appfabric][:caches],
+      'APPFABRIC_CACHES' => node[:caches],
       'APPFABRIC_SECURITY' => node[:appfabric][:security],
-      'APPFABRIC_SERVICE_USER' => node[:appfabric][:service_user],
+      'APPFABRIC_SERVICE_USER' => node[:service_user],
       'APPFABRIC_SERVICE_PASSWORD' => node[:appfabric][:service_password],
-      'APPFABRIC_SHARED_DRIVE' => node[:appfabric][:shared_drive],
-      'APPFABRIC_SHARED_FOLDER' => node[:appfabric][:shared_folder]
+      'APPFABRIC_SHARED_DRIVE' => node[:shared_drive],
+      'APPFABRIC_SHARED_FOLDER' => node[:shared_folder]
     }
   )
   powershell_script = <<'POWERSHELL_SCRIPT'

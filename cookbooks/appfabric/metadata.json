@@ -21,20 +21,6 @@
   "replacing": {
   },
   "attributes": {
-    "appfabric/caches": {
-      "display_name": "appfabric caches",
-      "required": "optional",
-      "default": "default,TokenStore,SaasPolicy,EntityModel,Securables,Messages,Views,Enumerations,BusinessProcess",
-      "recipes": [
-        "appfabric::configure",
-        "appfabric::ensure_is_up"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
     "appfabric/security": {
       "display_name": "appfabric security",
       "required": "required",
@@ -50,45 +36,6 @@
     "appfabric/service_password": {
       "display_name": "appfabric service password",
       "required": "required",
-      "recipes": [
-        "appfabric::configure"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "appfabric/service_user": {
-      "display_name": "appfabric service user",
-      "required": "optional",
-      "default": "appfabric",
-      "recipes": [
-        "appfabric::configure"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "appfabric/shared_drive": {
-      "display_name": "appfabric shared drive",
-      "required": "optional",
-      "default": "appfabric_caching",
-      "recipes": [
-        "appfabric::configure"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "appfabric/shared_folder": {
-      "display_name": "appfabric shared folder",
-      "required": "optional",
-      "default": "c:\\appfabric_caching",
       "recipes": [
         "appfabric::configure"
       ],
