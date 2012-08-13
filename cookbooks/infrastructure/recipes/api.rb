@@ -7,7 +7,7 @@ bash 'Set document root and configure Passenger' do
 
     echo LoadModule passenger_module /opt/passenger-3.0.12/ext/apache2/mod_passenger.so >> /etc/apache2/apache2.conf
     echo PassengerRoot /opt/passenger-3.0.12 >> /etc/apache2/apache2.conf
-    echo PassengerRuby /opt/rvm/wrappers/ruby-1.9.2-head/ruby >> /etc/apache2/apache2.conf
+    echo PassengerRuby /opt/ruby/active/bin/ruby >> /etc/apache2/apache2.conf
     echo PassengerDefaultUser root >> /etc/apache2/apache2.conf
 
     echo DocumentRoot "/var/www/api/public" >> /etc/apache2/apache2.conf
@@ -37,8 +37,7 @@ bash 'Setting up website' do
 
     cd /var/www/api
 
-    export PATH=/opt/rvm/gems/ruby-1.9.2-head/bin:/opt/rvm/gems/ruby-1.9.2-head@global/bin:/opt/rvm/rubies/ruby-1.9.2-head/bin:/opt/rvm/bin:/usr/local/bin:/home/ec2/bin:/usr/local/sbin:$PATH
-    rvm exec bundle install
+    bundle install
 
     service apache2 restart
   EOF
