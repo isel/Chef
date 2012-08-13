@@ -41,7 +41,7 @@ bash 'Setup website' do
 
     service apache2 restart
 
-    curl http://localhost
+    curl http://localhost/deployments.json
   EOF
 end
 
