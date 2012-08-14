@@ -68,8 +68,8 @@ bash 'Restart syslog-ng and setup refresh schedule' do
 
     if ! grep syslog-ng /etc/crontab; then
       echo '# reload syslog-ng for local logger destinations.' >> /etc/crontab
-      echo '*/2 * * * * root logger -p local0.notice "$(service syslog-ng reload 2>&1)"' >> /etc/crontab
-      echo '*/2 * * * * root logger -p local1.notice "$(service syslog-ng reload 2>&1)"' >> /etc/crontab
+      echo '*/5 * * * * root logger -p local0.notice "$(service syslog-ng reload 2>&1)"' >> /etc/crontab
+      echo '*/5 * * * * root logger -p local1.notice "$(service syslog-ng reload 2>&1)"' >> /etc/crontab
     fi
   EOF
 end
