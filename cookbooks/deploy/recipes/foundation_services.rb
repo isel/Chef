@@ -2,8 +2,10 @@ require 'rake'
 require 'fileutils'
 
 ruby_scripts_dir = node['ruby_scripts_dir']
+app_pools = "'ServicesAppPool','ActiveSTSAppPool','ServicesHelpAppPool'"
 
 powershell 'Setup websites in IIS' do
+  parameters( { 'app_pools' => app_pools } )
   script = <<-EOF
     $services = 'C:\\WebSites\\Services'
     $servicesSite = 'IIS:\\Sites\\Default Web Site'
@@ -29,7 +31,7 @@ powershell 'Setup websites in IIS' do
 
     # see http://msdn.microsoft.com/en-us/library/aa347554(v=VS.90).aspx
 
-    $app_pools = 'ServicesAppPool','ActiveSTSAppPool','ServicesHelpAppPool'
+    $app_pools = $env:app_pools
     foreach ($pool in $app_pools){
         New-WebAppPool -name $pool
         Set-ItemProperty "iis:\\apppools\\$pool" -name processModel -value @{identityType="NetworkService"}
@@ -53,14 +55,15 @@ powershell 'Setup websites in IIS' do
   source(script)
 end
 
-powershell 'Stop websites in IIS' do
+powershell 'Stop application pools in IIS' do
+  parameters( { 'app_pools' => app_pools } )
   script = <<-EOF
     import-module WebAdministration
     iis:
 
-    Stop-WebSite -name 'Default Web Site'
-    Stop-WebSite -name 'ActiveSTS'
-    Stop-WebSite -name 'Services.Help'
+    foreach ($pool in $env:app_pools) {
+      Stop-WebItem "IIS:\AppPools\$pool"
+    }
   EOF
   source(script)
 end
@@ -90,14 +93,15 @@ powershell "Updating foundation services" do
   source("ruby #{ruby_scripts_dir}/foundation_services.rb")
 end
 
-powershell 'Start websites in IIS' do
+powershell 'Start application pools in IIS' do
+  parameters( { 'app_pools' => app_pools } )
   script = <<-EOF
     import-module WebAdministration
     iis:
 
-    Start-WebSite -name 'Default Web Site'
-    Start-WebSite -name 'ActiveSTS'
-    Start-WebSite -name 'Services.Help'
+    foreach ($pool in $env:app_pools) {
+      Start-WebItem "IIS:\AppPools\$pool"
+    }
   EOF
   source(script)
 end
