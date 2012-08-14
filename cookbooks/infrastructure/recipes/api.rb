@@ -49,12 +49,12 @@ ruby_block 'Setup syslog-ng config file' do
   block do
     File.open('/etc/syslog-ng/syslog-ng.conf', 'a') do |file|
       file.puts('source s_production { file("/var/www/api/log/production.log"); };')
-      file.puts('filter f_production { program("logger"); };')
+      file.puts('filter f_production { not program("logger"); };')
       file.puts('destination d_production { program("logger -s -p local0.notice -t [production] \$MSG\n" flush_lines(1)); };')
       file.puts('log { source(s_production); filter(f_production); destination(d_production); };')
 
       file.puts('source s_rest { file("/var/www/api/log/rest.log"); };')
-      file.puts('filter f_rest { program("logger"); };')
+      file.puts('filter f_rest { not program("logger"); };')
       file.puts('destination d_rest { program("logger -s -p local1.notice -t [rest] \$MSG\n" flush_lines(1)); };')
       file.puts('log { source(s_rest); filter(f_rest); destination(d_rest); };')
     end
