@@ -102,4 +102,22 @@ powershell 'Start websites in IIS' do
   source(script)
 end
 
+powershell 'Launch websites' do
+  script = <<-EOF
+    foreach($port in @('80', '81', '82')) {
+      $req = [system.net.WebRequest]::Create("http://localhost:$port")
+      try{
+        $response = $req.GetResponse()
+      }
+      catch [system.net.WebException] {
+        $response = $_.Exception.Response
+      }
+
+      $status = [int]$response.StatusCode
+      write-output "$port $status"
+    }
+  EOF
+  source(script)
+end
+
 
