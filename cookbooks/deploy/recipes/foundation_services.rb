@@ -31,7 +31,7 @@ powershell 'Setup websites in IIS' do
 
     # see http://msdn.microsoft.com/en-us/library/aa347554(v=VS.90).aspx
 
-    $app_pools = $env:app_pools
+    $app_pools = $env:app_pools.split(',')
     foreach ($pool in $app_pools){
         New-WebAppPool -name $pool
         Set-ItemProperty "iis:\\apppools\\$pool" -name processModel -value @{identityType="NetworkService"}
