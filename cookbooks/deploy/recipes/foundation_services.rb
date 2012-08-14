@@ -61,7 +61,8 @@ powershell 'Stop application pools in IIS' do
     import-module WebAdministration
     iis:
 
-    foreach ($pool in $env:app_pools) {
+    $app_pools = $env:app_pools.split(',')
+    foreach ($pool in $app_pools) {
       Stop-WebItem "IIS:\AppPools\$pool"
     }
   EOF
@@ -99,7 +100,8 @@ powershell 'Start application pools in IIS' do
     import-module WebAdministration
     iis:
 
-    foreach ($pool in $env:app_pools) {
+    $app_pools = $env:app_pools.split(',')
+    foreach ($pool in $app_pools) {
       Start-WebItem "IIS:\AppPools\$pool"
     }
   EOF
