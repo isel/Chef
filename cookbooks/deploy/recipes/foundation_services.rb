@@ -55,14 +55,14 @@ powershell 'Setup websites in IIS' do
   source(script)
 end
 
-powershell 'Stop application pools in IIS' do
+powershell 'Restart application pools in IIS' do
   parameters( { 'app_pools' => app_pools } )
   script = <<-EOF
     import-module WebAdministration
     iis:
 
     $app_pools = $env:app_pools.split(',')
-    foreach ($pool in $app_pools) { Stop-WebAppPool -name $pool }
+    foreach ($pool in $app_pools) { Restart-WebAppPool -name $pool }
   EOF
   source(script)
 end
@@ -92,17 +92,17 @@ powershell "Updating foundation services" do
   source("ruby #{ruby_scripts_dir}/foundation_services.rb")
 end
 
-powershell 'Start application pools in IIS' do
-  parameters( { 'app_pools' => app_pools } )
-  script = <<-EOF
-    import-module WebAdministration
-    iis:
-
-    $app_pools = $env:app_pools.split(',')
-    foreach ($pool in $app_pools) { Start-WebAppPool -name $pool }
-  EOF
-  source(script)
-end
+#powershell 'Start application pools in IIS' do
+#  parameters( { 'app_pools' => app_pools } )
+#  script = <<-EOF
+#    import-module WebAdministration
+#    iis:
+#
+#    $app_pools = $env:app_pools.split(',')
+#    foreach ($pool in $app_pools) { Start-WebAppPool -name $pool }
+#  EOF
+#  source(script)
+#end
 
 powershell 'Launch websites' do
   script = <<-EOF
