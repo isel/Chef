@@ -115,6 +115,7 @@ powershell 'Launch websites' do
 
       $status = [int]$response.StatusCode
       write-output "$port $status"
+      $Error.Clear()
     }
   EOF
   source(script)
