@@ -46,7 +46,7 @@ bash 'Setup website' do
 end
 
 bash 'Setup log files to show in the dashboard' do
-  code <<-EOFlog
+  code <<-endoffile
     if grep /var/www/api/log/production.log /etc/syslog-ng/syslog-ng.conf; then
       echo "log files already configured in syslog."
       logger -t RightScale "Skip Add a source file to syslog facility on reboot."
@@ -73,7 +73,7 @@ bash 'Setup log files to show in the dashboard' do
       echo '*/2 * * * * root logger -p local0.notice "$(service syslog-ng reload 2>&1)"' >> /etc/crontab
       echo '*/2 * * * * root logger -p local1.notice "$(service syslog-ng reload 2>&1)"' >> /etc/crontab
     fi
-  EOFlog
+  endoffile
 end
 
 
