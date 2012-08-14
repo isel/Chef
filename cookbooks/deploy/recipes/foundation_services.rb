@@ -2,7 +2,7 @@ require 'rake'
 require 'fileutils'
 
 ruby_scripts_dir = node['ruby_scripts_dir']
-app_pools = "'ServicesAppPool','ActiveSTSAppPool','ServicesHelpAppPool'"
+app_pools = 'ServicesAppPool,ActiveSTSAppPool,ServicesHelpAppPool'
 
 powershell 'Setup websites in IIS' do
   parameters( { 'app_pools' => app_pools } )
@@ -63,7 +63,7 @@ powershell 'Stop application pools in IIS' do
 
     $app_pools = $env:app_pools.split(',')
     foreach ($pool in $app_pools) {
-      Stop-WebItem "IIS:\AppPools\$pool"
+      Stop-WebItem "IIS:\\AppPools\\$pool"
     }
   EOF
   source(script)
@@ -102,7 +102,7 @@ powershell 'Start application pools in IIS' do
 
     $app_pools = $env:app_pools.split(',')
     foreach ($pool in $app_pools) {
-      Start-WebItem "IIS:\AppPools\$pool"
+      Start-WebItem "IIS:\\AppPools\\$pool"
     }
   EOF
   source(script)
