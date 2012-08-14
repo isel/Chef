@@ -53,18 +53,15 @@ bash 'Setup log files to show in the dashboard' do
       exit 0
     fi
 
-    cat >> /etc/syslog-ng/syslog-ng.conf << EOF
+    echo -e "\nsource s_production { file('/var/www/api/log/production.log'); };" >> /etc/syslog-ng/syslog-ng.conf
+    echo -e "\nfilter f_production { program('logger'); };" >> /etc/syslog-ng/syslog-ng.conf
+    echo -e "\ndestination d_production { program(\"logger -s -p local0.notice -t [production] \$MSG\n\" flush_lines(1)); };" >> /etc/syslog-ng/syslog-ng.conf
+    echo -e "\nlog { source(s_production); destination(d_production); };" >> /etc/syslog-ng/syslog-ng.conf
 
-    source s_production { file("/var/www/api/log/production.log"); };
-    filter f_production { program('logger'); };
-    destination d_production { program("logger -s -p local0.notice -t [production] \$MSG\n" flush_lines(1)); };
-    log { source(s_production); destination(d_production); };
-
-    source s_rest { file("/var/www/api/log/rest.log"); };
-    filter f_rest { program('logger'); };
-    destination d_rest { program("logger -s -p local1.notice -t [rest] \$MSG\n" flush_lines(1)); };
-    log { source(s_rest); destination(d_rest); };
-    EOF
+    echo -e "\nsource s_rest { file('/var/www/api/log/rest.log'); };" >> /etc/syslog-ng/syslog-ng.conf
+    echo -e "\nfilter f_rest { program('logger'); };" >> /etc/syslog-ng/syslog-ng.conf
+    echo -e "\ndestination d_rest { program(\"logger -s -p local1.notice -t [rest] \$MSG\n\" flush_lines(1)); };" >> /etc/syslog-ng/syslog-ng.conf
+    echo -e "\nlog { source(s_rest); destination(d_rest); };" >> /etc/syslog-ng/syslog-ng.conf
 
     service syslog-ng restart
 
