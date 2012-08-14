@@ -59,7 +59,7 @@ ruby_block 'Setup syslog-ng config file' do
       file.puts('log { source(s_rest); destination(d_rest); };')
     end
   end
-  if_not { File.read('/etc/syslog-ng/syslog-ng.conf').include?('/var/www/api/log/production.log') }
+  not_if { File.read('/etc/syslog-ng/syslog-ng.conf').include?('/var/www/api/log/production.log') }
 end
 
 bash 'Restart syslog-ng and setup refresh schedule' do
