@@ -62,9 +62,7 @@ powershell 'Stop application pools in IIS' do
     iis:
 
     $app_pools = $env:app_pools.split(',')
-    foreach ($pool in $app_pools) {
-      Stop-WebItem "IIS:\\AppPools\\$pool"
-    }
+    foreach ($pool in $app_pools) { Stop-WebAppPool -name $pool }
   EOF
   source(script)
 end
@@ -101,9 +99,7 @@ powershell 'Start application pools in IIS' do
     iis:
 
     $app_pools = $env:app_pools.split(',')
-    foreach ($pool in $app_pools) {
-      Start-WebItem "IIS:\\AppPools\\$pool"
-    }
+    foreach ($pool in $app_pools) { Start-WebAppPool -name $pool }
   EOF
   source(script)
 end
