@@ -45,24 +45,25 @@ bash 'Setup website' do
   EOF
 end
 
-bash 'Setup log files to show in the dashboard' do
-  code <<-endoffile
-    if grep /var/www/api/log/production.log /etc/syslog-ng/syslog-ng.conf; then
-      echo "log files already configured in syslog."
-      logger -t RightScale "Skip Add a source file to syslog facility on reboot."
-      exit 0
-    fi
+ruby_block 'Setup syslog-ng config file' do
+  block do
+    File.open('/etc/syslog-ng/syslog-ng.conf', 'a') do |file|
+      file.puts('source s_production { file("/var/www/api/log/production.log"); };')
+      file.puts('filter f_production { program("logger"); };')
+      file.puts('destination d_production { program("logger -s -p local0.notice -t [production] \$MSG\n" flush_lines(1)); };')
+      file.puts('log { source(s_production); destination(d_production); };')
 
-    echo -e "\nsource s_production { file('/var/www/api/log/production.log'); };" >> /etc/syslog-ng/syslog-ng.conf
-    echo -e "\nfilter f_production { program('logger'); };" >> /etc/syslog-ng/syslog-ng.conf
-    echo -e "\ndestination d_production { program(\"logger -s -p local0.notice -t [production] \$MSG\n\" flush_lines(1)); };" >> /etc/syslog-ng/syslog-ng.conf
-    echo -e "\nlog { source(s_production); destination(d_production); };" >> /etc/syslog-ng/syslog-ng.conf
+      file.puts('source s_rest { file("/var/www/api/log/rest.log"); };')
+      file.puts('filter f_rest { program("logger"); };')
+      file.puts('destination d_rest { program("logger -s -p local1.notice -t [rest] \$MSG\n" flush_lines(1)); };')
+      file.puts('log { source(s_rest); destination(d_rest); };')
+    end
+  end
+  if_not { File.read('/etc/syslog-ng/syslog-ng.conf').include?('/var/www/api/log/production.log') }
+end
 
-    echo -e "\nsource s_rest { file('/var/www/api/log/rest.log'); };" >> /etc/syslog-ng/syslog-ng.conf
-    echo -e "\nfilter f_rest { program('logger'); };" >> /etc/syslog-ng/syslog-ng.conf
-    echo -e "\ndestination d_rest { program(\"logger -s -p local1.notice -t [rest] \$MSG\n\" flush_lines(1)); };" >> /etc/syslog-ng/syslog-ng.conf
-    echo -e "\nlog { source(s_rest); destination(d_rest); };" >> /etc/syslog-ng/syslog-ng.conf
-
+bash 'Restart syslog-ng and setup refresh schedule' do
+  code <<-EOF
     service syslog-ng restart
 
     if ! grep syslog-ng /etc/crontab; then
@@ -70,7 +71,7 @@ bash 'Setup log files to show in the dashboard' do
       echo '*/2 * * * * root logger -p local0.notice "$(service syslog-ng reload 2>&1)"' >> /etc/crontab
       echo '*/2 * * * * root logger -p local1.notice "$(service syslog-ng reload 2>&1)"' >> /etc/crontab
     fi
-  endoffile
+  EOF
 end
 
 
