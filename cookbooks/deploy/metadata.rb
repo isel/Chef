@@ -104,7 +104,6 @@ attribute "deploy/is_primary_db",
   :display_name => "is primary db server",
   :description => "This db is primary server (true/false)",
   :required => "required",
-  :default => "true",
   :recipes => ["deploy::wait_for_secondary_dbs"]
 
 attribute "deploy/messaging_server",
