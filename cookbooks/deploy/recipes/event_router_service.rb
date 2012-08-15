@@ -27,10 +27,12 @@ if File.exist?(target_directory) || File.exists?(install_path)
   powershell 'Stopping,Uninstalling and removing Event Router Service' do
     parameters (
                    {
+                       'DELAY' => windows_service_change_completion_delay,
+                       'INSTALL_PATH' => install_path.gsub('/', '\\'),
+                       'INSTALLUTIL_COMMAND_FULLPATH' => installutil_command_fullpath,
                        'SERVICE_DISPLAY_NAME' => service_display_name,
                        'SERVICE_ASSEMBLY_FILENAME' => service_assembly_filename,
                        'SOURCE_PATH' => target_directory.gsub('/', '\\'),
-                       'INSTALL_PATH' => install_path.gsub('/', '\\'),
                    }
                )
 
@@ -38,8 +40,8 @@ if File.exist?(target_directory) || File.exists?(install_path)
 
 $assemblyFileName =  "$Env:SERVICE_ASSEMBLY_FILENAME"
 $installPath = "$Env:INSTALL_PATH"
-$installutil_command_fullpath = '#installutil_command_fullpath'
-$windowsServiceChangeCompletionDelay = #{windows_service_change_completion_delay}
+$installutil_command_fullpath = "$Env:INSTALLUTIL_COMMAND_FULLPATH"
+$windowsServiceChangeCompletionDelay = $Env:DELAY
 
 $sourcePath = "$Env:SOURCE_PATH"
 $uninstall_logFile = 'service_uninstall.log'
@@ -114,7 +116,10 @@ end
 powershell 'Install Event Router Service' do
   parameters (
                  {
+                     'DELAY' => windows_service_change_completion_delay,
+
                      'INSTALL_PATH' => install_path.gsub('/', '\\'),
+                     'INSTALLUTIL_COMMAND_FULLPATH' => installutil_command_fullpath,
                      'SERVICE_ASSEMBLY_FILENAME' => service_assembly_filename,
                      'SERVICE_DISPLAY_NAME' => service_display_name,
                      'SERVICE_PORT' => node[:event_router_port],
@@ -136,9 +141,9 @@ $assemblyFileName =  "$Env:SERVICE_ASSEMBLY_FILENAME"
 $assemblyFileSet = '*.*'
 $install_logFile = 'service_install.log'
 $installPath = "$Env:INSTALL_PATH"
-$installutil_command_fullpath = '#installutil_command_fullpath'
+$installutil_command_fullpath = "$Env:INSTALLUTIL_COMMAND_FULLPATH"
 
-$windowsServiceChangeCompletionDelay = #{windows_service_change_completion_delay}    
+$windowsServiceChangeCompletionDelay = $Env:DELAY
 
 $sourcePath = "$Env:SOURCE_PATH"
 
