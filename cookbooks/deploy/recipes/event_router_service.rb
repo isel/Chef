@@ -63,6 +63,7 @@ Write-Output "Uninstall the service ""$serviceDisplayName""."
 remove-item -path "${installPath}\${uninstall_logFile}" -ErrorAction SilentlyContinue
 
 
+
 chdir $installPath
 
 Write-Output "cmd /c ${installutil_command_fullpath} ""/LogFile=${uninstall_logFile}"" /uninstall  ${assemblyFileName}"
@@ -75,11 +76,19 @@ Get-Content -Path $uninstall_logFile
 Write-Output '------------------------'
 
 Write-Output "Removing directory ""${installPath}"""
-Remove-Item -Path "${installPath}" -Recurse  -Force -ErrorAction SilentlyContinue
+Remove-Item -Path """${installPath}""" -Recurse  -Force -ErrorAction SilentlyContinue
+# TODO -  confirm the directories are blank
+Write-Output "directory ""${installPath}"" should be empty"
+Get-ChildItem -path """${installPath}"""
+Get-ChildItem -path "${installPath}"
+
 
 Write-Output "Removing directory ""${sourcePath}"""
 Remove-Item -Path "${sourcePath}" -Recurse -Force -ErrorAction SilentlyContinue
+
 # TODO -  confirm the directories are blank
+Write-Output "directory ""${sourcePath}"" should be empty"
+Get-ChildItem -path "${sourcePath}"
 
 # TODO - inspect the assembly is no longer in the GAC
 # Note - gacutil.exe is not found on WK8R2.
@@ -149,9 +158,6 @@ $windowsServiceChangeCompletionDelay = $Env:DELAY
 
 $sourcePath = "$Env:SOURCE_PATH"
 
-
-# Write-Output "creating directory ""${sourcePath}"""
-# New-Item -Path "${sourcePath}" -Type Directory -Force -ErrorAction SilentlyContinue
 Write-Output "creating directory ""${installPath}"""
 New-Item -Path "${installPath}" -Type Directory -Force -ErrorAction SilentlyContinue
 
