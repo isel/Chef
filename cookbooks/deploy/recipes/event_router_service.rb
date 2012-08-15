@@ -76,22 +76,24 @@ Get-Content -Path $uninstall_logFile
 Write-Output '------------------------'
 
 Write-Output "Removing directory ""${installPath}"""
-Remove-Item -Path """${installPath}""" -Recurse  -Force -ErrorAction SilentlyContinue
-# TODO -  confirm the directories are blank
+chdir "${env:TEMP}"
+
+Remove-Item -Path "${installPath}" -Recurse  -Force -ErrorAction SilentlyContinue
+# Confirm the directories are blank
 Write-Output "directory ""${installPath}"" should be empty"
-Get-ChildItem -path """${installPath}"""
-Get-ChildItem -path "${installPath}"
+Get-ChildItem -path "${installPath}" -ErrorAction SilentlyContinue
 
 
 Write-Output "Removing directory ""${sourcePath}"""
 Remove-Item -Path "${sourcePath}" -Recurse -Force -ErrorAction SilentlyContinue
 
-# TODO -  confirm the directories are blank
+# Confirm the directories are blank
 Write-Output "directory ""${sourcePath}"" should be empty"
-Get-ChildItem -path "${sourcePath}"
+Get-ChildItem -path "${sourcePath}" -ErrorAction SilentlyContinue
 
 # TODO - inspect the assembly is no longer in the GAC
 # Note - gacutil.exe is not found on WK8R2.
+# http://stackoverflow.com/questions/2660355/net-4-0-has-a-new-gac-why
 $Error.clear()
 
     EOF
