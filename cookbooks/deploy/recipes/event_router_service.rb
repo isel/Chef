@@ -76,24 +76,36 @@ Get-Content -Path $uninstall_logFile
 Write-Output '------------------------'
 
 Write-Output "Removing directory ""${installPath}"""
+
 chdir "${env:TEMP}"
 
-Remove-Item -Path "${installPath}" -Recurse  -Force -ErrorAction SilentlyContinue
+Remove-Item -Path """${installPath}""" -Recurse  -Force -ErrorAction SilentlyContinue
 # Confirm the directories are blank
-Write-Output "directory ""${installPath}"" should be empty"
-Get-ChildItem -path "${installPath}" -ErrorAction SilentlyContinue
+chdir "${env:TEMP}"
 
+chdir ${Env:TEMP}
+if ((get-item -path "${installPath}") -ne $null) {
+Write-Output "Removing directory ""${installPath}"""
+Remove-Item -Path "${installPath}" -Recurse  -Force
+Write-Output "directory ""${installPath}"" should be empty"
+Get-ChildItem -path ${installPath} -ErrorAction SilentlyContinue
+
+}
+
+if ((get-item -path "${sourcePath}") -ne $null) {
 
 Write-Output "Removing directory ""${sourcePath}"""
-Remove-Item -Path "${sourcePath}" -Recurse -Force -ErrorAction SilentlyContinue
-
+Remove-Item -Path "${sourcePath}" -Recurse -Force
 # Confirm the directories are blank
 Write-Output "directory ""${sourcePath}"" should be empty"
 Get-ChildItem -path "${sourcePath}" -ErrorAction SilentlyContinue
 
+}
+
 # TODO - inspect the assembly is no longer in the GAC
 # Note - gacutil.exe is not found on WK8R2.
 # http://stackoverflow.com/questions/2660355/net-4-0-has-a-new-gac-why
+
 $Error.clear()
 
     EOF
