@@ -73,7 +73,8 @@ attribute "deploy/cache_server",
 attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
-  :recipes => ["deploy::event_router_service", "deploy::foundation_services", "deploy::provision", "deploy::update_configuration"]
+  :recipes => ["deploy::event_router_service", "deploy::foundation_services",
+     "deploy::provision", "deploy::setup_provision", "deploy::update_configuration"]
 
 attribute "deploy/deployment_name",
   :display_name => "deployment name",

@@ -1,0 +1,11 @@
+require 'rake'
+require '<%= node['binaries_directory'] %>/CI/BuildScripts/Deployment/provision'
+
+config = '/Provision/bin/UltimateSoftware.Provisioning.Runner.exe.config'
+
+puts 'Provisioning deployment'
+
+provision = Deployment::Provision.new(
+  '<%= node['binaries_directory'] %>', '/Provision', '<%= node['pims_directory'] %>', '/PIM_Publishing')
+
+provision.update_settings(config, '<%= @db_server %>', '<%= node[:db_port] %>')

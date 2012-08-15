@@ -133,6 +133,7 @@
         "deploy::event_router_service",
         "deploy::foundation_services",
         "deploy::provision",
+        "deploy::setup_provision",
         "deploy::update_configuration"
       ],
       "choice": [
