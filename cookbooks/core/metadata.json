@@ -57,20 +57,8 @@
       "calculated": false,
       "type": "string"
     },
-    "core/deployment_name": {
-      "display_name": "deployment name",
-      "required": "required",
-      "recipes": [
-        "core::get_deployment_settings"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "core/deployment_type": {
-      "display_name": "deployment type",
+    "core/deployment_uri": {
+      "display_name": "deployment uri",
       "required": "required",
       "recipes": [
         "core::get_deployment_settings"

@@ -32,13 +32,8 @@ attribute "core/aws_secret_access_key",
   :required => "required",
   :recipes => ["core::install_ruby"]
 
-attribute "core/deployment_name",
-  :display_name => "deployment name",
-  :required => "required",
-  :recipes => ["core::get_deployment_settings"]
-
-attribute "core/deployment_type",
-  :display_name => "deployment type",
+attribute "core/deployment_uri",
+  :display_name => "deployment uri",
   :required => "required",
   :recipes => ["core::get_deployment_settings"]
 
