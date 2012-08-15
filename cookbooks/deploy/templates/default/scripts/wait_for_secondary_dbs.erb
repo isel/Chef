@@ -1,0 +1,18 @@
+require '<%= node['binaries_directory'] %>/CI/BuildScripts/Cloud/deployment'
+require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/process'
+
+servers = Cloud::Deployment.new.discover_servers('<%= @deployment_name %>')
+
+Helpers::Process.new(15).run('waiting for secondary dbs to become operational', <%= @timeout %>) do
+dbs_count = servers.select { |name, server| (server.tags['server:type'] == 'db') }
+dbs_operational = servers.select { |name, server| (server.tags['server:type'] == 'db' && server.state == 'operational') }
+dbs_count.count - 1 == dbs_operational.count
+end
+
+servers.mongo.set_inputs({ 'EBS_SKIP_MOUNT' => 'text:true' })
+servers.db_server_rs1.set_inputs({ 'EBS_SKIP_MOUNT' => 'text:false' }) if !servers.db_server_rs1.nil?
+servers.db_server_rs2.set_inputs({ 'EBS_SKIP_MOUNT' => 'text:false' }) if !servers.db_server_rs2.nil?
+
+
+
+
