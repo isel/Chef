@@ -9,6 +9,6 @@ end
 bash 'Waiting for secondary dbs to be operational' do
   code <<-EOF
     ruby #{node['ruby_scripts_dir']}/wait_for_secondary_dbs.rb
-    only_if { node[:deploy][:is_primary_db] == 'true' }
   EOF
+  only_if { node[:deploy][:is_primary_db] == 'true' }
 end
