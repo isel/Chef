@@ -4,8 +4,6 @@ require 'yaml'
 
 ruby_scripts_dir = node['ruby_scripts_dir']
 
-#  why does one still need to mix ruby with powershell in this recipe?
-#  because of "change_app_setting" library call
 
 target_directory = File.join(ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter').gsub(/\\/, '/')
 install_path = File.join(ENV['ProgramData'], 'Windows Services\Messaging Event Router').gsub(/\\/, '/')
@@ -19,10 +17,10 @@ service_display_name = 'Ultimate Software Event Router Service'
 
 if File.exist?(target_directory) || File.exists?(install_path)
 
-  # Cleanup block : powershell
+  # Cleanup block : Powershell
   # 1. issues a service stop request to Windows service
   # 2. uninstalls assembly from .Net 4.x 32 bit GAC
-  # 3. confirms there is no longer
+  # 3. confirms the target_directory and install_path no longer exist
 
   powershell 'Stopping,Uninstalling and removing Event Router Service' do
     parameters (
@@ -75,14 +73,6 @@ Write-Output '------------------------'
 Get-Content -Path $uninstall_logFile
 Write-Output '------------------------'
 
-Write-Output "Removing directory ""${installPath}"""
-
-chdir "${env:TEMP}"
-
-Remove-Item -Path """${installPath}""" -Recurse  -Force -ErrorAction SilentlyContinue
-# Confirm the directories are blank
-chdir "${env:TEMP}"
-
 chdir ${Env:TEMP}
 if ((get-item -path "${installPath}") -ne $null) {
 Write-Output "Removing directory ""${installPath}"""
@@ -96,14 +86,13 @@ if ((get-item -path "${sourcePath}") -ne $null) {
 
 Write-Output "Removing directory ""${sourcePath}"""
 Remove-Item -Path "${sourcePath}" -Recurse -Force
-# Confirm the directories are blank
 Write-Output "directory ""${sourcePath}"" should be empty"
 Get-ChildItem -path "${sourcePath}" -ErrorAction SilentlyContinue
 
 }
 
 # TODO - inspect the assembly is no longer in the GAC
-# Note - gacutil.exe is not found on WK8R2.
+# Note - gacutil.exe is no longer part of .NET redistributable
 # http://stackoverflow.com/questions/2660355/net-4-0-has-a-new-gac-why
 
 $Error.clear()
@@ -113,13 +102,15 @@ $Error.clear()
 
   end
 else
-  puts 'Event Router Service not installed on the system'
-
+  puts 'Event Router Service was not installed on the system'
 end
 
 puts "Copying Event Router Service to #{target_directory} and updating configurations"
 
 template "#{ruby_scripts_dir}/event_router_service.rb" do
+
+# Copy build artifacts from DeployBinaries and
+# configure service settings through "change_app_setting" library call - ruby
 
   source 'scripts/event_router_service.erb'
   variables(
@@ -138,11 +129,13 @@ powershell 'Copy the application files to intermediate directory and update appl
 end
 
 # Install block : powershell
+# Installs assembly into .Net 4.x 32 bit GAC
+# issues start command to Windows service
+
 powershell 'Install Event Router Service' do
   parameters (
                  {
                      'DELAY' => windows_service_change_completion_delay,
-
                      'INSTALL_PATH' => install_path.gsub('/', '\\'),
                      'INSTALLUTIL_COMMAND_FULLPATH' => installutil_command_fullpath,
                      'SERVICE_ASSEMBLY_FILENAME' => service_assembly_filename,
@@ -155,8 +148,6 @@ powershell 'Install Event Router Service' do
 
   powershell_script = <<-'EOF'
 
-# Installs assembly into .Net 4.x 32 bit GAC
-# issues start command to Windows service
 
 $serviceDisplayName = "$Env:SERVICE_DISPLAY_NAME"
 
@@ -175,14 +166,9 @@ $sourcePath = "$Env:SOURCE_PATH"
 Write-Output "creating directory ""${installPath}"""
 New-Item -Path "${installPath}" -Type Directory -Force -ErrorAction SilentlyContinue
 
-chdir "${sourcePath}"
-Get-ChildItem
-
 Write-Output "Check if prerequisite Windows Feature set is installed"
 
 $features_array = $Env:SERVER_MANAGER_FEATURES -split ','
-
-Write-Output "Using sleep time: $windowsServiceChangeCompletionDelay"
 
 Import-Module ServerManager
 
@@ -203,7 +189,7 @@ Write-Output $test
 
 chdir $installPath
 
-Write-Output "Copy / overwrite the service files $sourcePath to $installPath"
+Write-Output "Copy the service build artifacts from $sourcePath to $installPath"
 
 Copy-Item -Path (Join-Path $sourcePath "$assemblyfileSet") -Destination $installPath -Recurse -Force
 
@@ -219,7 +205,10 @@ cmd /c ${installutil_command_fullpath} "/InstallStateDir=${installPath}" "/LogFi
 
 
 Start-Sleep $windowsServiceChangeCompletionDelay
-# Get-Content -Path $install_logFile
+
+Write-Output '------------------------'
+Get-Content -Path $install_logFile
+Write-Output '------------------------'
 
 <#
 
@@ -258,3 +247,5 @@ $Error.clear()
   EOF
   source(powershell_script)
 end
+
+puts 'Event Router Service installed'
