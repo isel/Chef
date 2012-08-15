@@ -6,7 +6,7 @@ template "#{ruby_scripts_dir}/register_cache_hostname.rb" do
   source 'scripts/register_cache_hostname.erb'
   variables(
     :cache_server => node[:deploy][:cache_server],
-    :deployment_name => node[:core][:deployment_name]
+    :deployment_name => node[:deploy][:deployment_name]
   )
 end
 

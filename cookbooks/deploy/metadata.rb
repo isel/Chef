@@ -43,11 +43,6 @@ attribute "core/aws_secret_access_key",
   :required => "required",
   :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_infrastructure", "deploy::download_pims", "deploy::elastic_search", "deploy::mongo"]
 
-attribute "core/deployment_name",
-  :display_name => "deployment name",
-  :required => "required",
-  :recipes => ["deploy::register_cache_hostname"]
-
 attribute "core/s3_bucket",
   :display_name => "s3 bucket for the UGF platform",
   :required => "optional",
@@ -79,6 +74,11 @@ attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
   :recipes => ["deploy::event_router_service", "deploy::foundation_services", "deploy::provision", "deploy::update_configuration"]
+
+attribute "deploy/deployment_name",
+  :display_name => "deployment name",
+  :required => "required",
+  :recipes => ["deploy::register_cache_hostname"]
 
 attribute "deploy/domain",
   :display_name => "domain",

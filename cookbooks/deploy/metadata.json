@@ -56,18 +56,6 @@
       "calculated": false,
       "type": "string"
     },
-    "core/deployment_name": {
-      "display_name": "deployment name",
-      "required": "required",
-      "recipes": [
-        "deploy::register_cache_hostname"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
     "core/s3_bucket": {
       "display_name": "s3 bucket for the UGF platform",
       "required": "optional",
@@ -146,6 +134,18 @@
         "deploy::foundation_services",
         "deploy::provision",
         "deploy::update_configuration"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/deployment_name": {
+      "display_name": "deployment name",
+      "required": "required",
+      "recipes": [
+        "deploy::register_cache_hostname"
       ],
       "choice": [
 
