@@ -43,6 +43,8 @@ $installPath = "$Env:INSTALL_PATH"
 $installutil_command_fullpath = "$Env:INSTALLUTIL_COMMAND_FULLPATH"
 $windowsServiceChangeCompletionDelay = $Env:DELAY
 
+$serviceDisplayName = "$Env:SERVICE_DISPLAY_NAME"
+
 $sourcePath = "$Env:SOURCE_PATH"
 $uninstall_logFile = 'service_uninstall.log'
 
