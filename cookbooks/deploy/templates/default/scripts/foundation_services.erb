@@ -1,10 +1,12 @@
 require 'rake'
+require 'json'
 
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/configuration'
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/io_utils'
 
+settings = JSON.parse(File.read("#{node['ruby_scripts_dir']}/deployment_settings.txt"))
+
 messaging_server = '<%= @messaging_server %>'
-messaging_server_port = '<%= @messaging_server_port %>'
 
 FileList['/Websites/**'].each do |f|
   FileUtils.remove_entry(f, true)
@@ -27,11 +29,11 @@ Helpers::add_services_thumbprint("/Websites/Services/Web.config", thumbprint)
 Helpers::change_cert_repo_thumbprint("/Websites/ActiveSTS/configuration/CertificateRepository.config", thumbprint)
 
 Helpers::change_all_app_settings(configs, "SigningCertificateName", "CN=localhost")
-Helpers::change_all_app_settings(configs, "ConnectionString", "Server=<%= @db_server %>:<%= @db_port %>")
-Helpers::change_all_app_settings(configs, "SearchUri", "http://<%= @search_server %>:<%= @search_port %>/_search")
+Helpers::change_all_app_settings(configs, "ConnectionString", "Server=<%= @db_server %>:#{settings['database_port']}")
+Helpers::change_all_app_settings(configs, "SearchUri", "http://<%= @search_server %>:#{settings['search_port']}/_search")
 Helpers::change_all_app_settings(configs, "EntityFramework.ModelFolder", "C:\\WebSites\\Models\\")
 
-Helpers::change_app_setting("/Websites/Services/Web.config",  "MessagingServer.Uri", "http://#{messaging_server}:#{messaging_server_port}")
+Helpers::change_app_setting("/Websites/Services/Web.config",  "MessagingServer.Uri", "http://#{messaging_server}:#{settings['messaging_port'}")
 
 
 IOUtils::replace_text_in_files(configs, '<%= '<host name="localhost"' %>', "<%= '<host name=\"' %><%= @cache_server %>\"")

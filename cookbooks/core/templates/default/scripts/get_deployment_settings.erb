@@ -1,0 +1,11 @@
+require 'json'
+require 'rest-client'
+
+RestClient.log = 'rest.log'
+site = RestClient::Resource.new('<%= @api_infrastructure_url %>', {:timeout => 500})
+
+params = URI.escape("name=<%= @deployment_name %>&type=<%= @deployment_type %>")
+deployment_uri = JSON.parse(site["deployments/find.json?#{params}"].get).values[0]['resource_uri']
+
+response = site["#{deployment_uri}/settings.json"].get
+File.open('<%= node['ruby_scripts_dir'] %>/deployment_settings.txt', 'w') { |f| f.puts response }

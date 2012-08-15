@@ -8,6 +8,7 @@ version          "0.0.1"
 supports "ubuntu"
 
 recipe "core::download_vendor_artifacts_prereqs", "Sets up prereqs for downloading vendor artifacts"
+recipe "core::get_deployment_settings", "Gets the deployment settings from the services api"
 recipe "core::install_gems", "Installs ruby gems"
 recipe "core::install_ruby", "Installs ruby from source"
 recipe "core::netsh_advfirewall_management", "Disables Windows Firewall"
@@ -15,6 +16,11 @@ recipe "core::set_rightscale_account", "sets the Rightscale account"
 recipe "core::setup_powershell_runtimes", "Allows up the poweshell to run multiple runtimes"
 recipe "core::tag_server_hostname", "Tags the server host name"
 recipe "core::tag_server_type", "Tags the server type"
+
+attribute "core/api_infrastructure_url",
+  :display_name => "api infrastructure url",
+  :required => "required",
+  :recipes => ["core::get_deployment_settings"]
 
 attribute "core/aws_access_key_id",
   :display_name => "aws access key id",
@@ -25,6 +31,16 @@ attribute "core/aws_secret_access_key",
   :display_name => "aws secret access key",
   :required => "required",
   :recipes => ["core::install_ruby"]
+
+attribute "core/deployment_name",
+  :display_name => "deployment name",
+  :required => "required",
+  :recipes => ["core::get_deployment_settings"]
+
+attribute "core/deployment_type",
+  :display_name => "deployment type",
+  :required => "required",
+  :recipes => ["core::get_deployment_settings"]
 
 attribute "core/server_type",
   :display_name => "server type",
