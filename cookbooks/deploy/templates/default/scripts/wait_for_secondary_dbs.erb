@@ -4,8 +4,8 @@ require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/process'
 servers = Cloud::Deployment.new.discover_servers('<%= @deployment_name %>')
 
 Helpers::Process.new(15).run('waiting for secondary dbs to become operational', <%= @timeout %>) do
-dbs_count = servers.select { |name, server| (server.tags['server:type'] == 'db') }
-dbs_operational = servers.select { |name, server| (server.tags['server:type'] == 'db' && server.state == 'operational') }
+dbs_count = servers.select { |name, server| (server.tags['server:type'] == 'db' if !server.tags['server:type'].nil?) }
+dbs_operational = servers.select { |name, server| (server.tags['server:type'] == 'db' && server.state == 'operational' if !server.tags['server:type'].nil?) }
 dbs_count.count - 1 == dbs_operational.count
 end
 
