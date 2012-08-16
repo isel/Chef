@@ -146,7 +146,8 @@
       "display_name": "deployment name",
       "required": "required",
       "recipes": [
-        "deploy::register_cache_hostname"
+        "deploy::register_cache_hostname",
+        "deploy::wait_for_secondary_dbs"
       ],
       "choice": [
 
@@ -195,6 +196,19 @@
       "required": "required",
       "recipes": [
         "deploy::download_infrastructure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/is_primary_db": {
+      "display_name": "is primary db server",
+      "description": "This db is primary server (true/false)",
+      "required": "required",
+      "recipes": [
+        "deploy::wait_for_secondary_dbs"
       ],
       "choice": [
 
@@ -375,7 +389,8 @@
     "deploy::setup_provision": "Setups provision tool and data",
     "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server",
     "deploy::update_configuration": "Updates Mule properties file",
-    "deploy::validate_configuration_tokens": "Validates that inputs in Mule properties file are current"
+    "deploy::validate_configuration_tokens": "Validates that inputs in Mule properties file are current",
+    "deploy::wait_for_secondary_dbs": "Waits for secondary db servers to become operational"
   },
   "version": "0.0.1"
 }

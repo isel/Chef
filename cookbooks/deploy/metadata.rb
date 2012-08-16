@@ -32,6 +32,7 @@ recipe "deploy::setup_provision", "Setups provision tool and data"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
 recipe "deploy::update_configuration", "Updates Mule properties file"
 recipe "deploy::validate_configuration_tokens", "Validates that inputs in Mule properties file are current"
+recipe "deploy::wait_for_secondary_dbs", "Waits for secondary db servers to become operational"
 
 # Attributes from core cookbook
 attribute "core/aws_access_key_id",
@@ -80,7 +81,7 @@ attribute "deploy/db_server",
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
   :required => "required",
-  :recipes => ["deploy::register_cache_hostname"]
+  :recipes => ["deploy::register_cache_hostname", "deploy::wait_for_secondary_dbs"]
 
 attribute "deploy/domain",
   :display_name => "domain",
@@ -100,6 +101,12 @@ attribute "deploy/infrastructure_revision",
   :display_name => "infrastructure revision",
   :required => "required",
   :recipes => ["deploy::download_infrastructure"]
+
+attribute "deploy/is_primary_db",
+  :display_name => "is primary db server",
+  :description => "This db is primary server (true/false)",
+  :required => "required",
+  :recipes => ["deploy::wait_for_secondary_dbs"]
 
 attribute "deploy/messaging_server",
   :display_name => "messaging server",
