@@ -1,15 +1,19 @@
 require 'rake'
 require 'rspec/core/rake_task'
+require 'json'
+
+settings = JSON.parse(File.read('<%= node['ruby_scripts_dir'] %>/deployment_settings.txt'))
 
 ENV['domain.name'] = ''
 ENV['app_server'] = '<%= @app_server %>'
 ENV['db_server'] = '<%= @db_server %>'
-ENV['db_port'] = '<%= @db_port %>'
+ENV['db_port'] = settings['database_port']
 ENV['search_server'] = '<%= @search_server %>'
 
+
 #todo: remove following line once all deployments are >= rev 10 of search server
-ENV['elastic_search_port'] = '<%= @search_port %>'
-ENV['search_port'] = '<%= @search_port %>'
+ENV['elastic_search_port'] = settings['search_port']
+ENV['search_port'] = settings['search_port']
 
 puts "ENV['rightscale_account'] = #{ENV['rightscale_account']}"
 

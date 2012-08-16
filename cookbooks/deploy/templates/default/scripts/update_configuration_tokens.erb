@@ -1,9 +1,12 @@
 # find and replace tokens in mule properties file
 
 require 'fileutils'
+require 'json'
 require 'yaml'
 
 $DEBUG = false
+
+settings = JSON.parse(File.read('<%= node['ruby_scripts_dir'] %>/deployment_settings.txt'))
 
 mule_configuration_dir='/opt/mule/configuration'
 properties_filename = "#{mule_configuration_dir}/ultimate.properties"
@@ -13,13 +16,13 @@ properties_backup_filename = "#{properties_filename}.BAK"
 token_values = {
   'app_server' => '<%= @app_server %>',
   'cache_server' => '<%= @cache_server %>',
-  'db_port' => '<%= @db_port %>',
+  'db_port' => settings['database_port'],
   'db_server' => '<%= @db_server %>',
-  'engine_port' => '<%= @engine_port %>',
+  'engine_port' => settings['engine_port'],
   'engine_server' => '<%= @engine_server %>',
-  'messaging_port' => '<%= @messaging_port %>',
+  'messaging_port' => settings['messaging_port'],
   'messaging_server' => '<%= @messaging_server %>',
-  'search_port' => '<%= @search_port %>',
+  'search_port' => settings['search_port'],
   'search_server' => '<%= @search_server %>',
   'web_server' => '<%= @web_server %>'
 }

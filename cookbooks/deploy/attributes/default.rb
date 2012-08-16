@@ -8,7 +8,6 @@ default['powershell_x64_dir'] = '/Windows/sysnative/WindowsPowerShell/v1.0'
 
 default[:activemq_port] = '61616'
 default[:activemq_version] = '5.6.0'
-default[:db_port] = '27017'
 default[:engine_port] = '8080'
 default[:event_router_port] = '8989'
 default[:messaging_port] = '8081'

@@ -5,7 +5,6 @@ template "#{ruby_scripts_dir}/provision.rb" do
   variables(
     :app_server => node[:deploy][:app_server],
     :db_server => node[:deploy][:db_server],
-    :db_port => node[:db_port],
     :force_provision => node[:deploy][:force_provision],
     :tenant => node[:deploy][:tenant]
   )

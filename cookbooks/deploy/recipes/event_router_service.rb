@@ -8,7 +8,6 @@ template "#{ruby_scripts_dir}/event_router_service.rb" do
   source 'scripts/event_router_service.erb'
   variables(
     :binaries_directory => node[:binaries_directory],
-    :db_port  => node[:db_port],
     :db_server  => node[:deploy][:db_server],
     :messaging_port  => node[:messaging_port],
     :messaging_server  => node[:deploy][:messaging_server],

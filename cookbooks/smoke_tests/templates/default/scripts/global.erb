@@ -1,17 +1,18 @@
 require 'rake'
 require 'rspec/core/rake_task'
+require 'json'
+
+settings = JSON.parse(File.read('<%= node['ruby_scripts_dir'] %>/deployment_settings.txt'))
 
 ENV['domain.name'] = ''
 
 ENV['app_server'] = '<%= @app_server %>'
 ENV['db_server'] = '<%= @db_server %>'
-ENV['db_port'] = '<%= @db_port %>'
+ENV['db_port'] = settings['database_port']
 ENV['engine_server'] = '<%= @engine_server %>'
-ENV['tenant'] = '<%= @tenant %>'
-
-
 ENV['messaging_server'] = '<%= @messaging_server %>'
-ENV['messaging_server_port'] = '<%= @messaging_port %>'
+ENV['messaging_server_port'] = settings['messaging_port']
+ENV['tenant'] = '<%= @tenant %>'
 
 smoke_tests_dir = '<%= node['binaries_directory'] %>/CI/spec/Smoke'
 

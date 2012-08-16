@@ -6,23 +6,18 @@ require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/io_utils'
 
 settings = JSON.parse(File.read('<%= node['ruby_scripts_dir'] %>/deployment_settings.txt'))
 
-messaging_server = '<%= @messaging_server %>'
-
-FileList['/Websites/**'].each do |f|
-  FileUtils.remove_entry(f, true)
-end
+FileList['/Websites/**'].each { |f| FileUtils.remove_entry(f, true) }
 
 FileUtils.cp_r('<%= node['binaries_directory'] %>/Models', '/Websites')
 FileUtils.cp_r('<%= node['binaries_directory'] %>/AppServer/Websites/UltimateSoftware.Gateway.Active/.', '/Websites/ActiveSTS')
 FileUtils.cp_r('<%= node['binaries_directory'] %>/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services')
 FileUtils.cp_r('<%= node['binaries_directory'] %>/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services.Help')
 
-
 configs = FileList['/Websites/**/*.config']
 puts "found #{configs.count} config files"
 
 def thumbprint
-   `powershell -Command "((dir cert:\\localmachine\\Root -rec | where-object {$_.Subject -eq 'CN=localhost'}) | select-object thumbprint).thumbprint"`.strip
+  `powershell -Command "((dir cert:\\localmachine\\Root -rec | where-object {$_.Subject -eq 'CN=localhost'}) | select-object thumbprint).thumbprint"`.strip
 end
 
 Helpers::add_services_thumbprint("/Websites/Services/Web.config", thumbprint)
@@ -33,8 +28,7 @@ Helpers::change_all_app_settings(configs, "ConnectionString", "Server=<%= @db_se
 Helpers::change_all_app_settings(configs, "SearchUri", "http://<%= @search_server %>:#{settings['search_port']}/_search")
 Helpers::change_all_app_settings(configs, "EntityFramework.ModelFolder", "C:\\WebSites\\Models\\")
 
-Helpers::change_app_setting("/Websites/Services/Web.config",  "MessagingServer.Uri", "http://#{messaging_server}:#{settings['messaging_port']}")
-
+Helpers::change_app_setting("/Websites/Services/Web.config",  "MessagingServer.Uri", "http://<%= @messaging_server %>:#{settings['messaging_port']}")
 
 IOUtils::replace_text_in_files(configs, '<%= '<host name="localhost"' %>', "<%= '<host name=\"' %><%= @cache_server %>\"")
 IOUtils::replace_text_in_files(configs, '<\/hosts>', '</hosts><securityProperties mode="None" protectionLevel="None"/>')
@@ -45,5 +39,3 @@ IOUtils::replace_text_in_file(active_sts, /:81\/sts/, ':81/')
 
 Helpers::change_service_authorization_type("/Websites/Services.Help/Web.config",
   "UltimateSoftware.Foundation.IdentityModel.Contracts.WebRequests.USWebRequestDevAuthorizationManager, UltimateSoftware.Foundation.IdentityModel.Contracts")
-
-# ee42d9a4-ccc4-42a7-9d18-78c1ff4b9f9a
