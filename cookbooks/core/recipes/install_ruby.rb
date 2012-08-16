@@ -52,9 +52,9 @@ if !File.exists?('/opt/ruby')
 
     ./configure --enable-shared --prefix=/opt/ruby/#{ruby_version}
 
-    make all
-    make test
-    make install
+    make -s all
+    make -s test
+    make -s install
 
     cd /opt/ruby
 
