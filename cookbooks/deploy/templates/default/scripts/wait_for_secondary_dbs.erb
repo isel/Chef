@@ -9,7 +9,7 @@ dbs_operational = servers.select { |name, server| (server.tags['server:type'] ==
 dbs_count.count - 1 == dbs_operational.count
 end
 
-servers.mongo.set_inputs({ 'EBS_SKIP_MOUNT' => 'text:true' })
+servers.mongo.set_inputs({ 'EBS_SKIP_MOUNT' => 'text:true' }) if !servers.mongo.nil?
 servers.db_server_rs1.set_inputs({ 'EBS_SKIP_MOUNT' => 'text:false' }) if !servers.db_server_rs1.nil?
 servers.db_server_rs2.set_inputs({ 'EBS_SKIP_MOUNT' => 'text:false' }) if !servers.db_server_rs2.nil?
 
