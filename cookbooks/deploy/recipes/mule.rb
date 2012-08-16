@@ -63,15 +63,15 @@ if !File.exists?("#{mule_home}/bin")
     local true
     source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
     variables(
-      :aws_access_key_id => node[:core][:aws_access_key_id],
-      :aws_secret_access_key => node[:core][:aws_secret_access_key],
-      :s3_bucket => node[:core][:s3_bucket],
-      :s3_repository => 'Vendor',
-      :product => product,
-      :version => version,
-      :artifacts => 'mule',
-      :target_directory => '/opt',
-      :unzip => true
+        :aws_access_key_id => node[:core][:aws_access_key_id],
+        :aws_secret_access_key => node[:core][:aws_secret_access_key],
+        :s3_bucket => node[:core][:s3_bucket],
+        :s3_repository => 'Vendor',
+        :product => product,
+        :version => version,
+        :artifacts => 'mule',
+        :target_directory => '/opt',
+        :unzip => true
     )
   end
 
@@ -82,8 +82,8 @@ if !File.exists?("#{mule_home}/bin")
   end
 
   bash 'Setting directory links' do
-      product_directory="mule-enterprise-standalone-#{version}"
-      code <<-EOF
+    product_directory="mule-enterprise-standalone-#{version}"
+    code <<-EOF
         PRODUCT_DIRECTORY="#{product_directory}"
         pushd /opt
         ls -l .
@@ -105,22 +105,22 @@ if !File.exists?("#{mule_home}/bin")
         if [ ! -f /opt/#{product}/bin/#{product} ] ; then
           exit 1
         fi
-      EOF
+    EOF
   end
 
   template "#{node['ruby_scripts_dir']}/download_mule_plugins.rb" do
     local true
     source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
     variables(
-      :aws_access_key_id => node[:core][:aws_access_key_id],
-      :aws_secret_access_key => node[:core][:aws_secret_access_key],
-      :s3_bucket => node[:core][:s3_bucket],
-      :s3_repository => 'Vendor',
-      :product => product,
-      :version => version,
-      :artifacts => node[:mule_plugins].join(','),
-      :target_directory => "#{mule_home}/apps",
-      :unzip => false
+        :aws_access_key_id => node[:core][:aws_access_key_id],
+        :aws_secret_access_key => node[:core][:aws_secret_access_key],
+        :s3_bucket => node[:core][:s3_bucket],
+        :s3_repository => 'Vendor',
+        :product => product,
+        :version => version,
+        :artifacts => node[:mule_plugins].join(','),
+        :target_directory => "#{mule_home}/apps",
+        :unzip => false
     )
   end
 
@@ -198,27 +198,7 @@ WRAPPER_CONF_PATCH
   end
   log 'Mule wrapper configuration updated.'
 
-
-  if !File.exists?(mule_configuration_dir)
-    #    Dir.mkdir(mule_configuration_dir, 0777)
-    bash "Populate Mule configurations  #{mule_configuration_dir} from /DeployScripts_Binaries/#{messaging_server_directory}" do
-      code <<-EOF
-      #!/bin/bash
-
-      MULE_CONFIGURATION_DIR="#{mule_configuration_dir}"
-      mkdir -p -m 0777 $MULE_CONFIGURATION_DIR
-      pushd $MULE_CONFIGURATION_DIR
-      cp /DeployScripts_Binaries/#{messaging_server_directory}/*  .
-      chmod -R ogu+w .
-      ls -l
-      EOF
-    end
-    log "Mule configuration directory #{mule_configuration_dir} created"
-  else
-    log "Mule configuration directory #{mule_configuration_dir} was found and left intact"
-  end
-
-  else
+else
   log 'Mule already installed.'
 end
 
@@ -307,3 +287,39 @@ popd
 end
 
 log "Mule custom applications installed"
+
+# cannot inspect the environment using ruby code in recipes,
+# need to either bootstrap/ delay expand such code, or use shell code
+
+bash "Populate Mule configurations  #{mule_configuration_dir} from /DeployScripts_Binaries/#{messaging_server_directory}" do
+  code <<-EOF
+
+#!/bin/bash
+########### inputs ########### 
+MULE_CONFIGURATION_DIR="#{mule_configuration_dir}"
+PROPERTIES_PATH="/DeployScripts_Binaries/#{messaging_server_directory}"
+###########  code  ###########
+if [ -d "$MULE_CONFIGURATION_DIR"  ] ; then
+echo "Mule configuration directory $MULE_CONFIGURATION_DIR was found"
+else
+mkdir -p -m 0777 $MULE_CONFIGURATION_DIR
+  echo "Mule configuration directory $MULE_CONFIGURATION_DIR created"
+fi
+set +e
+pushd $MULE_CONFIGURATION_DIR
+if [ $? -ne "0" ] ; then
+  echo "Failed to create Mule configuration directory $MULE_CONFIGURATION_DIR"
+  exit 1
+fi
+echo "Copying build properties from $PROPERTIES_PATH"
+cp $PROPERTIES_PATH/* .
+echo "Removing old properties backup files"
+set +e
+rm *.BAK 2>& /dev/null
+chmod -R ogu+w .
+echo "Configuration directory:"
+ls -l
+  EOF
+end
+
+log "Mule application properties installed"
