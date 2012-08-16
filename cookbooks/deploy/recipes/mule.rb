@@ -315,7 +315,7 @@ echo "Copying build properties from $PROPERTIES_PATH"
 cp $PROPERTIES_PATH/* .
 echo "Removing old properties backup files"
 set +e
-rm *.BAK 2>& /dev/null
+rm *.BAK 2 >& /dev/null
 chmod -R ogu+w .
 echo "Configuration directory:"
 ls -l
