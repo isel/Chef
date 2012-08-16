@@ -33,7 +33,7 @@ bash 'Tell mule to undeploy plugins and applications in a clean way' do
       echo "Deleting the anchor file $APP_ANCHOR_FILE"
       rm "$MULE_PLUGIN_HOME/$APP_ANCHOR_FILE"
       pushd $MULE_HOME/bin
-      ./mule restart
+      ./mule restart 1 > /dev/null 2>& 1
       popd
       sleep 30
     done
