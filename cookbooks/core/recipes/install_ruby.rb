@@ -50,11 +50,11 @@ if !File.exists?('/opt/ruby')
     chmod 777 configure
     chmod 777 tool/ifchange
 
-    ./configure --enable-shared --prefix=/opt/ruby/#{ruby_version}
+    ./configure --enable-shared --prefix=/opt/ruby/#{ruby_version} >> log-install-ruby.txt
 
-    make -s all
-    make -s test
-    make -s install
+    make all >> log-install-ruby.txt
+    make test >> log-install-ruby.txt
+    make install >> log-install-ruby.txt
 
     cd /opt/ruby
 
