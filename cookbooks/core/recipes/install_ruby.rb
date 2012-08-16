@@ -50,11 +50,11 @@ if !File.exists?('/opt/ruby')
     chmod 777 configure
     chmod 777 tool/ifchange
 
-    ./configure --enable-shared --prefix=/opt/ruby/#{ruby_version} 2>&1 | tee log-1-configure.txt
+    ./configure --enable-shared --prefix=/opt/ruby/#{ruby_version}
 
-    make all 2>&1 | tee log-2-build.txt
-    make test 2>&1 | tee log-3-test.txt
-    make install 2>&1 | tee log-4-install.txt
+    make all
+    make test
+    make install
 
     cd /opt/ruby
 
