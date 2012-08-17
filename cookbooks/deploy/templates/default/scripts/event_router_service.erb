@@ -9,7 +9,7 @@ settings = JSON.parse(File.read('<%= node['ruby_scripts_dir'] %>/deployment_sett
 source_directory = '<%= @source_directory %>'
 target_directory = '<%= @target_directory %>'
 messaging_server = '<%= @messaging_server %>'
-messaging_port = '<%= @messaging_port %>'
+messaging_port = settings['messaging_port']
 db_server = '<%= @db_server %>'
 
 app_config = 'UltimateSoftware.Foundation.Messaging.EventRouter.exe.config'

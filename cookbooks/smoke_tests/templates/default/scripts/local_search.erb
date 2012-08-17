@@ -1,9 +1,12 @@
 require 'rake'
 require 'rspec/core/rake_task'
+require 'json'
+
+settings = JSON.parse(File.read('<%= node['ruby_scripts_dir'] %>/deployment_settings.txt'))
 
 #todo: remove the leaky abstraction in favor of the two lines below these
-ENV['elastic_search_port'] = '<%= @search_port %>'
-ENV['search_port'] = '<%= @search_port %>'
+ENV['elastic_search_port'] = settings['search_port']
+ENV['search_port'] = settings['search_port']
 
 
 RSpec::Core::RakeTask.new(:spec) do |t|
