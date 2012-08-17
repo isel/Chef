@@ -22,6 +22,18 @@
   "replacing": {
   },
   "attributes": {
+    "core/api_infrastructure_url": {
+      "display_name": "api infrastructure url",
+      "required": "required",
+      "recipes": [
+        "deploy::foundation_services"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "core/aws_access_key_id": {
       "display_name": "aws access key id",
       "required": "required",
@@ -49,6 +61,18 @@
         "deploy::download_pims",
         "deploy::elastic_search",
         "deploy::mongo"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "core/deployment_uri": {
+      "display_name": "deployment uri",
+      "required": "required",
+      "recipes": [
+        "deploy::foundation_services"
       ],
       "choice": [
 

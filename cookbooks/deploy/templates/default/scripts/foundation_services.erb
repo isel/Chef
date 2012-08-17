@@ -24,6 +24,7 @@ Helpers::add_services_thumbprint("/Websites/Services/Web.config", thumbprint)
 Helpers::change_cert_repo_thumbprint("/Websites/ActiveSTS/configuration/CertificateRepository.config", thumbprint)
 
 Helpers::change_all_app_settings(configs, "SigningCertificateName", "CN=localhost")
+Helpers::change_all_app_settings(configs, "DeploymentUri", "<%= @api_infrastructure_url %>/<%= @deployment_uri %>")
 Helpers::change_all_app_settings(configs, "ConnectionString", "Server=<%= @db_server %>:#{settings['database_port']}")
 Helpers::change_all_app_settings(configs, "SearchUri", "http://<%= @search_server %>:#{settings['search_port']}/_search")
 Helpers::change_all_app_settings(configs, "EntityFramework.ModelFolder", "C:\\WebSites\\Models\\")

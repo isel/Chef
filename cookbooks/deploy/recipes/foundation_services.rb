@@ -70,6 +70,8 @@ end
 template "#{ruby_scripts_dir}/foundation_services.rb" do
   source 'scripts/foundation_services.erb'
   variables(
+    :api_infrastructure_url => node[:core][:api_infrastructure_url],
+    :deployment_uri => node[:core][:deployment_uri],
     :cache_server => node[:deploy][:cache_server],
     :db_server => node[:deploy][:db_server],
     :messaging_server => node[:deploy][:messaging_server],
@@ -85,7 +87,7 @@ template "#{node['binaries_directory']}/AppServer/Websites/UltimateSoftware.Serv
   source 'health_check.erb'
 end
 
-powershell "Updating foundation services" do
+powershell 'Updating foundation services' do
   source("ruby #{ruby_scripts_dir}/foundation_services.rb")
 end
 

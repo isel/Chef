@@ -35,6 +35,11 @@ recipe "deploy::validate_configuration_tokens", "Validates that inputs in Mule p
 recipe "deploy::wait_for_secondary_dbs", "Waits for secondary db servers to become operational"
 
 # Attributes from core cookbook
+attribute "core/api_infrastructure_url",
+  :display_name => "api infrastructure url",
+  :required => "required",
+  :recipes => ["deploy::foundation_services"]
+
 attribute "core/aws_access_key_id",
   :display_name => "aws access key id",
   :required => "required",
@@ -44,6 +49,11 @@ attribute "core/aws_secret_access_key",
   :display_name => "aws secret access key",
   :required => "required",
   :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_infrastructure", "deploy::download_pims", "deploy::elastic_search", "deploy::mongo"]
+
+attribute "core/deployment_uri",
+  :display_name => "deployment uri",
+  :required => "required",
+  :recipes => ["deploy::foundation_services"]
 
 attribute "core/s3_bucket",
   :display_name => "s3 bucket for the UGF platform",
