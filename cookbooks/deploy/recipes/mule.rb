@@ -130,6 +130,12 @@ if !File.exists?("#{mule_home}/bin")
     EOF
   end
 
+  bash 'Installing Mule-EE License' do
+    code <<-EOF
+        mule -installLicense /opt/mule/mule-ee-license.lic
+    EOF
+  end
+
   bash 'Patch Mule configuration wrapper.conf' do
     # patch wrapper.conf from embedded unified diff
     # warning ruby processor may corrupt certain inputs.
