@@ -81,6 +81,13 @@ if !File.exists?("#{mule_home}/bin")
     EOF
   end
 
+  bash 'Installing Mule-EE License' do
+    code <<-EOF
+        cd /opt/mule/bin
+        ./mule -installLicense /opt/mule/mule-ee-license.lic
+    EOF
+  end
+
   bash 'Setting directory links' do
     product_directory="mule-enterprise-standalone-#{version}"
     code <<-EOF
@@ -127,12 +134,6 @@ if !File.exists?("#{mule_home}/bin")
   bash 'Downloading mule plugins' do
     code <<-EOF
         ruby #{ruby_scripts_dir}/download_mule_plugins.rb
-    EOF
-  end
-
-  bash 'Installing Mule-EE License' do
-    code <<-EOF
-        mule -installLicense /opt/mule/mule-ee-license.lic
     EOF
   end
 
