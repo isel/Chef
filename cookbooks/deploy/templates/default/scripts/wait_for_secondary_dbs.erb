@@ -2,17 +2,17 @@ require '<%= node['binaries_directory'] %>/CI/BuildScripts/Cloud/deployment'
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/process'
 
 servers = Cloud::Deployment.new.discover_servers('<%= @deployment_name %>')
+secondary_db_servers = servers.select do |name, server|
+is_primary_db = server.inputs.find {|input| input['name'] == 'deploy/is_primary_db'}
+server.tags['server:type'] == 'db' && !is_primary_db.nil? && is_primary_db["value"] == 'false'
+end
 
 Helpers::Process.new(15).run('waiting for secondary dbs to become operational', <%= @timeout %>) do
-secondary_dbs_count = servers.select { |name, server| (server.tags['server:type'] == 'db' && server.current_inputs.find {|input| input['name'] == 'deploy/is_primary_db'}["value"] == 'false') }
-secondary_dbs_operational = servers.select { |name, server| (server.tags['server:type'] == 'db' && server.current_inputs.find {|input| input['name'] == 'deploy/is_primary_db'}["value"] == 'false' && server.state == 'operational') }
-secondary_dbs_count.count == secondary_dbs_operational.count
+secondary_db_servers.count == secondary_db_servers.select { |name, server| server.state == 'operational' }.count
 end
+
 
 servers.mongo.set_inputs({ 'EBS_SKIP_MOUNT' => 'text:true' }) if !servers.mongo.nil?
 servers.db_server_rs1.set_inputs({ 'EBS_SKIP_MOUNT' => 'text:false' }) if !servers.db_server_rs1.nil?
 servers.db_server_rs2.set_inputs({ 'EBS_SKIP_MOUNT' => 'text:false' }) if !servers.db_server_rs2.nil?
-
-
-
 
