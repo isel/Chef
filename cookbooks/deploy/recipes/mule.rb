@@ -84,6 +84,7 @@ if !File.exists?("#{mule_home}/bin")
   bash 'Installing Mule-EE License' do
     code <<-EOF
         cd /opt/mule/bin
+        chmod 777 mule
         ./mule -installLicense /opt/mule/mule-ee-license.lic
     EOF
   end
