@@ -81,14 +81,6 @@ if !File.exists?("#{mule_home}/bin")
     EOF
   end
 
-  bash 'Installing Mule-EE License' do
-    code <<-EOF
-        cd /opt/mule/bin
-        chmod 777 mule
-        ./mule -installLicense /opt/mule/mule-ee-license.lic
-    EOF
-  end
-
   bash 'Setting directory links' do
     product_directory="mule-enterprise-standalone-#{version}"
     code <<-EOF
@@ -205,6 +197,14 @@ WRAPPER_CONF_PATCH
     EOF
   end
   log 'Mule wrapper configuration updated.'
+
+  bash 'Installing Mule-EE License' do
+    code <<-EOF
+        cd /opt/mule/bin
+        chmod 777 mule
+        ./mule -installLicense /opt/mule/mule-ee-license.lic
+    EOF
+  end
 
 else
   log 'Mule already installed.'
