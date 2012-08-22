@@ -1,0 +1,52 @@
+require 'rubygems'
+require 'json'
+require '<%= node['binaries_directory'] %>/CI/BuildScripts/Cloud/deployment'
+
+primary_db_server = Cloud::Deployment.new.discover_servers('<%= @deployment_name %>').find('<%= @server_name %>')
+mongodb_replica_set_name = primary_db_server.inputs.find {|input| input['name'] == 'MONGODB_REPLICA_SET_NAME'}['value']
+
+if (mongodb_replica_set_name.nil?)
+system("logger -t RightScale MONGODB_REPLICA_SET_NAME must be defined, exiting...")
+exit(1)
+end
+
+tag_query_output = `rs_tag --query "mongo:replicaset=#{mongodb_replica_set_name}"`
+
+puts tag_query_output
+
+parsed_json= JSON.parse(tag_query_output)
+
+nodesArray = Array.new
+
+i=0
+parsed_json.each { |node|
+nodesArray[i] = Hash.new
+node[1]["tags"].each { |tag|
+if ( tag =~ /mongo:(.+?)=(.+)/ )
+nodesArray[i][$1] = $2
+end
+}
+i=i+1
+}
+
+mongo_members=""
+
+i=0
+nodesArray.each do |node|
+if (node["arbiter"] =~ /true/i )
+mongo_members+="{_id: #{i}, host: '#{node["ip"]}', priority: #{node["priority"]}, arbiterOnly: true},"
+else
+mongo_members+="{_id: #{i}, host: '#{node["ip"]}', priority: #{node["priority"]}},"
+end
+i+=1
+end
+
+mongo_members.sub!(/,$/,'')
+
+puts "Initiating the replica set with the following members: #{mongo_members}"
+
+command="mongo --eval \"printjson(rs.initiate({_id: '#{mongodb_replica_set_name}', members: [#{mongo_members}]}))\""
+
+puts command
+
+system(command)

@@ -19,6 +19,7 @@ recipe "deploy::enable_msmq", "Enables msmq"
 recipe "deploy::engine", "Deploys Engine"
 recipe "deploy::event_router_service", "Installs Event Router Service"
 recipe "deploy::foundation_services", "Deploys the foundation rest services"
+recipe "deploy::initiate_replica_set_via_tags", "Initiate replica set via tags for mongodb"
 recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::launch_activemq", "Launches ActiveMQ"
 recipe "deploy::launch_mule", "Launches Mule"
@@ -91,7 +92,7 @@ attribute "deploy/db_server",
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
   :required => "required",
-  :recipes => ["deploy::register_cache_hostname", "deploy::wait_for_secondary_dbs"]
+  :recipes => ["deploy::initiate_replica_set_via_tags", "deploy::register_cache_hostname", "deploy::wait_for_secondary_dbs"]
 
 attribute "deploy/domain",
   :display_name => "domain",
@@ -161,6 +162,11 @@ attribute "deploy/s3_repository",
 attribute "deploy/search_server",
   :display_name => "search_server",
   :recipes => ["deploy::foundation_services", "deploy::update_configuration"]
+
+attribute "deploy/server_name",
+  :display_name => "server name",
+  :required => "required",
+  :recipes => ["deploy::initiate_replica_set_via_tags"]
 
 attribute "deploy/tenant",
   :display_name => "tenant",

@@ -170,6 +170,7 @@
       "display_name": "deployment name",
       "required": "required",
       "recipes": [
+        "deploy::initiate_replica_set_via_tags",
         "deploy::register_cache_hostname",
         "deploy::wait_for_secondary_dbs"
       ],
@@ -347,6 +348,18 @@
       "type": "string",
       "required": "optional"
     },
+    "deploy/server_name": {
+      "display_name": "server name",
+      "required": "required",
+      "recipes": [
+        "deploy::initiate_replica_set_via_tags"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/tenant": {
       "display_name": "tenant",
       "required": "required",
@@ -401,6 +414,7 @@
     "deploy::engine": "Deploys Engine",
     "deploy::event_router_service": "Installs Event Router Service",
     "deploy::foundation_services": "Deploys the foundation rest services",
+    "deploy::initiate_replica_set_via_tags": "Initiate replica set via tags for mongodb",
     "deploy::jspr": "Deploys the web server websites",
     "deploy::launch_activemq": "Launches ActiveMQ",
     "deploy::launch_mule": "Launches Mule",
