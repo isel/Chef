@@ -6,8 +6,8 @@ primary_db_server = Cloud::Deployment.new.discover_servers('<%= @deployment_name
 mongodb_replica_set_name = primary_db_server.inputs.find {|input| input['name'] == 'MONGODB_REPLICA_SET_NAME'}['value']
 
 if (mongodb_replica_set_name.nil?)
-system("logger -t RightScale MONGODB_REPLICA_SET_NAME must be defined, exiting...")
-exit(1)
+  system("logger -t RightScale MONGODB_REPLICA_SET_NAME must be defined, exiting...")
+  exit(1)
 end
 
 tag_query_output = `rs_tag --query "mongo:replicaset=#{mongodb_replica_set_name}"`
@@ -20,25 +20,25 @@ nodesArray = Array.new
 
 i=0
 parsed_json.each { |node|
-nodesArray[i] = Hash.new
-node[1]["tags"].each { |tag|
-if ( tag =~ /mongo:(.+?)=(.+)/ )
-nodesArray[i][$1] = $2
-end
-}
-i=i+1
+  nodesArray[i] = Hash.new
+  node[1]["tags"].each { |tag|
+    if ( tag =~ /mongo:(.+?)=(.+)/ )
+      nodesArray[i][$1] = $2
+    end
+  }
+  i=i+1
 }
 
 mongo_members=""
 
 i=0
 nodesArray.each do |node|
-if (node["arbiter"] =~ /true/i )
-mongo_members+="{_id: #{i}, host: '#{node["ip"]}', priority: #{node["priority"]}, arbiterOnly: true},"
-else
-mongo_members+="{_id: #{i}, host: '#{node["ip"]}', priority: #{node["priority"]}},"
-end
-i+=1
+  if (node["arbiter"] =~ /true/i )
+    mongo_members+="{_id: #{i}, host: '#{node["ip"]}', priority: #{node["priority"]}, arbiterOnly: true},"
+  else
+    mongo_members+="{_id: #{i}, host: '#{node["ip"]}', priority: #{node["priority"]}},"
+  end
+  i+=1
 end
 
 mongo_members.sub!(/,$/,'')
