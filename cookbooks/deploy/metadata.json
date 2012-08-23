@@ -157,7 +157,6 @@
         "deploy::event_router_service",
         "deploy::foundation_services",
         "deploy::provision",
-        "deploy::setup_provision",
         "deploy::update_configuration"
       ],
       "choice": [
@@ -423,7 +422,6 @@
     "deploy::recycle_mule": "Recycle mule",
     "deploy::register_cache_hostname": "Registers the cache hostname and ip in the hosts file",
     "deploy::reindex_elastic_search": "Reindexes ElasticSearch (should be going away)",
-    "deploy::setup_provision": "Setups provision tool and data",
     "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server",
     "deploy::update_configuration": "Updates Mule properties file",
     "deploy::validate_configuration_tokens": "Validates that inputs in Mule properties file are current",

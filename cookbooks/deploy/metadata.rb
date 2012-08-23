@@ -28,7 +28,6 @@ recipe "deploy::provision", "Provisions basic system data"
 recipe "deploy::recycle_mule", "Recycle mule"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
 recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
-recipe "deploy::setup_provision", "Setups provision tool and data"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
 recipe "deploy::update_configuration", "Updates Mule properties file"
 recipe "deploy::validate_configuration_tokens", "Validates that inputs in Mule properties file are current"
@@ -88,7 +87,7 @@ attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
   :recipes => ["deploy::event_router_service", "deploy::foundation_services",
-     "deploy::provision", "deploy::setup_provision", "deploy::update_configuration"]
+     "deploy::provision", "deploy::update_configuration"]
 
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
