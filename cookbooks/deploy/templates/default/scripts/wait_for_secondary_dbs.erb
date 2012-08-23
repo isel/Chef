@@ -3,12 +3,12 @@ require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/process'
 
 servers = Cloud::Deployment.new.discover_servers('<%= @deployment_name %>')
 secondary_db_servers = servers.select do |name, server|
-is_primary_db = server.inputs.find {|input| input['name'] == 'deploy/is_primary_db'}
-server.tags['server:type'] == 'db' && !is_primary_db.nil? && is_primary_db["value"] == 'false'
+  is_primary_db = server.inputs.find {|input| input['name'] == 'deploy/is_primary_db'}
+  server.tags['server:type'] == 'db' && !is_primary_db.nil? && is_primary_db["value"] == 'false'
 end
 
 Helpers::Process.new(15).run('waiting for secondary dbs to become operational', <%= @timeout %>) do
-secondary_db_servers.count == secondary_db_servers.select { |name, server| server.state == 'operational' }.count
+  secondary_db_servers.count == secondary_db_servers.select { |name, server| server.state == 'operational' }.count
 end
 
 

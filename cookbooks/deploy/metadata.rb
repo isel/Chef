@@ -13,7 +13,6 @@ recipe "deploy::activemq", "Deploys ActiveMQ"
 recipe "deploy::adjust_ulimit", "Adjusts open files limit for log4j"
 recipe "deploy::download_binaries", "Downloads binaries"
 recipe "deploy::download_infrastructure", "Downloads infrastructure api"
-recipe "deploy::download_pims", "Downloads pims"
 recipe "deploy::elastic_search", "Deploys ElasticSearch"
 recipe "deploy::enable_msmq", "Enables msmq"
 recipe "deploy::engine", "Deploys Engine"
@@ -44,12 +43,14 @@ attribute "core/api_infrastructure_url",
 attribute "core/aws_access_key_id",
   :display_name => "aws access key id",
   :required => "required",
-  :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_infrastructure", "deploy::download_pims", "deploy::elastic_search", "deploy::mongo"]
+  :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_infrastructure",
+    "deploy::provision", "deploy::elastic_search", "deploy::mongo"]
 
 attribute "core/aws_secret_access_key",
   :display_name => "aws secret access key",
   :required => "required",
-  :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_infrastructure", "deploy::download_pims", "deploy::elastic_search", "deploy::mongo"]
+  :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_infrastructure",
+    "deploy::provision", "deploy::elastic_search", "deploy::mongo"]
 
 attribute "core/deployment_uri",
   :display_name => "deployment uri",
@@ -134,12 +135,12 @@ attribute "deploy/mongo_version",
 attribute "deploy/pims_artifacts",
   :display_name => "pims artifacts",
   :required => "required",
-  :recipes => ["deploy::download_pims"]
+  :recipes => ["deploy::provision"]
 
 attribute "deploy/pims_revision",
   :display_name => "pims revision",
   :required => "required",
-  :recipes => ["deploy::download_pims"]
+  :recipes => ["deploy::provision"]
 
 attribute "deploy/s3_api_repository",
   :display_name => "s3 repository for the services api",
@@ -151,13 +152,13 @@ attribute "deploy/s3_bucket",
   :display_name => "s3 bucket for the UGF platform",
   :required => "optional",
   :default  => "ugfartifacts",
-  :recipes  => ["deploy::download_binaries", "deploy::download_infrastructure", "deploy::download_pims"]
+  :recipes  => ["deploy::download_binaries", "deploy::download_infrastructure", "deploy::provision"]
 
 attribute "deploy/s3_repository",
   :display_name => "s3 repository for the UGF platform",
   :required => "optional",
   :default  => "GlobalIncite",
-  :recipes  => ["deploy::download_binaries", "deploy::download_pims"]
+  :recipes  => ["deploy::download_binaries", "deploy::provision"]
 
 attribute "deploy/search_server",
   :display_name => "search_server",

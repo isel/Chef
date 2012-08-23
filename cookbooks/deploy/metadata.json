@@ -41,7 +41,7 @@
         "deploy::activemq",
         "deploy::download_binaries",
         "deploy::download_infrastructure",
-        "deploy::download_pims",
+        "deploy::provision",
         "deploy::elastic_search",
         "deploy::mongo"
       ],
@@ -58,7 +58,7 @@
         "deploy::activemq",
         "deploy::download_binaries",
         "deploy::download_infrastructure",
-        "deploy::download_pims",
+        "deploy::provision",
         "deploy::elastic_search",
         "deploy::mongo"
       ],
@@ -273,7 +273,7 @@
       "display_name": "pims artifacts",
       "required": "required",
       "recipes": [
-        "deploy::download_pims"
+        "deploy::provision"
       ],
       "choice": [
 
@@ -285,7 +285,7 @@
       "display_name": "pims revision",
       "required": "required",
       "recipes": [
-        "deploy::download_pims"
+        "deploy::provision"
       ],
       "choice": [
 
@@ -313,7 +313,7 @@
       "recipes": [
         "deploy::download_binaries",
         "deploy::download_infrastructure",
-        "deploy::download_pims"
+        "deploy::provision"
       ],
       "choice": [
 
@@ -327,7 +327,7 @@
       "default": "GlobalIncite",
       "recipes": [
         "deploy::download_binaries",
-        "deploy::download_pims"
+        "deploy::provision"
       ],
       "choice": [
 
@@ -408,7 +408,6 @@
     "deploy::adjust_ulimit": "Adjusts open files limit for log4j",
     "deploy::download_binaries": "Downloads binaries",
     "deploy::download_infrastructure": "Downloads infrastructure api",
-    "deploy::download_pims": "Downloads pims",
     "deploy::elastic_search": "Deploys ElasticSearch",
     "deploy::enable_msmq": "Enables msmq",
     "deploy::engine": "Deploys Engine",
