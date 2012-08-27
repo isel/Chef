@@ -1,7 +1,9 @@
 # Erase all existence of "standard" ruby 1.8 and replace it with the RVM installed/default ruby
 if node[:platform] == "ubuntu"
 
-  if !File.exists?(node[:rvm][:install_path])
+  if File.exists?(node[:rvm][:install_path])
+    Chef::Log.info("RVM and default ruby are already installed. Skipping setup")
+  else
     bindir=::File.join(node[:rvm][:install_path], 'bin')
     node[:rvm][:bin_path] = ::File.join(node[:rvm][:install_path], "bin", "rvm")
 
@@ -41,8 +43,6 @@ if node[:platform] == "ubuntu"
       creates "/usr/bin/ruby"
       action :run
     end
-  else
-    Chef::Log.info("RVM and default ruby are already installed. Skipping setup")
   end
 else
   Chef::Log.info("Your platform (#{node[:platform]}) is not supported by this recipe!")

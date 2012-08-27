@@ -8,4 +8,4 @@ ip_addresses = ['<%= @route53_ip %>']
 ip_addresses = ['<%= @route53_ip %>', '<%= @route53_additional_ip %>']
 <% end  -%>
 
-puts zones.<%= @action %>_A_resource_record('<%= @prefix %>', '<%= @domain %>', ip_addresses)
+puts zones.<%= @action %>_resource_record('<%= @prefix %>', '<%= @domain %>', ip_addresses)

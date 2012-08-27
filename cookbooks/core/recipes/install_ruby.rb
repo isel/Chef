@@ -1,6 +1,8 @@
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
-if !File.exists?('/opt/ruby')
+if File.exists?('/opt/ruby')
+  log 'Ruby already installed'
+else
   ruby_version = '1.9.2-p320'
   executables = ['ruby', 'gem', 'rake', 'rspec', 'rdoc', 'ri', 'bundle']
 
@@ -9,14 +11,14 @@ if !File.exists?('/opt/ruby')
     source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
     variables(
       :aws_access_key_id => node[:core][:aws_access_key_id],
-      :aws_secret_access_key => node[:core][:aws_secret_access_key],
-      :s3_bucket => node[:core][:s3_bucket],
-      :s3_repository => 'Vendor',
-      :product => 'ruby',
-      :version => ruby_version,
-      :artifacts => 'ruby',
-      :target_directory => '/root/src',
-      :unzip => true
+        :aws_secret_access_key => node[:core][:aws_secret_access_key],
+        :s3_bucket => node[:core][:s3_bucket],
+        :s3_repository => 'Vendor',
+        :product => 'ruby',
+        :version => ruby_version,
+        :artifacts => 'ruby',
+        :target_directory => '/root/src',
+        :unzip => true
     )
   end
 
@@ -67,6 +69,4 @@ if !File.exists?('/opt/ruby')
     #{executables.map { |exe| "ln -fs /opt/ruby/active/bin/#{exe} /usr/bin/#{exe} \n" }.join}
     EOF
   end
-else
-  log 'Ruby already installed'
 end

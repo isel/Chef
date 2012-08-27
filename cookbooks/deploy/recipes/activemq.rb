@@ -2,20 +2,22 @@ include_recipe 'core::download_vendor_artifacts_prereqs'
 
 product = 'activemq'
 
-if !File.exists?("/opt/#{product}")
+if File.exists?("/opt/#{product}")
+  log "#{product} is already installed"
+else
   template "#{node['ruby_scripts_dir']}/download_#{product}.rb" do
     local true
     source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
     variables(
       :aws_access_key_id => node[:core][:aws_access_key_id],
-      :aws_secret_access_key => node[:core][:aws_secret_access_key],
-      :s3_bucket => node[:core][:s3_bucket],
-      :s3_repository => 'Vendor',
-      :product => product,
-      :version => node[:activemq_version],
-      :artifacts => product,
-      :target_directory => '/opt',
-      :unzip => true
+        :aws_secret_access_key => node[:core][:aws_secret_access_key],
+        :s3_bucket => node[:core][:s3_bucket],
+        :s3_repository => 'Vendor',
+        :product => product,
+        :version => node[:activemq_version],
+        :artifacts => product,
+        :target_directory => '/opt',
+        :unzip => true
     )
   end
 
@@ -33,7 +35,5 @@ if !File.exists?("/opt/#{product}")
   end
 
   log "#{product} successfully installed"
-else
-  log "#{product} is already installed"
 end
 

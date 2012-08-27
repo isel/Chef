@@ -8,7 +8,7 @@ sleep_interval = 10
 plugin_home = '/opt/mule/apps'
 
 # put a marker in the log .
-launch_marker = (0..8).to_a.map { |a| rand(16).to_s(16) }.join
+launch_marker = (0..8).to_a.map { |_| rand(16).to_s(16) }.join
 
 bash 'launch mule' do
   code <<-EOF

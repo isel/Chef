@@ -52,18 +52,20 @@ append_contents.split(/\n/).each do |entry|
   end
 end
 
-File.open(local_filename, 'r+') { |f| f.puts contents }
+File.open(local_filename, 'r+') { |file| file.puts contents }
 
 log 'bash profile updated.'
 
-if !File.exists?("#{mule_home}/bin")
+if File.exists?("#{mule_home}/bin")
+  log 'Mule already installed.'
+else
   log "Download #{product} from s3"
 
   template "#{node['ruby_scripts_dir']}/download_mule.rb" do
     local true
     source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
     variables(
-        :aws_access_key_id => node[:core][:aws_access_key_id],
+      :aws_access_key_id => node[:core][:aws_access_key_id],
         :aws_secret_access_key => node[:core][:aws_secret_access_key],
         :s3_bucket => node[:core][:s3_bucket],
         :s3_repository => 'Vendor',
@@ -76,9 +78,7 @@ if !File.exists?("#{mule_home}/bin")
   end
 
   bash 'Downloading artifacts' do
-    code <<-EOF
-      ruby #{ruby_scripts_dir}/download_mule.rb
-    EOF
+    code "ruby #{ruby_scripts_dir}/download_mule.rb"
   end
 
   bash 'Setting directory links' do
@@ -112,7 +112,7 @@ if !File.exists?("#{mule_home}/bin")
     local true
     source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
     variables(
-        :aws_access_key_id => node[:core][:aws_access_key_id],
+      :aws_access_key_id => node[:core][:aws_access_key_id],
         :aws_secret_access_key => node[:core][:aws_secret_access_key],
         :s3_bucket => node[:core][:s3_bucket],
         :s3_repository => 'Vendor',
@@ -200,22 +200,21 @@ WRAPPER_CONF_PATCH
 
   bash 'Installing Mule-EE License' do
     code <<-EOF
-        cd /opt/mule/bin
-        chmod 777 mule
-        ./mule -installLicense /opt/mule/mule-ee-license.lic
+      cd /opt/mule/bin
+      chmod 777 mule
+      ./mule -installLicense /opt/mule/mule-ee-license.lic
     EOF
   end
 
-else
-  log 'Mule already installed.'
 end
 
 # source bash.bashrc does not seem to  produce desired effect -  not using it.
 
 log "Checking project [/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom]."
 
-if !File.exists?("/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom")
-
+if File.exists?("/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom")
+  log 'maven repositories already populated.'
+else
   bash 'populate maven repositories' do
     code <<-EOF
     cd #{mule_home}/bin
@@ -241,10 +240,7 @@ if !File.exists?("/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom")
     EOF
   end
   log 'maven repositories successfully populated.'
-else
-  log 'maven repositories already populated.'
 end
-
 
 bash "Installl Mule applications from /DeployScripts_Binaries/#{messaging_server_directory}/apps to #{plugin_home}" do
   code <<-EOF

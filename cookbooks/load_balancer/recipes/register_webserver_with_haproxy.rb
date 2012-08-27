@@ -23,7 +23,7 @@ ruby_block "Register web server with HAProxy" do
 
     #Temporary, require. These will be automatically passed in soon.
     require '/var/spool/cloud/meta-data.rb'
-    os_info=`lsb_release -a`.downcase + `uname`.downcase
+    `lsb_release -a`.downcase + `uname`.downcase
     ENV['RS_DISTRO']="ubuntu"
 
     #Escape the 4 problematic shell characters: ", $, `, and \ to get through the ssh command correctly
@@ -43,9 +43,7 @@ ruby_block "Register web server with HAProxy" do
 
     # Use cookies?
     sess_sticky = node[:session_stickiness].downcase
-    if sess_sticky && sess_sticky.match(/^(true|yes|on)$/)
-      cookie_options = "-c #{ENV['EC2_INSTANCE_ID']}"
-    end
+    cookie_options = sess_sticky && sess_sticky.match(/^(true|yes|on)$/) ? "-c #{ENV['EC2_INSTANCE_ID']}" : ''
 
     # Connect the app to all running instances of the lb host
     addrs = Array.new
@@ -78,7 +76,7 @@ ruby_block "Register web server with HAProxy" do
 
       timeout=60*5 #@ 5min
       begin
-        status = Timeout::timeout(timeout) do
+        Timeout::timeout(timeout) do
           while true
             response = `#{cmd}`
             puts response #for debugging...
@@ -88,7 +86,7 @@ ruby_block "Register web server with HAProxy" do
             sleep 10
           end
         end
-      rescue Timeout::Error => e
+      rescue Timeout::Error
         puts "ERROR: Timeout after #{timeout/60} minutes."
         next
       end

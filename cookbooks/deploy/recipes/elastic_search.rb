@@ -4,11 +4,11 @@ deploy_folder = '/opt/elasticsearch'
 elastic_search_files = 'elasticsearch,servicewrapper'
 cluster_name = 'UFCluster'
 
-if !File.exists?(deploy_folder)
+if File.exists?(deploy_folder)
+  log 'ElasticSearch is already installed.'
+else
   bash 'Install elastic search prerequisites' do
-    code <<-EOF
-      apt-get -yqq install openjdk-6-jre
-    EOF
+    code 'apt-get -yqq install openjdk-6-jre'
   end
 
   template "#{node['ruby_scripts_dir']}/download_elastic_search.rb" do
@@ -16,21 +16,19 @@ if !File.exists?(deploy_folder)
     source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
     variables(
       :aws_access_key_id => node[:core][:aws_access_key_id],
-      :aws_secret_access_key => node[:core][:aws_secret_access_key],
-      :s3_bucket => node[:core][:s3_bucket],
-      :s3_repository => 'Vendor',
-      :product => 'elasticsearch',
-      :version => node[:search_version],
-      :artifacts => "#{elastic_search_files},#{node[:search_plugins]}",
-      :target_directory => '/downloads',
-      :unzip => true
+        :aws_secret_access_key => node[:core][:aws_secret_access_key],
+        :s3_bucket => node[:core][:s3_bucket],
+        :s3_repository => 'Vendor',
+        :product => 'elasticsearch',
+        :version => node[:search_version],
+        :artifacts => "#{elastic_search_files},#{node[:search_plugins]}",
+        :target_directory => '/downloads',
+        :unzip => true
     )
   end
 
   bash 'Downloading elastic search' do
-    code <<-EOF
-      ruby #{node['ruby_scripts_dir']}/download_elastic_search.rb
-    EOF
+    code "ruby #{node['ruby_scripts_dir']}/download_elastic_search.rb"
   end
 
   bash 'Configure elastic search' do
@@ -78,8 +76,6 @@ if !File.exists?(deploy_folder)
   bash 'starting elastic search' do
     code 'service elasticsearch start'
   end
-else
-  log 'ElasticSearch is already installed.'
 end
 
 bash 'Confirm Elastic Search is operational' do
