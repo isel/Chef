@@ -4,9 +4,7 @@ powershell 'Enable MSMQ' do
       'SERVER_MANAGER_FEATURES' => node[:msmq_features]
     }
   )
-
-    powershell_script = <<-'EOF'
-
+  powershell_script = <<-'EOF'
    # the script install components in Microsoft recommended way
    # that is only available on  Windows 2008 R2
    # TODO - merge with legacy way (servermanagercmd.exe)
@@ -32,7 +30,6 @@ powershell 'Enable MSMQ' do
     }
 
     $Error.clear()
-
-EOF
+  EOF
   source(powershell_script)
 end

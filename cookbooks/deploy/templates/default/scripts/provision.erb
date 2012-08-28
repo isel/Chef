@@ -3,7 +3,7 @@ require 'json'
 
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Deployment/provision'
 
-settings = JSON.parse(File.read('<%= node['ruby_scripts_dir'] %>/deployment_settings.txt'))
+settings = JSON.parse(File.read('<%= node['deployment_settings_json'] %>'))
 
 exe = '/Provision/bin/UltimateSoftware.Provisioning.Runner.exe'
 

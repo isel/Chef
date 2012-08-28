@@ -4,7 +4,7 @@ require 'json'
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/configuration'
 require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/io_utils'
 
-settings = JSON.parse(File.read('<%= node['ruby_scripts_dir'] %>/deployment_settings.txt'))
+settings = JSON.parse(File.read('<%= node['deployment_settings_json'] %>'))
 
 FileList['/Websites/**'].each { |f| FileUtils.remove_entry(f, true) }
 

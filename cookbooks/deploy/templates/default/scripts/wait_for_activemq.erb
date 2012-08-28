@@ -1,6 +1,6 @@
 require 'json'
 
-settings = JSON.parse(File.read('<%= node['ruby_scripts_dir'] %>/deployment_settings.txt'))
+settings = JSON.parse(File.read('<%= node['deployment_settings_json'] %>'))
 
 sleep_time = 5
 done = false

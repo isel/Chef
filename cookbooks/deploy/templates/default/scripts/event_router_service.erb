@@ -4,7 +4,7 @@ require 'json'
 
 require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/configuration'
 
-settings = JSON.parse(File.read('<%= node['ruby_scripts_dir'] %>/deployment_settings.txt'))
+settings = JSON.parse(File.read('<%= node['deployment_settings_json'] %>'))
 
 source_directory = '<%= @source_directory %>'
 target_directory = '<%= @target_directory %>'

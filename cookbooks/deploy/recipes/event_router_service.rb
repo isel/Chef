@@ -121,7 +121,6 @@ powershell 'Install Event Router Service' do
       'SERVICE_ASSEMBLY_FILENAME' => service_assembly_filename,
       'SERVICE_DISPLAY_NAME' => service_display_name,
       'SERVICE_PORT' => node[:event_router_port],
-      'SERVER_MANAGER_FEATURES' => node[:msmq_features],
       'SOURCE_PATH' => target_directory.gsub('/', '\\')
     }
   )
@@ -145,19 +144,7 @@ New-Item -Path "${installPath}" -Type Directory -Force -ErrorAction SilentlyCont
 
 Write-Output "Check if prerequisite Windows Feature set is installed"
 
-$features_array = $Env:SERVER_MANAGER_FEATURES -split ','
-
 Import-Module ServerManager
-
-foreach ($feature in $features_array) {
-  $test = get-WindowsFeature -Name $feature | Where-Object { $_.Installed -eq $true }
-
-  if ($test -eq $null) {
-    Write-Output "One of Required MSMQ Features [${feature}] is not available on the system"
-    exit 1;
-  }
-  Write-Output $test
-}
 
 Write-Output "Confirm that MSMQ service is running."
 

@@ -6,7 +6,7 @@ require 'yaml'
 
 $DEBUG = false
 
-settings = JSON.parse(File.read('<%= node['ruby_scripts_dir'] %>/deployment_settings.txt'))
+settings = JSON.parse(File.read('<%= node['deployment_settings_json'] %>'))
 
 mule_configuration_dir='/opt/mule/configuration'
 properties_filename = "#{mule_configuration_dir}/ultimate.properties"
