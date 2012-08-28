@@ -73,28 +73,9 @@ else
     end
   end
 
-  bash 'starting elastic search' do
-    code 'service elasticsearch start'
-  end
+  bash('starting elastic search') { code 'service elasticsearch start' }
 end
 
-bash 'Confirm Elastic Search is operational' do
-  code <<-EOF
-  set +e
-  LAST_RETRY=0
-  RETRY_CNT=20
-  STATUS=
-  echo 'Waiting for ElasticSearch to become available on port #{node[:search_port]}'
-  while  [ "-$STATUS" = '-' ] ; do
-    STATUS=`netstat -an | grep :#{node[:search_port]}`
-    RETRY_CNT=`expr $RETRY_CNT - 1`
-    if [ "$RETRY_CNT" -eq "$LAST_RETRY" ] ; then
-       echo "Exhausted retries"
-       exit 1
-    fi
-    echo "Retries left: $RETRY_CNT"
-    sleep 10
-  done
-  EOF
-end
+template("#{node['ruby_scripts_dir']}/wait_for_elastic_search.rb") { source 'scripts/wait_for_elastic_search.erb' }
 
+bash('wait for elastic search') { code "ruby #{node['ruby_scripts_dir']}/wait_for_elastic_search.rb" }

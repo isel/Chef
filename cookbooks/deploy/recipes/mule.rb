@@ -59,8 +59,6 @@ log 'bash profile updated.'
 if File.exists?("#{mule_home}/bin")
   log 'Mule already installed.'
 else
-  log "Download #{product} from s3"
-
   template "#{node['ruby_scripts_dir']}/download_mule.rb" do
     local true
     source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
@@ -77,9 +75,7 @@ else
     )
   end
 
-  bash 'Downloading artifacts' do
-    code "ruby #{ruby_scripts_dir}/download_mule.rb"
-  end
+  bash("Downloading #{product}") { code "ruby #{ruby_scripts_dir}/download_mule.rb" }
 
   bash 'Setting directory links' do
     product_directory="mule-enterprise-standalone-#{version}"
@@ -124,11 +120,7 @@ else
     )
   end
 
-  bash 'Downloading mule plugins' do
-    code <<-EOF
-        ruby #{ruby_scripts_dir}/download_mule_plugins.rb
-    EOF
-  end
+  bash('Downloading mule plugins') { code "ruby #{ruby_scripts_dir}/download_mule_plugins.rb" }
 
   bash 'Patch Mule configuration wrapper.conf' do
     # patch wrapper.conf from embedded unified diff
@@ -196,7 +188,6 @@ WRAPPER_CONF_PATCH
   popd
     EOF
   end
-  log 'Mule wrapper configuration updated.'
 
   bash 'Installing Mule-EE License' do
     code <<-EOF
@@ -217,26 +208,26 @@ if File.exists?("/root/.m2/org/mule/mule/#{version}/mule-#{version}.pom")
 else
   bash 'populate maven repositories' do
     code <<-EOF
-    cd #{mule_home}/bin
-    export LANG=en_US.UTF-8
-    export MULE_HOME=#{mule_home}
-    export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
-    export MAVEN_HOME=/usr/share/maven2
-    export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
-    export PATH=$PATH:$MULE_HOME/bin:$JAVA_HOME/bin
-    LOG_FILE=/tmp/populate_m2_repo.log.$$
-    if [ -x populate_m2_repo ] ; then
-      ./populate_m2_repo ~/.m2 > $LOG_FILE 2>&1
-    fi
-    echo "Saving maven logs to a file, please wait..."
-    if [ -f $LOG_FILE ] ; then
-      echo "Tail of the maven log $LOG_FILE"
-      /usr/bin/tail -10 $LOG_FILE
-    else
-      echo "No log file, aborting"
-      exit 1
-    fi
-    exit 0
+      cd #{mule_home}/bin
+      export LANG=en_US.UTF-8
+      export MULE_HOME=#{mule_home}
+      export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
+      export MAVEN_HOME=/usr/share/maven2
+      export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'
+      export PATH=$PATH:$MULE_HOME/bin:$JAVA_HOME/bin
+      LOG_FILE=/tmp/populate_m2_repo.log.$$
+      if [ -x populate_m2_repo ] ; then
+        ./populate_m2_repo ~/.m2 > $LOG_FILE 2>&1
+      fi
+      echo "Saving maven logs to a file, please wait..."
+      if [ -f $LOG_FILE ] ; then
+        echo "Tail of the maven log $LOG_FILE"
+        /usr/bin/tail -10 $LOG_FILE
+      else
+        echo "No log file, aborting"
+        exit 1
+      fi
+      exit 0
     EOF
   end
   log 'maven repositories successfully populated.'
@@ -326,8 +317,6 @@ ls -l
   EOF
 end
 
-log "Mule application properties installed"
-
 template "#{node['ruby_scripts_dir']}/update_configuration_tokens.rb" do
   source 'scripts/update_configuration_tokens.erb'
   variables(
@@ -341,6 +330,4 @@ template "#{node['ruby_scripts_dir']}/update_configuration_tokens.rb" do
   )
 end
 
-bash 'Updating tokens in Mule configuration' do
-  code "ruby #{node['ruby_scripts_dir']}/update_configuration_tokens.rb"
-end
+bash('Updating tokens in Mule configuration') { code "ruby #{node['ruby_scripts_dir']}/update_configuration_tokens.rb" }

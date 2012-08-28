@@ -1,8 +1,6 @@
 require 'fileutils'
 require 'yaml'
 
-# rs_agent_dev:download_cookbooks_once=true
-hostname = node[:hostname]
 ulimit_files = node[:ulimit_files]
 sleep_interval = 10
 plugin_home = '/opt/mule/apps'
@@ -110,28 +108,6 @@ node[:mule_plugins].each do |package_file|
   end
 end
 
-bash 'verify the launch of mule' do
-  code <<-EOF
-    LAST_RETRY=0
-    RETRY_CNT=60
-    HTTP_STATUS=0
-    RESULT=1
-    echo 'waiting for mule to be serving HTTP on #{node[:mule_port]}'
-    while  [ "$RESULT" -ne "0" ] ; do
-      HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null  http://#{hostname}:#{node[:mule_port]}/mmc`
-      expr $HTTP_STATUS : '302\\|200' > /dev/null
-      RESULT=$?
-      echo "get HTTP status code $HTTP_STATUS, $RESULT"
-      RETRY_CNT=`expr $RETRY_CNT - 1`
-      if [ "$RETRY_CNT" -eq "$LAST_RETRY" ] ; then
-        echo "Exhausted retries"
-        exit 1
-      fi
-      echo "Retries left: $RETRY_CNT"
-      sleep #{sleep_interval}
-    done
-  EOF
-end
+template("#{node['ruby_scripts_dir']}/wait_for_mule.rb") { source 'scripts/wait_for_mule.erb' }
 
-log 'mule successfully launched'
-
+bash('wait for mule') { code "ruby #{node['ruby_scripts_dir']}/wait_for_mule.rb" }

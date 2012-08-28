@@ -1,0 +1,15 @@
+require 'json'
+
+settings = JSON.parse(File.read('<%= node['deployment_settings_json'] %>'))
+
+sleep_time = 5
+done = false
+elapsed = 0
+until done || elapsed >= 300
+  sleep sleep_time
+  result = `netstat -an | grep :#{settings['search_port']}`
+  done = !result.empty?
+  elapsed += sleep_time
+end
+
+raise 'timeout waiting for elastic search' unless done

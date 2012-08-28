@@ -11,7 +11,7 @@ puts 'Provisioning deployment'
 
 provision = Deployment::Provision.new(
   '<%= node['binaries_directory'] %>', '/Provision',
-  '<%= node['pims_directory'] %>', '/PIM_Publishing')
+  '<%= node[:pims_directory] %>', '/PIM_Publishing')
 
 provision.run('<%= @tenant %>', '<%= @app_server %>',
   '<%= @db_server %>', settings['database_port'], exe)

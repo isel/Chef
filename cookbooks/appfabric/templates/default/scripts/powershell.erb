@@ -1,8 +1,8 @@
 require 'rake'
 
 destination_dirs = [
-  "<%= node['powershell_x32_dir'] %>/Modules/AppFabricPowershell",
-  "<%= node['powershell_x64_dir'] %>/Modules/AppFabricPowershell"
+  "<%= node[:powershell_x32_dir] %>/Modules/AppFabricPowershell",
+  "<%= node[:powershell_x64_dir] %>/Modules/AppFabricPowershell"
 ]
 
 destination_dirs.each do |dir|

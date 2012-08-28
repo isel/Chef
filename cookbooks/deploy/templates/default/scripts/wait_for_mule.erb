@@ -1,0 +1,18 @@
+require 'json'
+require 'rest-client'
+
+settings = JSON.parse(File.read('<%= node['deployment_settings_json'] %>'))
+
+site = RestClient::Resource.new("http://localhost:#{settings['mule_port']")
+
+sleep_time = 5
+done = false
+elapsed = 0
+until done || elapsed >= 300
+  sleep sleep_time
+  result = site['mmc'].get { |response, request, result, &block| response.code }
+  done = [200, 302].include?(result)
+  elapsed += sleep_time
+end
+
+raise 'timeout waiting for mule' unless done
