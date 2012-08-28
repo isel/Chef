@@ -8,7 +8,6 @@ default[:deployment_settings_xml] = "#{default['ruby_scripts_dir']}/deployment_s
 default['powershell_x32_dir'] = '/Windows/system32/WindowsPowerShell/v1.0'
 default['powershell_x64_dir'] = '/Windows/sysnative/WindowsPowerShell/v1.0'
 
-default[:event_router_port] = '8989'
 default[:messaging_port] = '8081'
 default[:mule_port] = '8585'
 default[:search_port] = '9200'

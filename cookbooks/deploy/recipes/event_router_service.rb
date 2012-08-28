@@ -120,7 +120,6 @@ powershell 'Install Event Router Service' do
       'INSTALLUTIL_COMMAND_FULLPATH' => installutil_command_fullpath,
       'SERVICE_ASSEMBLY_FILENAME' => service_assembly_filename,
       'SERVICE_DISPLAY_NAME' => service_display_name,
-      'SERVICE_PORT' => node[:event_router_port],
       'SOURCE_PATH' => target_directory.gsub('/', '\\')
     }
   )
@@ -184,10 +183,13 @@ http://www.beautyandthebaud.com/http-could-not-register-url-http8000-your-proces
 
 #>
 
-write-output "Configure the new security settings in Windows for EventRouter on port ${env:SERVICE_PORT}"
-$url_expression = "http://+:${env:SERVICE_PORT}/EventRouter/"
+[xml]$settings = Get-Content C:\RubyScripts\deployment_settings.xml
+$service_port = $settings.hash['platform-event-router-port'].InnerText
 
-$check_urlacl =  ( netsh http show urlacl ) | where-object {$_ -match "$env:SERVICE_PORT"}
+write-output "Configure the new security settings in Windows for EventRouter on port ${service_port}"
+$url_expression = "http://+:${service_port}/EventRouter/"
+
+$check_urlacl =  ( netsh http show urlacl ) | where-object {$_ -match "$service_port"}
 # cannot currently distinguish if there was a correct or a wrong ACL
 if ($check_urlacl -ne $null){
   netsh http delete urlacl url=$url_expression
