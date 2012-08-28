@@ -3,7 +3,7 @@ require 'rest-client'
 
 settings = JSON.parse(File.read('<%= node['deployment_settings_json'] %>'))
 
-site = RestClient::Resource.new("http://localhost:#{settings['mule_port']")
+site = RestClient::Resource.new("http://localhost:#{settings['mule_port']}")
 
 sleep_time = 5
 done = false
