@@ -10,8 +10,12 @@ done = false
 elapsed = 0
 until done || elapsed >= 300
   sleep sleep_time
-  result = site['mmc'].get { |response, request, result, &block| response.code }
-  done = [200, 302].include?(result)
+  begin
+    result = site['mmc'].get { |response, request, result, &block| response.code }
+    done = [200, 302].include?(result)
+  rescue
+    done = false
+  end
   elapsed += sleep_time
 end
 
