@@ -37,3 +37,20 @@ else
   log "#{product} successfully installed"
 end
 
+bash 'launch activemq' do
+  code <<-EOF
+  cd /opt/activemq/bin
+  /usr/bin/nohup ./activemq start > /var/log/smlog 2>&1 &
+  EOF
+end
+
+template "#{node['ruby_scripts_dir']}/wait_for_activemq.rb" do
+  source 'scripts/wait_for_activemq.erb'
+end
+
+bash 'wait for activemq' do
+  code "ruby #{node['ruby_scripts_dir']}/wait_for_activemq.rb"
+end
+
+
+

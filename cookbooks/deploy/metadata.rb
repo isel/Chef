@@ -20,7 +20,6 @@ recipe "deploy::event_router_service", "Installs Event Router Service"
 recipe "deploy::foundation_services", "Deploys the foundation rest services"
 recipe "deploy::initiate_replica_set_via_tags", "Initiate replica set via tags for mongodb"
 recipe "deploy::jspr", "Deploys the web server websites"
-recipe "deploy::launch_activemq", "Launches ActiveMQ"
 recipe "deploy::launch_mule", "Launches Mule"
 recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::mule", "Deploys Mule ESB"
@@ -29,7 +28,6 @@ recipe "deploy::recycle_mule", "Recycle mule"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
 recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
-recipe "deploy::update_configuration", "Updates Mule properties file"
 recipe "deploy::validate_configuration_tokens", "Validates that inputs in Mule properties file are current"
 recipe "deploy::wait_for_secondary_dbs", "Waits for secondary db servers to become operational"
 
@@ -66,7 +64,7 @@ attribute "core/s3_bucket",
 attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
-  :recipes  => ["deploy::engine", "deploy::jspr", "deploy::provision", "deploy::update_configuration"]
+  :recipes  => ["deploy::engine", "deploy::jspr", "deploy::mule", "deploy::provision"]
 
 attribute "deploy/binaries_artifacts",
   :display_name => "binaries artifacts",
@@ -81,13 +79,12 @@ attribute "deploy/binaries_revision",
 attribute "deploy/cache_server",
   :display_name => "cache server",
   :required => "required",
-  :recipes => ["deploy::foundation_services", "deploy::register_cache_hostname", "deploy::update_configuration"]
+  :recipes => ["deploy::foundation_services", "deploy::mule", "deploy::register_cache_hostname"]
 
 attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
-  :recipes => ["deploy::event_router_service", "deploy::foundation_services",
-     "deploy::provision", "deploy::update_configuration"]
+  :recipes => ["deploy::event_router_service", "deploy::foundation_services", "deploy::mule", "deploy::provision"]
 
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
@@ -101,7 +98,7 @@ attribute "deploy/domain",
 attribute "deploy/engine_server",
   :display_name => "engine server",
   :required => "required",
-  :recipes  => ["deploy::update_configuration"]
+  :recipes  => ["deploy::mule"]
 
 attribute "deploy/infrastructure_artifacts",
   :display_name => "infrastructure artifacts",
@@ -123,7 +120,7 @@ attribute "deploy/messaging_server",
   :display_name => "messaging server",
   :description => "Private IP address messaging_server host in this deployment",
   :required => "required",
-  :recipes => ["deploy::event_router_service", "deploy::foundation_services", "deploy::update_configuration"]
+  :recipes => ["deploy::event_router_service", "deploy::foundation_services", "deploy::mule"]
 
 attribute "deploy/mongo_version",
   :display_name => "mongo version",
@@ -161,7 +158,7 @@ attribute "deploy/s3_repository",
 
 attribute "deploy/search_server",
   :display_name => "search_server",
-  :recipes => ["deploy::foundation_services", "deploy::update_configuration"]
+  :recipes => ["deploy::foundation_services", "deploy::mule"]
 
 attribute "deploy/server_name",
   :display_name => "server name",
@@ -183,4 +180,4 @@ attribute "deploy/use_mocked_website",
 attribute "deploy/web_server",
   :display_name => "web server",
   :required => "required",
-  :recipes  => ["deploy::update_configuration"]
+  :recipes  => ["deploy::mule"]

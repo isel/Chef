@@ -6,7 +6,6 @@ default['pims_directory'] = '/DeployScripts_PIMs'
 default['powershell_x32_dir'] = '/Windows/system32/WindowsPowerShell/v1.0'
 default['powershell_x64_dir'] = '/Windows/sysnative/WindowsPowerShell/v1.0'
 
-default[:activemq_port] = '61616'
 default[:event_router_port] = '8989'
 default[:messaging_port] = '8081'
 default[:mule_port] = '8585'

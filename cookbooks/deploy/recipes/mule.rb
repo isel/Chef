@@ -242,7 +242,7 @@ else
   log 'maven repositories successfully populated.'
 end
 
-bash "Installl Mule applications from /DeployScripts_Binaries/#{messaging_server_directory}/apps to #{plugin_home}" do
+bash "Install Mule applications from /DeployScripts_Binaries/#{messaging_server_directory}/apps to #{plugin_home}" do
   code <<-EOF
 #!/bin/bash
 APPLICATION_DIR='/DeployScripts_Binaries/#{messaging_server_directory}/apps'
@@ -327,3 +327,20 @@ ls -l
 end
 
 log "Mule application properties installed"
+
+template "#{node['ruby_scripts_dir']}/update_configuration_tokens.rb" do
+  source 'scripts/update_configuration_tokens.erb'
+  variables(
+    :app_server => node[:deploy][:app_server],
+    :cache_server => node[:deploy][:cache_server],
+    :db_server => node[:deploy][:db_server],
+    :engine_server => node[:deploy][:engine_server],
+    :messaging_server => node[:deploy][:messaging_server],
+    :search_server => node[:deploy][:search_server],
+    :web_server => node[:deploy][:web_server]
+  )
+end
+
+bash 'Updating tokens in Mule configuration' do
+  code "ruby #{node['ruby_scripts_dir']}/update_configuration_tokens.rb"
+end

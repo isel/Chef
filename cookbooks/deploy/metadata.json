@@ -102,8 +102,8 @@
       "recipes": [
         "deploy::engine",
         "deploy::jspr",
-        "deploy::provision",
-        "deploy::update_configuration"
+        "deploy::mule",
+        "deploy::provision"
       ],
       "choice": [
 
@@ -141,8 +141,8 @@
       "required": "required",
       "recipes": [
         "deploy::foundation_services",
-        "deploy::register_cache_hostname",
-        "deploy::update_configuration"
+        "deploy::mule",
+        "deploy::register_cache_hostname"
       ],
       "choice": [
 
@@ -156,8 +156,8 @@
       "recipes": [
         "deploy::event_router_service",
         "deploy::foundation_services",
-        "deploy::provision",
-        "deploy::update_configuration"
+        "deploy::mule",
+        "deploy::provision"
       ],
       "choice": [
 
@@ -195,7 +195,7 @@
       "display_name": "engine server",
       "required": "required",
       "recipes": [
-        "deploy::update_configuration"
+        "deploy::mule"
       ],
       "choice": [
 
@@ -247,7 +247,7 @@
       "recipes": [
         "deploy::event_router_service",
         "deploy::foundation_services",
-        "deploy::update_configuration"
+        "deploy::mule"
       ],
       "choice": [
 
@@ -338,7 +338,7 @@
       "display_name": "search_server",
       "recipes": [
         "deploy::foundation_services",
-        "deploy::update_configuration"
+        "deploy::mule"
       ],
       "choice": [
 
@@ -391,7 +391,7 @@
       "display_name": "web server",
       "required": "required",
       "recipes": [
-        "deploy::update_configuration"
+        "deploy::mule"
       ],
       "choice": [
 
@@ -414,7 +414,6 @@
     "deploy::foundation_services": "Deploys the foundation rest services",
     "deploy::initiate_replica_set_via_tags": "Initiate replica set via tags for mongodb",
     "deploy::jspr": "Deploys the web server websites",
-    "deploy::launch_activemq": "Launches ActiveMQ",
     "deploy::launch_mule": "Launches Mule",
     "deploy::mongo": "Deploys mongodb",
     "deploy::mule": "Deploys Mule ESB",
@@ -423,7 +422,6 @@
     "deploy::register_cache_hostname": "Registers the cache hostname and ip in the hosts file",
     "deploy::reindex_elastic_search": "Reindexes ElasticSearch (should be going away)",
     "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server",
-    "deploy::update_configuration": "Updates Mule properties file",
     "deploy::validate_configuration_tokens": "Validates that inputs in Mule properties file are current",
     "deploy::wait_for_secondary_dbs": "Waits for secondary db servers to become operational"
   },
