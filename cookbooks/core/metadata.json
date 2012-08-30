@@ -37,7 +37,8 @@
       "display_name": "aws access key id",
       "required": "required",
       "recipes": [
-        "core::install_ruby"
+        "core::install_ruby",
+        "core::install_jre"
       ],
       "choice": [
 
@@ -49,7 +50,8 @@
       "display_name": "aws secret access key",
       "required": "required",
       "recipes": [
-        "core::install_ruby"
+        "core::install_ruby",
+        "core::install_jre"
       ],
       "choice": [
 
@@ -88,7 +90,8 @@
       "required": "optional",
       "default": "ugfartifacts",
       "recipes": [
-        "core::install_ruby"
+        "core::install_ruby",
+        "core::install_jre"
       ],
       "choice": [
 
@@ -103,6 +106,7 @@
     "core::download_vendor_artifacts_prereqs": "Sets up prereqs for downloading vendor artifacts",
     "core::get_deployment_settings": "Gets the deployment settings from the services api",
     "core::install_gems": "Installs ruby gems",
+    "core::install_jre": "Installs jre for windows and ubuntu",
     "core::install_ruby": "Installs ruby from source",
     "core::netsh_advfirewall_management": "Disables Windows Firewall",
     "core::set_rightscale_account": "sets the Rightscale account",
