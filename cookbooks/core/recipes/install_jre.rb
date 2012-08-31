@@ -63,13 +63,15 @@ else
     script = <<-EOF
       ruby #{node['ruby_scripts_dir']}/download_jre.rb
       cd /download_jre/jre_windows
-
+Write-Output "before if"
       if (Test-Path("c:\jre")) {
         Write-Output "JRE already installed"
         Exit 0
       }
+Write-Output "before msiexec"
 
       cmd /c 'msiexec.exe /i jre1.7.0.msi /qn INSTALLDIR=c:\jre'
+Write-Output "before env vars"
 
       [System.Environment]::SetEnvironmentVariable('JAVA_HOME', 'c:\jre\bin', 'machine')
       [System.Environment]::SetEnvironmentVariable('JRE_HOME', 'c:\jre\bin', 'machine')
