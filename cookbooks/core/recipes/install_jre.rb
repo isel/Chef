@@ -61,17 +61,18 @@ else
 
   powershell 'Installing jre' do
     script = <<-EOF
-  cd download_jre
+      ruby #{node['ruby_scripts_dir']}/download_jre.rb
+      cd /download_jre/jre_windows
 
-  if (Test-Path("c:\jre")) {
-  Write-Output "JRE already installed"
-  Exit 0
-  }
+      if (Test-Path("c:\jre")) {
+        Write-Output "JRE already installed"
+        Exit 0
+      }
 
-  cmd /c 'msiexec.exe /i jre1.7.0.msi /qn INSTALLDIR=c:\jre'
+      cmd /c 'msiexec.exe /i jre1.7.0.msi /qn INSTALLDIR=c:\jre'
 
-  [System.Environment]::SetEnvironmentVariable('JAVA_HOME', 'c:\jre\bin', 'machine')
-  [System.Environment]::SetEnvironmentVariable('JRE_HOME', 'c:\jre\bin', 'machine')
+      [System.Environment]::SetEnvironmentVariable('JAVA_HOME', 'c:\jre\bin', 'machine')
+      [System.Environment]::SetEnvironmentVariable('JRE_HOME', 'c:\jre\bin', 'machine')
     EOF
     source(script)
   end

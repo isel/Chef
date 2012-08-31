@@ -37,7 +37,13 @@ install_files.each do |f|
     File.open("#{target_directory}/#{f}.zip", 'wb') do |local_file|
       local_file.write(file.body)
     end
-    `unzip -d #{target_directory}/#{f} #{target_directory}/#{f}.zip` if unzip
+    if unzip
+      <% if node[:platform] == 'ubuntu' -%>
+        `unzip -d #{target_directory}/#{f} #{target_directory}/#{f}.zip`
+      <% else -%>
+        `"#{ENV['ProgramFiles(x86)']}\\7-Zip\\7z.exe" x -y -o#{target_directory}/#{f} -r #{target_directory}/#{f}.zip`
+      <% end -%>
+    end
   end
 end
 
