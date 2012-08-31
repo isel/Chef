@@ -1,33 +1,32 @@
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
 if node[:platform] == "ubuntu"
-  #template "#{node['ruby_scripts_dir']}/download_jre.rb" do
-  #  local true
-  #  source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
-  #  variables(
-  #    :aws_access_key_id => node[:core][:aws_access_key_id],
-  #    :aws_secret_access_key => node[:core][:aws_secret_access_key],
-  #    :s3_bucket => node[:core][:s3_bucket],
-  #    :s3_repository => 'Vendor',
-  #    :product => 'jre',
-  #    :version => '1.7.0',
-  #    :artifacts => 'jre_ubuntu',
-  #    :target_directory => '/',
-  #    :unzip => true
-  #  )
-  #end
-  #
-  #bash 'Installing jre' do
-  #  code <<-EOF
-  #  if grep JAVA_HOME /etc/profile; then
-  #    echo "JRE already installed"
-  #  else
-  #    ruby #{node['ruby_scripts_dir']}/download_jre.rb
-  #    echo "JAVA_HOME=/usr/lib/jvm/java-6-sun" >> /etc/profile
-  #    echo "PATH=\$PATH:\$JAVA_HOME/bin" >> /etc/profile
-  #  fi
-  #  EOF
-  #end
+  template "#{node['ruby_scripts_dir']}/download_jre.rb" do
+    local true
+    source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
+    variables(
+      :aws_access_key_id => node[:core][:aws_access_key_id],
+      :aws_secret_access_key => node[:core][:aws_secret_access_key],
+      :s3_bucket => node[:core][:s3_bucket],
+      :s3_repository => 'Vendor',
+      :product => 'jre',
+      :version => '1.7.0',
+      :artifacts => 'jre_ubuntu',
+      :target_directory => '/',
+      :unzip => true
+    )
+    not_if { File.exist?('/jre_ubuntu/jre1.7.0') }
+  end
+
+  bash 'Installing jre' do
+    code <<-EOF
+      ruby #{node['ruby_scripts_dir']}/download_jre.rb
+      echo "JAVA_HOME=/jre_ubuntu/jre1.7.0" >> /etc/profile
+      echo "JRE_HOME=/jre_ubuntu/jre1.7.0" >> /etc/profile
+      echo "PATH=\$PATH:\$JAVA_HOME/bin" >> /etc/profile
+    EOF
+    not_if { File.exist?('/jre_ubuntu/jre1.7.0') }
+  end
 else
   template "#{node['ruby_scripts_dir']}/download_jre.rb" do
     local true
