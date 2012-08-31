@@ -23,7 +23,7 @@ if node[:platform] == "ubuntu"
       ruby #{node['ruby_scripts_dir']}/download_jre.rb
       echo "JAVA_HOME=/jre_ubuntu/jre1.7.0" >> /etc/profile
       echo "JRE_HOME=/jre_ubuntu/jre1.7.0" >> /etc/profile
-      echo "PATH=\$PATH:\$JAVA_HOME/bin" >> /etc/profile
+      echo "PATH=\$PATH:/jre_ubuntu/jre1.7.0/bin" >> /etc/profile
     EOF
     not_if { File.exist?('/jre_ubuntu/jre1.7.0') }
   end
