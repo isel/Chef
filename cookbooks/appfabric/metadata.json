@@ -49,6 +49,7 @@
   "groupings": {
   },
   "recipes": {
+    "appfabric::clear_all_caches": "Clears all AppFabric caches",
     "appfabric::configure": "Configures AppFabric",
     "appfabric::ensure_is_up": "Ensures AppFabric cache are working",
     "appfabric::powershell": "Deploys AppFabric Powershell cmdlets"

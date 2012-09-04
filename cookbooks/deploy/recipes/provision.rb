@@ -12,15 +12,11 @@ template "#{node['ruby_scripts_dir']}/download_pims.rb" do
   )
 end
 
-if node[:platform] == "ubuntu"
-  bash 'Downloading artifacts' do
-    code "ruby #{node['ruby_scripts_dir']}/download_pims.rb"
-  end
-else
-  powershell "Downloading pims artifacts" do
-    source("ruby #{node['ruby_scripts_dir']}/download_pims.rb")
-  end
+powershell "Downloading pims artifacts" do
+  source("ruby #{node['ruby_scripts_dir']}/download_pims.rb")
 end
+
+include_recipe 'appfabric::clear_all_caches'
 
 template "#{node['ruby_scripts_dir']}/provision.rb" do
   source 'scripts/provision.erb'
