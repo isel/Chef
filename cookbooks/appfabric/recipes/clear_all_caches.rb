@@ -3,7 +3,8 @@ powershell "Clearing caches" do
   powershell_script = <<'POWERSHELL_SCRIPT'
   import-module AppFabricPowershell
 
-  foreach ($cache in $APPFABRIC_CACHES.split(',')) {
+  $caches = $APPFABRIC_CACHES.split(',')
+  foreach ($cache in $caches) {
     write-output "Clearing cache $cache"
     Clear-Cache -CacheName $cache -SecurityMode "None" -Server "localhost" -Port 22233
   }
