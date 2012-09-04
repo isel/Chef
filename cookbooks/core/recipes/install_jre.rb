@@ -24,6 +24,20 @@ if node[:platform] == "ubuntu"
       echo "JAVA_HOME=/jre_ubuntu/jre1.7.0" >> /etc/profile
       echo "JRE_HOME=/jre_ubuntu/jre1.7.0" >> /etc/profile
       echo "PATH=\$PATH:/jre_ubuntu/jre1.7.0/bin" >> /etc/profile
+
+      rm /usr/bin/java
+      rm /usr/bin/javac
+      rm /usr/bin/javadoc
+      rm /usr/bin/javah
+      rm /usr/bin/javap
+      rm /usr/bin/java_vm
+      rm /usr/bin/javaws
+      rm /usr/bin/jcontrol
+
+      ln -s /jre_ubuntu/jre1.7.0/bin/java /usr/bin/java
+      ln -s /jre_ubuntu/jre1.7.0/bin/java_vm /usr/bin/java_vm
+      ln -s /jre_ubuntu/jre1.7.0/bin/javaws /usr/bin/javaws
+      ln -s /jre_ubuntu/jre1.7.0/bin/jcontrol /usr/bin/jcontrol
     EOF
     not_if { File.exist?('/jre_ubuntu/jre1.7.0') }
   end
