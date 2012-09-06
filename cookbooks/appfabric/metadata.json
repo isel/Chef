@@ -25,7 +25,9 @@
       "display_name": "appfabric security",
       "required": "required",
       "recipes": [
-        "appfabric::configure"
+        "appfabric::clear_all_caches",
+        "appfabric::configure",
+        "appfabric::ensure_is_up"
       ],
       "choice": [
 

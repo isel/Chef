@@ -15,7 +15,7 @@ recipe "appfabric::powershell", "Deploys AppFabric Powershell cmdlets"
 attribute "appfabric/security",
   :display_name => "appfabric security",
   :required => "required",
-  :recipes => ["appfabric::configure"]
+  :recipes => ["appfabric::clear_all_caches", "appfabric::configure", "appfabric::ensure_is_up"]
 
 attribute "appfabric/service_password",
   :display_name => "appfabric service password",

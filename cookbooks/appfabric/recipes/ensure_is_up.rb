@@ -2,6 +2,7 @@
 powershell "Ensuring AppFabric caches are available" do
   parameters(
     {
+      'APPFABRIC_SECURITY' => node[:appfabric][:security],
       'APPFABRIC_CACHES' => node[:caches]
     }
   )
@@ -20,9 +21,9 @@ function ensure_is_up([string]$cache) {
     write-host "cache: $cache ($(get-date))"
     do {
         try {
-            Add-CacheItem -CacheName $cache -ItemKey "1" -ItemValue "value" -SecurityMode "None" -Server "localhost" -Port 22233
+            Add-CacheItem -CacheName $cache -ItemKey "1" -ItemValue "value" -SecurityMode $env:APPFABRIC_SECURITY -Server "localhost" -Port 22233
             if ((Get-CacheStatistics -CacheName $cache).ItemCount -gt 0) {
-                Remove-CacheItem -CacheName $cache -ItemKey "1" -Server "localhost" -Port 22233 -SecurityMode "None"
+                Remove-CacheItem -CacheName $cache -ItemKey "1" -Server "localhost" -Port 22233 -SecurityMode $env:APPFABRIC_SECURITY
             }
             $finished = $true
         }
