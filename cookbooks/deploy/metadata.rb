@@ -115,7 +115,7 @@ attribute "deploy/is_primary_db",
   :display_name => "is primary db server",
   :description => "This db is primary server (true/false)",
   :required => "required",
-  :recipes => ["deploy::wait_for_secondary_dbs"]
+  :recipes => ["deploy::initiate_replica_set_via_tags", "deploy::wait_for_secondary_dbs"]
 
 attribute "deploy/messaging_server",
   :display_name => "messaging server",
@@ -177,6 +177,12 @@ attribute "deploy/use_mocked_website",
   :required => "optional",
   :default => "false",
   :recipes => ["deploy::jspr"]
+
+attribute "deploy/use_replication",
+  :display_name => "use replication",
+  :description => "Should use replication set (true/false)",
+  :required => "required",
+  :recipes => ["deploy::initiate_replica_set_via_tags", "deploy::wait_for_secondary_dbs"]
 
 attribute "deploy/web_server",
   :display_name => "web server",

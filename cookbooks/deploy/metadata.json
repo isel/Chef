@@ -233,6 +233,7 @@
       "description": "This db is primary server (true/false)",
       "required": "required",
       "recipes": [
+        "deploy::initiate_replica_set_via_tags",
         "deploy::wait_for_secondary_dbs"
       ],
       "choice": [
@@ -381,6 +382,20 @@
       "default": "false",
       "recipes": [
         "deploy::jspr"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/use_replication": {
+      "display_name": "use replication",
+      "description": "Should use replication set (true/false)",
+      "required": "required",
+      "recipes": [
+        "deploy::initiate_replica_set_via_tags",
+        "deploy::wait_for_secondary_dbs"
       ],
       "choice": [
 
