@@ -18,6 +18,7 @@ end
 
 include_recipe 'appfabric::clear_all_caches'
 
+#todo: register errors on provision using the api service
 template "#{node['ruby_scripts_dir']}/provision.rb" do
   source 'scripts/provision.erb'
   variables(

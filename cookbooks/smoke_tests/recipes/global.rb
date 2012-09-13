@@ -12,6 +12,7 @@ template "#{ruby_scripts_dir}/global.rb" do
   )
 end
 
+#todo: register errors on smoke tests using the api service
 powershell "Running global smoke tests" do
   source("rake --rakefile #{ruby_scripts_dir}/global.rb")
 end
