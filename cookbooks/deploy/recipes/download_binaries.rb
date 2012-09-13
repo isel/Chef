@@ -1,6 +1,8 @@
 ruby_scripts_dir = node['ruby_scripts_dir']
 Dir.mkdir(ruby_scripts_dir) unless File.exist? ruby_scripts_dir
 
+#todo: App Server should not download the models, we need to try removing that artifact
+
 template "#{ruby_scripts_dir}/download_binaries.rb" do
   source 'scripts/download_artifacts.erb'
   variables(
