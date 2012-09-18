@@ -58,7 +58,7 @@ attribute "core/deployment_uri",
 attribute "core/s3_bucket",
   :display_name => "s3 bucket for the UGF platform",
   :required => "optional",
-  :default  => "ugfartifacts",
+  :default  => "ugfgate1",
   :recipes  => ["deploy::activemq", "deploy::elastic_search", "deploy::mongo", "deploy::mule"]
 
 # Attributes from deploy cookbook
