@@ -59,7 +59,9 @@ attribute "core/s3_bucket",
   :display_name => "s3 bucket for the UGF platform",
   :required => "optional",
   :default  => "ugfgate1",
-  :recipes  => ["deploy::activemq", "deploy::elastic_search", "deploy::mongo", "deploy::mule"]
+  :recipes  => ["deploy::activemq", "deploy::download_binaries", "deploy::download_infrastructure",
+    "deploy::elastic_search", "deploy::mongo", "deploy::mule", "deploy::provision"]
+
 
 # Attributes from deploy cookbook
 attribute "deploy/app_server",
@@ -144,12 +146,6 @@ attribute "deploy/s3_api_repository",
   :required => "optional",
   :default  => "Infrastructure",
   :recipes  => ["deploy::download_infrastructure"]
-
-attribute "deploy/s3_bucket",
-  :display_name => "s3 bucket for the UGF platform",
-  :required => "optional",
-  :default  => "ugfgate1",
-  :recipes  => ["deploy::download_binaries", "deploy::download_infrastructure", "deploy::provision"]
 
 attribute "deploy/s3_repository",
   :display_name => "s3 repository for the UGF platform",

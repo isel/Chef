@@ -87,9 +87,12 @@
       "default": "ugfgate1",
       "recipes": [
         "deploy::activemq",
+        "deploy::download_binaries",
+        "deploy::download_infrastructure",
         "deploy::elastic_search",
         "deploy::mongo",
-        "deploy::mule"
+        "deploy::mule",
+        "deploy::provision"
       ],
       "choice": [
 
@@ -300,21 +303,6 @@
       "default": "Infrastructure",
       "recipes": [
         "deploy::download_infrastructure"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/s3_bucket": {
-      "display_name": "s3 bucket for the UGF platform",
-      "required": "optional",
-      "default": "ugfgate1",
-      "recipes": [
-        "deploy::download_binaries",
-        "deploy::download_infrastructure",
-        "deploy::provision"
       ],
       "choice": [
 
