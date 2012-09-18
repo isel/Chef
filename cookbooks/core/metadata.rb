@@ -48,5 +48,5 @@ attribute "core/s3_bucket",
   :display_name => "s3 bucket for the UGF platform",
   :description => "i.e. ugfartifacts, ugfproduction",
   :required => "optional",
-  :default  => "ugfartifacts",
+  :default  => "ugfgate1",
   :recipes => ["core::install_ruby", "core::install_jdk"]
