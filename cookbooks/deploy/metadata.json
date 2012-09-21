@@ -382,8 +382,7 @@
       "description": "Should use replication set (true/false)",
       "required": "required",
       "recipes": [
-        "deploy::initiate_replica_set_via_tags",
-        "deploy::wait_for_secondary_dbs"
+        "deploy::initiate_replica_set_via_tags"
       ],
       "choice": [
 

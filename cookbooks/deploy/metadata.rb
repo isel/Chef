@@ -178,7 +178,7 @@ attribute "deploy/use_replication",
   :display_name => "use replication",
   :description => "Should use replication set (true/false)",
   :required => "required",
-  :recipes => ["deploy::initiate_replica_set_via_tags", "deploy::wait_for_secondary_dbs"]
+  :recipes => ["deploy::initiate_replica_set_via_tags"]
 
 attribute "deploy/web_server",
   :display_name => "web server",
