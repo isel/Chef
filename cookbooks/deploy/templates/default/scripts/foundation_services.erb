@@ -22,6 +22,7 @@ end
 
 Helpers::add_services_thumbprint("/Websites/Services/Web.config", thumbprint)
 Helpers::change_cert_repo_thumbprint("/Websites/ActiveSTS/configuration/CertificateRepository.config", thumbprint)
+Helpers::change_cert_repo_thumbprint("/Websites/Services/configuration/CertificateRepository.config", thumbprint)
 
 Helpers::change_all_app_settings(configs, "SigningCertificateName", "CN=localhost")
 Helpers::change_all_app_settings(configs, "DeploymentUri", "<%= @api_infrastructure_url %>/<%= @deployment_uri %>")

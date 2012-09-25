@@ -326,6 +326,7 @@ template "#{node['ruby_scripts_dir']}/update_configuration_tokens.rb" do
     :engine_server => node[:deploy][:engine_server],
     :messaging_server => node[:deploy][:messaging_server],
     :search_server => node[:deploy][:search_server],
+    :tenant => node[:deploy][:tenant],
     :web_server => node[:deploy][:web_server]
   )
 end

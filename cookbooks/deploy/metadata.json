@@ -355,6 +355,7 @@
       "recipes": [
         "deploy::engine",
         "deploy::jspr",
+        "deploy::mule",
         "deploy::provision"
       ],
       "choice": [

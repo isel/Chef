@@ -165,7 +165,7 @@ attribute "deploy/server_name",
 attribute "deploy/tenant",
   :display_name => "tenant",
   :required => "required",
-  :recipes => ["deploy::engine", "deploy::jspr", "deploy::provision"]
+  :recipes => ["deploy::engine", "deploy::jspr", "deploy::mule", "deploy::provision"]
 
 attribute "deploy/use_mocked_website",
   :display_name => "use mocked website",
