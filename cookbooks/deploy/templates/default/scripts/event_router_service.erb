@@ -57,5 +57,7 @@ Helpers::change_app_setting(app_config, "MessagingServer.Uri", "http://#{messagi
 puts "Updating configuration file #{app_config} with #{db_server}"
 Helpers::change_app_setting(app_config, "ConnectionString", "Server=#{db_server}:#{settings['database_port']}")
 
-IOUtils::replace_text_in_file(app_config, '<%= '<host name="localhost"' %>', "<%= '<host name=\"' %><%= @cache_server %>\"")
-IOUtils::replace_text_in_file(app_config, '<\/hosts>', '</hosts><securityProperties mode="None" protectionLevel="None"/>')
+app_config_full_path = "#{target_directory}/#{app_config}"
+puts "Updating configuration file #{app_config_full_path} with cache server and security properties"
+IOUtils::replace_text_in_file(app_config_full_path, '<%= '<host name="localhost"' %>', "<%= '<host name=\"' %><%= @cache_server %>\"")
+IOUtils::replace_text_in_file(app_config_full_path, '<\/hosts>', '</hosts><securityProperties mode="None" protectionLevel="None"/>')
