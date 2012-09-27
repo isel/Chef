@@ -3,6 +3,7 @@ require 'fileutils'
 require 'json'
 
 require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/configuration'
+require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/io_utils'
 
 settings = JSON.parse(File.read('<%= node['deployment_settings_json'] %>'))
 
@@ -55,3 +56,6 @@ Helpers::change_app_setting(app_config, "MessagingServer.Uri", "http://#{messagi
 
 puts "Updating configuration file #{app_config} with #{db_server}"
 Helpers::change_app_setting(app_config, "ConnectionString", "Server=#{db_server}:#{settings['database_port']}")
+
+IOUtils::replace_text_in_file(app_config, '<%= '<host name="localhost"' %>', "<%= '<host name=\"' %><%= @cache_server %>\"")
+IOUtils::replace_text_in_file(app_config, '<\/hosts>', '</hosts><securityProperties mode="None" protectionLevel="None"/>')
