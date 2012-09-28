@@ -82,7 +82,7 @@ attribute "deploy/binaries_revision",
 attribute "deploy/cache_server",
   :display_name => "cache server",
   :required => "required",
-  :recipes => ["deploy::foundation_services", "deploy::mule", "deploy::register_cache_hostname"]
+  :recipes => ["deploy::event_router_service", "deploy::foundation_services", "deploy::mule", "deploy::register_cache_hostname"]
 
 attribute "deploy/db_server",
   :display_name => "db server",

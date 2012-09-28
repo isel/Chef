@@ -98,6 +98,7 @@ template "#{ruby_scripts_dir}/event_router_service.rb" do
   source 'scripts/event_router_service.erb'
   variables(
     :binaries_directory => node[:binaries_directory],
+    :cache_server => node[:deploy][:cache_server],
     :db_server => node[:deploy][:db_server],
     :messaging_server => node[:deploy][:messaging_server],
     :source_directory => File.join(node[:binaries_directory], 'AppServer/Services/Messaging.EventRouter').gsub(/\\/, '/'),

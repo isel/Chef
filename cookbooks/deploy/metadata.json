@@ -144,6 +144,7 @@
       "display_name": "cache server",
       "required": "required",
       "recipes": [
+        "deploy::event_router_service",
         "deploy::foundation_services",
         "deploy::mule",
         "deploy::register_cache_hostname"
