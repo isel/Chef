@@ -1,5 +1,6 @@
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
+#todo: check for `ruby -v` instead of the folder
 if File.exists?('/opt/ruby')
   log 'Ruby already installed'
 else
