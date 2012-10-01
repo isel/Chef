@@ -73,14 +73,22 @@ template '/var/www/Prios/Tests/settings.js' do
   )
 end
 
+# pass the domain_name
 template '/var/www/Prios/Prios.plist' do
-  mode "0644"
+  mode '0644'
   source 'prios_plist.erb'
+  variables(
+    :host => node[:deploy][:domain].nil? ? node[:ipaddress] : "www.#{node[:deploy][:domain]}"
+  )
+
 end
 
 template '/var/www/Prios/index.html' do
-  mode "0644"
+  mode '0644'
   source 'prios_html.erb'
+  variables(
+    :host => node[:deploy][:domain].nil? ? node[:ipaddress] : "www.#{node[:deploy][:domain]}"
+  )
 end
 
 bash('Restarting apache') { code 'service apache2 restart' }
