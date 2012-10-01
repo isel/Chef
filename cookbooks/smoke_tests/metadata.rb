@@ -33,6 +33,10 @@ attribute "deploy/app_server",
   :required => "required",
   :recipes => ["smoke_tests::global", "smoke_tests::local_app", "smoke_tests::local_engine", "smoke_tests::local_messaging", "smoke_tests::local_web"]
 
+attribute "deploy/domain",
+  :display_name => "domain",
+  :recipes => ["smoke_tests::local_web"]
+
 attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",

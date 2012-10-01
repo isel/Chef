@@ -56,6 +56,18 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/domain": {
+      "display_name": "domain",
+      "recipes": [
+        "smoke_tests::local_web"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string",
+      "required": "optional"
+    },
     "deploy/db_server": {
       "display_name": "db server",
       "required": "required",
