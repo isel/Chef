@@ -2,11 +2,7 @@ binaries_directory = node['binaries_directory']
 
 war = 'droolz'
 
-bash 'stop tomcat' do
-  code <<-EOF
-    /etc/init.d/tomcat6 stop
-  EOF
-end
+bash('stop tomcat') { code '/etc/init.d/tomcat6 stop' }
 
 bash 'copy war file' do
   code <<-EOF
