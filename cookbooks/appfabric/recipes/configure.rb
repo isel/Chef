@@ -1,25 +1,3 @@
-powershell "Install AppFabric" do
-  parameters (
-    {
-      'APPFABRIC_SHARED_FOLDER' => node[:shared_folder]
-    }
-  )
-  powershell_script = <<'POWERSHELL_SCRIPT'
-if (Test-Path "$env:APPFABRIC_SHARED_FOLDER\ClusterConfig.xml")
-{
-  Write-Output 'AppFabric already installed'
-  exit 0
-}
-
-cd "c:\installs"
-
-cmd /c "c:\installs\WindowsServerAppFabricSetup_x64_6.1.exe /i /SkipUpdates /l c:\installs\appfabric.log"
-
-cmd /c "sc config AppFabricWorkflowManagementService start= disabled"
-POWERSHELL_SCRIPT
-  source(powershell_script)
-end
-
 powershell "Setup AppFabric shared folder" do
   parameters (
     {

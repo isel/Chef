@@ -26,6 +26,7 @@
       "description": "eg: db, app, web, cache",
       "required": "required",
       "recipes": [
+        "smoke_tests::sanity_app",
         "smoke_tests::local_app",
         "smoke_tests::local_cache",
         "smoke_tests::local_db",
@@ -163,6 +164,7 @@
   "recipes": {
     "smoke_tests::global": "Runs global smoke tests",
     "smoke_tests::local_app": "Runs local app server smoke tests",
+    "smoke_tests::sanity_app": "Runs sanity app server smoke tests",
     "smoke_tests::local_cache": "Runs local cache server smoke tests",
     "smoke_tests::local_db": "Runs local db server smoke tests",
     "smoke_tests::local_engine": "Runs local engine server smoke tests",

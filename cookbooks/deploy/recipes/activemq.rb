@@ -37,6 +37,7 @@ else
   log "#{product} successfully installed"
 end
 
+#todo: separate download from install so it works for
 bash 'launch activemq' do
   code <<-EOF
   cd /opt/activemq/bin

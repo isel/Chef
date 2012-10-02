@@ -9,6 +9,7 @@ supports "ubuntu"
 
 recipe "appfabric::clear_all_caches", "Clears all AppFabric caches"
 recipe "appfabric::configure", "Configures AppFabric"
+recipe "appfabric::install", "Installs AppFabric"
 recipe "appfabric::ensure_is_up", "Ensures AppFabric cache are working"
 recipe "appfabric::powershell", "Deploys AppFabric Powershell cmdlets"
 

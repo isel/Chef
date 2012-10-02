@@ -8,7 +8,10 @@ version "0.0.1"
 supports "ubuntu"
 
 recipe "smoke_tests::global", "Runs global smoke tests"
+
 recipe "smoke_tests::local_app", "Runs local app server smoke tests"
+recipe "smoke_tests::sanity_app", "Runs sanity app server smoke tests"
+
 recipe "smoke_tests::local_cache", "Runs local cache server smoke tests"
 recipe "smoke_tests::local_db", "Runs local db server smoke tests"
 recipe "smoke_tests::local_engine", "Runs local engine server smoke tests"
@@ -24,6 +27,7 @@ attribute "core/server_type",
   :description => "eg: db, app, web, cache",
   :required => "required",
   :recipes => [
+    "smoke_tests::sanity_app",
     "smoke_tests::local_app", "smoke_tests::local_cache", "smoke_tests::local_db", "smoke_tests::local_engine",
     "smoke_tests::local_loadbalancer", "smoke_tests::local_messaging", "smoke_tests::local_web"
   ]
