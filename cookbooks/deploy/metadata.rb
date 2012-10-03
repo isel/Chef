@@ -11,6 +11,7 @@ depends 'core'
 depends 'appfabric'
 
 recipe "deploy::activemq", "Deploys ActiveMQ"
+recipe "deploy::activemq_configure", "Configures ActiveMQ"
 recipe "deploy::adjust_ulimit", "Adjusts open files limit for log4j"
 recipe "deploy::download_binaries", "Downloads binaries"
 recipe "deploy::download_infrastructure", "Downloads infrastructure api"

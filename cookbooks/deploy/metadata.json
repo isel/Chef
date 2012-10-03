@@ -410,6 +410,7 @@
   },
   "recipes": {
     "deploy::activemq": "Deploys ActiveMQ",
+    "deploy::activemq_configure": "Configures ActiveMQ",
     "deploy::adjust_ulimit": "Adjusts open files limit for log4j",
     "deploy::download_binaries": "Downloads binaries",
     "deploy::download_infrastructure": "Downloads infrastructure api",
