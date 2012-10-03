@@ -31,7 +31,7 @@ if node[:platform] == "ubuntu"
   bash 'Installing ruby gems' do
     code <<-EOF
       # apt-get install -y libyaml-dev
-      # apt-cache policy libyaml-dev
+      apt-cache policy libyaml-dev
 
       gem install psych -v 1.3.2 --no-rdoc --no-ri
       gem update --system
