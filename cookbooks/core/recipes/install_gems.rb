@@ -46,4 +46,4 @@ else
   end
 end
 
-gems.each { |g, v| gem_package(g) { version v } }
+gems.each { |g| gem_package(g['gem']) { version g['version'] } }
