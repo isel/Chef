@@ -1,3 +1,4 @@
+#todo: add this recipe to the "Image Application Server" template
 powershell 'Enable MSMQ' do
   parameters (
     {
