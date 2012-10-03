@@ -423,6 +423,7 @@
     "deploy::launch_mule": "Launches Mule",
     "deploy::mongo": "Deploys mongodb",
     "deploy::mule": "Deploys Mule ESB",
+    "deploy::mule_configure": "Configures Mule ESB",
     "deploy::provision": "Provisions basic system data",
     "deploy::recycle_mule": "Recycle mule",
     "deploy::register_cache_hostname": "Registers the cache hostname and ip in the hosts file",
