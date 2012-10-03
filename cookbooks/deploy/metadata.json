@@ -106,7 +106,7 @@
       "recipes": [
         "deploy::engine",
         "deploy::jspr",
-        "deploy::mule",
+        "deploy::mule_configure",
         "deploy::provision"
       ],
       "choice": [
@@ -146,7 +146,7 @@
       "recipes": [
         "deploy::event_router_service",
         "deploy::foundation_services",
-        "deploy::mule",
+        "deploy::mule_configure",
         "deploy::register_cache_hostname"
       ],
       "choice": [
@@ -161,7 +161,7 @@
       "recipes": [
         "deploy::event_router_service",
         "deploy::foundation_services",
-        "deploy::mule",
+        "deploy::mule_configure",
         "deploy::provision"
       ],
       "choice": [
@@ -200,7 +200,7 @@
       "display_name": "engine server",
       "required": "required",
       "recipes": [
-        "deploy::mule"
+        "deploy::mule_configure"
       ],
       "choice": [
 
@@ -253,7 +253,8 @@
       "recipes": [
         "deploy::event_router_service",
         "deploy::foundation_services",
-        "deploy::mule"
+        "deploy::mule",
+        "deploy::mule_configure"
       ],
       "choice": [
 
@@ -329,7 +330,7 @@
       "display_name": "search_server",
       "recipes": [
         "deploy::foundation_services",
-        "deploy::mule"
+        "deploy::mule_configure"
       ],
       "choice": [
 
@@ -356,7 +357,7 @@
       "recipes": [
         "deploy::engine",
         "deploy::jspr",
-        "deploy::mule",
+        "deploy::mule_configure",
         "deploy::provision"
       ],
       "choice": [
@@ -396,7 +397,7 @@
       "display_name": "web server",
       "required": "required",
       "recipes": [
-        "deploy::mule"
+        "deploy::mule_configure"
       ],
       "choice": [
 
