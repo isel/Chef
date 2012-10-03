@@ -26,24 +26,24 @@ gems = [
 ]
 
 if node[:platform] == "ubuntu"
-  package("libyaml-dev") { action :install }
-
   bash 'Installing ruby gems' do
     code <<-EOF
-      # apt-get install -y libyaml-dev
-      apt-cache policy libyaml-dev
+apt-get install -y libyaml-dev
+apt-cache policy libyaml-dev
 
-      gem install psych -v 1.3.2 --no-rdoc --no-ri
-      gem update --system
+gem install psych -v 1.3.2 --no-rdoc --no-ri
+
+gem update --system
+
+#{gems.map {|g| "gem install #{g['gem']} -v #{g['version']} --no-rdoc --no-ri \n"}.join}
     EOF
   end
 else
   powershell 'Installing ruby gems' do
     script = <<-EOF
 & "gem" 'update' '--system'
+#{gems.map {|g| "& 'gem' 'install' '#{g['gem']}' -v '#{g['version']}' '--no-rdoc' '--no-ri' \n"}.join}
     EOF
     source(script)
   end
 end
-
-gems.each { |g| gem_package(g['gem']) { version g['version'] } }
