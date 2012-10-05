@@ -21,7 +21,7 @@ template "/etc/samba/smb.conf" do
   source "smb.erb"
   variables(
     :share_name => node[:share_name],
-    :share_path => node[:samba][:share_path]
+    :share_path => "#{ENV['MULE_HOME']}/apps"
   )
   notifies :restart, "service[smbd]"
 end
