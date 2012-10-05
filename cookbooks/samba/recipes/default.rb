@@ -1,0 +1,2 @@
+package('samba') { action :install }
+
