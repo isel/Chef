@@ -13,6 +13,7 @@ bash 'adding samba user' do
     (echo #{node[:samba][:password]}; echo #{node[:samba][:password]}) | smbpasswd -L -a -s #{node[:user]}
     smbpasswd -L -e #{node[:user]}
   EOF
+  not_if { File.exist?(share_path) }
 end
 
 service "smbd" do
