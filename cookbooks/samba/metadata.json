@@ -38,7 +38,7 @@
       "required": "optional",
       "default": "/opt/mule",
       "recipes": [
-        "deploy::launch_mule"
+        "samba::configure"
       ],
       "choice": [
 

@@ -19,4 +19,4 @@ attribute "deploy/mule_home",
   :display_name => "mule home",
   :required => "optional",
   :default => "/opt/mule",
-  :recipes => ["deploy::launch_mule"]
+  :recipes => ["samba::configure"]
