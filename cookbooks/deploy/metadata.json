@@ -106,7 +106,7 @@
       "recipes": [
         "deploy::engine",
         "deploy::jspr",
-        "deploy::mule",
+        "deploy::mule_configure",
         "deploy::provision"
       ],
       "choice": [
@@ -146,7 +146,7 @@
       "recipes": [
         "deploy::event_router_service",
         "deploy::foundation_services",
-        "deploy::mule",
+        "deploy::mule_configure",
         "deploy::register_cache_hostname"
       ],
       "choice": [
@@ -161,7 +161,7 @@
       "recipes": [
         "deploy::event_router_service",
         "deploy::foundation_services",
-        "deploy::mule",
+        "deploy::mule_configure",
         "deploy::provision"
       ],
       "choice": [
@@ -200,7 +200,7 @@
       "display_name": "engine server",
       "required": "required",
       "recipes": [
-        "deploy::mule"
+        "deploy::mule_configure"
       ],
       "choice": [
 
@@ -253,7 +253,8 @@
       "recipes": [
         "deploy::event_router_service",
         "deploy::foundation_services",
-        "deploy::mule"
+        "deploy::mule",
+        "deploy::mule_configure"
       ],
       "choice": [
 
@@ -267,6 +268,19 @@
       "default": "2.0.1",
       "recipes": [
         "deploy::mongo"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/mule_home": {
+      "display_name": "mule home",
+      "required": "optional",
+      "default": "/opt/mule",
+      "recipes": [
+        "deploy::launch_mule"
       ],
       "choice": [
 
@@ -329,7 +343,7 @@
       "display_name": "search_server",
       "recipes": [
         "deploy::foundation_services",
-        "deploy::mule"
+        "deploy::mule_configure"
       ],
       "choice": [
 
@@ -356,7 +370,7 @@
       "recipes": [
         "deploy::engine",
         "deploy::jspr",
-        "deploy::mule",
+        "deploy::mule_configure",
         "deploy::provision"
       ],
       "choice": [
@@ -396,7 +410,7 @@
       "display_name": "web server",
       "required": "required",
       "recipes": [
-        "deploy::mule"
+        "deploy::mule_configure"
       ],
       "choice": [
 
@@ -409,6 +423,7 @@
   },
   "recipes": {
     "deploy::activemq": "Deploys ActiveMQ",
+    "deploy::activemq_configure": "Configures ActiveMQ",
     "deploy::adjust_ulimit": "Adjusts open files limit for log4j",
     "deploy::download_binaries": "Downloads binaries",
     "deploy::download_infrastructure": "Downloads infrastructure api",
@@ -422,6 +437,7 @@
     "deploy::launch_mule": "Launches Mule",
     "deploy::mongo": "Deploys mongodb",
     "deploy::mule": "Deploys Mule ESB",
+    "deploy::mule_configure": "Configures Mule ESB",
     "deploy::provision": "Provisions basic system data",
     "deploy::recycle_mule": "Recycle mule",
     "deploy::register_cache_hostname": "Registers the cache hostname and ip in the hosts file",

@@ -1,0 +1,57 @@
+{
+  "name": "samba",
+  "description": "Deploys samba",
+  "long_description": "",
+  "maintainer": "Cloud Infrastructure",
+  "maintainer_email": "ugf_ci@ultimatesoftware.com",
+  "license": "our license",
+  "platforms": {
+    "ubuntu": ">= 0.0.0"
+  },
+  "dependencies": {
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+    "samba/password": {
+      "display_name": "password",
+      "required": "required",
+      "recipes": [
+        "samba::configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/mule_home": {
+      "display_name": "mule home",
+      "required": "optional",
+      "default": "/opt/mule",
+      "recipes": [
+        "samba::configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    }
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "samba::default": "Installs samba",
+    "samba::configure": "Configures samba"
+  },
+  "version": "0.0.1"
+}

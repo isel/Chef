@@ -11,6 +11,7 @@ depends 'core'
 depends 'appfabric'
 
 recipe "deploy::activemq", "Deploys ActiveMQ"
+recipe "deploy::activemq_configure", "Configures ActiveMQ"
 recipe "deploy::adjust_ulimit", "Adjusts open files limit for log4j"
 recipe "deploy::download_binaries", "Downloads binaries"
 recipe "deploy::download_infrastructure", "Downloads infrastructure api"
@@ -24,6 +25,7 @@ recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::launch_mule", "Launches Mule"
 recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::mule", "Deploys Mule ESB"
+recipe "deploy::mule_configure", "Configures Mule ESB"
 recipe "deploy::provision", "Provisions basic system data"
 recipe "deploy::recycle_mule", "Recycle mule"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
@@ -67,7 +69,8 @@ attribute "core/s3_bucket",
 attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
-  :recipes  => ["deploy::engine", "deploy::jspr", "deploy::mule", "deploy::provision"]
+  :recipes  => ["deploy::engine", "deploy::jspr",
+    "deploy::mule_configure", "deploy::provision"]
 
 attribute "deploy/binaries_artifacts",
   :display_name => "binaries artifacts",
@@ -82,12 +85,14 @@ attribute "deploy/binaries_revision",
 attribute "deploy/cache_server",
   :display_name => "cache server",
   :required => "required",
-  :recipes => ["deploy::event_router_service", "deploy::foundation_services", "deploy::mule", "deploy::register_cache_hostname"]
+  :recipes => ["deploy::event_router_service", "deploy::foundation_services",
+    "deploy::mule_configure", "deploy::register_cache_hostname"]
 
 attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
-  :recipes => ["deploy::event_router_service", "deploy::foundation_services", "deploy::mule", "deploy::provision"]
+  :recipes => ["deploy::event_router_service", "deploy::foundation_services",
+    "deploy::mule_configure", "deploy::provision"]
 
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
@@ -101,7 +106,7 @@ attribute "deploy/domain",
 attribute "deploy/engine_server",
   :display_name => "engine server",
   :required => "required",
-  :recipes  => ["deploy::mule"]
+  :recipes  => ["deploy::mule_configure"]
 
 attribute "deploy/infrastructure_artifacts",
   :display_name => "infrastructure artifacts",
@@ -123,13 +128,20 @@ attribute "deploy/messaging_server",
   :display_name => "messaging server",
   :description => "Private IP address messaging_server host in this deployment",
   :required => "required",
-  :recipes => ["deploy::event_router_service", "deploy::foundation_services", "deploy::mule"]
+  :recipes => ["deploy::event_router_service", "deploy::foundation_services",
+    "deploy::mule", "deploy::mule_configure"]
 
 attribute "deploy/mongo_version",
   :display_name => "mongo version",
   :required => "optional",
   :default => "2.0.1",
   :recipes => ["deploy::mongo"]
+
+attribute "deploy/mule_home",
+  :display_name => "mule home",
+  :required => "optional",
+  :default => "/opt/mule",
+  :recipes => ["deploy::launch_mule"]
 
 attribute "deploy/pims_artifacts",
   :display_name => "pims artifacts",
@@ -155,7 +167,7 @@ attribute "deploy/s3_repository",
 
 attribute "deploy/search_server",
   :display_name => "search_server",
-  :recipes => ["deploy::foundation_services", "deploy::mule"]
+  :recipes => ["deploy::foundation_services", "deploy::mule_configure"]
 
 attribute "deploy/server_name",
   :display_name => "server name",
@@ -165,7 +177,7 @@ attribute "deploy/server_name",
 attribute "deploy/tenant",
   :display_name => "tenant",
   :required => "required",
-  :recipes => ["deploy::engine", "deploy::jspr", "deploy::mule", "deploy::provision"]
+  :recipes => ["deploy::engine", "deploy::jspr", "deploy::mule_configure", "deploy::provision"]
 
 attribute "deploy/use_mocked_website",
   :display_name => "use mocked website",
@@ -183,4 +195,4 @@ attribute "deploy/use_replication",
 attribute "deploy/web_server",
   :display_name => "web server",
   :required => "required",
-  :recipes  => ["deploy::mule"]
+  :recipes  => ["deploy::mule_configure"]
