@@ -275,6 +275,19 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/mule_home": {
+      "display_name": "mule home",
+      "required": "optional",
+      "default": "/opt/mule",
+      "recipes": [
+        "deploy::launch_mule"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/pims_artifacts": {
       "display_name": "pims artifacts",
       "required": "required",

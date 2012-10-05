@@ -13,7 +13,7 @@ bash 'launch mule' do
     set +e
 
       export LANG=en_US.UTF-8
-      export MULE_HOME=/opt/mule
+      export MULE_HOME=#{node[:deploy][:mule_home]}
       export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre
       export MAVEN_HOME=/usr/share/maven2
       export MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=256m'

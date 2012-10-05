@@ -10,12 +10,13 @@ supports "ubuntu"
 recipe "samba::default", "Installs samba"
 recipe "samba::configure", "Configures samba"
 
-attribute "samba/share_path",
-  :display_name => "share path",
-  :required => "required",
-  :recipes => ["samba::configure"]
-
 attribute "samba/password",
   :display_name => "password",
   :required => "required",
   :recipes => ["samba::configure"]
+
+attribute "deploy/mule_home",
+  :display_name => "mule home",
+  :required => "optional",
+  :default => "/opt/mule",
+  :recipes => ["deploy::launch_mule"]

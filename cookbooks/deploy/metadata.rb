@@ -137,6 +137,12 @@ attribute "deploy/mongo_version",
   :default => "2.0.1",
   :recipes => ["deploy::mongo"]
 
+attribute "deploy/mule_home",
+  :display_name => "mule home",
+  :required => "optional",
+  :default => "/opt/mule",
+  :recipes => ["deploy::launch_mule"]
+
 attribute "deploy/pims_artifacts",
   :display_name => "pims artifacts",
   :required => "required",

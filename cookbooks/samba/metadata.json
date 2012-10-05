@@ -21,8 +21,8 @@
   "replacing": {
   },
   "attributes": {
-    "samba/share_path": {
-      "display_name": "share path",
+    "samba/password": {
+      "display_name": "password",
       "required": "required",
       "recipes": [
         "samba::configure"
@@ -33,11 +33,12 @@
       "calculated": false,
       "type": "string"
     },
-    "samba/password": {
-      "display_name": "password",
-      "required": "required",
+    "deploy/mule_home": {
+      "display_name": "mule home",
+      "required": "optional",
+      "default": "/opt/mule",
       "recipes": [
-        "samba::configure"
+        "deploy::launch_mule"
       ],
       "choice": [
 
