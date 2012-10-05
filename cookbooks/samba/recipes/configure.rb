@@ -7,11 +7,12 @@ directory share_path do
   action :create
 end
 
-user node[:user] do
-  comment "samba user"
-  system true
-  shell "/bin/true"
-  password node[:samba][:password]
+bash 'adding samba user' do
+  code <<-EOF
+    useradd -s /bin/true #{node[:user]}
+    (echo #{node[:samba][:password]}; echo #{node[:samba][:password]}) | smbpasswd -L -a -s #{node[:user]}
+    smbpasswd -L -e #{node[:user]}
+  EOF
 end
 
 service "smbd" do
