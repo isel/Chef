@@ -1,6 +1,4 @@
-share_path = "#{node[:deploy][:mule_home]}/apps"
-
-directory share_path do
+directory node[:deploy][:mule_home] do
   owner "root"
   group "root"
   mode "0777"
@@ -25,7 +23,7 @@ template "/etc/samba/smb.conf" do
   source "smb.erb"
   variables(
     :share_name => node[:share_name],
-    :share_path => share_path
+    :share_path => node[:deploy][:mule_home]
   )
   notifies :restart, "service[smbd]"
 end
