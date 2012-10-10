@@ -11,7 +11,7 @@ gems = {
   'simplecov' => '0.6.1'
 }
 
-class Chef::Resource
+class Chef::Resource::Powershell
   include LocalGems
 end
 
