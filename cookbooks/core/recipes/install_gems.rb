@@ -15,6 +15,8 @@ class Chef::Recipe
   include LocalGems
 end
 
+puts gems_to_install(gems)
+
 if node[:platform] == "ubuntu"
   bash 'Installing ruby gems' do
     code <<-EOF
