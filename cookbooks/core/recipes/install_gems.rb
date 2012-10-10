@@ -11,11 +11,10 @@ gems = {
   'simplecov' => '0.6.1'
 }
 
-class Chef::Recipe
+class Chef::Resource::Bash
   include LocalGems
 end
 
-new_gems = gems_to_install(gems)
 
 if node[:platform] == "ubuntu"
   bash 'Installing ruby gems' do
@@ -27,7 +26,7 @@ gem install psych -v 1.3.2 --no-rdoc --no-ri
 
 gem update --system
 
-#{new_gems.map { |gem, version| "gem install #{gem} -v #{version} --no-rdoc --no-ri \n" }.join}
+#{gems_to_install(gems).map { |gem, version| "gem install #{gem} -v #{version} --no-rdoc --no-ri \n" }.join}
     EOF
   end
 else
