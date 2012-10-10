@@ -60,6 +60,7 @@ template '/var/www/Compass/settings.js' do
   mode "0644"
   source 'compass_settings.erb'
   variables(
+    :domain => node[:deploy][:domain].nil? ? node[:ipaddress] : node[:deploy][:domain],
     :host => node[:deploy][:app_server],
     :tenant => node[:deploy][:tenant]
   )
@@ -67,9 +68,10 @@ end
 
 template '/var/www/Prios/Tests/settings.js' do
   mode "0644"
-  source 'compass_settings.erb'
+  source 'prios_tests_settings.erb'
   variables(
-    :host => "#{ node[:deploy][:domain].nil? ? node[:ipaddress] : "www.#{node[:deploy][:domain]}" }/Prios/Tests/login.php"
+    :domain => node[:deploy][:domain].nil? ? node[:ipaddress] : node[:deploy][:domain],
+    :host => node[:deploy][:domain].nil? ? node[:ipaddress] : "www.#{node[:deploy][:domain]}"
   )
 end
 

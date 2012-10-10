@@ -10,11 +10,7 @@
 var __JSPR_ROOT = "/JSPR/";;
 var __BASE = __JSPR_ROOT + "ver<%= rev %>/build/";
 var __FILTER = "";
-var __ROOT_DOMAIN = "<%= @host %>";
+var __ROOT_DOMAIN = "<%= @domain %>";
 var __SERVICE_HOST = "http://<%= @host %>";
-<% if @tenant.nil? -%>
-var __AUTHENTICATION_URI = "http://<%= @host %>";
-<% else -%>
 var __AUTHENTICATION_URI = "http://<%= @host %>:81/httpIssue.svc/Authenticate/?realm=http://localhost/RP&type=SAML&tenantid=<%= @tenant %>";
-<% end -%>
 var __UIML_PATH = "UIML";
