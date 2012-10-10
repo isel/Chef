@@ -1,21 +1,15 @@
-gems = [
-  { 'gem' => 'bundle', 'version' => '0.0.1' },
-  { 'gem' => 'amazon-ec2', 'version' => '0.9.17' },
-  { 'gem' => 'fog', 'version' => '1.1.2' },
-  { 'gem' => 'mongo', 'version' => '1.3.1' },
-  { 'gem' => 'bson', 'version' => '1.3.1' },
-  { 'gem' => 'rest-client', 'version' => '1.6.7' },
-  { 'gem' => 'xml-simple', 'version' => '1.1.1' },
-  { 'gem' => 'rr', 'version' => '1.0.4' },
-  { 'gem' => 'rspec', 'version' => '2.7.0' },
-  { 'gem' => 'simplecov', 'version' => '0.6.1' },
-
-#{'gem' => 'excon',               'version' => '0.7.6'},
-#{'gem' => 'rspec-core',          'version' => '2.7.1'},
-#{'gem' => 'rspec-expectations',  'version' => '2.7.0'},
-#{'gem' => 'rspec-mocks',         'version' => '2.7.0'},
-#{'gem' => 'simplecov-html',      'version' => '0.5.3'},
-]
+gems = {
+  'bundle' => '0.0.1',
+  'amazon-ec2' => '0.9.17',
+  'fog' => '1.1.2',
+  'mongo' => '1.3.1',
+  'bson' => '1.3.1',
+  'rest-client' => '1.6.7',
+  'xml-simple' => '1.1.1',
+  'rr' => '1.0.4',
+  'rspec' => '2.7.0',
+  'simplecov' => '0.6.1'
+}
 
 class Chef::Recipe
   include LocalGems
@@ -31,14 +25,14 @@ gem install psych -v 1.3.2 --no-rdoc --no-ri
 
 gem update --system
 
-#{gems.map { |g| "gem install #{g['gem']} -v #{g['version']} --no-rdoc --no-ri \n" }.join}
+#{gems.each { |gem, version| "gem install #{gem} -v #{version} --no-rdoc --no-ri \n" }.join}
     EOF
   end
 else
   powershell 'Installing ruby gems' do
     script = <<-EOF
 & "gem" 'update' '--system'
-#{gems.map { |g| "& 'gem' 'install' '#{g['gem']}' -v '#{g['version']}' '--no-rdoc' '--no-ri' \n" }.join}
+#{gems.each { |gem, version| "& 'gem' 'install' '#{gem}' -v '#{version}' '--no-rdoc' '--no-ri' \n" }.join}
     EOF
     source(script)
   end
