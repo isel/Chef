@@ -9,6 +9,9 @@ module LocalGems
       gems[name] = versions.map { |v| v.split(' ').first }
     end
     gems
+
+  rescue
+    {}
   end
 
   def gems_to_install(gems)
