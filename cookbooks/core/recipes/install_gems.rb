@@ -11,7 +11,7 @@ gems = {
   'simplecov' => '0.6.1'
 }
 
-class Chef::Resource::Bash
+class Chef::Resource
   include LocalGems
 end
 
@@ -33,7 +33,7 @@ else
   powershell 'Installing ruby gems' do
     script = <<-EOF
 & "gem" 'update' '--system'
-#{new_gems.map { |gem, version| "& 'gem' 'install' '#{gem}' -v '#{version}' '--no-rdoc' '--no-ri' \n" }.join}
+#{gems_to_install(gems).map { |gem, version| "& 'gem' 'install' '#{gem}' -v '#{version}' '--no-rdoc' '--no-ri' \n" }.join}
     EOF
     source(script)
   end
