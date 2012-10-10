@@ -25,14 +25,14 @@ gem install psych -v 1.3.2 --no-rdoc --no-ri
 
 gem update --system
 
-#{gems.each { |gem, version| "gem install #{gem} -v #{version} --no-rdoc --no-ri \n" }.join}
+#{gems.map { |gem, version| "gem install #{gem} -v #{version} --no-rdoc --no-ri \n" }.join}
     EOF
   end
 else
   powershell 'Installing ruby gems' do
     script = <<-EOF
 & "gem" 'update' '--system'
-#{gems.each { |gem, version| "& 'gem' 'install' '#{gem}' -v '#{version}' '--no-rdoc' '--no-ri' \n" }.join}
+#{gems.map { |gem, version| "& 'gem' 'install' '#{gem}' -v '#{version}' '--no-rdoc' '--no-ri' \n" }.join}
     EOF
     source(script)
   end
