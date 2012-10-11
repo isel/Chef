@@ -100,6 +100,34 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/admin_password_mongo": {
+      "display_name": "admin password for mongo",
+      "required": "required",
+      "recipes": [
+        "deploy::update_config_default",
+        "deploy::update_config_ade_functional",
+        "deploy::update_config_messaging"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/admin_user_mongo": {
+      "display_name": "admin user for mongo",
+      "required": "required",
+      "recipes": [
+        "deploy::update_config_default",
+        "deploy::update_config_ade_functional",
+        "deploy::update_config_messaging"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/app_server": {
       "display_name": "app server",
       "required": "required",
@@ -443,6 +471,9 @@
     "deploy::register_cache_hostname": "Registers the cache hostname and ip in the hosts file",
     "deploy::reindex_elastic_search": "Reindexes ElasticSearch (should be going away)",
     "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server",
+    "deploy::update_config_default": "Updates all config files for functional tests",
+    "deploy::update_config_ade_functional": "Updates Shabti config file for ADE functional test",
+    "deploy::update_config_messaging": "Updates ultimate.properties file for Messaging test",
     "deploy::validate_configuration_tokens": "Validates that inputs in Mule properties file are current",
     "deploy::wait_for_secondary_dbs": "Waits for secondary db servers to become operational"
   },
