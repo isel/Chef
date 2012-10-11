@@ -31,6 +31,9 @@ recipe "deploy::recycle_mule", "Recycle mule"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
 recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
+recipe "deploy::update_config_default", "Updates all config files for functional tests"
+recipe "deploy::update_config_ade_functional", "Updates Shabti config file for ADE functional test"
+recipe "deploy::update_config_messaging", "Updates ultimate.properties file for Messaging test"
 recipe "deploy::validate_configuration_tokens", "Validates that inputs in Mule properties file are current"
 recipe "deploy::wait_for_secondary_dbs", "Waits for secondary db servers to become operational"
 
@@ -66,6 +69,16 @@ attribute "core/s3_bucket",
 
 
 # Attributes from deploy cookbook
+attribute "deploy/admin_password_mongo",
+          :display_name => "admin password for mongo",
+          :required => "required",
+          :recipes  => ["deploy::update_config_default", "deploy::update_config_ade_functional", "deploy::update_config_messaging"]
+
+attribute "deploy/admin_user_mongo",
+  :display_name => "admin user for mongo",
+  :required => "required",
+  :recipes  => ["deploy::update_config_default", "deploy::update_config_ade_functional", "deploy::update_config_messaging"]
+
 attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
