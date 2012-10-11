@@ -1,7 +1,7 @@
 require 'fileutils'
-require_relative "#{node['binaries_directory']}/CI/BuildScripts/Helpers/configuration"
-require_relative "#{node['binaries_directory']}/CI/BuildScripts/Helpers/io_utils"
-require_relative "#{node['binaries_directory']}/CI/BuildScripts/Deployment/user_acceptance"
+require "#{node['binaries_directory']}/CI/BuildScripts/Helpers/configuration"
+require "#{node['binaries_directory']}/CI/BuildScripts/Helpers/io_utils"
+require "#{node['binaries_directory']}/CI/BuildScripts/Deployment/user_acceptance"
 
 @environment = Deployment::UserAcceptance.new('RonAuth', 'http://10.81.10.189')
 @environment.type = 'user'
