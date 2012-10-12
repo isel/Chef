@@ -31,9 +31,6 @@ recipe "deploy::recycle_mule", "Recycle mule"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
 recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
-recipe "deploy::update_config_default", "Updates all config files for functional tests"
-recipe "deploy::update_config_ade_functional", "Updates Shabti config file for ADE functional test"
-recipe "deploy::update_config_messaging", "Updates ultimate.properties file for Messaging test"
 recipe "deploy::validate_configuration_tokens", "Validates that inputs in Mule properties file are current"
 recipe "deploy::wait_for_secondary_dbs", "Waits for secondary db servers to become operational"
 
@@ -41,8 +38,7 @@ recipe "deploy::wait_for_secondary_dbs", "Waits for secondary db servers to beco
 attribute "core/api_infrastructure_url",
   :display_name => "api infrastructure url",
   :required => "required",
-  :recipes => ["deploy::foundation_services", "deploy::update_config_default",
-    "deploy::update_config_ade_functional", "deploy::update_config_messaging"]
+  :recipes => ["deploy::foundation_services"]
 
 attribute "core/aws_access_key_id",
   :display_name => "aws access key id",
@@ -70,16 +66,6 @@ attribute "core/s3_bucket",
 
 
 # Attributes from deploy cookbook
-attribute "deploy/admin_password_mongo",
-  :display_name => "admin password for mongo",
-  :required => "required",
-  :recipes  => ["deploy::update_config_default", "deploy::update_config_ade_functional", "deploy::update_config_messaging"]
-
-attribute "deploy/admin_user_mongo",
-  :display_name => "admin user for mongo",
-  :required => "required",
-  :recipes  => ["deploy::update_config_default", "deploy::update_config_ade_functional", "deploy::update_config_messaging"]
-
 attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
@@ -102,11 +88,6 @@ attribute "deploy/cache_server",
   :recipes => ["deploy::event_router_service", "deploy::foundation_services",
     "deploy::mule_configure", "deploy::register_cache_hostname"]
 
-attribute "deploy/checkout_directory",
-  :display_name => "checkout directory",
-  :required => "required",
-  :recipes => ["deploy::update_config_default", "deploy::update_config_ade_functional", "deploy::update_config_messaging"]
-
 attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
@@ -117,16 +98,6 @@ attribute "deploy/deployment_name",
   :display_name => "deployment name",
   :required => "required",
   :recipes => ["deploy::initiate_replica_set_via_tags", "deploy::register_cache_hostname", "deploy::wait_for_secondary_dbs"]
-
-attribute "deploy/deployment_name_config",
-  :display_name => "deployment name for configuration environment",
-  :required => "required",
-  :recipes => ["deploy::update_config_default", "deploy::update_config_ade_functional", "deploy::update_config_messaging"]
-
-attribute "deploy/deployment_type",
-  :display_name => "deployment type",
-  :required => "required",
-  :recipes => ["deploy::update_config_default", "deploy::update_config_ade_functional", "deploy::update_config_messaging"]
 
 attribute "deploy/domain",
   :display_name => "domain",
