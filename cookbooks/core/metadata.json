@@ -112,7 +112,8 @@
     "core::set_rightscale_account": "sets the Rightscale account",
     "core::setup_powershell_runtimes": "Allows up the poweshell to run multiple runtimes",
     "core::tag_server_hostname": "Tags the server host name",
-    "core::tag_server_type": "Tags the server type"
+    "core::tag_server_type": "Tags the server type",
+    "core::update_buildagent_configuration": "Updates TC configuration"
   },
   "version": "0.0.1"
 }
