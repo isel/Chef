@@ -1,7 +1,5 @@
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
-template('/installs/appfabric/set_password_to_not_expire.bat') { source 'set_password_to_not_expire.erb' }
-
 template "#{node['ruby_scripts_dir']}/download_appfabric.rb" do
   local true
   source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
@@ -45,6 +43,8 @@ powershell 'Download AppFabric Admin Tool' do
   source("ruby #{node['ruby_scripts_dir']}/download_appfabric_admin_tool.rb")
   not_if { File.exist?('/appfabric_caching_admin') }
 end
+
+template('/installs/appfabric/set_password_to_not_expire.bat') { source 'set_password_to_not_expire.erb' }
 
 powershell "Install AppFabric" do
   powershell_script = <<'POWERSHELL_SCRIPT'
