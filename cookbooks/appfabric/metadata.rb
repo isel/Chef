@@ -18,19 +18,19 @@ recipe "appfabric::powershell", "Deploys AppFabric Powershell cmdlets"
 attribute "core/aws_access_key_id",
   :display_name => "aws access key id",
   :required => "required",
-  :recipes => ["access_database_engine::default"]
+  :recipes => ["appfabric::install"]
 
 attribute "core/aws_secret_access_key",
   :display_name => "aws secret access key",
   :required => "required",
-  :recipes => ["access_database_engine::default"]
+  :recipes => ["appfabric::install"]
 
 attribute "core/s3_bucket",
   :display_name => "s3 bucket for the UGF platform",
   :description => "i.e. ugfartifacts, ugfproduction",
   :required => "optional",
   :default => "ugfgate1",
-  :recipes => ["access_database_engine::default"]
+  :recipes => ["appfabric::install"]
 
 attribute "appfabric/security",
   :display_name => "appfabric security",
