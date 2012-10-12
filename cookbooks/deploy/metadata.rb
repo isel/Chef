@@ -116,8 +116,12 @@ attribute "deploy/db_server",
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
   :required => "required",
-  :recipes => ["deploy::initiate_replica_set_via_tags", "deploy::register_cache_hostname", "deploy::update_config_default",
-    "deploy::update_config_ade_functional", "deploy::update_config_messaging", "deploy::wait_for_secondary_dbs"]
+  :recipes => ["deploy::initiate_replica_set_via_tags", "deploy::register_cache_hostname", "deploy::wait_for_secondary_dbs"]
+
+attribute "deploy/deployment_name_config",
+  :display_name => "deployment name for configuration environment",
+  :required => "required",
+  :recipes => ["deploy::update_config_default", "deploy::update_config_ade_functional", "deploy::update_config_messaging"]
 
 attribute "deploy/deployment_type",
   :display_name => "deployment type",

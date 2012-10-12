@@ -221,10 +221,21 @@
       "recipes": [
         "deploy::initiate_replica_set_via_tags",
         "deploy::register_cache_hostname",
+        "deploy::wait_for_secondary_dbs"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/deployment_name_config": {
+      "display_name": "deployment name for configuration environment",
+      "required": "required",
+      "recipes": [
         "deploy::update_config_default",
         "deploy::update_config_ade_functional",
-        "deploy::update_config_messaging",
-        "deploy::wait_for_secondary_dbs"
+        "deploy::update_config_messaging"
       ],
       "choice": [
 

@@ -3,7 +3,7 @@ require "#{node['binaries_directory']}/CI/BuildScripts/Helpers/configuration"
 require "#{node['binaries_directory']}/CI/BuildScripts/Helpers/io_utils"
 require "#{node['binaries_directory']}/CI/BuildScripts/Deployment/user_acceptance"
 
-@environment = Deployment::UserAcceptance.new("#{node[:deploy][:deployment_name]}", "#{node[:core][:api_infrastructure_url]}")
+@environment = Deployment::UserAcceptance.new("#{node[:deploy][:deployment_name_config]}", "#{node[:core][:api_infrastructure_url]}")
 @environment.type = "#{node[:deploy][:deployment_type]}"
 @settings = @environment.settings
 @checkout_directory = "#{node[:deploy][:checkout_directory]}"
