@@ -1,6 +1,6 @@
 {
-  "name": "appfabric",
-  "description": "Deploys the UGF software to the environment",
+  "name": "access_database_engine",
+  "description": "Installs basic tools to manage any instance",
   "long_description": "",
   "maintainer": "Cloud Infrastructure",
   "maintainer_email": "ugf_ci@ultimatesoftware.com",
@@ -59,42 +59,12 @@
       ],
       "calculated": false,
       "type": "string"
-    },
-    "appfabric/security": {
-      "display_name": "appfabric security",
-      "required": "required",
-      "recipes": [
-        "appfabric::clear_all_caches",
-        "appfabric::configure",
-        "appfabric::ensure_is_up"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "appfabric/service_password": {
-      "display_name": "appfabric service password",
-      "required": "required",
-      "recipes": [
-        "appfabric::configure"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
     }
   },
   "groupings": {
   },
   "recipes": {
-    "appfabric::clear_all_caches": "Clears all AppFabric caches",
-    "appfabric::configure": "Configures AppFabric",
-    "appfabric::install": "Installs AppFabric",
-    "appfabric::ensure_is_up": "Ensures AppFabric cache are working",
-    "appfabric::powershell": "Deploys AppFabric Powershell cmdlets"
+    "access_database_engine::default": "Downloads and installs the access database engine"
   },
   "version": "0.0.1"
 }
