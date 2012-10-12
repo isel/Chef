@@ -23,6 +23,6 @@ powershell 'Download Access Database Engine' do
 end
 
 powershell 'Install Access Database Engine' do
-  source('cmd /c "/installs/AccessDatabaseEngine_x64.exe /log:c:\accessdbengine.log /quiet /norestart"')
+  source('cmd /c "/installs/accessdatabaseengine/AccessDatabaseEngine_x64.exe /log:c:\accessdbengine.log /quiet /norestart"')
   not_if { File.exist?('/accessdbengine.log') }
 end

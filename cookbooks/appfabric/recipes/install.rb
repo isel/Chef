@@ -1,6 +1,6 @@
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
-template('/installs/set_password_to_not_expire.bat') { source 'set_password_to_not_expire.erb' }
+template('/installs/appfabric/set_password_to_not_expire.bat') { source 'set_password_to_not_expire.erb' }
 
 template "#{node['ruby_scripts_dir']}/download_appfabric.rb" do
   local true
@@ -16,12 +16,12 @@ template "#{node['ruby_scripts_dir']}/download_appfabric.rb" do
     :target_directory => '/installs',
     :unzip => true
   )
-  not_if { File.exist?('/installs/WindowsServerAppFabricSetup_x64_6.1.exe') }
+  not_if { File.exist?('/installs/appfabric.zip') }
 end
 
 powershell 'Download AppFabric' do
   source("ruby #{node['ruby_scripts_dir']}/download_appfabric.rb")
-  not_if { File.exist?('/installs/WindowsServerAppFabricSetup_x64_6.1.exe') }
+  not_if { File.exist?('/installs/appfabric.zip') }
 end
 
 template "#{node['ruby_scripts_dir']}/download_appfabric_admin_tool.rb" do
@@ -41,11 +41,6 @@ template "#{node['ruby_scripts_dir']}/download_appfabric_admin_tool.rb" do
   not_if { File.exist?('/appfabric_caching_admin') }
 end
 
-powershell 'Download AppFabric' do
-  source("ruby #{node['ruby_scripts_dir']}/download_appfabric.rb")
-  not_if { File.exist?('/installs/WindowsServerAppFabricSetup_x64_6.1.exe') }
-end
-
 powershell 'Download AppFabric Admin Tool' do
   source("ruby #{node['ruby_scripts_dir']}/download_appfabric_admin_tool.rb")
   not_if { File.exist?('/appfabric_caching_admin') }
@@ -59,8 +54,8 @@ powershell "Install AppFabric" do
       exit 0
     }
 
-    cd "c:\installs"
-    cmd /c "c:\installs\WindowsServerAppFabricSetup_x64_6.1.exe /i /SkipUpdates /l c:\installs\appfabric.log"
+    cd "c:\installs\appfabric"
+    cmd /c "WindowsServerAppFabricSetup_x64_6.1.exe /i /SkipUpdates /l c:\installs\appfabric.log"
     cmd /c "sc config AppFabricWorkflowManagementService start= disabled"
 POWERSHELL_SCRIPT
   source(powershell_script)
