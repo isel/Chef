@@ -9,6 +9,7 @@ recipe "teamcity::set_fxcop_path", "Sets fxcop path in the build agent propertie
 recipe "teamcity::set_gallio_path", "Sets gallio path in the build agent properties file"
 recipe "teamcity::set_ncover_path", "Sets ncover path in the build agent properties file"
 recipe "teamcity::set_ruby_path", "Sets ruby path in the build agent properties file"
+recipe "teamcity::update_buildagent_configuration", "Updates TC configuration"
 
 attribute "teamcity/gallio_path",
   :display_name => "gallio path",

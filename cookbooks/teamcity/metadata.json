@@ -39,7 +39,8 @@
     "teamcity::set_fxcop_path": "Sets fxcop path in the build agent properties file",
     "teamcity::set_gallio_path": "Sets gallio path in the build agent properties file",
     "teamcity::set_ncover_path": "Sets ncover path in the build agent properties file",
-    "teamcity::set_ruby_path": "Sets ruby path in the build agent properties file"
+    "teamcity::set_ruby_path": "Sets ruby path in the build agent properties file",
+    "teamcity::update_buildagent_configuration": "Updates TC configuration"
   },
   "version": "0.0.1"
 }

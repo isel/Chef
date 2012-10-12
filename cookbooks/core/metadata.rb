@@ -17,7 +17,6 @@ recipe "core::set_rightscale_account", "sets the Rightscale account"
 recipe "core::setup_powershell_runtimes", "Allows up the poweshell to run multiple runtimes"
 recipe "core::tag_server_hostname", "Tags the server host name"
 recipe "core::tag_server_type", "Tags the server type"
-recipe "core::update_buildagent_configuration", "Updates TC configuration"
 
 attribute "core/api_infrastructure_url",
   :display_name => "api infrastructure url",
