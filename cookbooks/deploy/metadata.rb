@@ -41,7 +41,8 @@ recipe "deploy::wait_for_secondary_dbs", "Waits for secondary db servers to beco
 attribute "core/api_infrastructure_url",
   :display_name => "api infrastructure url",
   :required => "required",
-  :recipes => ["deploy::foundation_services"]
+  :recipes => ["deploy::foundation_services", "deploy::update_config_default",
+    "deploy::update_config_ade_functional", "deploy::update_config_messaging"]
 
 attribute "core/aws_access_key_id",
   :display_name => "aws access key id",
@@ -70,9 +71,9 @@ attribute "core/s3_bucket",
 
 # Attributes from deploy cookbook
 attribute "deploy/admin_password_mongo",
-          :display_name => "admin password for mongo",
-          :required => "required",
-          :recipes  => ["deploy::update_config_default", "deploy::update_config_ade_functional", "deploy::update_config_messaging"]
+  :display_name => "admin password for mongo",
+  :required => "required",
+  :recipes  => ["deploy::update_config_default", "deploy::update_config_ade_functional", "deploy::update_config_messaging"]
 
 attribute "deploy/admin_user_mongo",
   :display_name => "admin user for mongo",
@@ -101,6 +102,11 @@ attribute "deploy/cache_server",
   :recipes => ["deploy::event_router_service", "deploy::foundation_services",
     "deploy::mule_configure", "deploy::register_cache_hostname"]
 
+attribute "deploy/checkout_directory",
+  :display_name => "checkout directory",
+  :required => "required",
+  :recipes => ["deploy::update_config_default", "deploy::update_config_ade_functional", "deploy::update_config_messaging"]
+
 attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
@@ -110,7 +116,13 @@ attribute "deploy/db_server",
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
   :required => "required",
-  :recipes => ["deploy::initiate_replica_set_via_tags", "deploy::register_cache_hostname", "deploy::wait_for_secondary_dbs"]
+  :recipes => ["deploy::initiate_replica_set_via_tags", "deploy::register_cache_hostname", "deploy::update_config_default",
+    "deploy::update_config_ade_functional", "deploy::update_config_messaging", "deploy::wait_for_secondary_dbs"]
+
+attribute "deploy/deployment_type",
+  :display_name => "deployment type",
+  :required => "required",
+  :recipes => ["deploy::update_config_default", "deploy::update_config_ade_functional", "deploy::update_config_messaging"]
 
 attribute "deploy/domain",
   :display_name => "domain",

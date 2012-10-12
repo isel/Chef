@@ -27,7 +27,10 @@
       "display_name": "api infrastructure url",
       "required": "required",
       "recipes": [
-        "deploy::foundation_services"
+        "deploy::foundation_services",
+        "deploy::update_config_default",
+        "deploy::update_config_ade_functional",
+        "deploy::update_config_messaging"
       ],
       "choice": [
 
@@ -183,6 +186,20 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/checkout_directory": {
+      "display_name": "checkout directory",
+      "required": "required",
+      "recipes": [
+        "deploy::update_config_default",
+        "deploy::update_config_ade_functional",
+        "deploy::update_config_messaging"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/db_server": {
       "display_name": "db server",
       "required": "required",
@@ -204,7 +221,24 @@
       "recipes": [
         "deploy::initiate_replica_set_via_tags",
         "deploy::register_cache_hostname",
+        "deploy::update_config_default",
+        "deploy::update_config_ade_functional",
+        "deploy::update_config_messaging",
         "deploy::wait_for_secondary_dbs"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/deployment_type": {
+      "display_name": "deployment type",
+      "required": "required",
+      "recipes": [
+        "deploy::update_config_default",
+        "deploy::update_config_ade_functional",
+        "deploy::update_config_messaging"
       ],
       "choice": [
 

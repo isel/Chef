@@ -1,12 +1,11 @@
 require 'fileutils'
 require "#{node['binaries_directory']}/CI/BuildScripts/Helpers/configuration"
-require "#{node['binaries_directory']}/CI/BuildScripts/Helpers/io_utils"
 require "#{node['binaries_directory']}/CI/BuildScripts/Deployment/user_acceptance"
 
-@environment = Deployment::UserAcceptance.new(ENV['deployment.name'], ENV['api.infrastructure.url'])
-@environment.type = ENV['deployment.type']
+@environment = Deployment::UserAcceptance.new("#{node[:deploy][:deployment_name]}", "#{node[:core][:api_infrastructure_url]}")
+@environment.type = "#{node[:deploy][:deployment_type]}"
 @settings = @environment.settings
-@checkout_directory = ENV['teamcity.build.checkoutDir'].gsub(/\\/, '/')
+@checkout_directory = "#{node[:deploy][:checkout_directory]}"
 
 properties_filename = "#{@checkout_directory}/events/configuration/DIY/ultimate.properties"
 
