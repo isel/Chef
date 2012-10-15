@@ -5,6 +5,7 @@ description      "Installs basic tools to manage any instance"
 long_description ""
 version          "0.0.1"
 
+supports "ubuntu"
 supports "windows"
 
 depends 'core'

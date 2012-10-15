@@ -1,8 +1,6 @@
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
 ruby_version = '1.9.2-p320'
-artifacts = node[:platform] == "ubuntu" ? 'ruby_ubuntu' : 'ruby_windows'
-target = node[:platform] == "ubuntu" ? '/root/src' : '/installs'
 
 if node[:platform] == "ubuntu"
   if File.exists?('/opt/ruby')
@@ -76,8 +74,6 @@ if node[:platform] == "ubuntu"
     end
   end
 else
-  rs_ruby_path = '/Program Files (x86)/RightScale/RightLink/sandbox/ruby/bin'
-
   template "#{node['ruby_scripts_dir']}/download_ruby.rb" do
     local true
     source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
