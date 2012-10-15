@@ -22,13 +22,13 @@ end
 ruby_block 'Install fog' do
   block do
     ENV['RUBYGEMS_BINARY_PATH'] ||= 'gem'
-    system("#{rs_ruby_path}/gem install fog -v 1.1.1 --no-rdoc --no-ri")
+    system("'#{rs_ruby_path}/gem' install fog -v 1.1.1 --no-rdoc --no-ri")
   end
   not_if { File.exist?('/installs/ruby_windows.zip') }
 end
 
 ruby_block 'Download ruby' do
-  block { system("#{rs_ruby_path}/ruby -rubygems #{node['ruby_scripts_dir']}/download_ruby.rb") }
+  block { system("'#{rs_ruby_path}/ruby' -rubygems #{node['ruby_scripts_dir']}/download_ruby.rb") }
   not_if { File.exist?('/installs/ruby_windows.zip') }
 end
 
