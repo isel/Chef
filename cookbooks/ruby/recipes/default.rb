@@ -19,13 +19,7 @@ template "#{node['ruby_scripts_dir']}/download_ruby.rb" do
   not_if { File.exist?('/installs/ruby_windows.zip') }
 end
 
-ruby_block 'Install fog' do
-  block do
-    ENV['RUBYGEMS_BINARY_PATH'] ||= 'gem'
-    system("'#{rs_ruby_path}/gem' install fog -v 1.1.1 --no-rdoc --no-ri")
-  end
-  not_if { File.exist?('/installs/ruby_windows.zip') }
-end
+`gem install fog -v 1.1.1 --no-rdoc --no-ri` unless File.exist?('/installs/ruby_windows.zip')
 
 ruby_block 'Download ruby' do
   block { system("'#{rs_ruby_path}/ruby' -rubygems #{node['ruby_scripts_dir']}/download_ruby.rb") }
@@ -33,7 +27,10 @@ ruby_block 'Download ruby' do
 end
 
 ruby_block 'Install ruby' do
-  block { system('/installs/ruby_windows/rubyinstaller-1.9.2-p0.exe /tasks=modpath /silent') }
+  block do
+    success = system('/installs/ruby_windows/rubyinstaller-1.9.2-p0.exe /tasks=modpath /silent')
+    puts "Ruby installed successfully" if success
+  end
   not_if { File.exist?('/Ruby192') }
 end
 
