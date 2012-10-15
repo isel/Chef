@@ -23,7 +23,7 @@ powershell 'Install fog and download ruby' do
   script = <<'EOF'
     cd "c:\\Program Files (x86)\\RightScale\\RightLink\\sandbox\\ruby\\bin"
     cmd /c gem install fog -v 1.1.1 --no-rdoc --no-ri
-    cmd /c ruby -rubygems #{node['ruby_scripts_dir']}/download_ruby.rb
+    cmd /c ruby -rubygems c:\\RubyScripts\\download_ruby.rb
 EOF
   source(script)
   not_if { File.exist?('/installs/ruby_windows.zip') }
