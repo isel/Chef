@@ -19,7 +19,13 @@ template "#{node['ruby_scripts_dir']}/download_ruby.rb" do
   not_if { File.exist?('/installs/ruby_windows.zip') }
 end
 
-`gem install fog -v 1.1.1 --no-rdoc --no-ri` unless File.exist?('/installs/ruby_windows.zip')
+ruby_block 'Install fog' do
+  block do
+    Dir.chdir(rs_ruby_path)
+    puts `gem install fog -v 1.1.1 --no-rdoc --no-ri`
+  end
+  not_if { File.exist?('/installs/ruby_windows.zip') }
+end
 
 ruby_block 'Download ruby' do
   block { system("'#{rs_ruby_path}/ruby' -rubygems #{node['ruby_scripts_dir']}/download_ruby.rb") }
