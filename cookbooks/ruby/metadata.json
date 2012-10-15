@@ -64,7 +64,8 @@
   "groupings": {
   },
   "recipes": {
-    "ruby::default": "Downloads and installs ruby"
+    "ruby::default": "Downloads and installs ruby",
+    "ruby::gems": "Installs ruby gems"
   },
   "version": "0.0.1"
 }

@@ -10,6 +10,7 @@ supports "windows"
 depends 'core'
 
 recipe "ruby::default", "Downloads and installs ruby"
+recipe "ruby::gems", "Installs ruby gems"
 
 attribute "core/aws_access_key_id",
   :display_name => "aws access key id",

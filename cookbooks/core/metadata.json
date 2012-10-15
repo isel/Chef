@@ -105,7 +105,6 @@
   "recipes": {
     "core::download_vendor_artifacts_prereqs": "Sets up prereqs for downloading vendor artifacts",
     "core::get_deployment_settings": "Gets the deployment settings from the services api",
-    "core::install_gems": "Installs ruby gems",
     "core::install_jdk": "Installs jdk for windows and ubuntu",
     "core::install_ruby": "Installs ruby from source",
     "core::netsh_advfirewall_management": "Disables Windows Firewall",
