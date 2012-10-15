@@ -30,7 +30,7 @@ EOF
 end
 
 powershell 'Install ruby' do
-  source('c:\installs\ruby_windows\rubyinstaller-1.9.2-p0.exe /tasks=modpath /silent')
+  source('c:\\installs\\ruby_windows\\rubyinstaller-1.9.2-p0.exe /tasks=modpath /silent')
   not_if { File.exist?('/Ruby192') }
 end
 
