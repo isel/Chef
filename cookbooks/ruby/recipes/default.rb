@@ -19,11 +19,12 @@ template "#{node['ruby_scripts_dir']}/download_ruby.rb" do
   not_if { File.exist?('/installs/ruby_windows.zip') }
 end
 
-ruby_block 'Install fog' do
-  block do
-    Dir.chdir(rs_ruby_path)
-    puts `gem install fog -v 1.1.1 --no-rdoc --no-ri`
-  end
+powershell 'Install fog' do
+  script = <<'EOF'
+    cd "c:\\Program Files (x86)\\RightScale\\RightLink\\sandbox\\ruby\\bin"
+    cmd /c gem install fog -v 1.1.1 --no-rdoc --no-ri
+EOF
+  source(script)
   not_if { File.exist?('/installs/ruby_windows.zip') }
 end
 
