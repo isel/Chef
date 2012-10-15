@@ -18,10 +18,6 @@ $properties_file = "${build_agent_home}\\conf\\buildAgent.properties"
 $setting_value = 'UTF-8'
 $setting_name = 'system.file.encoding'
 
-Set-Location  "${build_agent_home}\\bin"
-Write-Output 'Stop the service'
-cmd /c service.stop.bat
-
 $properties = Get-Content $properties_file
 if ($properties -match "^${setting_name}=") {
   Write-output "Updating setting ${setting_name}"
@@ -33,10 +29,6 @@ ${setting_name}=${setting_value}
 "@
 }
 Set-Content  -literalPath $properties_file -value $properties
-
-Write-Output 'Start the service'
-Set-Location  "${build_agent_home}\\bin"
-cmd /c service.start.bat
 
 # review the service process
 Get-WmiObject win32_process -Filter "commandline like '%${buildServer_java_class_name}%'" | select processId,CommandLine | Format-Table -AutoSize -Wrap
