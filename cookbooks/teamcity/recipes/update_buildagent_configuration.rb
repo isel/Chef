@@ -28,10 +28,8 @@ if ($properties -match "^${setting_name}=") {
 ${setting_name}=${setting_value}
 "@
 }
-Set-Content  -literalPath $properties_file -value $properties
 
-# review the service process
-Get-WmiObject win32_process -Filter "commandline like '%${buildServer_java_class_name}%'" | select processId,CommandLine | Format-Table -AutoSize -Wrap
+Set-Content  -literalPath $properties_file -value $properties
 
 $Error.clear()
   EOF
