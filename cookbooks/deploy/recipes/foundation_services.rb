@@ -58,14 +58,6 @@ powershell 'Setup websites in IIS' do
     import-module WebAdministration
     iis:
 
-    if (get-item "$activeSTSSite" -ErrorAction SilentlyContinue)
-    {
-      Write-Output 'Web sites are already configured.  Exiting...'
-      exit 0
-    }
-
-    $error.clear()
-
     Write-Output 'Configuring app pools'
 
     # see http://msdn.microsoft.com/en-us/library/aa347554(v=VS.90).aspx
@@ -92,6 +84,7 @@ powershell 'Setup websites in IIS' do
     Set-ItemProperty "$servicesHelpSite" -name applicationPool -value $app_pools[2]
   EOF
   source(script)
+  not_if { redeploy }
 end
 
 powershell 'Start websites in IIS' do
