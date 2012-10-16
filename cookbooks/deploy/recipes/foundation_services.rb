@@ -4,7 +4,7 @@ require 'fileutils'
 ruby_scripts_dir = node['ruby_scripts_dir']
 app_pools = 'ServicesAppPool,ActiveSTSAppPool,ServicesHelpAppPool'
 
-redeploy = Dir.exists?('/Websites')
+redeploy = Dir.exist?('/Websites')
 
 powershell 'Stop websites in IIS' do
   script = <<-EOF
