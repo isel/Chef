@@ -428,7 +428,6 @@
     "deploy::download_binaries": "Downloads binaries",
     "deploy::download_infrastructure": "Downloads infrastructure api",
     "deploy::elastic_search": "Deploys ElasticSearch",
-    "deploy::enable_msmq": "Enables msmq",
     "deploy::engine": "Deploys Engine",
     "deploy::event_router_service": "Installs Event Router Service",
     "deploy::foundation_services": "Deploys the foundation rest services",

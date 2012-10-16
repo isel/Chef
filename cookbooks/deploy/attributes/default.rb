@@ -9,7 +9,6 @@ default[:powershell_x32_dir] = '/Windows/system32/WindowsPowerShell/v1.0'
 default[:powershell_x64_dir] = '/Windows/sysnative/WindowsPowerShell/v1.0'
 
 default[:activemq_version] = '5.6.0'
-default[:msmq_features] = 'MSMQ-Server,MSMQ-HTTP-Support,MSMQ-Directory'
 default[:mule_plugins] = ['mmc-agent-mule3-app-3.3.0', 'mmc-distribution-console-app-3.3.0']
 default[:mule_version] = '3.3.0'
 default[:search_plugins] = 'bigdesk,elasticsearch-head,analysis-phonetic,analysis-icu'
