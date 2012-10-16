@@ -71,10 +71,6 @@ powershell 'Setup websites in IIS' do
 
     Write-Output 'Configuring web sites'
 
-    mkdir "$services"
-    mkdir "$activeSTS"
-    mkdir "$servicesHelp"
-
     Set-ItemProperty "$servicesSite" -name physicalPath -value "$services"
     New-Item "$activeSTSSite" -physicalPath "$activeSTS" -bindings @{protocol="http";bindingInformation=":81:"}
     New-Item "$servicesHelpSite" -physicalPath "$servicesHelp" -bindings @{protocol="http";bindingInformation=":82:"}
