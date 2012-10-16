@@ -12,7 +12,6 @@ if ( (${Env:RS_REBOOT} -ne $null) -and (${Env:RS_REBOOT} -match 'true'))  {
    exit 0
    }
 
-$buildServer_java_class_name = 'jetbrains.buildServer.agent.AgentMain'
 $build_agent_home ='C:\BuildAgent'
 $properties_file = "${build_agent_home}\\conf\\buildAgent.properties"
 $setting_value = 'UTF-8'
