@@ -4,8 +4,47 @@ require 'fileutils'
 ruby_scripts_dir = node['ruby_scripts_dir']
 app_pools = 'ServicesAppPool,ActiveSTSAppPool,ServicesHelpAppPool'
 
+redeploy = Dir.exists?('/Websites')
+
+powershell 'Stop websites in IIS' do
+  script = <<-EOF
+    import-module WebAdministration
+    iis:
+
+    Stop-WebSite -name 'Default Web Site'
+    Stop-WebSite -name 'ActiveSTS'
+    Stop-WebSite -name 'Services.Help'
+  EOF
+  source(script)
+  only_if{ redeploy }
+end
+
+template "#{ruby_scripts_dir}/foundation_services.rb" do
+  source 'scripts/foundation_services.erb'
+  variables(
+    :api_infrastructure_url => node[:core][:api_infrastructure_url],
+    :deployment_uri => node[:core][:deployment_uri],
+    :cache_server => node[:deploy][:cache_server],
+    :db_server => node[:deploy][:db_server],
+    :messaging_server => node[:deploy][:messaging_server],
+    :search_server => node[:deploy][:search_server]
+  )
+end
+
+template "#{node['binaries_directory']}/AppServer/Websites/UltimateSoftware.Gateway.Active/HealthCheck.html" do
+  source 'health_check.erb'
+end
+
+template "#{node['binaries_directory']}/AppServer/Websites/UltimateSoftware.Services/HealthCheck.html" do
+  source 'health_check.erb'
+end
+
+powershell 'Updating foundation services' do
+  source("ruby #{ruby_scripts_dir}/foundation_services.rb")
+end
+
 powershell 'Setup websites in IIS' do
-  parameters( { 'app_pools' => app_pools } )
+  parameters({ 'app_pools' => app_pools })
   script = <<-EOF
     $services = 'C:\\WebSites\\Services'
     $servicesSite = 'IIS:\\Sites\\Default Web Site'
@@ -55,42 +94,6 @@ powershell 'Setup websites in IIS' do
   source(script)
 end
 
-powershell 'Stop websites in IIS' do
-  script = <<-EOF
-    import-module WebAdministration
-    iis:
-
-    Stop-WebSite -name 'Default Web Site'
-    Stop-WebSite -name 'ActiveSTS'
-    Stop-WebSite -name 'Services.Help'
-  EOF
-  source(script)
-end
-
-template "#{ruby_scripts_dir}/foundation_services.rb" do
-  source 'scripts/foundation_services.erb'
-  variables(
-    :api_infrastructure_url => node[:core][:api_infrastructure_url],
-    :deployment_uri => node[:core][:deployment_uri],
-    :cache_server => node[:deploy][:cache_server],
-    :db_server => node[:deploy][:db_server],
-    :messaging_server => node[:deploy][:messaging_server],
-    :search_server => node[:deploy][:search_server]
-  )
-end
-
-template "#{node['binaries_directory']}/AppServer/Websites/UltimateSoftware.Gateway.Active/HealthCheck.html" do
-  source 'health_check.erb'
-end
-
-template "#{node['binaries_directory']}/AppServer/Websites/UltimateSoftware.Services/HealthCheck.html" do
-  source 'health_check.erb'
-end
-
-powershell 'Updating foundation services' do
-  source("ruby #{ruby_scripts_dir}/foundation_services.rb")
-end
-
 powershell 'Start websites in IIS' do
   script = <<-EOF
     import-module WebAdministration
@@ -101,6 +104,7 @@ powershell 'Start websites in IIS' do
     Start-WebSite -name 'Services.Help'
   EOF
   source(script)
+  only_if { redeploy }
 end
 
 powershell 'Launch websites' do
