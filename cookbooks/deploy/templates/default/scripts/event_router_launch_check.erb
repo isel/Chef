@@ -1,6 +1,6 @@
 require 'rake'
-require '<%= node[' binaries_directory '] %>/CI/BuildScripts/Cloud/deployment'
-require '<%= node[' binaries_directory '] %>/CI/BuildScripts/Helpers/process'
+require '<%= @binaries_directory %>/CI/BuildScripts/Cloud/deployment'
+require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/process'
 
 
 service_display_name = '<%= @service_display_name %>'

@@ -218,6 +218,7 @@ end
 template "#{ruby_scripts_dir}/event_router_launch_check.rb" do
   source 'scripts/event_router_launch_check.erb'
   variables(
+    :binaries_directory => node[:binaries_directory],
     :service_display_name => service_display_name,
     :launch_wait_timeout => 300)
 end
