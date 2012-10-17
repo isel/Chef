@@ -75,7 +75,7 @@ def wmi_query(query)
 end
 
 service_display_name = '<%= @service_display_name %>'
-launch_wait_timeout = <%= launch_wait_timeout  %>
+launch_wait_timeout = <%= @launch_wait_timeout  %>
 service_display_name = 'Ultimate Software Event Router Service' if service_display_name.nil?
 timeout = 30
 cumulative_wait_time = 0
