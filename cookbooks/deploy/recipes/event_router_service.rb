@@ -14,10 +14,6 @@ service_assembly_filename=  'UltimateSoftware.Foundation.Messaging.EventRouter.e
 service_display_name = 'Ultimate Software Event Router Service'
 
 if File.exist?(target_directory) || File.exists?(install_path)
-  # Cleanup block : Powershell
-  # 1. issues a service stop request to Windows service
-  # 2. uninstalls assembly from .Net 4.x 32 bit GAC
-  # 3. confirms the target_directory and install_path no longer exist
   powershell 'Stopping,Uninstalling and removing Event Router Service' do
     parameters (
       {
@@ -110,9 +106,6 @@ powershell 'Copy the application files to intermediate directory and update appl
   source("ruby #{ruby_scripts_dir}/event_router_service.rb")
 end
 
-# Install block : powershell
-# Installs assembly into .Net 4.x 32 bit GAC
-# issues start command to Windows service
 powershell 'Install Event Router Service' do
   parameters (
     {
@@ -146,11 +139,6 @@ Write-Output "Check if prerequisite Windows Feature set is installed"
 
 Import-Module ServerManager
 
-Write-Output "Confirm that MSMQ service is running."
-
-$test = Get-Service | where { $_.displayname -match 'message*' -and $_.status -match 'running' }
-Write-Output $test
-
 chdir $installPath
 
 Write-Output "Copy the service build artifacts from $sourcePath to $installPath"
@@ -158,8 +146,6 @@ Write-Output "Copy the service build artifacts from $sourcePath to $installPath"
 Copy-Item -Path (Join-Path $sourcePath "$assemblyfileSet") -Destination $installPath -Recurse -Force
 
 Get-ChildItem
-
-# need to verify if the files are in place. 
 
 Write-Output "Install the service ""$serviceDisplayName"""
 remove-item -path "${installPath}\${install_logFile}" -ErrorAction SilentlyContinue
@@ -204,10 +190,6 @@ netsh.exe http show urlacl "url=${url_expression}"
 Write-Output "Start the service ""$serviceDisplayName"""
 cmd /c sc.exe start """${serviceDisplayName}"""
 Start-Sleep $windowsServiceChangeCompletionDelay
-
-Write-Output "Confirm the service ""$serviceDisplayName"" is  operational"
-$test = Get-Service | where { $_.displayname -match $serviceDisplayName -and $_.status -match 'running' }
-Write-Output $test
 
 $Error.clear()
 

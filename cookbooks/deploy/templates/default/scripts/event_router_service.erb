@@ -13,51 +13,17 @@ messaging_server = '<%= @messaging_server %>'
 messaging_port = settings['messaging_port']
 db_server = '<%= @db_server %>'
 
-app_config = 'UltimateSoftware.Foundation.Messaging.EventRouter.exe.config'
+app_config = "#{target_directory}/UltimateSoftware.Foundation.Messaging.EventRouter.exe.config"
 
-puts "Verifying the presence of the target directory: #{target_directory}"
 if File.exist?(target_directory)
   puts 'Event Router Service has already been configured'
 else
-
-  puts "Verifying the presence of the source directory: #{source_directory}"
-  if !File.exist?(source_directory)
-    puts 'Event Router Service source directory is missing'
-    exit  4
-  end
-
-  puts "Creating the target directory: #{target_directory}"
   FileUtils.mkdir_p(target_directory)
-  if !File.exist?(target_directory)
-    puts 'Event Router Service target directory cannot be created'
-    exit 8
-  end
-
-  puts "Copying application files #{source_directory} to #{target_directory}"
-
-  Dir.chdir(source_directory)
-
   FileUtils.cp_r("#{source_directory}/.",  target_directory )
-
-  Dir.chdir(target_directory)
-
-
-  if !File.exist?(app_config)
-    puts 'Event Router Service configuration file #{app_config} is missing'
-    exit  16
-  end
 end
 
-Dir.chdir(target_directory)
-
-
-puts "Updating configuration file #{app_config} with #{messaging_server}"
 Helpers::change_app_setting(app_config, "MessagingServer.Uri", "http://#{messaging_server}:#{messaging_port}")
-
-puts "Updating configuration file #{app_config} with #{db_server}"
 Helpers::change_app_setting(app_config, "ConnectionString", "Server=#{db_server}:#{settings['database_port']}")
 
-app_config_full_path = "#{target_directory}/#{app_config}"
-puts "Updating configuration file #{app_config_full_path} with cache server and security properties"
-IOUtils::replace_text_in_file(app_config_full_path, '<%= '<host name="localhost"' %>', "<%= '<host name=\"' %><%= @cache_server %>\"")
-IOUtils::replace_text_in_file(app_config_full_path, '<\/hosts>', '</hosts><securityProperties mode="None" protectionLevel="None"/>')
+IOUtils::replace_text_in_file(app_config, '<%= '<host name="localhost"' %>', "<%= '<host name=\"' %><%= @cache_server %>\"")
+IOUtils::replace_text_in_file(app_config, '<\/hosts>', '</hosts><securityProperties mode="None" protectionLevel="None"/>')
