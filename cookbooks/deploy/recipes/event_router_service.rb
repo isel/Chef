@@ -6,11 +6,11 @@ ruby_scripts_dir = node['ruby_scripts_dir']
 
 target_directory = File.join(ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter').gsub(/\\/, '/')
 install_path = File.join(ENV['ProgramData'], 'Windows Services\Messaging Event Router').gsub(/\\/, '/')
-installutil_command_fullpath= 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe'
+installutil_command_fullpath = 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe'
 
 windows_service_change_completion_delay = 30
 
-service_assembly_filename=  'UltimateSoftware.Foundation.Messaging.EventRouter.exe'
+service_assembly_filename =  'UltimateSoftware.Foundation.Messaging.EventRouter.exe'
 service_display_name = 'Ultimate Software Event Router Service'
 
 if File.exist?(target_directory) || File.exists?(install_path)
@@ -197,4 +197,3 @@ $Error.clear()
   source(powershell_script)
 end
 
-puts 'Event Router Service installed'

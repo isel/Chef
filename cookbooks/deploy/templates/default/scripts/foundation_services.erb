@@ -12,12 +12,15 @@ FileUtils.cp_r('<%= node['binaries_directory'] %>/Models', '/Websites')
 FileUtils.cp_r('<%= node['binaries_directory'] %>/AppServer/Websites/UltimateSoftware.Gateway.Active/.', '/Websites/ActiveSTS')
 FileUtils.cp_r('<%= node['binaries_directory'] %>/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services')
 
+FileUtils.mkdir_p('/logs')
+
 configs = FileList['/Websites/**/*.config']
 puts "found #{configs.count} config files"
 
 def thumbprint
   `powershell -Command "((dir cert:\\localmachine\\Root -rec | where-object {$_.Subject -eq 'CN=localhost'}) | select-object thumbprint).thumbprint"`.strip
 end
+
 
 Helpers::add_services_thumbprint("/Websites/Services/Web.config", thumbprint)
 Helpers::change_cert_repo_thumbprint("/Websites/ActiveSTS/configuration/CertificateRepository.config", thumbprint)
