@@ -100,6 +100,30 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/admin_password_mongo": {
+      "display_name": "admin password for mongo",
+      "required": "required",
+      "recipes": [
+        "deploy::mule_configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/admin_user_mongo": {
+      "display_name": "admin user for mongo",
+      "required": "required",
+      "recipes": [
+        "deploy::mule_configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/app_server": {
       "display_name": "app server",
       "required": "required",

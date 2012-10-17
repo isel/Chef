@@ -16,8 +16,10 @@ properties_backup_filename = "#{properties_filename}.BAK"
 token_values = {
   'app_server' => '<%= @app_server %>',
   'cache_server' => '<%= @cache_server %>',
+  'db_password' => '<%= @admin_password_mongo %>',
   'db_port' => settings['database_port'],
   'db_server' => '<%= @db_server %>',
+  'db_user' => '<%= @admin_user_mongo %>(admin)',
   'engine_port' => settings['engine_port'],
   'engine_server' => '<%= @engine_server %>',
   'messaging_port' => settings['messaging_port'],

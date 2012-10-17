@@ -65,6 +65,16 @@ attribute "core/s3_bucket",
 
 
 # Attributes from deploy cookbook
+attribute "deploy/admin_password_mongo",
+  :display_name => "admin password for mongo",
+  :required => "required",
+  :recipes  => ["deploy::mule_configure"]
+
+attribute "deploy/admin_user_mongo",
+  :display_name => "admin user for mongo",
+  :required => "required",
+  :recipes  => ["deploy::mule_configure"]
+
 attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
