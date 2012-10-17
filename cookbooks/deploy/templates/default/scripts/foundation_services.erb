@@ -11,7 +11,6 @@ FileList['/Websites/**'].each { |f| FileUtils.remove_entry(f, true) }
 FileUtils.cp_r('<%= node['binaries_directory'] %>/Models', '/Websites')
 FileUtils.cp_r('<%= node['binaries_directory'] %>/AppServer/Websites/UltimateSoftware.Gateway.Active/.', '/Websites/ActiveSTS')
 FileUtils.cp_r('<%= node['binaries_directory'] %>/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services')
-FileUtils.cp_r('<%= node['binaries_directory'] %>/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services.Help')
 
 configs = FileList['/Websites/**/*.config']
 puts "found #{configs.count} config files"
@@ -38,5 +37,8 @@ active_sts = '/Websites/ActiveSTS/configuration/ActiveSTS.config'
 IOUtils::replace_text_in_file(active_sts, /localhost:2702/, 'localhost:81')
 IOUtils::replace_text_in_file(active_sts, /:81\/sts/, ':81/')
 
+FileUtils.cp_r('/Websites/Services/.', '/Websites/Services.Help')
+
 Helpers::change_service_authorization_type("/Websites/Services.Help/Web.config",
   "UltimateSoftware.Foundation.IdentityModel.STS.AuthorizationManagers.USWebRequestDevAuthorizationManager, UltimateSoftware.Foundation.IdentityModel.STS")
+
