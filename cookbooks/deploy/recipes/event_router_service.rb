@@ -223,5 +223,5 @@ template "#{ruby_scripts_dir}/event_router_launch_check.rb" do
 end
 
 powershell 'Confirming Event Router Service started.' do
-  source("ruby #{ruby_scripts_dir}/event_router_service.rb")
+  source("ruby #{ruby_scripts_dir}/event_router_launch_check.rb")
 end
