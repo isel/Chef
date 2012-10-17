@@ -216,7 +216,7 @@ $Error.clear()
 end
 
 template "#{ruby_scripts_dir}/event_router_launch_check.rb" do
-  puts `` 'Confirming Event Router Service started'
+  puts  'Confirming Event Router Service started'
   source 'scripts/event_router_launch_check.erb'
   variables(
     :service_display_name => service_display_name,
