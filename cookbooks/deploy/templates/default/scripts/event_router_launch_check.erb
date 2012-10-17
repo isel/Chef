@@ -1,0 +1,104 @@
+require 'win32ole'
+require 'yaml'
+require 'json'
+
+require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/configuration'
+require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/io_utils'
+
+
+def inspect_query_results(query_results, *first_only)
+  results = []
+  query_results.each do |set_member|
+    info = { }
+    set_member.Properties_.each do |property|
+      key = property.Name
+      value = property.value
+      info[key] = value
+    end
+    results << info
+    break if first_only
+  end
+  results.to_yaml
+end
+
+def get_query_results_value(query_results, property_name)
+
+  value = $null
+
+  query_results.each do |set_member|
+    set_member.Properties_.each do |property|
+      if  Regexp.new(property_name, Regexp::EXTENDED | Regexp::IGNORECASE).match(property.Name)
+        value = property.value
+      end
+    end
+    break
+  end
+
+  value
+end
+
+def execute(commandline)
+  command_response = []
+  begin
+    IO::popen(commandline) do |iostream|
+      line = ''
+      until line.nil?
+        command_response << line
+        line = iostream.gets
+      end
+    end
+  rescue => e
+    raise 'cannot execute command ' + e.to_s
+  end
+  # remove edge blank lines
+  command_response.join("\n").gsub(/\r?\n?$/, '').gsub(/^\r?\n?/, '')
+end
+
+def sc_query(service_display_name)
+  result = execute("sc query \"#{service_display_name}\"")
+  if result.match Regexp.new('STATE\s+:\s+\d+\s+RUNNING', Regexp::IGNORECASE)
+    true
+  else
+    false
+  end
+end
+
+def wmi_query(query)
+  wmi = WIN32OLE.connect('winmgmts:')
+  result_yaml = inspect_query_results(wmi.ExecQuery(query))
+  result = YAML::load(result_yaml)
+  if result.size > 0 && result[0]['Status'] =~ /OK/
+    true
+  else
+    false
+  end
+end
+
+service_display_name = '<%= @service_display_name %>'
+launch_wait_timeout = <%= launch_wait_timeout  %>
+service_display_name = 'Ultimate Software Event Router Service' if service_display_name.nil?
+timeout = 30
+cumulative_wait_time = 0
+expected_description = "'Service #{service_display_name} running'"
+check_result = nil
+while cumulative_wait_time < launch_wait_timeout
+
+  check_result = wmi_query "SELECT name, startname, processid, status FROM win32_service WHERE state = 'Running' AND startName = 'localsystem' AND name ='#{service_display_name}' and status = 'OK'"
+  $stderr.puts "WMI Query: #{check_result.to_s}"
+
+  break if check_result
+
+  check_result = sc_query(service_display_name)
+  $stderr.puts "query service result: #{check_result.to_s}"
+  break if check_result
+  cumulative_wait_time = cumulative_wait_time + timeout
+  $stderr.puts "#{expected_description} not observed for #{cumulative_wait_time} sec. Retry after #{timeout} sec."
+
+  sleep timeout
+end
+if check_result
+  exit 0
+else
+  $stderr.puts "#{expected_description} not observed for #{cumulative_wait_time} sec. Reporting the error."
+  exit 1
+end

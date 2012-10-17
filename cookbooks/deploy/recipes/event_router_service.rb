@@ -10,7 +10,7 @@ installutil_command_fullpath= 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\Ins
 
 windows_service_change_completion_delay = 30
 
-service_assembly_filename=  'UltimateSoftware.Foundation.Messaging.EventRouter.exe'
+service_assembly_filename= 'UltimateSoftware.Foundation.Messaging.EventRouter.exe'
 service_display_name = 'Ultimate Software Event Router Service'
 
 if File.exist?(target_directory) || File.exists?(install_path)
@@ -215,4 +215,82 @@ $Error.clear()
   source(powershell_script)
 end
 
+template "#{ruby_scripts_dir}/event_router_launch_check.rb" do
+  puts `` 'Confirming Event Router Service started'
+  source 'scripts/event_router_launch_check.erb'
+  variables(
+    :service_display_name => service_display_name,
+    :launch_wait_timeout => 300)
+end
+
+powershell 'Copy the application files to intermediate directory and update application configuration.' do
+  source("ruby #{ruby_scripts_dir}/event_router_service.rb")
+end
+
+
 puts 'Event Router Service installed'
+
+powershell 'Confirming Event Router Service started' do
+  parameters (
+    {
+      'SERVICE_DISPLAY_NAME' => service_display_name
+  'TIMEOUT' => 300
+  }
+  )
+  powershell_script = <<-'EOF'
+Function wmi_query{
+  $timeout = $args[1]
+  $query = $args[0]
+  $erroractionpreference = "SilentlyContinue"
+  $system = "$Env:COMPUTERNAME"
+  $NameSpace = "Root\CIMV2"
+  $wmi = [WMISearcher]""
+  $wmi.scope.path = "\\$system\$NameSpace"
+  $wmi.options.timeout = $timeout
+  $wmi.query = $query
+  Try{
+    $result = $wmi.Get()
+    $summary = ''
+    foreach ($row in $result){
+      $name = $row.name
+      $processId = $row.processid
+      $status = $row.status
+      $startName = $row.startname
+      $summary = "Service ""{0}"" status is {1}" -f $name,$status
+      # Write-error "$summary" -ForegroundColor Green
+    }
+  } Catch {
+    Write-error "WMI error: $_"
+    throw
+  }
+  $summary
+}
+$Env:TIMEOUT = 100
+$Env:SERVICE_DISPLAY_NAME = 'Ultimate Software Event Router Service'
+$max_cnt = 3
+$cnt = 0
+$timeout = 10
+$cumulative_wait_time = 0
+$expected_description = "'Service ${Env:SERVICE_DISPLAY_NAME} running'"
+while ($cumulative_wait_time -lt ${Env:TIMEOUT}){
+  $cnt ++
+  $result  = wmi_query "SELECT name, startname, processid, status FROM win32_service WHERE state = 'Running' AND startName = 'localsystem' AND name ='$Env:SERVICE_DISPLAY_NAME'"  '0:0:30'
+  if ($result -match 'OK' ){
+    write-host "${expected_description} detected."
+    break
+  } else {
+    $cumulative_wait_time = $cumulative_wait_time + $timeout
+    write-host "${expected_description} not observed for ${cumulative_wait_time} sec. Retry after $timeout sec."
+    start-sleep  $timeout
+  }
+}
+
+if ( -not $result  -match 'OK' ){
+  throw "${expected_description} not observed for ${cumulative_wait_time} sec."
+}
+$Error.clear()
+  EOF
+  source(powershell_script)
+end
+
+
