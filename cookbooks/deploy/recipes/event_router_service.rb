@@ -216,7 +216,7 @@ $Error.clear()
 end
 
 template "#{ruby_scripts_dir}/event_router_launch_check.rb" do
-  puts  'Confirming Event Router Service started'
+  puts 'Confirming Event Router Service started'
   source 'scripts/event_router_launch_check.erb'
   variables(
     :service_display_name => service_display_name,
@@ -233,9 +233,9 @@ puts 'Event Router Service installed'
 powershell 'Confirming Event Router Service started' do
   parameters (
     {
-      'SERVICE_DISPLAY_NAME' => service_display_name
-  'TIMEOUT' => 300
-  }
+      'SERVICE_DISPLAY_NAME' => service_display_name,
+      'TIMEOUT' => 300
+    }
   )
   powershell_script = <<-'EOF'
 Function wmi_query{
