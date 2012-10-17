@@ -1,25 +1,6 @@
-require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/configuration'
-require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/io_utils'
-
-def execute(commandline)
-  command_response = []
-  begin
-    IO::popen(commandline) do |iostream|
-      line = ''
-      until line.nil?
-        command_response << line
-        line = iostream.gets
-      end
-    end
-  rescue => e
-    raise 'cannot execute command ' + e.to_s
-  end
-  # remove edge blank lines
-  command_response.join("\n").gsub(/\r?\n?$/, '').gsub(/^\r?\n?/, '')
-end
 
 def sc_query(service_display_name)
-  result = execute("sc query \"#{service_display_name}\"")
+  result = `sc.exe query "#{service_display_name}"`
   result.match Regexp.new('STATE\s+:\s+\d+\s+RUNNING', Regexp::IGNORECASE)
 end
 
