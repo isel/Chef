@@ -1,26 +1,17 @@
+require 'rake'
+require '<%= @binaries_directory %>/CI/BuildScripts/Cloud/deployment'
+require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/process'
 
-def sc_query(service_display_name)
-  result = `sc.exe query "#{service_display_name}"`
-  result.match Regexp.new('STATE\s+:\s+\d+\s+RUNNING', Regexp::IGNORECASE)
-end
 
 service_display_name = '<%= @service_display_name %>'
-launch_wait_timeout = <%= @launch_wait_timeout  %>
-timeout = 30
-cumulative_wait_time = 0
+launch_wait_timeout =  <%= @launch_wait_timeout %>
 
-service_status_confirmed = nil
+  Helpers::Process.new.run("wait for #{service_display_name} to start", launch_wait_timeout) do
+    begin
+      result = `sc.exe query "#{service_display_name}"`
+      result.match Regexp.new('STATE\s+:\s+\d+\s+RUNNING', Regexp::IGNORECASE)
+    rescue
+      false
+    end
+  end
 
-while cumulative_wait_time < launch_wait_timeout
-
-  service_status_confirmed = sc_query(service_display_name)
-  break if service_status_confirmed
-
-  cumulative_wait_time = cumulative_wait_time + timeout
-  $stderr.puts "Service #{service_display_name} is not started after  #{cumulative_wait_time} sec. Retry after #{timeout} sec."
-  sleep timeout
-end
-unless service_status_confirmed
-  $stderr.puts "Service #{service_display_name} is not started. Reporting the error."
-  exit 1
-end
