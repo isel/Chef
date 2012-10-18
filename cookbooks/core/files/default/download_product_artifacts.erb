@@ -1,0 +1,57 @@
+require 'fog'
+require 'fileutils'
+
+revision = '<%= @revision %>'
+s3_bucket = '<%= @s3_bucket %>'
+s3_directory = '<%= @s3_directory %>'
+target_directory = '<%= @target_directory %>'
+
+puts "pulling build scripts from s3_directory: #{s3_directory}, revision: #{revision} to target_directory: #{target_directory}"
+
+storage = Fog::Storage.new(
+  :provider => 'AWS',
+  :aws_access_key_id => '<%= @aws_access_key_id %>',
+  :aws_secret_access_key => '<%= @aws_secret_access_key %>'
+)
+
+bucket = storage.directories.find { |d| d.key == s3_bucket }
+s3_files = bucket.files
+
+install_files = '<%= @artifacts %>'.split(',')
+
+revision_marker_file = File.join(target_directory,'revision.txt')
+
+if Dir.exist? target_directory
+  old_revision =  File.exists?(revision_marker_file) ? File.read(revision_marker_file).chomp : nil
+  if old_revision == revision
+    puts "Found the revision #{revision} already on the system"
+    exit 0
+  else
+    FileUtils.remove_dir(target_directory, true)
+  end
+end
+
+Dir.mkdir(target_directory)
+missing_files = []
+
+s3_path = "<%= @s3_repository %>/#{s3_directory}/#{revision}"
+
+install_files.each do |f|
+  file = s3_files.get("#{s3_path}/#{f}.zip")
+  if file.nil?
+    missing_files << "#{s3_path}/#{f}.zip"
+  else
+    File.open("#{target_directory}/#{f}.zip", 'wb') do |local_file|
+      local_file.write(file.body)
+    end
+    <% if node[:platform] == 'ubuntu' -%>
+      `unzip -d #{target_directory}/#{f} #{target_directory}/#{f}.zip`
+    <% else -%>
+      `"#{ENV['ProgramFiles(x86)']}\\7-Zip\\7z.exe" x -y -o#{target_directory}/#{f} -r #{target_directory}/#{f}.zip`
+    <% end -%>
+  end
+end
+
+raise "could not find the following files: #{missing_files}" unless missing_files.empty?
+
+File.open(revision_marker_file, 'w') { |file| file.puts(revision) }
