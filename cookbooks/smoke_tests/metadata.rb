@@ -21,7 +21,6 @@ recipe "smoke_tests::local_search", "Runs local elasticsearch smoke tests"
 recipe "smoke_tests::local_web", "Runs local web server smoke tests"
 
 ### attributes used from other cookbooks
-
 attribute "core/server_type",
   :display_name => "server type",
   :description => "eg: db, app, web, cache",
@@ -31,6 +30,16 @@ attribute "core/server_type",
     "smoke_tests::local_app", "smoke_tests::local_cache", "smoke_tests::local_db", "smoke_tests::local_engine",
     "smoke_tests::local_loadbalancer", "smoke_tests::local_messaging", "smoke_tests::local_web"
   ]
+
+attribute "deploy/admin_password_mongo",
+  :display_name => "admin password for mongo",
+  :required => "required",
+  :recipes  => ["smoke_tests::local_db"]
+
+attribute "deploy/admin_user_mongo",
+  :display_name => "admin user for mongo",
+  :required => "required",
+  :recipes  => ["smoke_tests::local_db"]
 
 attribute "deploy/app_server",
   :display_name => "app server",

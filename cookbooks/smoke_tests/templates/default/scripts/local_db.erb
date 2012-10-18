@@ -5,6 +5,8 @@ require 'json'
 settings = JSON.parse(File.read('<%= node['deployment_settings_json'] %>'))
 
 ENV['db_port'] = settings['database_port']
+ENV['admin_user_mongo'] = '<%= @admin_user_mongo %>'
+ENV['admin_password_mongo'] = '<%= @admin_password_mongo %>'
 
 RSpec::Core::RakeTask.new(:spec) do |t|
   t.pattern = '<%= node['binaries_directory'] %>/CI/spec/Smoke/deploy_<%= @server_type %>_spec.rb'
