@@ -60,6 +60,19 @@
       "calculated": false,
       "type": "string"
     },
+    "core/s3_repository": {
+      "display_name": "s3 repository for the UGF platform",
+      "required": "optional",
+      "default": "GlobalIncite",
+      "recipes": [
+        "ade_plugins::default"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/s3_repository": {
       "display_name": "s3 repository for the UGF platform",
       "required": "optional",

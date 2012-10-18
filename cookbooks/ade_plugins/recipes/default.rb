@@ -10,7 +10,7 @@ template "#{node['ruby_scripts_dir']}/download_plugins.rb" do
     :target_directory => node[:plugins_directory],
     :revision => node[:ade_plugins][:plugins_revision],
     :s3_bucket => node[:core][:s3_bucket],
-    :s3_repository => node[:deploy][:s3_repository],
+    :s3_repository => node[:core][:s3_repository],
     :s3_directory => 'Plugins'
   )
 end

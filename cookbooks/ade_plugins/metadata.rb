@@ -28,6 +28,12 @@ attribute "core/s3_bucket",
   :default  => "ugfgate1",
   :recipes => ["ade_plugins::default"]
 
+attribute "core/s3_repository",
+  :display_name => "s3 repository for the UGF platform",
+  :required => "optional",
+  :default => "GlobalIncite",
+  :recipes => ["ade_plugins::default"]
+
 
 attribute "deploy/s3_repository",
   :display_name => "s3 repository for the UGF platform",
