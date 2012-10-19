@@ -1,8 +1,8 @@
-ruby_scripts_dir = node['ruby_scripts_dir']
-Dir.mkdir(ruby_scripts_dir) unless File.exist? ruby_scripts_dir
+include_recipe 'core::download_product_artifacts_prereqs'
 
-template "#{ruby_scripts_dir}/download_infrastructure.rb" do
-  source 'scripts/download_artifacts.erb'
+template "#{node['ruby_scripts_dir']}/download_infrastructure.rb" do
+  local true
+  source "#{node['ruby_scripts_dir']}download_product_artifacts.erb"
   variables(
     :aws_access_key_id => node[:core][:aws_access_key_id],
     :aws_secret_access_key => node[:core][:aws_secret_access_key],
@@ -18,11 +18,11 @@ end
 if node[:platform] == "ubuntu"
   bash 'Downloading artifacts' do
     code <<-EOF
-      ruby #{ruby_scripts_dir}/download_infrastructure.rb
+      ruby #{node['ruby_scripts_dir']}/download_infrastructure.rb
     EOF
   end
 else
   powershell "Downloading artifacts" do
-    source("ruby #{ruby_scripts_dir}/download_infrastructure.rb")
+    source("ruby #{node['ruby_scripts_dir']}/download_infrastructure.rb")
   end
 end
