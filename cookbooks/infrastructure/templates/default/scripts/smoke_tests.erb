@@ -2,7 +2,7 @@ require 'rake'
 require 'rspec/core/rake_task'
 
 RSpec::Core::RakeTask.new(:spec) do |t|
-  t.pattern = '<%= node['ruby_scripts_dir'] %>/smoke_tests_spec.rb'
+  t.pattern = '<%= node[:ruby_scripts_dir] %>/smoke_tests_spec.rb'
 end
 
 task :default => [:spec]

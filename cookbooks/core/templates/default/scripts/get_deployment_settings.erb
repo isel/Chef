@@ -1,10 +1,10 @@
 require 'rest-client'
 
-RestClient.log = '<%= node['ruby_scripts_dir'] %>/rest.log'
+RestClient.log = '<%= node[:ruby_scripts_dir] %>/rest.log'
 site = RestClient::Resource.new('<%= @api_infrastructure_url %>', {:timeout => 500})
 
 ['json', 'xml'].each do |format|
   response = site["<%= @deployment_uri %>/settings.#{format}"].get
-  File.open("<%= node['ruby_scripts_dir'] %>/deployment_settings.#{format}", 'w') { |f| f.puts response }
+  File.open("<%= node[:ruby_scripts_dir] %>/deployment_settings.#{format}", 'w') { |f| f.puts response }
 end
 

@@ -1,4 +1,4 @@
-template "#{node['ruby_scripts_dir']}/initiate_replica_set_via_tags.rb" do
+template "#{node[:ruby_scripts_dir]}/initiate_replica_set_via_tags.rb" do
   source 'scripts/initiate_replica_set_via_tags.erb'
   variables(
       :deployment_name => node[:deploy][:deployment_name],
@@ -9,7 +9,7 @@ end
 
 bash 'Initiate replica set via tags' do
   code <<-EOF
-    ruby #{node['ruby_scripts_dir']}/initiate_replica_set_via_tags.rb
+    ruby #{node[:ruby_scripts_dir]}/initiate_replica_set_via_tags.rb
   EOF
   only_if { node[:deploy][:is_primary_db] == 'true' && node[:deploy][:use_replication] == 'true' }
 end

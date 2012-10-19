@@ -1,1 +1,1 @@
-default['ruby_scripts_dir'] = '/RubyScripts'
+default[:ruby_scripts_dir] = '/RubyScripts'

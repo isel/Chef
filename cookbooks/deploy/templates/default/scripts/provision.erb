@@ -1,7 +1,7 @@
 require 'rake'
 require 'json'
 
-require '<%= node['binaries_directory'] %>/CI/BuildScripts/Deployment/provision'
+require '<%= node[:binaries_directory] %>/CI/BuildScripts/Deployment/provision'
 
 settings = JSON.parse(File.read('<%= node['deployment_settings_json'] %>'))
 
@@ -10,7 +10,7 @@ exe = '/Provision/bin/UltimateSoftware.Provisioning.Runner.exe'
 puts 'Provisioning deployment'
 
 provision = Deployment::Provision.new(
-  '<%= node['binaries_directory'] %>', '/Provision',
+  '<%= node[:binaries_directory] %>', '/Provision',
   '<%= node[:pims_directory] %>', '/PIM_Publishing')
 
 provision.execute('<%= @tenant %>', settings, exe)

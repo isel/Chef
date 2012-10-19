@@ -1,4 +1,4 @@
-script = "#{node['ruby_scripts_dir']}/get_deployment_settings.rb"
+script = "#{node[:ruby_scripts_dir]}/get_deployment_settings.rb"
 
 template script do
   source 'scripts/get_deployment_settings.erb'

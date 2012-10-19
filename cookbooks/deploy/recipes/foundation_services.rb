@@ -1,7 +1,7 @@
 require 'rake'
 require 'fileutils'
 
-ruby_scripts_dir = node['ruby_scripts_dir']
+ruby_scripts_dir = node[:ruby_scripts_dir]
 app_pools = 'ServicesAppPool,ActiveSTSAppPool,ServicesHelpAppPool'
 
 redeploy = File.exist?('/Websites')
@@ -31,11 +31,11 @@ template "#{ruby_scripts_dir}/foundation_services.rb" do
   )
 end
 
-template "#{node['binaries_directory']}/AppServer/Websites/UltimateSoftware.Gateway.Active/HealthCheck.html" do
+template "#{node[:binaries_directory]}/AppServer/Websites/UltimateSoftware.Gateway.Active/HealthCheck.html" do
   source 'health_check.erb'
 end
 
-template "#{node['binaries_directory']}/AppServer/Websites/UltimateSoftware.Services/HealthCheck.html" do
+template "#{node[:binaries_directory]}/AppServer/Websites/UltimateSoftware.Services/HealthCheck.html" do
   source 'health_check.erb'
 end
 

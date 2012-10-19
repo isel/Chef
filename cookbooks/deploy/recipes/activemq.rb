@@ -5,9 +5,9 @@ product = 'activemq'
 if File.exists?("/opt/#{product}")
   log "#{product} is already installed"
 else
-  template "#{node['ruby_scripts_dir']}/download_#{product}.rb" do
+  template "#{node[:ruby_scripts_dir]}/download_#{product}.rb" do
     local true
-    source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
+    source "#{node[:ruby_scripts_dir]}/download_vendor_artifacts.erb"
     variables(
       :aws_access_key_id => node[:core][:aws_access_key_id],
         :aws_secret_access_key => node[:core][:aws_secret_access_key],
@@ -23,7 +23,7 @@ else
 
   bash "Downloading #{product}" do
     code <<-EOF
-      ruby #{node['ruby_scripts_dir']}/download_#{product}.rb
+      ruby #{node[:ruby_scripts_dir]}/download_#{product}.rb
     EOF
   end
 

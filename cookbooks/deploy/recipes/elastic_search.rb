@@ -11,9 +11,9 @@ else
     code 'apt-get -yqq install openjdk-6-jre'
   end
 
-  template "#{node['ruby_scripts_dir']}/download_elastic_search.rb" do
+  template "#{node[:ruby_scripts_dir]}/download_elastic_search.rb" do
     local true
-    source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
+    source "#{node[:ruby_scripts_dir]}/download_vendor_artifacts.erb"
     variables(
       :aws_access_key_id => node[:core][:aws_access_key_id],
         :aws_secret_access_key => node[:core][:aws_secret_access_key],
@@ -28,7 +28,7 @@ else
   end
 
   bash 'Downloading elastic search' do
-    code "ruby #{node['ruby_scripts_dir']}/download_elastic_search.rb"
+    code "ruby #{node[:ruby_scripts_dir]}/download_elastic_search.rb"
   end
 
   bash 'Configure elastic search' do
@@ -76,6 +76,6 @@ else
   bash('starting elastic search') { code 'service elasticsearch start' }
 end
 
-template("#{node['ruby_scripts_dir']}/wait_for_elastic_search.rb") { source 'scripts/wait_for_elastic_search.erb' }
+template("#{node[:ruby_scripts_dir]}/wait_for_elastic_search.rb") { source 'scripts/wait_for_elastic_search.erb' }
 
-bash('wait for elastic search') { code "ruby #{node['ruby_scripts_dir']}/wait_for_elastic_search.rb" }
+bash('wait for elastic search') { code "ruby #{node[:ruby_scripts_dir]}/wait_for_elastic_search.rb" }

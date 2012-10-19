@@ -1,9 +1,9 @@
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
 if node[:platform] == "ubuntu"
-  template "#{node['ruby_scripts_dir']}/download_jdk.rb" do
+  template "#{node[:ruby_scripts_dir]}/download_jdk.rb" do
     local true
-    source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
+    source "#{node[:ruby_scripts_dir]}/download_vendor_artifacts.erb"
     variables(
       :aws_access_key_id => node[:core][:aws_access_key_id],
       :aws_secret_access_key => node[:core][:aws_secret_access_key],
@@ -20,7 +20,7 @@ if node[:platform] == "ubuntu"
 
   bash 'Installing jdk' do
     code <<-EOF
-      ruby #{node['ruby_scripts_dir']}/download_jdk.rb
+      ruby #{node[:ruby_scripts_dir]}/download_jdk.rb
       echo "JAVA_HOME=/jdk_ubuntu/jdk1.7.0_07" >> /etc/profile
       echo "JRE_HOME=/jdk_ubuntu/jdk1.7.0_07" >> /etc/profile
       echo "PATH=\$PATH:/jdk_ubuntu/jdk1.7.0_07/bin" >> /etc/profile
@@ -46,9 +46,9 @@ if node[:platform] == "ubuntu"
     not_if { File.exist?('/jdk_ubuntu/jdk1.7.0_07') }
   end
 else
-  template "#{node['ruby_scripts_dir']}/download_jdk.rb" do
+  template "#{node[:ruby_scripts_dir]}/download_jdk.rb" do
     local true
-    source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
+    source "#{node[:ruby_scripts_dir]}/download_vendor_artifacts.erb"
     variables(
       :aws_access_key_id => node[:core][:aws_access_key_id],
       :aws_secret_access_key => node[:core][:aws_secret_access_key],
@@ -65,7 +65,7 @@ else
 
   powershell 'Installing jdk' do
     script = <<-EOF
-      ruby #{node['ruby_scripts_dir']}/download_jdk.rb
+      ruby #{node[:ruby_scripts_dir]}/download_jdk.rb
       cd /download_jdk/jdk_windows
 
       cmd /c 'msiexec.exe /i jdk1.7.0_07.msi /qn INSTALLDIR=c:\\jdk'

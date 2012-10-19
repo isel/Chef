@@ -1,4 +1,4 @@
-ruby_scripts_dir = node['ruby_scripts_dir']
+ruby_scripts_dir = node[:ruby_scripts_dir]
 
 template "#{ruby_scripts_dir}/local_app.rb" do
   source 'scripts/local_app.erb'

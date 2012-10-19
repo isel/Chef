@@ -1,4 +1,4 @@
-require '<%= node['binaries_directory'] %>/CI/BuildScripts/Cloud/deployment'
+require '<%= node[:binaries_directory] %>/CI/BuildScripts/Cloud/deployment'
 
 servers = Cloud::Deployment.new.discover_servers('<%= @deployment_name %>')
 

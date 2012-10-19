@@ -26,7 +26,7 @@ end
 bash 'Setup website' do
   code <<-EOF
     mkdir --parents /var/www/api
-    cp -r #{node['infrastructure_directory']}/InfrastructureServices/* /var/www/api
+    cp -r #{node[:infrastructure_directory]}/InfrastructureServices/* /var/www/api
 
     echo "" >> /var/www/api/log/production.log
     echo "" >> /var/www/api/log/rest.log

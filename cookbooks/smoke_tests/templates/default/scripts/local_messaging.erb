@@ -27,7 +27,7 @@ ENV['messaging_server_port'] = settings['messaging_port']
 ENV['web_server'] = '<%= @web_server %>'
 
 RSpec::Core::RakeTask.new(:spec) do |t|
-  t.pattern = '<%= node['binaries_directory'] %>/CI/spec/Smoke/deploy_<%= @server_type %>_spec.rb'
+  t.pattern = '<%= node[:binaries_directory] %>/CI/spec/Smoke/deploy_<%= @server_type %>_spec.rb'
 end
 
 task :default => [:spec]

@@ -5,6 +5,6 @@ bash 'launch activemq' do
   EOF
 end
 
-template("#{node['ruby_scripts_dir']}/wait_for_activemq.rb") { source 'scripts/wait_for_activemq.erb' }
+template("#{node[:ruby_scripts_dir]}/wait_for_activemq.rb") { source 'scripts/wait_for_activemq.erb' }
 
-bash('wait for activemq') { code "ruby #{node['ruby_scripts_dir']}/wait_for_activemq.rb" }
+bash('wait for activemq') { code "ruby #{node[:ruby_scripts_dir]}/wait_for_activemq.rb" }

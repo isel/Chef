@@ -2,7 +2,7 @@ require 'rake'
 require 'fileutils'
 require 'yaml'
 
-ruby_scripts_dir = node['ruby_scripts_dir']
+ruby_scripts_dir = node[:ruby_scripts_dir]
 
 target_directory = File.join(ENV['TEMP'], 'AppServer/Services/Messaging.EventRouter').gsub(/\\/, '/')
 install_path = File.join(ENV['ProgramData'], 'Windows Services\Messaging Event Router').gsub(/\\/, '/')

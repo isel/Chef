@@ -1,16 +1,16 @@
 require 'rake'
 require 'json'
 
-require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/configuration'
-require '<%= node['binaries_directory'] %>/CI/BuildScripts/Helpers/io_utils'
+require '<%= node[:binaries_directory] %>/CI/BuildScripts/Helpers/configuration'
+require '<%= node[:binaries_directory] %>/CI/BuildScripts/Helpers/io_utils'
 
 settings = JSON.parse(File.read('<%= node['deployment_settings_json'] %>'))
 
 FileList['/Websites/**'].each { |f| FileUtils.remove_entry(f, true) }
 
-FileUtils.cp_r('<%= node['binaries_directory'] %>/Models', '/Websites')
-FileUtils.cp_r('<%= node['binaries_directory'] %>/AppServer/Websites/UltimateSoftware.Gateway.Active/.', '/Websites/ActiveSTS')
-FileUtils.cp_r('<%= node['binaries_directory'] %>/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services')
+FileUtils.cp_r('<%= node[:binaries_directory] %>/Models', '/Websites')
+FileUtils.cp_r('<%= node[:binaries_directory] %>/AppServer/Websites/UltimateSoftware.Gateway.Active/.', '/Websites/ActiveSTS')
+FileUtils.cp_r('<%= node[:binaries_directory] %>/AppServer/Websites/UltimateSoftware.Services/.', '/Websites/Services')
 
 FileUtils.mkdir_p('/logs')
 

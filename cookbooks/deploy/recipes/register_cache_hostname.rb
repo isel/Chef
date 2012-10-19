@@ -1,6 +1,6 @@
 require 'rake'
 
-ruby_scripts_dir = node['ruby_scripts_dir']
+ruby_scripts_dir = node[:ruby_scripts_dir]
 
 template "#{ruby_scripts_dir}/register_cache_hostname.rb" do
   source 'scripts/register_cache_hostname.erb'

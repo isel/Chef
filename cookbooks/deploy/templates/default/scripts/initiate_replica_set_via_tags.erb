@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'json'
-require '<%= node['binaries_directory'] %>/CI/BuildScripts/Cloud/deployment'
+require '<%= node[:binaries_directory] %>/CI/BuildScripts/Cloud/deployment'
 
 primary_db_server = Cloud::Deployment.new.discover_servers('<%= @deployment_name %>').find('<%= @server_name %>')
 mongodb_replica_set_name = primary_db_server.inputs.find {|input| input['name'] == 'MONGODB_REPLICA_SET_NAME'}['value']

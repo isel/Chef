@@ -1,4 +1,4 @@
-template "#{node['ruby_scripts_dir']}/update_configuration_tokens.rb" do
+template "#{node[:ruby_scripts_dir]}/update_configuration_tokens.rb" do
   source 'scripts/update_configuration_tokens.erb'
   variables(
     :app_server => node[:deploy][:app_server],
@@ -12,4 +12,4 @@ template "#{node['ruby_scripts_dir']}/update_configuration_tokens.rb" do
   )
 end
 
-bash('Updating tokens in Mule configuration') { code "ruby #{node['ruby_scripts_dir']}/update_configuration_tokens.rb" }
+bash('Updating tokens in Mule configuration') { code "ruby #{node[:ruby_scripts_dir]}/update_configuration_tokens.rb" }

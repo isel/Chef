@@ -1,8 +1,8 @@
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
-template "#{node['ruby_scripts_dir']}/download_appfabric.rb" do
+template "#{node[:ruby_scripts_dir]}/download_appfabric.rb" do
   local true
-  source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
+  source "#{node[:ruby_scripts_dir]}/download_vendor_artifacts.erb"
   variables(
     :aws_access_key_id => node[:core][:aws_access_key_id],
     :aws_secret_access_key => node[:core][:aws_secret_access_key],
@@ -18,13 +18,13 @@ template "#{node['ruby_scripts_dir']}/download_appfabric.rb" do
 end
 
 powershell 'Download AppFabric' do
-  source("ruby #{node['ruby_scripts_dir']}/download_appfabric.rb")
+  source("ruby #{node[:ruby_scripts_dir]}/download_appfabric.rb")
   not_if { File.exist?('/installs/appfabric.zip') }
 end
 
-template "#{node['ruby_scripts_dir']}/download_appfabric_admin_tool.rb" do
+template "#{node[:ruby_scripts_dir]}/download_appfabric_admin_tool.rb" do
   local true
-  source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
+  source "#{node[:ruby_scripts_dir]}/download_vendor_artifacts.erb"
   variables(
     :aws_access_key_id => node[:core][:aws_access_key_id],
     :aws_secret_access_key => node[:core][:aws_secret_access_key],
@@ -40,7 +40,7 @@ template "#{node['ruby_scripts_dir']}/download_appfabric_admin_tool.rb" do
 end
 
 powershell 'Download AppFabric Admin Tool' do
-  source("ruby #{node['ruby_scripts_dir']}/download_appfabric_admin_tool.rb")
+  source("ruby #{node[:ruby_scripts_dir]}/download_appfabric_admin_tool.rb")
   not_if { File.exist?('/appfabric_caching_admin') }
 end
 

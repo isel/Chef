@@ -5,7 +5,7 @@ require 'fileutils'
 require 'yaml'
 
 version = node[:mule_version]
-ruby_scripts_dir = node['ruby_scripts_dir']
+ruby_scripts_dir = node[:ruby_scripts_dir]
 product = 'mule'
 mule_home = "/opt/#{product}"
 messaging_server_directory='MessagingServer'
@@ -59,9 +59,9 @@ log 'bash profile updated.'
 if File.exists?("#{mule_home}/bin")
   log 'Mule already installed.'
 else
-  template "#{node['ruby_scripts_dir']}/download_mule.rb" do
+  template "#{node[:ruby_scripts_dir]}/download_mule.rb" do
     local true
-    source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
+    source "#{node[:ruby_scripts_dir]}/download_vendor_artifacts.erb"
     variables(
       :aws_access_key_id => node[:core][:aws_access_key_id],
         :aws_secret_access_key => node[:core][:aws_secret_access_key],
@@ -104,9 +104,9 @@ else
     EOF
   end
 
-  template "#{node['ruby_scripts_dir']}/download_mule_plugins.rb" do
+  template "#{node[:ruby_scripts_dir]}/download_mule_plugins.rb" do
     local true
-    source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
+    source "#{node[:ruby_scripts_dir]}/download_vendor_artifacts.erb"
     variables(
       :aws_access_key_id => node[:core][:aws_access_key_id],
         :aws_secret_access_key => node[:core][:aws_secret_access_key],

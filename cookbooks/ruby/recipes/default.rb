@@ -9,9 +9,9 @@ if node[:platform] == "ubuntu"
     ruby_version = '1.9.2-p320'
     executables = ['ruby', 'gem', 'rake', 'rspec', 'rdoc', 'ri', 'bundle']
 
-    template "#{node['ruby_scripts_dir']}/download_ruby.rb" do
+    template "#{node[:ruby_scripts_dir]}/download_ruby.rb" do
       local true
-      source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
+      source "#{node[:ruby_scripts_dir]}/download_vendor_artifacts.erb"
       variables(
         :aws_access_key_id => node[:core][:aws_access_key_id],
         :aws_secret_access_key => node[:core][:aws_secret_access_key],
@@ -34,7 +34,7 @@ if node[:platform] == "ubuntu"
 
     bash 'Download ruby' do
       code <<-EOF
-      /opt/rightscale/sandbox/bin/ruby -rubygems #{node['ruby_scripts_dir']}/download_ruby.rb
+      /opt/rightscale/sandbox/bin/ruby -rubygems #{node[:ruby_scripts_dir]}/download_ruby.rb
       EOF
     end
 
@@ -74,9 +74,9 @@ if node[:platform] == "ubuntu"
     end
   end
 else
-  template "#{node['ruby_scripts_dir']}/download_ruby.rb" do
+  template "#{node[:ruby_scripts_dir]}/download_ruby.rb" do
     local true
-    source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
+    source "#{node[:ruby_scripts_dir]}/download_vendor_artifacts.erb"
     variables(
       :aws_access_key_id => node[:core][:aws_access_key_id],
       :aws_secret_access_key => node[:core][:aws_secret_access_key],

@@ -108,6 +108,6 @@ node[:mule_plugins].each do |package_file|
   end
 end
 
-template("#{node['ruby_scripts_dir']}/wait_for_mule.rb") { source 'scripts/wait_for_mule.erb' }
+template("#{node[:ruby_scripts_dir]}/wait_for_mule.rb") { source 'scripts/wait_for_mule.erb' }
 
-bash('wait for mule') { code "ruby #{node['ruby_scripts_dir']}/wait_for_mule.rb" }
+bash('wait for mule') { code "ruby #{node[:ruby_scripts_dir]}/wait_for_mule.rb" }

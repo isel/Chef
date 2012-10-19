@@ -1,8 +1,8 @@
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
-template "#{node['ruby_scripts_dir']}/download_access_database_engine.rb" do
+template "#{node[:ruby_scripts_dir]}/download_access_database_engine.rb" do
   local true
-  source "#{node['ruby_scripts_dir']}/download_vendor_artifacts.erb"
+  source "#{node[:ruby_scripts_dir]}/download_vendor_artifacts.erb"
   variables(
     :aws_access_key_id => node[:core][:aws_access_key_id],
     :aws_secret_access_key => node[:core][:aws_secret_access_key],
@@ -18,7 +18,7 @@ template "#{node['ruby_scripts_dir']}/download_access_database_engine.rb" do
 end
 
 powershell 'Download Access Database Engine' do
-  source("ruby #{node['ruby_scripts_dir']}/download_access_database_engine.rb")
+  source("ruby #{node[:ruby_scripts_dir]}/download_access_database_engine.rb")
   not_if { File.exist?('/installs/accessdatabaseengine.zip') }
 end
 

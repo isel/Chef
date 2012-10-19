@@ -1,4 +1,4 @@
-binaries_directory = node['binaries_directory']
+binaries_directory = node[:binaries_directory]
 
 war = 'droolz'
 

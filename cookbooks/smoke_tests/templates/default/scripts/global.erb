@@ -14,7 +14,7 @@ ENV['messaging_server'] = '<%= @messaging_server %>'
 ENV['messaging_server_port'] = settings['messaging_port']
 ENV['tenant'] = '<%= @tenant %>'
 
-smoke_tests_dir = '<%= node['binaries_directory'] %>/CI/spec/Smoke'
+smoke_tests_dir = '<%= node[:binaries_directory] %>/CI/spec/Smoke'
 
 RSpec::Core::RakeTask.new(:spec) do |t|
   t.pattern = ["#{smoke_tests_dir}/deploy_global_spec.rb", "#{smoke_tests_dir}/deploy_global_<%= @tenant %>_spec.rb"]

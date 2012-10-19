@@ -1,7 +1,7 @@
-default['ruby_scripts_dir'] = '/RubyScripts'
-default['properties_file'] = 'C:\BuildAgent\conf\buildAgent.properties'
+default[:ruby_scripts_dir] = '/RubyScripts'
+default[:properties_file] = 'C:\BuildAgent\conf\buildAgent.properties'
 
-default['set_value_in_properties_file_powershell_script'] = <<-POWERSHELL_SCRIPT
+default[:set_value_in_properties_file_powershell_script] = <<-POWERSHELL_SCRIPT
 if (Get-Content $env:properties_file| Select-String "$env:key=" -quiet)
 {
     Write-Output "Replacing $env:key in agent properties file"
