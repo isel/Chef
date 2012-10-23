@@ -114,6 +114,30 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/admin_password_mongo": {
+      "display_name": "admin password for mongo",
+      "required": "required",
+      "recipes": [
+        "deploy::mule_configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/admin_user_mongo": {
+      "display_name": "admin user for mongo",
+      "required": "required",
+      "recipes": [
+        "deploy::mule_configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/app_server": {
       "display_name": "app server",
       "required": "required",
@@ -332,6 +356,20 @@
       "default": "Infrastructure",
       "recipes": [
         "deploy::download_infrastructure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/s3_repository": {
+      "display_name": "s3 repository for the UGF platform",
+      "required": "optional",
+      "default": "GlobalIncite",
+      "recipes": [
+        "deploy::download_binaries",
+        "deploy::provision"
       ],
       "choice": [
 

@@ -1,0 +1,17 @@
+require 'rake'
+require '<%= @binaries_directory %>/CI/BuildScripts/Cloud/deployment'
+require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/process'
+
+
+service_display_name = '<%= @service_display_name %>'
+launch_wait_timeout =  <%= @launch_wait_timeout %>
+
+  Helpers::Process.new.run("wait for #{service_display_name} to start", launch_wait_timeout) do
+    begin
+      result = `sc.exe query "#{service_display_name}"`
+      result.match Regexp.new('STATE\s+:\s+\d+\s+RUNNING', Regexp::IGNORECASE)
+    rescue
+      false
+    end
+  end
+
