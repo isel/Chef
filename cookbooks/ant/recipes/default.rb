@@ -20,12 +20,15 @@ end
 powershell 'Download ant' do
   script = <<EOF
     ruby #{node[:ruby_scripts_dir]}/download_ant.rb
-    [System.Environment]::SetEnvironmentVariable('ANT_HOME', 'c:\\ant', 'machine')
 EOF
   source(script)
   not_if { File.exist?('/ant.zip') }
 end
 
-windows_path 'C:\ant\bin' do
-  action :add
+env('ANT_HOME') { value 'C:\ant' }
+
+env('PATH') do
+  action :modify
+  delim ::File::PATH_SEPARATOR
+  value "C:\\ant\\bin"
 end
