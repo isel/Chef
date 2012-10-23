@@ -2,15 +2,11 @@ require 'rake'
 require 'fileutils'
 require 'yaml'
 
-include_recipe 'core::event_router_service_prereqs'
-
 ruby_scripts_dir = node[:ruby_scripts_dir]
 Dir.mkdir(ruby_scripts_dir) unless File.exist? ruby_scripts_dir
 
-puts "#{ruby_scripts_dir}/event_router_service.erb"
 template "#{ruby_scripts_dir}/event_router_service.rb" do
-  local true
-  source "#{ruby_scripts_dir}/event_router_service.erb"
+  source 'scripts/event_router_service.erb'
   variables(
     {
       :binaries_directory => node[:binaries_directory],
@@ -27,9 +23,13 @@ template "#{ruby_scripts_dir}/event_router_service.rb" do
       :service_query_timeout => 5
     }
   )
+end
 
+powershell 'Install Event Router Service.' do
   source("ruby #{ruby_scripts_dir}/event_router_service.rb")
 end
+
+
 
 
 
