@@ -18,10 +18,7 @@ template "#{node[:ruby_scripts_dir]}/download_ant.rb" do
 end
 
 powershell 'Download ant' do
-  script = <<EOF
-    ruby #{node[:ruby_scripts_dir]}/download_ant.rb
-EOF
-  source(script)
+  source("ruby #{node[:ruby_scripts_dir]}/download_ant.rb")
   not_if { File.exist?('/ant.zip') }
 end
 
