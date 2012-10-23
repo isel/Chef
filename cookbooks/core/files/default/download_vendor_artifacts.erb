@@ -24,7 +24,7 @@ if File.exist?("#{target_directory}/#{product}")
   exit 0
 end
 
-Dir.mkdir(target_directory) unless File.exist?(target_directory)
+Dir.mkdir(target_directory) unless target_directory.empty? || File.exist?(target_directory)
 missing_files = []
 
 s3_path = "#{s3_repository}/#{product}/#{version}"
