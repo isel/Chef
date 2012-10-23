@@ -11,7 +11,7 @@ template "#{node[:ruby_scripts_dir]}/download_ant.rb" do
     :product => 'ant',
     :version => '1.8.4',
     :artifacts => 'ant',
-    :target_directory => '/',
+    :target_directory => '',
     :unzip => true
   )
   not_if { File.exist?('/ant.zip') }
