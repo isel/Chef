@@ -183,8 +183,6 @@ end
 
 end
 
-$stderr.puts urlacl_settings.to_yaml
-
 system("netsh http delete urlacl url=#{url_expression}") if urlacl_settings.size != 0
 system("netsh.exe http add urlacl url=#{url_expression} user=\"#{service_user}\"")
 
