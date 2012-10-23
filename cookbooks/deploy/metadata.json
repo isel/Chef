@@ -363,20 +363,6 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/s3_repository": {
-      "display_name": "s3 repository for the UGF platform",
-      "required": "optional",
-      "default": "GlobalIncite",
-      "recipes": [
-        "deploy::download_binaries",
-        "deploy::provision"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
     "deploy/search_server": {
       "display_name": "search_server",
       "recipes": [
