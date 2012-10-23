@@ -52,7 +52,7 @@ FileUtils.rm_f(uninstall_log) if File.exists?(uninstall_log)
 
 Helpers::Process.new.run("wait for #{service_display_name} to uninstall", service_change_timeout) do
 begin
-system("#{installutil_command_fullpath} \"/LogFile=#{uninstall_log}\" /uninstall  #{service_assembly_filename}")
+system("#{installutil_command_fullpath} \"/LogFile=#{uninstall_log}\" /uninstall  #{service_assembly_filename}  >NUL  2>NUL" )
 rescue
 false
 end
@@ -152,7 +152,7 @@ FileUtils.rm_f(install_log) if File.exists?(install_log)
 Helpers::Process.new.run("wait for .Net to install #{service_display_name}", service_change_timeout) do
 
 begin
-system("#{installutil_command_fullpath} /InstallStateDir=\"#{install_directory}\" \"/LogFile=#{install_log}\"  #{service_assembly_filename}")
+system("#{installutil_command_fullpath} /InstallStateDir=\"#{install_directory}\" \"/LogFile=#{install_log}\"  #{service_assembly_filename}  >NUL  2>NUL")
 # need to inspect the output.
 rescue
 false
