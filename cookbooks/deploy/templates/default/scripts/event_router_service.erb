@@ -81,6 +81,8 @@ else
 puts "#{service_display_name} was not installed on the system"
 
 end
+
+
 # step 2 Copy binaries to  staging directory and update settings
 
 
@@ -183,13 +185,8 @@ end
 
 $stderr.puts urlacl_settings.to_yaml
 
-if urlacl_settings.size != 0
-system("netsh http delete urlacl url=#{url_expression}")
+system("netsh http delete urlacl url=#{url_expression}") if urlacl_settings.size != 0
 system("netsh.exe http add urlacl url=#{url_expression} user=\"#{service_user}\"")
-else
-puts 'unable to update Windows security settings'
-exit 9
-end
 
 system("sc.exe start \"#{service_display_name}\" >NUL")
 
