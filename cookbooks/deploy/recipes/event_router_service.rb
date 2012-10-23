@@ -10,7 +10,7 @@ installutil_command_fullpath = 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\In
 
 windows_service_change_completion_delay = 30
 
-service_assembly_filename =  'UltimateSoftware.Foundation.Messaging.EventRouter.exe'
+service_assembly_filename = 'UltimateSoftware.Foundation.Messaging.EventRouter.exe'
 service_display_name = 'Ultimate Software Event Router Service'
 
 if File.exist?(target_directory) || File.exists?(install_path)

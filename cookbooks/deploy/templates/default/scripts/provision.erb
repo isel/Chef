@@ -9,8 +9,13 @@ exe = '/Provision/bin/UltimateSoftware.Provisioning.Runner.exe'
 
 puts 'Provisioning deployment'
 
-provision = Deployment::Provision.new(
-  '<%= node[:binaries_directory] %>', '/Provision',
-  '<%= node[:pims_directory] %>', '/PIM_Publishing')
+begin
+  provision = Deployment::Provision.new('<%= node[:binaries_directory] %>', '/Provision',
+    '<%= node[:pims_directory] %>', '/PIM_Publishing', '<%= node[:plugins_directory] %>')
+rescue
+  #todo: deprecate rescue after new argument for constructor is beeing used everywhere
+  provision = Deployment::Provision.new('<%= node[:binaries_directory] %>', '/Provision',
+    '<%= node[:pims_directory] %>', '/PIM_Publishing')
+end
 
 provision.execute('<%= @tenant %>', settings, exe)
