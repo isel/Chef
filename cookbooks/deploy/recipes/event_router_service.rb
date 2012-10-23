@@ -2,7 +2,7 @@ require 'rake'
 require 'fileutils'
 require 'yaml'
 
-ruby_scripts_dir = node['ruby_scripts_dir']
+ruby_scripts_dir = node[:ruby_scripts_dir]
 
 template "#{ruby_scripts_dir}/event_router_service.rb" do
   source 'scripts/event_router_service.erb'
@@ -22,6 +22,7 @@ template "#{ruby_scripts_dir}/event_router_service.rb" do
       :service_query_timeout => 5
     }
   )
+
   source("ruby #{ruby_scripts_dir}/event_router_service.rb")
 end
 
