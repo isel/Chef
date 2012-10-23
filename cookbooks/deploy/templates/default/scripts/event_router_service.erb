@@ -35,8 +35,6 @@ messaging_port = settings['messaging_port']
 messaging_server = '<%= @messaging_server %>'
 platform_event_router_port = settings[ 'platform_event_router_port' ]
 
-# step 1 Stop and uninstall service. Cleanup programdata and staging directory
-
 if `sc.exe query "#{service_display_name}"`.match Regexp.new("SERVICE_NAME\s*+:\s+#{service_display_name}", Regexp::IGNORECASE)
 
 Helpers::Process.new.run('wait for service to stop', service_change_timeout) do
@@ -144,6 +142,7 @@ false
 end
 end
 
+FileUtils.mkdir_p(install_directory)
 FileUtils.cp_r(staging_directory +"/.", install_directory)
 
 Dir.chdir(install_directory)
