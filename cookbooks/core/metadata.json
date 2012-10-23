@@ -101,7 +101,7 @@
   },
   "recipes": {
     "core::download_product_artifacts_prereqs": "Sets up prereqs for downloading product artifacts",
-    "core::download_vendor_artifacts_prereqs": "Sets up prereqs for downloading vendor artifacts",
+    "core::download_vendor_artifacts_prereqs": "Sets up prereqs for installing event router service",
     "core::get_deployment_settings": "Gets the deployment settings from the services api",
     "core::install_jdk": "Installs jdk for windows and ubuntu",
     "core::netsh_advfirewall_management": "Disables Windows Firewall",

@@ -2,15 +2,15 @@ require 'rake'
 require 'fileutils'
 require 'yaml'
 
-# include_recipe 'core::event_router_service_prereqs'
+include_recipe 'core::event_router_service_prereqs'
 
 ruby_scripts_dir = node[:ruby_scripts_dir]
 Dir.mkdir(ruby_scripts_dir) unless File.exist? ruby_scripts_dir
 
-
-template "#{node[:ruby_scripts_dir]}/event_router_service.rb" do
+puts "#{ruby_scripts_dir}/event_router_service.erb"
+template "#{ruby_scripts_dir}/event_router_service.rb" do
   local true
-  source "event_router_service.erb"
+  source "#{ruby_scripts_dir}/event_router_service.erb"
   variables(
     {
       :binaries_directory => node[:binaries_directory],
