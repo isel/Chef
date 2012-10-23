@@ -27,5 +27,5 @@ env('ANT_HOME') { value 'C:\ant' }
 env('PATH') do
   action :modify
   delim ::File::PATH_SEPARATOR
-  value "C:\\ant\\bin"
+  value 'C:\ant\bin'
 end
