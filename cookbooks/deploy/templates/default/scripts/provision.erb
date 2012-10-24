@@ -18,4 +18,4 @@ rescue
     '<%= node[:pims_directory] %>', '/PIM_Publishing')
 end
 
-provision.execute('<%= @tenant %>', settings, exe)
+provision.execute('<%= @tenant %>', settings, exe, '<%= @admin_user_mongo %>', '<%= @admin_password_mongo %>')

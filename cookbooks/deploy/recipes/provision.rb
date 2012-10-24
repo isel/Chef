@@ -25,6 +25,8 @@ include_recipe 'appfabric::clear_all_caches'
 template "#{node[:ruby_scripts_dir]}/provision.rb" do
   source 'scripts/provision.erb'
   variables(
+    :admin_password_mongo => node[:deploy][:admin_password_mongo],
+    :admin_user_mongo => node[:deploy][:admin_user_mongo],
     :app_server => node[:deploy][:app_server],
     :db_server => node[:deploy][:db_server],
     :tenant => node[:deploy][:tenant]
