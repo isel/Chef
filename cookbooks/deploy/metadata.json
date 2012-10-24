@@ -118,7 +118,8 @@
       "display_name": "admin password for mongo",
       "required": "required",
       "recipes": [
-        "deploy::mule_configure"
+        "deploy::mule_configure",
+        "deploy::provision"
       ],
       "choice": [
 
@@ -130,7 +131,8 @@
       "display_name": "admin user for mongo",
       "required": "required",
       "recipes": [
-        "deploy::mule_configure"
+        "deploy::mule_configure",
+        "deploy::provision"
       ],
       "choice": [
 
