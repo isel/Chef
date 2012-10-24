@@ -9,6 +9,8 @@ template "#{ruby_scripts_dir}/event_router_service.rb" do
   source 'scripts/event_router_service.erb'
   variables(
     {
+      :admin_password_mongo => node[:deploy][:admin_password_mongo],
+      :admin_user_mongo => node[:deploy][:admin_user_mongo],
       :binaries_directory => node[:binaries_directory],
       :cache_server => node[:deploy][:cache_server],
       :db_server => node[:deploy][:db_server],

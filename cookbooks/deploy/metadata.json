@@ -118,6 +118,8 @@
       "display_name": "admin password for mongo",
       "required": "required",
       "recipes": [
+        "deploy::event_router_service",
+        "deploy::foundation_services",
         "deploy::mule_configure",
         "deploy::provision"
       ],
@@ -131,6 +133,8 @@
       "display_name": "admin user for mongo",
       "required": "required",
       "recipes": [
+        "deploy::event_router_service",
+        "deploy::foundation_services",
         "deploy::mule_configure",
         "deploy::provision"
       ],

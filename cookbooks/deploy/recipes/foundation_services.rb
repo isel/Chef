@@ -22,6 +22,8 @@ end
 template "#{ruby_scripts_dir}/foundation_services.rb" do
   source 'scripts/foundation_services.erb'
   variables(
+    :admin_password_mongo => node[:deploy][:admin_password_mongo],
+    :admin_user_mongo => node[:deploy][:admin_user_mongo],
     :api_infrastructure_url => node[:core][:api_infrastructure_url],
     :deployment_uri => node[:core][:deployment_uri],
     :cache_server => node[:deploy][:cache_server],
