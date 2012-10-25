@@ -122,7 +122,7 @@ Dir.chdir(staging_directory)
 
 
 Helpers::change_app_setting(service_app_config, "MessagingServer.Uri", "http://#{messaging_server}:#{messaging_port}")
-Helpers::change_app_setting(service_app_config, "ConnectionString", "Server=#{db_server}:#{database_port};username='<%= @admin_user_mongo %>'(admin);password='<%= @admin_password_mongo %>'")
+Helpers::change_app_setting(service_app_config, "ConnectionString", "Server=#{db_server}:#{database_port};username=<%= @admin_user_mongo %>(admin);password=<%= @admin_password_mongo %>")
 
 
 IOUtils::replace_text_in_file(service_app_config_full_path, '
