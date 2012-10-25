@@ -1,7 +1,7 @@
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
 artifacts = node[:platform] == 'ubuntu' ? 'jdk_ubuntu' : 'jdk_windows'
-target_directory = node[:platform] == 'ubuntu' ? '/' : 'download_jdk'
+target_directory = node[:platform] == 'ubuntu' ? '/' : '/download_jdk'
 install_directory = node[:platform] == 'ubuntu' ? '/jdk_ubuntu/jdk1.7.0_07' : '/jdk'
 
 template "#{node[:ruby_scripts_dir]}/download_jdk.rb" do
