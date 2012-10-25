@@ -118,6 +118,7 @@
       "display_name": "admin password for mongo",
       "required": "required",
       "recipes": [
+        "deploy::add_admin_replica_set",
         "deploy::event_router_service",
         "deploy::foundation_services",
         "deploy::mule_configure",
@@ -133,6 +134,7 @@
       "display_name": "admin user for mongo",
       "required": "required",
       "recipes": [
+        "deploy::add_admin_replica_set",
         "deploy::event_router_service",
         "deploy::foundation_services",
         "deploy::mule_configure",
@@ -268,6 +270,7 @@
       "description": "This db is primary server (true/false)",
       "required": "required",
       "recipes": [
+        "deploy::add_admin_replica_set",
         "deploy::initiate_replica_set_via_tags",
         "deploy::wait_for_secondary_dbs"
       ],
@@ -414,6 +417,7 @@
       "description": "Should use replication set (true/false)",
       "required": "required",
       "recipes": [
+        "deploy::add_admin_replica_set",
         "deploy::initiate_replica_set_via_tags"
       ],
       "choice": [
@@ -440,6 +444,7 @@
   "recipes": {
     "deploy::activemq": "Deploys ActiveMQ",
     "deploy::activemq_configure": "Configures ActiveMQ",
+    "deploy::add_admin_replica_set": "Add admin user for mongo with replica set",
     "deploy::adjust_ulimit": "Adjusts open files limit for log4j",
     "deploy::download_binaries": "Downloads binaries",
     "deploy::download_infrastructure": "Downloads infrastructure api",

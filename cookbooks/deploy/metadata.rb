@@ -12,6 +12,7 @@ depends 'appfabric'
 
 recipe "deploy::activemq", "Deploys ActiveMQ"
 recipe "deploy::activemq_configure", "Configures ActiveMQ"
+recipe "deploy::add_admin_replica_set", "Add admin user for mongo with replica set"
 recipe "deploy::adjust_ulimit", "Adjusts open files limit for log4j"
 recipe "deploy::download_binaries", "Downloads binaries"
 recipe "deploy::download_infrastructure", "Downloads infrastructure api"
@@ -73,12 +74,12 @@ attribute "core/s3_repository",
 attribute "deploy/admin_password_mongo",
   :display_name => "admin password for mongo",
   :required => "required",
-  :recipes  => ["deploy::event_router_service", "deploy::foundation_services", "deploy::mule_configure", "deploy::provision"]
+  :recipes  => ["deploy::add_admin_replica_set", "deploy::event_router_service", "deploy::foundation_services", "deploy::mule_configure", "deploy::provision"]
 
 attribute "deploy/admin_user_mongo",
   :display_name => "admin user for mongo",
   :required => "required",
-  :recipes  => ["deploy::event_router_service", "deploy::foundation_services", "deploy::mule_configure", "deploy::provision"]
+  :recipes  => ["deploy::add_admin_replica_set", "deploy::event_router_service", "deploy::foundation_services", "deploy::mule_configure", "deploy::provision"]
 
 attribute "deploy/app_server",
   :display_name => "app server",
@@ -130,7 +131,7 @@ attribute "deploy/is_primary_db",
   :display_name => "is primary db server",
   :description => "This db is primary server (true/false)",
   :required => "required",
-  :recipes => ["deploy::initiate_replica_set_via_tags", "deploy::wait_for_secondary_dbs"]
+  :recipes => ["deploy::add_admin_replica_set", "deploy::initiate_replica_set_via_tags", "deploy::wait_for_secondary_dbs"]
 
 attribute "deploy/messaging_server",
   :display_name => "messaging server",
@@ -192,7 +193,7 @@ attribute "deploy/use_replication",
   :display_name => "use replication",
   :description => "Should use replication set (true/false)",
   :required => "required",
-  :recipes => ["deploy::initiate_replica_set_via_tags"]
+  :recipes => ["deploy::add_admin_replica_set", "deploy::initiate_replica_set_via_tags"]
 
 attribute "deploy/web_server",
   :display_name => "web server",
