@@ -181,13 +181,6 @@ attribute "deploy/tenant",
   :required => "required",
   :recipes => ["deploy::jspr", "deploy::mule_configure", "deploy::provision"]
 
-attribute "deploy/use_mocked_website",
-  :display_name => "use mocked website",
-  :description => "used to mock jspr to be able to run the ui tests",
-  :required => "optional",
-  :default => "false",
-  :recipes => ["deploy::jspr"]
-
 attribute "deploy/use_replication",
   :display_name => "use replication",
   :description => "Should use replication set (true/false)",
