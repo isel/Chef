@@ -33,30 +33,6 @@
       "calculated": false,
       "type": "string"
     },
-    "core/aws_access_key_id": {
-      "display_name": "aws access key id",
-      "required": "required",
-      "recipes": [
-        "core::install_jdk"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "core/aws_secret_access_key": {
-      "display_name": "aws secret access key",
-      "required": "required",
-      "recipes": [
-        "core::install_jdk"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
     "core/deployment_uri": {
       "display_name": "deployment uri",
       "required": "required",
@@ -81,20 +57,6 @@
       ],
       "calculated": false,
       "type": "string"
-    },
-    "core/s3_bucket": {
-      "display_name": "s3 bucket for the UGF platform",
-      "description": "i.e. ugfartifacts, ugfproduction",
-      "required": "optional",
-      "default": "ugfgate1",
-      "recipes": [
-        "core::install_jdk"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
     }
   },
   "groupings": {
@@ -103,7 +65,6 @@
     "core::download_product_artifacts_prereqs": "Sets up prereqs for downloading product artifacts",
     "core::download_vendor_artifacts_prereqs": "Sets up prereqs for downloading vendor artifacts",
     "core::get_deployment_settings": "Gets the deployment settings from the services api",
-    "core::install_jdk": "Installs jdk for windows and ubuntu",
     "core::netsh_advfirewall_management": "Disables Windows Firewall",
     "core::set_rightscale_account": "sets the Rightscale account",
     "core::setup_powershell_runtimes": "Allows up the poweshell to run multiple runtimes",
