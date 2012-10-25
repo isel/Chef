@@ -142,7 +142,6 @@
       "display_name": "app server",
       "required": "required",
       "recipes": [
-        "deploy::engine",
         "deploy::jspr",
         "deploy::mule_configure",
         "deploy::provision"
@@ -233,18 +232,6 @@
       "calculated": false,
       "type": "string",
       "required": "optional"
-    },
-    "deploy/engine_server": {
-      "display_name": "engine server",
-      "required": "required",
-      "recipes": [
-        "deploy::mule_configure"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
     },
     "deploy/infrastructure_artifacts": {
       "display_name": "infrastructure artifacts",
@@ -392,7 +379,6 @@
       "display_name": "tenant",
       "required": "required",
       "recipes": [
-        "deploy::engine",
         "deploy::jspr",
         "deploy::mule_configure",
         "deploy::provision"
@@ -452,7 +438,6 @@
     "deploy::download_binaries": "Downloads binaries",
     "deploy::download_infrastructure": "Downloads infrastructure api",
     "deploy::elastic_search": "Deploys ElasticSearch",
-    "deploy::engine": "Deploys Engine",
     "deploy::event_router_service": "Installs Event Router Service",
     "deploy::foundation_services": "Deploys the foundation rest services",
     "deploy::initiate_replica_set_via_tags": "Initiate replica set via tags for mongodb",
