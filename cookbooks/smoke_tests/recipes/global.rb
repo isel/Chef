@@ -7,7 +7,6 @@ template "#{ruby_scripts_dir}/global.rb" do
     :admin_user_mongo => node[:deploy][:admin_user_mongo],
     :app_server => node[:deploy][:app_server],
     :db_server => node[:deploy][:db_server],
-    :messaging_server => node[:deploy][:messaging_server],
     :tenant => node[:deploy][:tenant],
     :server_type => node[:core][:server_type]
   )
