@@ -16,7 +16,6 @@ recipe "deploy::adjust_ulimit", "Adjusts open files limit for log4j"
 recipe "deploy::download_binaries", "Downloads binaries"
 recipe "deploy::download_infrastructure", "Downloads infrastructure api"
 recipe "deploy::elastic_search", "Deploys ElasticSearch"
-recipe "deploy::engine", "Deploys Engine"
 recipe "deploy::event_router_service", "Installs Event Router Service"
 recipe "deploy::foundation_services", "Deploys the foundation rest services"
 recipe "deploy::initiate_replica_set_via_tags", "Initiate replica set via tags for mongodb"
@@ -84,8 +83,7 @@ attribute "deploy/admin_user_mongo",
 attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
-  :recipes  => ["deploy::engine", "deploy::jspr",
-    "deploy::mule_configure", "deploy::provision"]
+  :recipes  => ["deploy::jspr","deploy::mule_configure", "deploy::provision"]
 
 attribute "deploy/binaries_artifacts",
   :display_name => "binaries artifacts",
@@ -117,11 +115,6 @@ attribute "deploy/deployment_name",
 attribute "deploy/domain",
   :display_name => "domain",
   :recipes => ["deploy::jspr"]
-
-attribute "deploy/engine_server",
-  :display_name => "engine server",
-  :required => "required",
-  :recipes  => ["deploy::mule_configure"]
 
 attribute "deploy/infrastructure_artifacts",
   :display_name => "infrastructure artifacts",
@@ -186,7 +179,7 @@ attribute "deploy/server_name",
 attribute "deploy/tenant",
   :display_name => "tenant",
   :required => "required",
-  :recipes => ["deploy::engine", "deploy::jspr", "deploy::mule_configure", "deploy::provision"]
+  :recipes => ["deploy::jspr", "deploy::mule_configure", "deploy::provision"]
 
 attribute "deploy/use_mocked_website",
   :display_name => "use mocked website",
