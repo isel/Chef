@@ -1,0 +1,8 @@
+require 'json'
+require 'mongo'
+
+settings = JSON.parse(File.read('<%= node['deployment_settings_json'] %>'))
+
+connection = Mongo::Connection.new('localhost', "#{settings['database_port']}", { :safe => true })
+db = connection.db('admin')
+db.add_user('<%= @admin_user_mongo %>', '<%= @admin_password_mongo %>')
