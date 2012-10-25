@@ -34,12 +34,12 @@ attribute "core/server_type",
 attribute "deploy/admin_password_mongo",
   :display_name => "admin password for mongo",
   :required => "required",
-  :recipes  => ["smoke_tests::local_db"]
+  :recipes  => ["smoke_tests::global", "smoke_tests::local_db"]
 
 attribute "deploy/admin_user_mongo",
   :display_name => "admin user for mongo",
   :required => "required",
-  :recipes  => ["smoke_tests::local_db"]
+  :recipes  => ["smoke_tests::global", "smoke_tests::local_db"]
 
 attribute "deploy/app_server",
   :display_name => "app server",

@@ -45,6 +45,7 @@
       "display_name": "admin password for mongo",
       "required": "required",
       "recipes": [
+        "smoke_tests::global",
         "smoke_tests::local_db"
       ],
       "choice": [
@@ -57,6 +58,7 @@
       "display_name": "admin user for mongo",
       "required": "required",
       "recipes": [
+        "smoke_tests::global",
         "smoke_tests::local_db"
       ],
       "choice": [
