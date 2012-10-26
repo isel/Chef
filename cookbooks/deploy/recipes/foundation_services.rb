@@ -25,9 +25,7 @@ template "#{ruby_scripts_dir}/foundation_services.rb" do
     :api_infrastructure_url => node[:core][:api_infrastructure_url],
     :deployment_uri => node[:core][:deployment_uri],
     :cache_server => node[:deploy][:cache_server],
-    :db_server => node[:deploy][:db_server],
-    :messaging_server => node[:deploy][:messaging_server],
-    :search_server => node[:deploy][:search_server]
+    :db_server => node[:deploy][:db_server]
   )
 end
 
