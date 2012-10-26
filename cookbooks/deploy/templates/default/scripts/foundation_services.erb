@@ -29,9 +29,7 @@ Helpers::change_cert_repo_thumbprint("/Websites/Services/configuration/Certifica
 Helpers::change_all_app_settings(configs, "SigningCertificateName", "CN=localhost")
 Helpers::change_all_app_settings(configs, "DeploymentUri", "<%= @api_infrastructure_url %>/<%= @deployment_uri %>")
 Helpers::change_all_app_settings(configs, "ConnectionString", "Server=<%= @db_server %>:#{settings['database_port']};username=<%= @admin_user_mongo %>(admin);password=<%= @admin_password_mongo %>")
-Helpers::change_all_app_settings(configs, "SearchUri", "http://<%= @search_server %>:#{settings['search_port']}/_search")
 Helpers::change_all_app_settings(configs, "EntityFramework.ModelFolder", "C:\\WebSites\\Models\\")
-Helpers::change_all_app_settings(configs, "MessagingServer.Uri", "http://<%= @messaging_server %>:#{settings['messaging_port']}")
 
 IOUtils::replace_text_in_files(configs, '<%= '<host name="localhost"' %>', "<%= '<host name=\"' %><%= @cache_server %>\"")
 IOUtils::replace_text_in_files(configs, '<\/hosts>', '</hosts><securityProperties mode="None" protectionLevel="None"/>')

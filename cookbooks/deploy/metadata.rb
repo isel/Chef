@@ -10,26 +10,15 @@ supports "ubuntu"
 depends 'core'
 depends 'appfabric'
 
-recipe "deploy::activemq", "Deploys ActiveMQ"
-recipe "deploy::activemq_configure", "Configures ActiveMQ"
-recipe "deploy::adjust_ulimit", "Adjusts open files limit for log4j"
 recipe "deploy::download_binaries", "Downloads binaries"
 recipe "deploy::download_infrastructure", "Downloads infrastructure api"
-recipe "deploy::elastic_search", "Deploys ElasticSearch"
-recipe "deploy::event_router_service", "Installs Event Router Service"
 recipe "deploy::foundation_services", "Deploys the foundation rest services"
 recipe "deploy::initiate_replica_set_via_tags", "Initiate replica set via tags for mongodb"
 recipe "deploy::jspr", "Deploys the web server websites"
-recipe "deploy::launch_mule", "Launches Mule"
 recipe "deploy::mongo", "Deploys mongodb"
-recipe "deploy::mule", "Deploys Mule ESB"
-recipe "deploy::mule_configure", "Configures Mule ESB"
 recipe "deploy::provision", "Provisions basic system data"
-recipe "deploy::recycle_mule", "Recycle mule"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
-recipe "deploy::reindex_elastic_search", "Reindexes ElasticSearch (should be going away)"
 recipe "deploy::tag_data_version", "Writes a tag denoting what data version has been applied to this server"
-recipe "deploy::validate_configuration_tokens", "Validates that inputs in Mule properties file are current"
 recipe "deploy::wait_for_secondary_dbs", "Waits for secondary db servers to become operational"
 
 # Attributes from core cookbook
@@ -41,14 +30,12 @@ attribute "core/api_infrastructure_url",
 attribute "core/aws_access_key_id",
   :display_name => "aws access key id",
   :required => "required",
-  :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_infrastructure",
-    "deploy::provision", "deploy::elastic_search", "deploy::mongo"]
+  :recipes => ["deploy::download_binaries", "deploy::download_infrastructure", "deploy::provision", "deploy::mongo"]
 
 attribute "core/aws_secret_access_key",
   :display_name => "aws secret access key",
   :required => "required",
-  :recipes => ["deploy::activemq", "deploy::download_binaries", "deploy::download_infrastructure",
-    "deploy::provision", "deploy::elastic_search", "deploy::mongo"]
+  :recipes => ["deploy::download_binaries", "deploy::download_infrastructure", "deploy::provision", "deploy::mongo"]
 
 attribute "core/deployment_uri",
   :display_name => "deployment uri",
@@ -59,8 +46,7 @@ attribute "core/s3_bucket",
   :display_name => "s3 bucket for the UGF platform",
   :required => "optional",
   :default  => "ugfgate1",
-  :recipes  => ["deploy::activemq", "deploy::download_binaries", "deploy::download_infrastructure",
-    "deploy::elastic_search", "deploy::mongo", "deploy::mule", "deploy::provision"]
+  :recipes  => ["deploy::download_binaries", "deploy::download_infrastructure", "deploy::mongo", "deploy::provision"]
 
 attribute "core/s3_repository",
   :display_name => "s3 repository for the UGF platform",
@@ -70,20 +56,10 @@ attribute "core/s3_repository",
 
 
 # Attributes from deploy cookbook
-attribute "deploy/admin_password_mongo",
-  :display_name => "admin password for mongo",
-  :required => "required",
-  :recipes  => ["deploy::event_router_service", "deploy::foundation_services", "deploy::mule_configure", "deploy::provision"]
-
-attribute "deploy/admin_user_mongo",
-  :display_name => "admin user for mongo",
-  :required => "required",
-  :recipes  => ["deploy::event_router_service", "deploy::foundation_services", "deploy::mule_configure", "deploy::provision"]
-
 attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
-  :recipes  => ["deploy::jspr","deploy::mule_configure", "deploy::provision"]
+  :recipes  => ["deploy::jspr", "deploy::provision"]
 
 attribute "deploy/binaries_artifacts",
   :display_name => "binaries artifacts",
@@ -98,14 +74,12 @@ attribute "deploy/binaries_revision",
 attribute "deploy/cache_server",
   :display_name => "cache server",
   :required => "required",
-  :recipes => ["deploy::event_router_service", "deploy::foundation_services",
-    "deploy::mule_configure", "deploy::register_cache_hostname"]
+  :recipes => ["deploy::foundation_services", "deploy::register_cache_hostname"]
 
 attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
-  :recipes => ["deploy::event_router_service", "deploy::foundation_services",
-    "deploy::mule_configure", "deploy::provision"]
+  :recipes => ["deploy::foundation_services", "deploy::provision"]
 
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
@@ -132,24 +106,11 @@ attribute "deploy/is_primary_db",
   :required => "required",
   :recipes => ["deploy::initiate_replica_set_via_tags", "deploy::wait_for_secondary_dbs"]
 
-attribute "deploy/messaging_server",
-  :display_name => "messaging server",
-  :description => "Private IP address messaging_server host in this deployment",
-  :required => "required",
-  :recipes => ["deploy::event_router_service", "deploy::foundation_services",
-    "deploy::mule", "deploy::mule_configure"]
-
 attribute "deploy/mongo_version",
   :display_name => "mongo version",
   :required => "optional",
   :default => "2.0.1",
   :recipes => ["deploy::mongo"]
-
-attribute "deploy/mule_home",
-  :display_name => "mule home",
-  :required => "optional",
-  :default => "/opt/mule",
-  :recipes => ["deploy::launch_mule"]
 
 attribute "deploy/pims_artifacts",
   :display_name => "pims artifacts",
@@ -167,10 +128,6 @@ attribute "deploy/s3_api_repository",
   :default  => "Infrastructure",
   :recipes  => ["deploy::download_infrastructure"]
 
-attribute "deploy/search_server",
-  :display_name => "search_server",
-  :recipes => ["deploy::foundation_services", "deploy::mule_configure"]
-
 attribute "deploy/server_name",
   :display_name => "server name",
   :required => "required",
@@ -179,7 +136,7 @@ attribute "deploy/server_name",
 attribute "deploy/tenant",
   :display_name => "tenant",
   :required => "required",
-  :recipes => ["deploy::jspr", "deploy::mule_configure", "deploy::provision"]
+  :recipes => ["deploy::jspr", "deploy::provision"]
 
 attribute "deploy/use_replication",
   :display_name => "use replication",
@@ -187,7 +144,3 @@ attribute "deploy/use_replication",
   :required => "required",
   :recipes => ["deploy::initiate_replica_set_via_tags"]
 
-attribute "deploy/web_server",
-  :display_name => "web server",
-  :required => "required",
-  :recipes  => ["deploy::mule_configure"]
