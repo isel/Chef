@@ -10,6 +10,7 @@ end
 bash 'Initiate replica set via tags' do
   code <<-EOF
     ruby #{node[:ruby_scripts_dir]}/initiate_replica_set_via_tags.rb
+    sleep 5m
   EOF
   only_if { node[:deploy][:is_primary_db] == 'true' && node[:deploy][:use_replication] == 'true' }
 end
