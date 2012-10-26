@@ -28,15 +28,6 @@ Alias Compass /var/www/Compass
         Allow from all
 </Directory>
 
-Alias /Prios /var/www/Prios
-<Directory /var/www/Prios>
-        DirectoryIndex index.html
-        Options FollowSymLinks
-        AllowOverride All
-        Order allow,deny
-        Allow from all
-</Directory>
-
 <Directory /var/www/Compass/JSPR>
   <IfModule expires_module>
         ExpiresActive On

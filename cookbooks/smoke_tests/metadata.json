@@ -31,7 +31,6 @@
         "smoke_tests::local_cache",
         "smoke_tests::local_db",
         "smoke_tests::local_loadbalancer",
-        "smoke_tests::local_messaging",
         "smoke_tests::local_web"
       ],
       "choice": [
@@ -72,7 +71,6 @@
       "recipes": [
         "smoke_tests::global",
         "smoke_tests::local_app",
-        "smoke_tests::local_messaging",
         "smoke_tests::local_web"
       ],
       "choice": [
@@ -98,8 +96,7 @@
       "required": "required",
       "recipes": [
         "smoke_tests::global",
-        "smoke_tests::local_app",
-        "smoke_tests::local_messaging"
+        "smoke_tests::local_app"
       ],
       "choice": [
 
@@ -107,37 +104,12 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/cache_server": {
-      "display_name": "cache server",
+    "deploy/is_primary_db": {
+      "display_name": "is primary db server",
+      "description": "This db is primary server (true/false)",
       "required": "required",
       "recipes": [
-        "smoke_tests::local_messaging"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/messaging_server": {
-      "display_name": "messaging server",
-      "required": "required",
-      "recipes": [
-        "smoke_tests::global",
-        "smoke_tests::local_messaging"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/search_server": {
-      "display_name": "search_server",
-      "required": "required",
-      "recipes": [
-        "smoke_tests::local_app",
-        "smoke_tests::local_messaging"
+        "smoke_tests::local_db"
       ],
       "choice": [
 
@@ -156,18 +128,6 @@
       ],
       "calculated": false,
       "type": "string"
-    },
-    "deploy/web_server": {
-      "display_name": "web server",
-      "required": "required",
-      "recipes": [
-        "smoke_tests::local_messaging"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
     }
   },
   "groupings": {
@@ -179,8 +139,6 @@
     "smoke_tests::local_cache": "Runs local cache server smoke tests",
     "smoke_tests::local_db": "Runs local db server smoke tests",
     "smoke_tests::local_loadbalancer": "Runs local load balancer server smoke tests",
-    "smoke_tests::local_messaging": "Runs local messaging server smoke tests",
-    "smoke_tests::local_search": "Runs local elasticsearch smoke tests",
     "smoke_tests::local_web": "Runs local web server smoke tests"
   },
   "version": "0.0.1"

@@ -15,8 +15,6 @@ recipe "smoke_tests::sanity_app", "Runs sanity app server smoke tests"
 recipe "smoke_tests::local_cache", "Runs local cache server smoke tests"
 recipe "smoke_tests::local_db", "Runs local db server smoke tests"
 recipe "smoke_tests::local_loadbalancer", "Runs local load balancer server smoke tests"
-recipe "smoke_tests::local_messaging", "Runs local messaging server smoke tests"
-recipe "smoke_tests::local_search", "Runs local elasticsearch smoke tests"
 recipe "smoke_tests::local_web", "Runs local web server smoke tests"
 
 ### attributes used from other cookbooks
@@ -27,7 +25,7 @@ attribute "core/server_type",
   :recipes => [
     "smoke_tests::sanity_app",
     "smoke_tests::local_app", "smoke_tests::local_cache", "smoke_tests::local_db", "smoke_tests::local_loadbalancer",
-    "smoke_tests::local_messaging", "smoke_tests::local_web"
+    "smoke_tests::local_web"
   ]
 
 attribute "deploy/admin_password_mongo",
@@ -43,7 +41,7 @@ attribute "deploy/admin_user_mongo",
 attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
-  :recipes => ["smoke_tests::global", "smoke_tests::local_app", "smoke_tests::local_messaging", "smoke_tests::local_web"]
+  :recipes => ["smoke_tests::global", "smoke_tests::local_app", "smoke_tests::local_web"]
 
 attribute "deploy/domain",
   :display_name => "domain",
@@ -52,29 +50,15 @@ attribute "deploy/domain",
 attribute "deploy/db_server",
   :display_name => "db server",
   :required => "required",
-  :recipes => ["smoke_tests::global", "smoke_tests::local_app", "smoke_tests::local_messaging"]
+  :recipes => ["smoke_tests::global", "smoke_tests::local_app"]
 
-attribute "deploy/cache_server",
-  :display_name => "cache server",
+attribute "deploy/is_primary_db",
+  :display_name => "is primary db server",
+  :description => "This db is primary server (true/false)",
   :required => "required",
-  :recipes => ["smoke_tests::local_messaging"]
-
-attribute "deploy/messaging_server",
-  :display_name => "messaging server",
-  :required => "required",
-  :recipes => ["smoke_tests::global", "smoke_tests::local_messaging"]
-
-attribute "deploy/search_server",
-  :display_name => "search_server",
-  :required => "required",
-  :recipes => ["smoke_tests::local_app", "smoke_tests::local_messaging"]
+  :recipes => ["smoke_tests::local_db"]
 
 attribute "deploy/tenant",
   :display_name => "tenant",
   :required => "required",
   :recipes => ["smoke_tests::global"]
-
-attribute "deploy/web_server",
-  :display_name => "web server",
-  :required => "required",
-  :recipes => ["smoke_tests::local_messaging"]

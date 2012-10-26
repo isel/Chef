@@ -39,11 +39,9 @@
       "display_name": "aws access key id",
       "required": "required",
       "recipes": [
-        "deploy::activemq",
         "deploy::download_binaries",
         "deploy::download_infrastructure",
         "deploy::provision",
-        "deploy::elastic_search",
         "deploy::mongo"
       ],
       "choice": [
@@ -56,11 +54,9 @@
       "display_name": "aws secret access key",
       "required": "required",
       "recipes": [
-        "deploy::activemq",
         "deploy::download_binaries",
         "deploy::download_infrastructure",
         "deploy::provision",
-        "deploy::elastic_search",
         "deploy::mongo"
       ],
       "choice": [
@@ -86,12 +82,9 @@
       "required": "optional",
       "default": "ugfgate1",
       "recipes": [
-        "deploy::activemq",
         "deploy::download_binaries",
         "deploy::download_infrastructure",
-        "deploy::elastic_search",
         "deploy::mongo",
-        "deploy::mule",
         "deploy::provision"
       ],
       "choice": [
@@ -119,9 +112,7 @@
       "required": "required",
       "recipes": [
         "deploy::add_admin_replica_set",
-        "deploy::event_router_service",
         "deploy::foundation_services",
-        "deploy::mule_configure",
         "deploy::provision"
       ],
       "choice": [
@@ -135,9 +126,7 @@
       "required": "required",
       "recipes": [
         "deploy::add_admin_replica_set",
-        "deploy::event_router_service",
         "deploy::foundation_services",
-        "deploy::mule_configure",
         "deploy::provision"
       ],
       "choice": [
@@ -151,7 +140,6 @@
       "required": "required",
       "recipes": [
         "deploy::jspr",
-        "deploy::mule_configure",
         "deploy::provision"
       ],
       "choice": [
@@ -189,9 +177,7 @@
       "display_name": "cache server",
       "required": "required",
       "recipes": [
-        "deploy::event_router_service",
         "deploy::foundation_services",
-        "deploy::mule_configure",
         "deploy::register_cache_hostname"
       ],
       "choice": [
@@ -204,9 +190,7 @@
       "display_name": "db server",
       "required": "required",
       "recipes": [
-        "deploy::event_router_service",
         "deploy::foundation_services",
-        "deploy::mule_configure",
         "deploy::provision"
       ],
       "choice": [
@@ -280,41 +264,12 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/messaging_server": {
-      "display_name": "messaging server",
-      "description": "Private IP address messaging_server host in this deployment",
-      "required": "required",
-      "recipes": [
-        "deploy::event_router_service",
-        "deploy::foundation_services",
-        "deploy::mule",
-        "deploy::mule_configure"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
     "deploy/mongo_version": {
       "display_name": "mongo version",
       "required": "optional",
       "default": "2.0.1",
       "recipes": [
         "deploy::mongo"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/mule_home": {
-      "display_name": "mule home",
-      "required": "optional",
-      "default": "/opt/mule",
-      "recipes": [
-        "deploy::launch_mule"
       ],
       "choice": [
 
@@ -359,19 +314,6 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/search_server": {
-      "display_name": "search_server",
-      "recipes": [
-        "deploy::foundation_services",
-        "deploy::mule_configure"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string",
-      "required": "optional"
-    },
     "deploy/server_name": {
       "display_name": "server name",
       "required": "required",
@@ -389,22 +331,7 @@
       "required": "required",
       "recipes": [
         "deploy::jspr",
-        "deploy::mule_configure",
         "deploy::provision"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "deploy/use_mocked_website": {
-      "display_name": "use mocked website",
-      "description": "used to mock jspr to be able to run the ui tests",
-      "required": "optional",
-      "default": "false",
-      "recipes": [
-        "deploy::jspr"
       ],
       "choice": [
 
@@ -425,44 +352,21 @@
       ],
       "calculated": false,
       "type": "string"
-    },
-    "deploy/web_server": {
-      "display_name": "web server",
-      "required": "required",
-      "recipes": [
-        "deploy::mule_configure"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
     }
   },
   "groupings": {
   },
   "recipes": {
-    "deploy::activemq": "Deploys ActiveMQ",
-    "deploy::activemq_configure": "Configures ActiveMQ",
     "deploy::add_admin_replica_set": "Add admin user for mongo with replica set",
-    "deploy::adjust_ulimit": "Adjusts open files limit for log4j",
     "deploy::download_binaries": "Downloads binaries",
     "deploy::download_infrastructure": "Downloads infrastructure api",
-    "deploy::elastic_search": "Deploys ElasticSearch",
-    "deploy::event_router_service": "Installs Event Router Service",
     "deploy::foundation_services": "Deploys the foundation rest services",
     "deploy::initiate_replica_set_via_tags": "Initiate replica set via tags for mongodb",
     "deploy::jspr": "Deploys the web server websites",
-    "deploy::launch_mule": "Launches Mule",
     "deploy::mongo": "Deploys mongodb",
-    "deploy::mule": "Deploys Mule ESB",
-    "deploy::mule_configure": "Configures Mule ESB",
     "deploy::provision": "Provisions basic system data",
-    "deploy::recycle_mule": "Recycle mule",
     "deploy::register_cache_hostname": "Registers the cache hostname and ip in the hosts file",
-    "deploy::reindex_elastic_search": "Reindexes ElasticSearch (should be going away)",
     "deploy::tag_data_version": "Writes a tag denoting what data version has been applied to this server",
-    "deploy::validate_configuration_tokens": "Validates that inputs in Mule properties file are current",
     "deploy::wait_for_secondary_dbs": "Waits for secondary db servers to become operational"
   },
   "version": "0.0.1"
