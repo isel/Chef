@@ -1,0 +1,84 @@
+{
+  "name": "mongo",
+  "description": "Installs mongo",
+  "long_description": "",
+  "maintainer": "Cloud Infrastructure",
+  "maintainer_email": "ugf_ci@ultimatesoftware.com",
+  "license": "our license",
+  "platforms": {
+    "ubuntu": ">= 0.0.0",
+    "windows": ">= 0.0.0"
+  },
+  "dependencies": {
+    "core": ">= 0.0.0"
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+    "deploy/mongo_version": {
+      "display_name": "mongo version",
+      "required": "optional",
+      "default": "2.0.1",
+      "recipes": [
+        "mongo::default"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "core/aws_access_key_id": {
+      "display_name": "aws access key id",
+      "required": "required",
+      "recipes": [
+        "mongo::default"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "core/aws_secret_access_key": {
+      "display_name": "aws secret access key",
+      "required": "required",
+      "recipes": [
+        "mongo::default"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "core/s3_bucket": {
+      "display_name": "s3 bucket for the UGF platform",
+      "description": "i.e. ugfartifacts, ugfproduction",
+      "required": "optional",
+      "default": "ugfgate1",
+      "recipes": [
+        "mongo::default"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    }
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "mongo::default": "Downloads and installs the mongo"
+  },
+  "version": "0.0.1"
+}
