@@ -5,7 +5,6 @@ template "#{ruby_scripts_dir}/local_app.rb" do
   variables(
     :app_server => node[:deploy][:app_server],
     :db_server => node[:deploy][:db_server],
-    :search_server => node[:deploy][:search_server],
     :server_type => node[:core][:server_type]
   )
 end
