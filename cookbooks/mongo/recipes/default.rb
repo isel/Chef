@@ -56,7 +56,8 @@ else
       start-sleep 30
       mkdir log
       mkdir data/db
-      bin/mongod.exe --config $conf --install  --rest
+      bin\\mongod.exe --logpath c:\\mongodb\\log\\mongo.log --dbpath c:\\mongodb\\data\\db --port 27017 --install
+#      bin/mongod.exe --config $conf --install  --rest
       start-sleep 30
 
       sc.exe query MongoDB
@@ -71,14 +72,7 @@ else
       # not works
       reg.exe query $ServiceKey
 
-      bin/mongod.exe --config $conf --service
-
-      write-output "Reading reguistry key which is supposed to be created`n" ,   $ServiceKey
-      # get-childitem registry::$ServiceKey -erroraction SilentlyContinue
-      reg.exe query $ServiceKey
-
-      start-sleep 30
-      sc.exe query MongoDB
+ #     bin/mongod.exe --config $conf --service
 
       sc.exe start MongoDB
       start-sleep 30
