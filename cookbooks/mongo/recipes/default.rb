@@ -4,7 +4,7 @@ require 'fileutils'
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
 artifacts = node[:platform] == 'ubuntu' ? 'mongo_ubuntu' : 'mongo_windows'
-target_directory = node[:platform] == 'ubuntu' ? '/' : '/download_mongodb'
+target_directory = node[:platform] == 'ubuntu' ? '/' : 'c:/download_mongodb'
 install_directory = node[:platform] == 'ubuntu' ? '/opt/mongodb' : 'c:/mongodb'
 
 template "#{node[:ruby_scripts_dir]}/download_mongo.rb" do
@@ -48,14 +48,42 @@ else
 
       new-item -path "#{install_directory}" -Type Directory -Force -ErrorAction SilentlyContinue
       cd #{install_directory}
-      copy-item "#{target_directory}/mongo_windows/mongo/*" -recurse -Force -ErrorAction SilentlyContinue
-      $conf = 'mongodb.conf'
+      copy-item "#{target_directory}/mongo_windows/mongo/*" -destination . -recurse -Force
+      get-childitem  -recurse
+      $conf = 'mongod.conf'
+      $log  = 'mongod.log'
       (Get-Content ($conf)) | Foreach-Object {$_ -replace "^port +=.+$", ("port = " + #{database_port})} | Set-Content  ($conf)
-
+      start-sleep 30
       mkdir log
       mkdir data/db
-      bin/mongod.exe --config mongod.conf --install  --rest
-      net.exe start mongodb
+      bin/mongod.exe --config $conf --install  --rest
+      start-sleep 30
+
+      sc.exe query MongoDB
+      # cannot use forward slashes in Windows Registry key paths
+      $ServiceKey = 'HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\mongodb'
+      # guaranteed to exist
+      # $ServiceKey = 'HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\CryptSvc'
+
+
+      write-output "Reading reguistry key which is supposed to be created`n" ,   $ServiceKey
+      # get-childitem registry::$ServiceKey -erroraction SilentlyContinue
+      # not works
+      reg.exe query $ServiceKey
+
+      bin/mongod.exe --config $conf --service
+
+      write-output "Reading reguistry key which is supposed to be created`n" ,   $ServiceKey
+      # get-childitem registry::$ServiceKey -erroraction SilentlyContinue
+      reg.exe query $ServiceKey
+
+      start-sleep 30
+      sc.exe query MongoDB
+
+      sc.exe start MongoDB
+      start-sleep 30
+
+      sc.exe query MongoDB
 
     EOF
     source(script)
