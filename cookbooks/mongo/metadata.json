@@ -23,19 +23,6 @@
   "replacing": {
   },
   "attributes": {
-    "deploy/mongo_version": {
-      "display_name": "mongo version",
-      "required": "optional",
-      "default": "2.0.1",
-      "recipes": [
-        "mongo::default"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
     "core/aws_access_key_id": {
       "display_name": "aws access key id",
       "required": "required",
@@ -73,12 +60,50 @@
       ],
       "calculated": false,
       "type": "string"
+    },
+    "deploy/admin_password_mongo": {
+      "display_name": "admin password for mongo",
+      "required": "required",
+      "recipes": [
+        "mongo::configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/admin_user_mongo": {
+      "display_name": "admin user for mongo",
+      "required": "required",
+      "recipes": [
+        "mongo::configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/mongo_version": {
+      "display_name": "mongo version",
+      "required": "optional",
+      "default": "2.0.1",
+      "recipes": [
+        "mongo::default"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
     }
   },
   "groupings": {
   },
   "recipes": {
-    "mongo::default": "Downloads and installs the mongo"
+    "mongo::default": "Downloads and installs the mongo",
+    "mongo::configure": "Configures mongodb"
   },
   "version": "0.0.1"
 }
