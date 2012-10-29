@@ -44,6 +44,7 @@ else
     script = <<-EOF
 
       ruby #{node[:ruby_scripts_dir]}/download_mongo.rb         -
+
       $ServiceName = 'MongoDB'
       $ServiceStartDelay  = 15
 
@@ -81,42 +82,4 @@ else
     source(script)
     not_if { File.exist?(install_directory) }
   end
-
 end
-=begin
-
-windows
-
-$Env:MONGO_HOME = 'C:\mongodb\'
-$Env:Path = "${Env:PATH};${Env:MONGO_HOME}\bin"
-$Env:ADMINISTRATOR_USER_MONGO  =  'adm'
-$Env:ADMINISTRATOR_PASSWORD_MONGO  = 'ar'
-
-Write-output "Adding admin user"
-Write-output  "db.addUser(""${Env:ADMINISTRATOR_USER_MONGO}"",""${Env:ADMINISTRATOR_PASSWORD_MONGO}"")"
-
- mongo admin --eval "db.addUser(\""${Env:ADMINISTRATOR_USER_MONGO}\"",\""${Env:ADMINISTRATOR_PASSWORD_MONGO}\"")"
-
-
-
-unix
-
-
-echo -e "\njournal = true\n" >> $mongodb_config
-if test "$EBS_SKIP_MOUNT" == "false"; then
-  echo "Adding admin user"
-  mongo admin --eval "db.addUser(\""$ADMINISTRATOR_USER_MONGO"\",\""$ADMINISTRATOR_PASSWORD_MONGO"\")"
-sed -i -r "s/^#\s*auth\s*=.*/auth = true/" $mongodb_config
-fi
-$LogPath = 'C:\mongodb\log'
-$DbPath = 'C:\mongodb\data\db'
-$LogPath = 'C:\mongodb\log2\mongo.log'
-
-
-      $LogPath = $LogPath  -Replace '\\[^\\]*$'  , ''
-      write-output $LogPath
-
-      # create logpath
-      new-item -path $LogPath  -Type Directory -Force | out-null
-
-=end

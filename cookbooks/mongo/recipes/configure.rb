@@ -18,9 +18,6 @@ else
 
     )
     script = <<-EOF
-
-write-output "Probing RS_REBOOT=${env:RS_REBOOT}"
-
 if ( (${Env:RS_REBOOT} -ne $null) -and (${Env:RS_REBOOT} -match 'true'))  {
    write-output 'Skipping configuring mongo during reboot.'
    $Error.Clear()
@@ -29,14 +26,12 @@ if ( (${Env:RS_REBOOT} -ne $null) -and (${Env:RS_REBOOT} -match 'true'))  {
 
 $Env:MONGO_HOME = '#{install_directory_windows}'
 $Env:Path = "${Env:PATH};${Env:MONGO_HOME}\\bin"
-
 Write-output "Adding admin user"
-
 mongo.exe admin --eval "db.addUser(\\""${Env:ADMINISTRATOR_USER_MONGO}\\"",\\""${Env:ADMINISTRATOR_PASSWORD_MONGO}\\"")"
 
 
     EOF
+    source(script)
   end
 
-  source(script)
 end
