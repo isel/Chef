@@ -36,7 +36,7 @@ if node[:platform] == 'ubuntu'
 else
   # settings = JSON.parse(File.read(node['deployment_settings_json']))
   # database_port = settings['database_port']
-  database_port = '27071'
+  database_port = '27017'
   install_directory_windows = install_directory.gsub(/\//, '\\\\')
 
   powershell 'Installing mongo' do
