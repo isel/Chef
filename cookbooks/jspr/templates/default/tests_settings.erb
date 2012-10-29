@@ -1,0 +1,16 @@
+<%
+  def rev
+    begin
+      FileList["#{node[:binaries_directory]}/JSPR/JSPR/ver*"][0].split('ver')[1]
+    rescue
+      raise "Error getting JSPR revision: #{$!}"
+    end
+  end
+%>
+var __JSPR_ROOT = "/JSPR/";;
+var __BASE = __JSPR_ROOT + "ver<%= rev %>/build/";
+var __FILTER = "";
+var __ROOT_DOMAIN = "<%= @domain %>";
+var __SERVICE_HOST = "http://<%= @host %>/Tests";
+var __AUTHENTICATION_URI = "http://<%= @host %>/Tests/login.php";
+var __UIML_PATH = "UIML";

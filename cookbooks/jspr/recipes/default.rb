@@ -6,7 +6,7 @@ end
 
 bash 'Configuring apache' do
   code <<-EOF
-    mkdir --parents /var/www/Compass
+    mkdir --parents /var/www/App
 
     echo "load the caching expiration module..."
     a2enmod expires
@@ -28,26 +28,52 @@ bash 'Set document root' do
     fi
 
     echo "setting document root"
-    echo DocumentRoot "/var/www/Compass" >> /etc/apache2/apache2.conf
+    echo DocumentRoot "/var/www/App" >> /etc/apache2/apache2.conf
   EOF
 end
 
 bash 'Deploying websites' do
   code <<-EOF
     rm --recursive --force /var/www/JSPR
-    rm --recursive --force /var/www/Compass
+    rm --recursive --force /var/www/App
+
+#temporary until we get an app...
+    mkdir --parents /var/www/App
+
     cp -r #{node[:binaries_directory]}/JSPR/* /var/www
-    ln -s /var/www/JSPR /var/www/Compass/JSPR
+    ln -s /var/www/JSPR /var/www/App/JSPR
   EOF
 end
 
-template '/var/www/Compass/settings.js' do
+bash 'Deploying UIAutomation' do
+  code <<-EOF
+    rm --recursive --force /var/www/Tests
+
+    cp -r #{node[:binaries_directory]}/UIAutomation/* /var/www/Tests
+    cp #{node[:binaries_directory]}/UIAutomation/.* /var/www/Tests
+    ls #{node[:binaries_directory]}/JSPR/JSPR* > /var/www/Tests/jspr_version
+
+    version=`cat /var/www/Prios/Tests/jspr_version`
+    sed -i "s@/JSPR/ver1/@/JSPR/$version/@" /var/www/Tests/jstestload.html
+  EOF
+end
+
+template '/var/www/App/settings.js' do
   mode "0644"
   source 'settings.erb'
   variables(
     :domain => node[:deploy][:domain].nil? ? node[:ipaddress] : node[:deploy][:domain],
     :host => node[:deploy][:app_server],
     :tenant => node[:deploy][:tenant]
+  )
+end
+
+template '/var/www/Tests/settings.js' do
+  mode "0644"
+  source 'tests_settings.erb'
+  variables(
+    :domain => node[:deploy][:domain].nil? ? node[:ipaddress] : node[:deploy][:domain],
+    :host => node[:deploy][:domain].nil? ? node[:ipaddress] : "www.#{node[:deploy][:domain]}"
   )
 end
 
