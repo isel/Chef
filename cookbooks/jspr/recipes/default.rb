@@ -43,7 +43,7 @@ end
 
 template '/var/www/Compass/settings.js' do
   mode "0644"
-  source 'compass_settings.erb'
+  source 'settings.erb'
   variables(
     :domain => node[:deploy][:domain].nil? ? node[:ipaddress] : node[:deploy][:domain],
     :host => node[:deploy][:app_server],
