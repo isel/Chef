@@ -46,17 +46,25 @@ else
       ruby #{node[:ruby_scripts_dir]}/download_mongo.rb         -
       $ServiceName = 'MongoDB'
       $ServiceStartDelay  = 15
+
       new-item -path "#{install_directory}" -Type Directory -Force -ErrorAction SilentlyContinue
+
       cd #{install_directory}
+
       copy-item "#{target_directory}/mongo_windows/mongo/*" -destination . -recurse -Force
-#     get-childitem  -recurse
+
+      # create logpath
+      new-item -path log -Type Directory -Force
+
+      # create datapath
+      new-item -path data/db  -Type Directory -Force
+
+      # update configuration
       $conf = '#{install_directory_windows}\\mongod.conf'
       (Get-Content ($conf)) | Foreach-Object {$_ -replace "^port +=.+$", ("port = " + #{database_port})} | Set-Content  ($conf)
-      new-item -path log -Type Directory -Force
-      new-item -path data/db  -Type Directory -recurse -Force
-#      bin\\mongod.exe --logpath c:\\mongodb\\log\\mongo.log --dbpath c:\\mongodb\\data\\db --port 27017 --install
+
+      # Install the MongoDB Service
       bin\\mongod.exe --config $conf --install  --rest
-#      start-sleep 30
 
       sc.exe query $ServiceName
 
@@ -64,11 +72,11 @@ else
       write-output "Reading registry key of the service`n" ,   $ServiceKey
       reg.exe query $ServiceKey
 
+      # Run the MongoDB Service
       sc.exe start $ServiceName
+
       start-sleep $ServiceStartDelay
-
       sc.exe query $ServiceName
-
     EOF
     source(script)
     not_if { File.exist?(install_directory) }
