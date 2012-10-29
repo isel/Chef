@@ -49,6 +49,8 @@ bash 'Deploying UIAutomation' do
   code <<-EOF
     rm --recursive --force /var/www/Tests
 
+    mkdir --parents /var/www/Tests
+
     cp -r #{node[:binaries_directory]}/UIAutomation/* /var/www/Tests
     cp #{node[:binaries_directory]}/UIAutomation/.* /var/www/Tests
     ls #{node[:binaries_directory]}/JSPR/JSPR* > /var/www/Tests/jspr_version
