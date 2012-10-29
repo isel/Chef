@@ -37,7 +37,6 @@ else
   # settings = JSON.parse(File.read(node['deployment_settings_json']))
   # database_port = settings['database_port']
   database_port = '27071'
-  # target_directory_windows = target_directory.gsub(/\//, '\\\\')
   install_directory_windows = install_directory.gsub(/\//, '\\\\')
 
   powershell 'Installing mongo' do
@@ -45,39 +44,30 @@ else
     script = <<-EOF
 
       ruby #{node[:ruby_scripts_dir]}/download_mongo.rb         -
-
+      $ServiceName = 'MongoDB'
+      $ServiceStartDelay  = 15
       new-item -path "#{install_directory}" -Type Directory -Force -ErrorAction SilentlyContinue
       cd #{install_directory}
       copy-item "#{target_directory}/mongo_windows/mongo/*" -destination . -recurse -Force
-      get-childitem  -recurse
-      $conf = 'mongod.conf'
-      $log  = 'mongod.log'
+#     get-childitem  -recurse
+      $conf = '#{install_directory_windows}\\mongod.conf'
       (Get-Content ($conf)) | Foreach-Object {$_ -replace "^port +=.+$", ("port = " + #{database_port})} | Set-Content  ($conf)
-      start-sleep 30
-      mkdir log
-      mkdir data/db
-      bin\\mongod.exe --logpath c:\\mongodb\\log\\mongo.log --dbpath c:\\mongodb\\data\\db --port 27017 --install
-#      bin/mongod.exe --config $conf --install  --rest
-      start-sleep 30
+      new-item -path log -Type Directory -Force
+      new-item -path data/db  -Type Directory -recurse -Force
+#      bin\\mongod.exe --logpath c:\\mongodb\\log\\mongo.log --dbpath c:\\mongodb\\data\\db --port 27017 --install
+      bin\\mongod.exe --config $conf --install  --rest
+#      start-sleep 30
 
-      sc.exe query MongoDB
-      # cannot use forward slashes in Windows Registry key paths
-      $ServiceKey = 'HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\mongodb'
-      # guaranteed to exist
-      # $ServiceKey = 'HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\CryptSvc'
+      sc.exe query $ServiceName
 
-
-      write-output "Reading reguistry key which is supposed to be created`n" ,   $ServiceKey
-      # get-childitem registry::$ServiceKey -erroraction SilentlyContinue
-      # not works
+      $ServiceKey = "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\${ServiceName}"
+      write-output "Reading registry key of the service`n" ,   $ServiceKey
       reg.exe query $ServiceKey
 
- #     bin/mongod.exe --config $conf --service
+      sc.exe start $ServiceName
+      start-sleep $ServiceStartDelay
 
-      sc.exe start MongoDB
-      start-sleep 30
-
-      sc.exe query MongoDB
+      sc.exe query $ServiceName
 
     EOF
     source(script)
