@@ -36,6 +36,7 @@ mongo.exe admin --eval "db.addUser(\\""${Env:ADMINISTRATOR_USER_MONGO}\\"",\\""$
 
 
     EOF
-
-    source(script)
   end
+
+  source(script)
+end
