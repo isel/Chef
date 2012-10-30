@@ -45,6 +45,8 @@ else
 
       ruby #{node[:ruby_scripts_dir]}/download_mongo.rb         -
 
+      $erroractionpreference = 'SilentlyContinue'
+
       $ServiceName = 'MongoDB'
       $ServiceStartDelay  = 15
 
@@ -67,21 +69,18 @@ else
       # Install the MongoDB Service
       bin\\mongod.exe --config $conf --install  --rest
 
-      sc.exe query $ServiceName
-
       $ServiceKey = "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\${ServiceName}"
       write-output "Reading registry key of the service`n" ,   $ServiceKey
-      reg.exe query $ServiceKey
 
       # Run the MongoDB Service
       sc.exe start $ServiceName
 
-      start-sleep $ServiceStartDelay
+      # Query the service
       sc.exe query $ServiceName
 
+      # busy wait loop  for mogo.exe shell to be able to process commands
       $Env:MONGO_HOME = '#{install_directory_windows}'
       $Env:Path = "${Env:PATH};${Env:MONGO_HOME}\\bin"
-
 
       $command = "mongo.exe --eval ""quit();"""
       $finished = $false
