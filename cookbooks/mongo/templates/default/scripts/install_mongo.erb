@@ -26,7 +26,7 @@ FileUtils.mkdir_p(data_directory)
 FileUtils.cp_r("#{target_directory}/mongo_windows/mongo/.", '.')
 
 
-install_directory_windows = install_directory.gsub(/\//, '\\')
+# install_directory_windows = install_directory.gsub(/\//, '\\')
 
 command = 'install'
 # command ='remove'
@@ -54,7 +54,7 @@ Helpers::Process.new.run("wait for #{service_display_name} to start", launch_wai
   begin
     result = `sc.exe query "#{service_display_name}"`
     $stderr.puts result
-    result.match Regexp.new('STATE\s+:\s+\d+\s+RUNNING', Regexp::IGNORECASE)
+    result.match Regexp.new('RUNNING', Regexp::IGNORECASE)
   rescue
     false
   end
