@@ -69,7 +69,6 @@ end
     begin
       connection = Mongo::Connection.new('localhost', db_port, { :safe => true })
       db = connection.db('test')
-      connection.exit()
       db.class.to_s.match( /Mongo::DB/)
     rescue
       false
