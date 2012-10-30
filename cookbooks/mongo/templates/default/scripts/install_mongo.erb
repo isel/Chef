@@ -41,9 +41,7 @@ File.open(config, 'r+') { |f| contents = f.read }
   while matcher.match(contents)
     contents=contents.gsub(matcher, "port=#{db_port}")
   end
-end
 File.open(config, 'w') { |f| f.puts contents }
-end
 
 
 # Install the MongoDB Service
