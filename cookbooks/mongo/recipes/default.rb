@@ -111,6 +111,7 @@ else
       }
 
       Write-host "Done ${action}"
+      $Error.clear()
     EOF
     source(script)
     not_if { File.exist?(install_directory) }
