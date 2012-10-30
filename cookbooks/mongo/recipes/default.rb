@@ -6,10 +6,12 @@ include_recipe 'core::download_vendor_artifacts_prereqs'
 artifacts = node[:platform] == 'ubuntu' ? 'mongo_ubuntu' : 'mongo_windows'
 target_directory = node[:platform] == 'ubuntu' ? '/' : 'c:/download_mongodb'
 install_directory = node[:platform] == 'ubuntu' ? '/opt/mongodb' : 'c:/mongodb'
+database_port = '27017'
+ruby_scripts_dir = node[:ruby_scripts_dir]
 
-template "#{node[:ruby_scripts_dir]}/download_mongo.rb" do
+template "#{ruby_scripts_dir}/download_mongo.rb" do
   local true
-  source "#{node[:ruby_scripts_dir]}/download_vendor_artifacts.erb"
+  source "#{ruby_scripts_dir}/download_vendor_artifacts.erb"
   variables(
     :aws_access_key_id => node[:core][:aws_access_key_id],
     :aws_secret_access_key => node[:core][:aws_secret_access_key],
@@ -27,7 +29,7 @@ end
 if node[:platform] == 'ubuntu'
   bash 'Installing mongo' do
     code <<-EOF
-      ruby #{node[:ruby_scripts_dir]}/download_mongo.rb
+      ruby #{ruby_scripts_dir}/download_mongo.rb
       mv /usr/local/mongo /usr/local/mongodb
       chmod a+x /usr/local/mongodb/bin/*
     EOF
@@ -35,10 +37,6 @@ if node[:platform] == 'ubuntu'
   end
 else
 
-  # settings = JSON.parse(File.read(node['deployment_settings_json']))
-  # database_port = settings['database_port']
-  database_port = '27017'
-  ruby_scripts_dir = node[:ruby_scripts_dir]
 
   template "#{ruby_scripts_dir}/install_mongo.rb" do
 

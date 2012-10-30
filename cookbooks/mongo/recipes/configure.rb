@@ -1,4 +1,5 @@
 database_port = '27017'
+ruby_scripts_dir = node[:ruby_scripts_dir]
 
 if node[:platform] == 'ubuntu'
   bash 'Configuring mongo' do
@@ -6,9 +7,7 @@ if node[:platform] == 'ubuntu'
       mongo admin --eval "db.addUser(\""${Env:ADMINISTRATOR_USER_MONGO}\"",\""${Env:ADMINISTRATOR_PASSWORD_MONGO}\"")"
     EOF
   end
-
 else
-
   template "#{ruby_scripts_dir}/add_mongo_auth.rb" do
     source 'scripts/add_mongo_auth.erb'
     variables(

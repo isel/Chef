@@ -6,20 +6,16 @@ require 'fileutils'
 require '<%= @binaries_directory %>/CI/BuildScripts/Cloud/deployment'
 require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/process'
 
-
 install_directory = '<%= @install_directory %>'
 target_directory = '<%= @target_directory %>'
 db_port = '<%= @db_port %>'
 launch_wait_timeout = <%= @timeout %>
-
-
-Dir.mkdir(install_directory) unless Dir.exists?(install_directory)
-
-Dir.chdir(install_directory)
-
 data_directory = 'data/db'
 log_directory = 'log'
 logfile = "#{log_directory}/mongo.log"
+
+Dir.mkdir(install_directory) unless Dir.exists?(install_directory)
+Dir.chdir(install_directory)
 
 FileUtils.mkdir_p(log_directory)
 FileUtils.mkdir_p(data_directory)
@@ -27,22 +23,19 @@ FileUtils.mkdir_p(data_directory)
 FileUtils.cp_r("#{target_directory}/mongo_windows/mongo/.", '.')
 
 command = 'install'
-# command ='remove'
 
-
-# update the configuration
+# Update the configuration
 config = "#{install_directory}/mongod.conf"
 
 contents = ''
 token = 'port=.+$'
 File.open(config, 'r+') { |f| contents = f.read }
 
-  matcher = Regexp.new('(\{' + token + '\})', Regexp::MULTILINE)
-  while matcher.match(contents)
-    contents=contents.gsub(matcher, "port=#{db_port}")
-  end
+matcher = Regexp.new('(\{' + token + '\})', Regexp::MULTILINE)
+while matcher.match(contents)
+  contents=contents.gsub(matcher, "port=#{db_port}")
+end
 File.open(config, 'w') { |f| f.puts contents }
-
 
 # Install the MongoDB Service
 result = `bin\\mongod.exe --config #{config} --#{command}  --rest`
@@ -53,26 +46,23 @@ service_display_name = '<%= @service_name %>'
 
 # Start the service
 result = `sc.exe start "#{service_display_name}"`
-$stderr.puts result
 
 # Inspect the service status
 Helpers::Process.new.run("wait for #{service_display_name} to start", launch_wait_timeout) do
   begin
     result = `sc.exe query "#{service_display_name}"`
-    $stderr.puts result
-    result.match Regexp.new('STATE\s+:\s+\d+\s+RUNNING', Regexp::IGNORECASE)  rescue
+    result.match Regexp.new('STATE\s+:\s+\d+\s+RUNNING', Regexp::IGNORECASE)
+  rescue
     false
   end
 end
 
-  Helpers::Process.new.run('wait for mongo shell to become available', launch_wait_timeout) do
-    begin
-      connection = Mongo::Connection.new('localhost', db_port, { :safe => true })
-      db = connection.db('test')
-      db.class.to_s.match( /Mongo::DB/)
-    rescue
-      false
-    end
+Helpers::Process.new.run('wait for mongo shell to become available', launch_wait_timeout) do
+  begin
+    connection = Mongo::Connection.new('localhost', db_port, { :safe => true })
+    db = connection.db('test')
+    db.class.to_s.match(/Mongo::DB/)
+  rescue
+    false
   end
-
-
+end
