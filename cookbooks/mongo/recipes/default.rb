@@ -41,9 +41,8 @@ else
   ruby_scripts_dir =  node[:ruby_scripts_dir]
 
   template "#{ruby_scripts_dir}/install_mongo.rb" do
-    local true
 
-    source "scripts/install_mongo.erb"
+    source 'scripts/install_mongo.erb'
     variables(
       :binaries_directory => node[:binaries_directory],
       :install_directory => install_directory,
@@ -55,7 +54,7 @@ else
   end
 
   powershell 'Installing mongo' do
-    source("ruby #{ruby_scripts_dir}/foundation_services.rb")
+    source("ruby #{ruby_scripts_dir}/install_mongo.rb")
     not_if { File.exist?(install_directory) }
   end
 end

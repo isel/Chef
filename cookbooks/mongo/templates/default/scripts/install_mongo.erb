@@ -23,7 +23,7 @@ FileUtils.mkdir_p(log_directory)
 FileUtils.mkdir_p(data_directory)
 
 
-FileUtils.cp_r("#{target_directory}/mongo_windows/mongo", '.')
+FileUtils.cp_r("#{target_directory}/mongo_windows/mongo/.", '.')
 
 
 install_directory_windows = install_directory.gsub(/\//, '\\')
