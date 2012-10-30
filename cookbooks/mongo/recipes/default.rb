@@ -78,6 +78,39 @@ else
 
       start-sleep $ServiceStartDelay
       sc.exe query $ServiceName
+
+      $Env:MONGO_HOME = '#{install_directory_windows}'
+      $Env:Path = "${Env:PATH};${Env:MONGO_HOME}\\bin"
+
+
+      $command = "mongo.exe --eval ""quit();"""
+      $finished = $false
+      $Env:TIMEOUT = 100
+      $cumulative_wait_time = 0
+      $wait_time = 10
+      $action = 'connect to mongo'
+      Write-output "Trying ${action}"
+
+      while ($cumulative_wait_time -lt ${Env:TIMEOUT}){
+
+        $response = invoke-command  {cmd /c $command  2>`& /NUL}
+        if ($response -match 'connecting to'){
+          $finished = $true
+          break
+        }
+        else {
+          $cumulative_wait_time = $cumulative_wait_time + $wait_time
+          write-host "Could not ${action} for ${cumulative_wait_time} sec. Retry after $wait_time sec."
+          start-sleep  $wait_time
+        }
+      }
+
+      if (!$finished){
+        Write-Host "Could not ${action}"
+        Exit 1
+      }
+
+      Write-host "Done ${action}"
     EOF
     source(script)
     not_if { File.exist?(install_directory) }
