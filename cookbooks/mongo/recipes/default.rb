@@ -46,9 +46,7 @@ else
       ruby #{node[:ruby_scripts_dir]}/download_mongo.rb         -
 
       $erroractionpreference = 'SilentlyContinue'
-
       $ServiceName = 'MongoDB'
-      $ServiceStartDelay  = 15
 
       new-item -path "#{install_directory}" -Type Directory -Force -ErrorAction SilentlyContinue | out-null
 
@@ -78,12 +76,15 @@ else
       # Query the service
       sc.exe query $ServiceName
 
+      $Error.clear()
+
       # busy wait loop  for mogo.exe shell to be able to process commands
       $Env:MONGO_HOME = '#{install_directory_windows}'
       $Env:Path = "${Env:PATH};${Env:MONGO_HOME}\\bin"
 
+
       $command = "mongo.exe --eval ""quit();"""
-      $finished = $false
+      $finished = false
       $Env:TIMEOUT = 100
       $cumulative_wait_time = 0
       $wait_time = 10
@@ -92,25 +93,28 @@ else
 
       while ($cumulative_wait_time -lt ${Env:TIMEOUT}){
 
-        $response = invoke-command  {cmd /c $command  2>`& /NUL}
-        if ($response -match 'connecting to'){
-          $finished = $true
-          break
-        }
-        else {
+        $response = invoke-command  {cmd /c $command }
+        $Error.clear()
+        write-host $response
+        if ($response -match 'Error:'){
           $cumulative_wait_time = $cumulative_wait_time + $wait_time
           write-host "Could not ${action} for ${cumulative_wait_time} sec. Retry after $wait_time sec."
           start-sleep  $wait_time
+        }
+        else {
+          $finished = $true
+          break
         }
       }
 
       if (!$finished){
         Write-Host "Could not ${action}"
-        Exit 1
+       Exit 1
       }
 
       Write-host "Done ${action}"
       $Error.clear()
+
     EOF
     source(script)
     not_if { File.exist?(install_directory) }
