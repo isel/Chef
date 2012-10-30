@@ -44,7 +44,7 @@ result = `bin\\mongod.exe --config #{config} --#{command}  --rest`
 $stderr.puts result
 $stderr.puts File.read(logfile)
 
-service_display_name = '<%=service_name %>
+service_display_name = '<%= @service_name %>
 
 result = `sc.exe start "#{service_display_name}"`
 $stderr.puts result
