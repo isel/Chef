@@ -118,13 +118,13 @@ attribute "deploy/mongo_version",
   :default => "2.0.1",
   :recipes => ["deploy::mongo"]
 
-attribute "deploy/pims_artifacts",
-  :display_name => "pims artifacts",
+attribute "deploy/metadata_artifacts",
+  :display_name => "metadata artifacts",
   :required => "required",
   :recipes => ["deploy::provision"]
 
-attribute "deploy/pims_revision",
-  :display_name => "pims revision",
+attribute "deploy/metadata_revision",
+  :display_name => "metadata revision",
   :required => "required",
   :recipes => ["deploy::provision"]
 

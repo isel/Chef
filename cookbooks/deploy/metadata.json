@@ -264,8 +264,8 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/pims_artifacts": {
-      "display_name": "pims artifacts",
+    "deploy/metadata_artifacts": {
+      "display_name": "metadata artifacts",
       "required": "required",
       "recipes": [
         "deploy::provision"
@@ -276,8 +276,8 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/pims_revision": {
-      "display_name": "pims revision",
+    "deploy/metadata_revision": {
+      "display_name": "metadata revision",
       "required": "required",
       "recipes": [
         "deploy::provision"
