@@ -1,0 +1,64 @@
+require 'rake'
+require 'mongo'
+require 'yaml'
+require 'fileutils'
+
+require '<%= @binaries_directory %>/CI/BuildScripts/Cloud/deployment'
+require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/process'
+
+
+install_directory = '<%= @install_directory %>'
+target_directory = '<%= @target_directory %>'
+
+Dir.mkdir(install_directory) unless Dir.exists?(install_directory)
+
+Dir.chdir(install_directory)
+
+data_directory = 'data/db'
+log_directory = 'log'
+logfile = "{log_directory}/mongo.log"
+
+
+FileUtils.mkdir_p(log_directory)
+FileUtils.mkdir_p(data_directory)
+
+
+FileUtils.cp_r("#{target_directory}/mongo_windows/mongo", '.')
+
+
+install_directory_windows = install_directory.gsub(/\//, '\\')
+
+command = 'install'
+# command ='remove'
+
+launch_wait_timeout = <%= @timeout %>
+
+# update configuration
+config = "#{install_directory}/mongod.conf"
+
+# config_windows = config.gsub(/\//, '\\')
+
+
+# Install the MongoDB Service
+result = `bin\\mongod.exe --config #{config} --#{command}  --rest`
+$stderr.puts result
+$stderr.puts File.read(logfile)
+
+service_display_name = '<%=service_name %>
+
+result = `sc.exe start "#{service_display_name}"`
+$stderr.puts result
+
+
+Helpers::Process.new.run("wait for #{service_display_name} to start", launch_wait_timeout) do
+  begin
+    result = `sc.exe query "#{service_display_name}"`
+    $stderr.puts result
+    result.match Regexp.new('STATE\s+:\s+\d+\s+RUNNING', Regexp::IGNORECASE)
+  rescue
+    false
+  end
+end
+
+
+
