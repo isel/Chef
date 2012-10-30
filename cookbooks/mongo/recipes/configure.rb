@@ -1,4 +1,4 @@
-install_directory = node[:platform] == 'ubuntu' ? '/opt/mongodb' : 'c:/mongodb'
+database_port = '27017'
 
 if node[:platform] == 'ubuntu'
   bash 'Configuring mongo' do
@@ -6,32 +6,19 @@ if node[:platform] == 'ubuntu'
       mongo admin --eval "db.addUser(\""${Env:ADMINISTRATOR_USER_MONGO}\"",\""${Env:ADMINISTRATOR_PASSWORD_MONGO}\"")"
     EOF
   end
+
 else
-  install_directory_windows = install_directory.gsub(/\//, '\\\\')
 
-  powershell 'Configuring mongo' do
-    parameters({
-
-      'ADMINISTRATOR_USER_MONGO' => node[:deploy][:admin_user_mongo],
-      'ADMINISTRATOR_PASSWORD_MONGO' => node[:deploy][:admin_password_mongo],
-    }
-
+  template "#{ruby_scripts_dir}/add_mongo_auth.rb" do
+    source 'scripts/add_mongo_auth.erb'
+    variables(
+      :binaries_directory => node[:binaries_directory],
+      :admin_user_mongo => node[:deploy][:admin_user_mongo],
+      :admin_password_mongo => node[:deploy][:admin_password_mongo],
+      :db_port => database_port
     )
-    script = <<-EOF
-if ( (${Env:RS_REBOOT} -ne $null) -and (${Env:RS_REBOOT} -match 'true'))  {
-   write-output 'Skipping configuring mongo during reboot.'
-   $Error.Clear()
-   exit 0
-  }
-
-$Env:MONGO_HOME = '#{install_directory_windows}'
-$Env:Path = "${Env:PATH};${Env:MONGO_HOME}\\bin"
-Write-output "Adding admin user"
-mongo.exe admin --eval "db.addUser(\\""${Env:ADMINISTRATOR_USER_MONGO}\\"",\\""${Env:ADMINISTRATOR_PASSWORD_MONGO}\\"")"
-
-
-    EOF
-    source(script)
   end
-
+  powershell 'Configuring mongo' do
+    source("ruby #{ruby_scripts_dir}/add_mongo_auth.erb")
+  end
 end
