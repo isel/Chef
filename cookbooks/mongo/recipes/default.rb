@@ -38,13 +38,14 @@ else
   # settings = JSON.parse(File.read(node['deployment_settings_json']))
   # database_port = settings['database_port']
   database_port = '27017'
-  ruby_scripts_dir =  node[:ruby_scripts_dir]
+  ruby_scripts_dir = node[:ruby_scripts_dir]
 
   template "#{ruby_scripts_dir}/install_mongo.rb" do
 
     source 'scripts/install_mongo.erb'
     variables(
       :binaries_directory => node[:binaries_directory],
+      :db_port => database_port,
       :install_directory => install_directory,
       :service_name => 'mongoDB',
       :target_directory => target_directory,

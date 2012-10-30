@@ -9,6 +9,9 @@ require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/process'
 
 install_directory = '<%= @install_directory %>'
 target_directory = '<%= @target_directory %>'
+db_port = '<%= @db_port %>'
+launch_wait_timeout = <%= @timeout %>
+
 
 Dir.mkdir(install_directory) unless Dir.exists?(install_directory)
 
@@ -26,10 +29,21 @@ FileUtils.cp_r("#{target_directory}/mongo_windows/mongo/.", '.')
 command = 'install'
 # command ='remove'
 
-launch_wait_timeout = <%= @timeout %>
 
 # update the configuration
 config = "#{install_directory}/mongod.conf"
+
+contents = ''
+token = 'port=.+$'
+File.open(config, 'r+') { |f| contents = f.read }
+
+  matcher = Regexp.new('(\{' + token + '\})', Regexp::MULTILINE)
+  while matcher.match(contents)
+    contents=contents.gsub(matcher, "port=#{db_port}")
+  end
+end
+File.open(config, 'w') { |f| f.puts contents }
+end
 
 
 # Install the MongoDB Service
@@ -53,21 +67,15 @@ Helpers::Process.new.run("wait for #{service_display_name} to start", launch_wai
   end
 end
 
-
-=begin
-launch_wait_timeout =  10
-
-  Helpers::Process.new.run("wait for mongo shell to become available", launch_wait_timeout) do
+  Helpers::Process.new.run('wait for mongo shell to become available', launch_wait_timeout) do
     begin
-      connection = Mongo::Connection.new('localhost', ENV['db_port'], { :safe => true })
+      connection = Mongo::Connection.new('localhost', db_port, { :safe => true })
       db = connection.db('test')
-connection.exit()
-# $stderr.puts  db.to_yaml
- db.class.to_s.match( /Mongo::DB/)
-
+      connection.exit()
+      db.class.to_s.match( /Mongo::DB/)
     rescue
       false
     end
   end
 
-=end
+
