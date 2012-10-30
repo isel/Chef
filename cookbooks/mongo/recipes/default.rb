@@ -49,7 +49,7 @@ else
       :install_directory => install_directory,
       :service_name => 'mongoDB',
       :target_directory => target_directory,
-      :timeout => 30
+      :timeout => 300
     )
     not_if { File.exist?(install_directory) }
   end
