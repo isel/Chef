@@ -1,0 +1,67 @@
+{
+  "name": "jspr",
+  "description": "Deploys the UGF software to the environment",
+  "long_description": "",
+  "maintainer": "Cloud Infrastructure",
+  "maintainer_email": "ugf_ci@ultimatesoftware.com",
+  "license": "our license",
+  "platforms": {
+    "ubuntu": ">= 0.0.0"
+  },
+  "dependencies": {
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+    "deploy/app_server": {
+      "display_name": "app server",
+      "required": "required",
+      "recipes": [
+        "jspr::default"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/domain": {
+      "display_name": "domain",
+      "recipes": [
+        "jspr::default"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string",
+      "required": "optional"
+    },
+    "deploy/tenant": {
+      "display_name": "tenant",
+      "required": "required",
+      "recipes": [
+        "jspr::default"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    }
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "jspr::default": "Deploys the jspr website"
+  },
+  "version": "0.0.1"
+}
