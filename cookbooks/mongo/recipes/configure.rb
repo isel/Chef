@@ -18,13 +18,13 @@ else
     )
   end
   powershell 'Configuring mongo' do
-    source("
+    source(%{
     if ( (${Env:RS_REBOOT} -ne $null) -and (${Env:RS_REBOOT} -match 'true'))  {
       write-output 'Skipping configuring mongo during reboot.'
       $Error.Clear()
       exit 0
     }
     ruby #{ruby_scripts_dir}/add_mongo_auth.rb
-    ") unless ENV['RS_REBOOT'].match(/true/)
+    }) unless ENV['RS_REBOOT'].match(/true/)
   end
 end
