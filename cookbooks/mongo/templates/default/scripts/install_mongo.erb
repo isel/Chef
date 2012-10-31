@@ -31,7 +31,7 @@ command = 'install'
 
 # Copy the configuration file
 
-FileUtils.copy_file((source_config, config)
+FileUtils.copy_file(source_config, config)
 
 # Install the MongoDB Service
 result = `bin\\mongod.exe --config #{config} --#{command}  --rest`
