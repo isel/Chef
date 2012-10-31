@@ -37,6 +37,10 @@ if node[:platform] == 'ubuntu'
   end
 else
 
+  powershell 'Downloading mongo' do
+    source("ruby #{ruby_scripts_dir}/download_mongo.rb")
+    not_if { File.exist?(install_directory) }
+  end
 
   template "#{ruby_scripts_dir}/install_mongo.rb" do
 
