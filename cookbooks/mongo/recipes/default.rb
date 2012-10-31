@@ -42,6 +42,15 @@ else
     not_if { File.exist?(install_directory) }
   end
 
+  template "#{ruby_scripts_dir}/mongod.conf" do
+    source 'mongod_conf.erb'
+    variables(
+      :db_port => database_port,
+      :install_directory => install_directory.gsub(/\//, '\\\\')
+    )
+    not_if { File.exist?(install_directory) }
+  end
+
   template "#{ruby_scripts_dir}/install_mongo.rb" do
 
     source 'scripts/install_mongo.erb'
@@ -49,8 +58,9 @@ else
       :binaries_directory => node[:binaries_directory],
       :db_port => database_port,
       :install_directory => install_directory,
+      :source_config => "#{ruby_scripts_dir}/mongod.conf",
       :service_name => 'mongoDB',
-      :target_directory => target_directory,
+      :source_directory => target_directory,
       :timeout => 300
     )
     not_if { File.exist?(install_directory) }

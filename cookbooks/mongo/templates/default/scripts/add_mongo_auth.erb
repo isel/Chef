@@ -3,11 +3,11 @@ require 'mongo'
 
 require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/process'
 
-
+database = 'admin'
 admin_user_mongo = '<%= @admin_user_mongo %>'
 admin_password_mongo = '<%= @admin_password_mongo %>'
 db_port = '<%= @db_port %>'
 
 connection = Mongo::Connection.new('localhost', db_port, { :safe => true })
-db = connection.db('SHARED')
+db = connection.db( database )
 db.add_user(admin_user_mongo, admin_password_mongo)

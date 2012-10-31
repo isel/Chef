@@ -4,7 +4,7 @@ ruby_scripts_dir = node[:ruby_scripts_dir]
 if node[:platform] == 'ubuntu'
   bash 'Configuring mongo' do
     code <<-EOF
-      mongo admin --eval "db.addUser(\""${Env:ADMINISTRATOR_USER_MONGO}\"",\""${Env:ADMINISTRATOR_PASSWORD_MONGO}\"")"
+      mongo admin --eval "db.addUser(\""$ADMINISTRATOR_USER_MONGO"\",\""$ADMINISTRATOR_PASSWORD_MONGO"\")"
     EOF
   end
 else

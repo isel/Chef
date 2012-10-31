@@ -7,7 +7,12 @@ require '<%= @binaries_directory %>/CI/BuildScripts/Cloud/deployment'
 require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/process'
 
 install_directory = '<%= @install_directory %>'
-target_directory = '<%= @target_directory %>'
+config = "#{install_directory}/mongod.conf"
+
+source_config = '<%= @source_config %>'
+source_directory = '<%= @source_directory %>'
+
+# Update the configuration
 db_port = '<%= @db_port %>'
 launch_wait_timeout = <%= @timeout %>
 data_directory = 'data/db'
@@ -20,27 +25,16 @@ Dir.chdir(install_directory)
 FileUtils.mkdir_p(log_directory)
 FileUtils.mkdir_p(data_directory)
 
-FileUtils.cp_r("#{target_directory}/mongo_windows/mongo/.", '.')
+FileUtils.cp_r("#{source_directory}/mongo_windows/mongo/.", '.')
 
 command = 'install'
 
-# Update the configuration
-config = "#{install_directory}/mongod.conf"
+# Copy the configuration file
 
-contents = ''
-token = 'port=.+$'
-File.open(config, 'r+') { |f| contents = f.read }
-
-matcher = Regexp.new('(\{' + token + '\})', Regexp::MULTILINE)
-while matcher.match(contents)
-  contents=contents.gsub(matcher, "port=#{db_port}")
-end
-File.open(config, 'w') { |f| f.puts contents }
+FileUtils.copy_file((source_config, config)
 
 # Install the MongoDB Service
 result = `bin\\mongod.exe --config #{config} --#{command}  --rest`
-$stderr.puts result
-$stderr.puts File.read(logfile)
 
 service_display_name = '<%= @service_name %>'
 
