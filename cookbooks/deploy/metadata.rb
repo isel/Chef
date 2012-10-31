@@ -15,7 +15,6 @@ recipe "deploy::download_binaries", "Downloads binaries"
 recipe "deploy::download_infrastructure", "Downloads infrastructure api"
 recipe "deploy::foundation_services", "Deploys the foundation rest services"
 recipe "deploy::initiate_replica_set_via_tags", "Initiate replica set via tags for mongodb"
-recipe "deploy::jspr", "Deploys the web server websites"
 recipe "deploy::mongo", "Deploys mongodb"
 recipe "deploy::provision", "Provisions basic system data"
 recipe "deploy::register_cache_hostname", "Registers the cache hostname and ip in the hosts file"
@@ -70,7 +69,7 @@ attribute "deploy/admin_user_mongo",
 attribute "deploy/app_server",
   :display_name => "app server",
   :required => "required",
-  :recipes  => ["deploy::jspr", "deploy::provision"]
+  :recipes  => ["deploy::provision"]
 
 attribute "deploy/binaries_artifacts",
   :display_name => "binaries artifacts",
@@ -97,10 +96,6 @@ attribute "deploy/deployment_name",
   :required => "required",
   :recipes => ["deploy::initiate_replica_set_via_tags", "deploy::register_cache_hostname", "deploy::wait_for_secondary_dbs"]
 
-attribute "deploy/domain",
-  :display_name => "domain",
-  :recipes => ["deploy::jspr"]
-
 attribute "deploy/infrastructure_artifacts",
   :display_name => "infrastructure artifacts",
   :required => "required",
@@ -123,13 +118,13 @@ attribute "deploy/mongo_version",
   :default => "2.0.1",
   :recipes => ["deploy::mongo"]
 
-attribute "deploy/pims_artifacts",
-  :display_name => "pims artifacts",
+attribute "deploy/metadata_artifacts",
+  :display_name => "metadata artifacts",
   :required => "required",
   :recipes => ["deploy::provision"]
 
-attribute "deploy/pims_revision",
-  :display_name => "pims revision",
+attribute "deploy/metadata_revision",
+  :display_name => "metadata revision",
   :required => "required",
   :recipes => ["deploy::provision"]
 
@@ -147,7 +142,7 @@ attribute "deploy/server_name",
 attribute "deploy/tenant",
   :display_name => "tenant",
   :required => "required",
-  :recipes => ["deploy::jspr", "deploy::provision"]
+  :recipes => ["deploy::provision"]
 
 attribute "deploy/use_replication",
   :display_name => "use replication",

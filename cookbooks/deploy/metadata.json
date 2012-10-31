@@ -139,7 +139,6 @@
       "display_name": "app server",
       "required": "required",
       "recipes": [
-        "deploy::jspr",
         "deploy::provision"
       ],
       "choice": [
@@ -213,18 +212,6 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/domain": {
-      "display_name": "domain",
-      "recipes": [
-        "deploy::jspr"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string",
-      "required": "optional"
-    },
     "deploy/infrastructure_artifacts": {
       "display_name": "infrastructure artifacts",
       "required": "required",
@@ -277,8 +264,8 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/pims_artifacts": {
-      "display_name": "pims artifacts",
+    "deploy/metadata_artifacts": {
+      "display_name": "metadata artifacts",
       "required": "required",
       "recipes": [
         "deploy::provision"
@@ -289,8 +276,8 @@
       "calculated": false,
       "type": "string"
     },
-    "deploy/pims_revision": {
-      "display_name": "pims revision",
+    "deploy/metadata_revision": {
+      "display_name": "metadata revision",
       "required": "required",
       "recipes": [
         "deploy::provision"
@@ -330,7 +317,6 @@
       "display_name": "tenant",
       "required": "required",
       "recipes": [
-        "deploy::jspr",
         "deploy::provision"
       ],
       "choice": [
@@ -362,7 +348,6 @@
     "deploy::download_infrastructure": "Downloads infrastructure api",
     "deploy::foundation_services": "Deploys the foundation rest services",
     "deploy::initiate_replica_set_via_tags": "Initiate replica set via tags for mongodb",
-    "deploy::jspr": "Deploys the web server websites",
     "deploy::mongo": "Deploys mongodb",
     "deploy::provision": "Provisions basic system data",
     "deploy::register_cache_hostname": "Registers the cache hostname and ip in the hosts file",
