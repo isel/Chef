@@ -18,6 +18,6 @@ else
     )
   end
   powershell 'Configuring mongo' do
-    source("ruby #{ruby_scripts_dir}/add_mongo_auth.erb")
+    source("ruby #{ruby_scripts_dir}/add_mongo_auth.rb")
   end
 end
