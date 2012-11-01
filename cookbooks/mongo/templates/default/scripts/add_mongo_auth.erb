@@ -3,8 +3,7 @@ require 'mongo'
 
 require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/process'
 
-
-unless ENV['RS_REBOOT'].nil? || ENV['RS_REBOOT'] !~ /true/
+if ENV['RS_REBOOT'] =~ /true/
   $stderr.puts 'Skipping configuring mongo during reboot.'
   exit 0
 end
