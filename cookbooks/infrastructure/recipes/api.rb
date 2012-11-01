@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 bash 'Set document root and configure Passenger' do
   code <<-EOF
     if grep -q DocumentRoot /etc/apache2/apache2.conf; then
@@ -44,3 +46,5 @@ bash 'Setup website' do
     curl http://localhost/deployments.json
   EOF
 end
+
+rightscale_marker :end

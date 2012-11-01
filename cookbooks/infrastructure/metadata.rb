@@ -7,6 +7,8 @@ version          "0.0.1"
 
 supports "ubuntu"
 
+depends "rightscale"
+
 recipe "infrastructure::api", "Deploys Infrastructure api services"
 recipe "infrastructure::smoke_tests", "Smoke tests"
 
