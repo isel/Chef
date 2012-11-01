@@ -44,35 +44,3 @@ bash 'Setup website' do
     curl http://localhost/deployments.json
   EOF
 end
-
-#ruby_block 'Setup syslog-ng config file' do
-#  block do
-#    File.open('/etc/syslog-ng/syslog-ng.conf', 'a') do |file|
-#      file.puts('source s_production { file("/var/www/api/log/production.log"); };')
-#      file.puts('filter f_production { not program("logger"); };')
-#      file.puts('destination d_production { program("logger -s -p local0.notice -t [production] \$MSG\n" flush_lines(1)); };')
-#      file.puts('log { source(s_production); destination(d_production); };')
-#
-#      file.puts('source s_rest { file("/var/www/api/log/rest.log"); };')
-#      file.puts('filter f_rest { not program("logger"); };')
-#      file.puts('destination d_rest { program("logger -s -p local1.notice -t [rest] \$MSG\n" flush_lines(1)); };')
-#      file.puts('log { source(s_rest); destination(d_rest); };')
-#    end
-#  end
-#  not_if { File.read('/etc/syslog-ng/syslog-ng.conf').include?('/var/www/api/log/production.log') }
-#end
-#
-#bash 'Restart syslog-ng and setup refresh schedule' do
-#  code <<-EOF
-#    service syslog-ng restart
-#
-#    if ! grep syslog-ng /etc/crontab; then
-#      echo '# reload syslog-ng for local logger destinations.' >> /etc/crontab
-#      echo '*/5 * * * * root logger -p local0.notice "$(service syslog-ng reload 2>&1)"' >> /etc/crontab
-#      echo '*/5 * * * * root logger -p local1.notice "$(service syslog-ng reload 2>&1)"' >> /etc/crontab
-#    fi
-#  EOF
-#end
-
-
-
