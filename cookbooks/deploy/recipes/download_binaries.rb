@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 include_recipe 'core::download_product_artifacts_prereqs'
 
 #todo: App Server should not download the models, we need to try removing that artifact
@@ -28,3 +30,5 @@ else
     source("ruby #{node[:ruby_scripts_dir]}/download_binaries.rb")
   end
 end
+
+rightscale_marker :end

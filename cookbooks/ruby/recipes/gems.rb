@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 gems = {
   'bundle' => '0.0.1',
   'amazon-ec2' => '0.9.17',
@@ -14,7 +16,6 @@ gems = {
 class Chef::Resource
   include LocalGems
 end
-
 
 if node[:platform] == "ubuntu"
   bash 'Installing ruby gems' do
@@ -38,3 +39,5 @@ else
     source(script)
   end
 end
+
+rightscale_marker :end

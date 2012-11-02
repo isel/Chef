@@ -7,6 +7,8 @@ version          "0.0.1"
 
 supports "ubuntu"
 
+depends "rightscale"
+
 recipe "core::download_product_artifacts_prereqs", "Sets up prereqs for downloading product artifacts"
 recipe "core::download_vendor_artifacts_prereqs", "Sets up prereqs for downloading vendor artifacts"
 recipe "core::get_deployment_settings", "Gets the deployment settings from the services api"

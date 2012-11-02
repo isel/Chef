@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 include_recipe 'core::download_product_artifacts_prereqs'
 
 template "#{node[:ruby_scripts_dir]}/download_infrastructure.rb" do
@@ -26,3 +28,5 @@ else
     source("ruby #{node[:ruby_scripts_dir]}/download_infrastructure.rb")
   end
 end
+
+rightscale_marker :end

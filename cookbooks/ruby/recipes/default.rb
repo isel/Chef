@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
 ruby_version = '1.9.2-p320'
@@ -106,4 +108,6 @@ EOF
     not_if { File.exist?('/Ruby192') }
   end
 end
+
+rightscale_marker :end
 
