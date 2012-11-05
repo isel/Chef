@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 require 'rake/clean'
 
 template '/etc/apache2/conf.d/status.conf' do
@@ -27,8 +29,7 @@ bash 'Set document root' do
         exit 0
     fi
 
-    echo "setting document root"
-    echo DocumentRoot "/var/www/App" >> /etc/apache2/apache2.conf
+    echo DocumentRoot "/var/www" >> /etc/apache2/apache2.conf
   EOF
 end
 
@@ -80,3 +81,5 @@ template '/var/www/Tests/settings.js' do
 end
 
 bash('Restarting apache') { code 'service apache2 restart' }
+
+rightscale_marker :end

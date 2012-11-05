@@ -7,6 +7,8 @@ version          "0.0.1"
 
 supports "ubuntu"
 
+depends "rightscale"
+
 recipe "jspr::default", "Deploys the jspr website"
 
 attribute "deploy/app_server",
