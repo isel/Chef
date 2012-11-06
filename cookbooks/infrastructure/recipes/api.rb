@@ -49,17 +49,17 @@ end
 
 ruby_block 'Processing rest.log via logs' do
   block do
-    File.open('/etc/rsyslog.conf', 'w') do |f|
-      f << '$ModLoad imfile'
-      f << ''
-      f << '$InputFileName /var/www/api/log/rest.log'
-      f << '$InputFileTag rest.log:'
-      f << '$InputFileStateFile stat-rest-log'
-      f << '$InputFileSeverity error'
-      f << '$InputFileFacility local7'
-      f << '$InputRunFileMonitor'
-      f << ''
-      f << '$InputFilePollingInterval 10'
+    File.open('/etc/rsyslog.conf', 'a') do |f|
+      f.puts '$ModLoad imfile'
+      f.puts ''
+      f.puts '$InputFileName /var/www/api/log/rest.log'
+      f.puts '$InputFileTag rest.log:'
+      f.puts '$InputFileStateFile stat-rest-log'
+      f.puts '$InputFileSeverity error'
+      f.puts '$InputFileFacility local7'
+      f.puts '$InputRunFileMonitor'
+      f.puts ''
+      f.puts '$InputFilePollingInterval 10'
     end
   end
   not_if { File.read('/etc/rsyslog.conf').include?('rest.log') }
