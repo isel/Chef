@@ -56,7 +56,7 @@ bash 'Deploying UIAutomation' do
     cp #{node[:binaries_directory]}/UIAutomation/.* /var/www/Tests
     ls #{node[:binaries_directory]}/JSPR/JSPR* > /var/www/Tests/jspr_version
 
-    version=`cat /var/www/Prios/Tests/jspr_version`
+    version=`cat /var/www/Tests/jspr_version`
     sed -i "s@/JSPR/ver1/@/JSPR/$version/@" /var/www/Tests/jstestload.html
   EOF
 end
