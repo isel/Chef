@@ -54,7 +54,7 @@ ruby_block 'Processing rest.log via logs' do
 ModLoad imklog
 $ModLoad imfile
 
-$InputFileName /var/www/log/rest.log
+$InputFileName /var/log/rest.log
 $InputFileTag rest.log:
 $InputFileStateFile stat-rest-log
 $InputFileSeverity error
