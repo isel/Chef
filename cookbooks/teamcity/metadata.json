@@ -24,6 +24,7 @@
       "display_name": "administrator password for mongo",
       "required": "required",
       "recipes": [
+        "teamcity::configure",
         "teamcity::set_admin_password_mongo"
       ],
       "choice": [
@@ -36,6 +37,7 @@
       "display_name": "administrator user for mongo",
       "required": "required",
       "recipes": [
+        "teamcity::configure",
         "teamcity::set_admin_user_mongo"
       ],
       "choice": [
@@ -48,7 +50,21 @@
       "display_name": "gallio path",
       "required": "required",
       "recipes": [
+        "teamcity::configure",
         "teamcity::set_gallio_path"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "teamcity/tc_agent_type": {
+      "display_name": "agent type",
+      "required": "required",
+      "recipes": [
+        "teamcity::configure",
+        "teamcity::configure"
       ],
       "choice": [
 
@@ -60,6 +76,7 @@
   "groupings": {
   },
   "recipes": {
+    "teamcity::configure": "Configure build agent properties file",
     "teamcity::set_admin_password_mongo": "Sets administrator password for mongo in the build agent properties file",
     "teamcity::set_admin_user_mongo": "Sets administrator user for mongo in the build agent properties file",
     "teamcity::set_fxcop_path": "Sets fxcop path in the build agent properties file",
