@@ -31,7 +31,7 @@ bash 'Setup website' do
     cp -r #{node[:infrastructure_directory]}/InfrastructureServices/* /var/www/api
 
     echo "" >> /var/www/api/log/production.log
-    echo "" >> /var/www/api/log/rest.log
+    echo "" >> /var/log/rest.log
     chmod --recursive 0666 /var/www/api/log
     chown --recursive www-data:www-data /var/www/api/log
 
@@ -54,7 +54,7 @@ ruby_block 'Processing rest.log via logs' do
 ModLoad imklog
 $ModLoad imfile
 
-$InputFileName /var/www/api/log/rest.log
+$InputFileName /var/www/log/rest.log
 $InputFileTag rest.log:
 $InputFileStateFile stat-rest-log
 $InputFileSeverity error
