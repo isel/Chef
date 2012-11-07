@@ -72,4 +72,6 @@ $InputFilePollingInterval 10
   not_if { File.read('/etc/rsyslog.conf').include?('rest.log') }
 end
 
+logging("default") { action :restart }
+
 rightscale_marker :end
