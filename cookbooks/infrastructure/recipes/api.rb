@@ -51,7 +51,7 @@ ruby_block 'Processing rest.log via logs' do
   block do
     config_file = '/etc/rsyslog.conf'
     target = <<-'eof'
-$ModLoad imklog
+ModLoad imklog
 $ModLoad imfile
 
 $InputFileName /var/www/api/log/rest.log
@@ -66,7 +66,7 @@ $InputFilePollingInterval 10
     eof
 
     text = File.read(config_file)
-    modified = text.gsub(/#{'$ModLoad imklog'}/, "#{target}")
+    modified = text.gsub(/#{'ModLoad imklog'}/, target)
     File.open(config_file, 'w') { |f| f.puts(modified) }
   end
   not_if { File.read('/etc/rsyslog.conf').include?('rest.log') }
