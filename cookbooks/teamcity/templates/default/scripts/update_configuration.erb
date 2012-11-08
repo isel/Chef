@@ -1,0 +1,18 @@
+# Helpers.update_properties
+# cannot be used because it is not generic enough
+  token_values = <%=token_values %>
+  source_file = '<%= @properties_file %>'
+
+File.open(source_file, 'r+') { |f| contents = f.read }
+token_values.each do |token, value|
+  token_match = token  + '\s*=.*$'
+  result = token + ' = ' + value
+  matcher = Regexp.new('(' + token_match + ')')
+  if matcher.match(contents)
+    contents = contents.gsub(matcher, result)
+    else
+    contents = contents + "\n" + result
+  end
+
+end
+File.open(target_file, 'w') { |f| f.puts contents }

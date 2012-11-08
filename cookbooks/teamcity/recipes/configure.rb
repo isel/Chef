@@ -47,13 +47,14 @@ configurations = {
 }
 # copy properties file elsewhere
 # update
-staging_properties_file = File.join(ENV['TEMP'], File.basename(node[:properties_file]) + '.' + rand(100-999).to_s).gsub(/\\/,'/')
+staging_properties_file = File.join(ENV['TEMP'], File.basename(node[:properties_file]) + '.' + rand(100-999).to_s).gsub(/\\/, '/')
 
 log "Copying vanilla #{node[:properties_file]} to #{staging_properties_file}."
 
 FileUtils.copy_file(node[:properties_file], staging_properties_file)
 
 
+ruby_scripts_dir = node[:ruby_scripts_dir]
 
 tc_agent_type = node[:teamcity][:tc_agent_type]
 
@@ -62,20 +63,18 @@ tc_agent_type = tc_agent_type.gsub('env.AgentType=', '')
 log "Setting properties for current TC_AGENT_TYPE: #{tc_agent_type}"
 configuration = configurations[tc_agent_type]
 
-configuration.each do |settings|
-  Log "Updating #{settings['description']}" + "\n" + settings.to_yaml.to_s
 
+template "#{ruby_scripts_dir}/update_configuration.rb" do
+  source 'scripts/update_configuration.erb'
+  variables(
+    :properties_file => staging_properties_file,
+    :token_value => configuration
+  )
+end
+powershell 'Configuring mongo' do
+  source("ruby #{ruby_scripts_dir}/update_configuration.rb")
+end
 
-  powershell 'update properties : '+ staging_properties_file do
-    parameters ({
-      'properties_file' => staging_properties_file,
-      'key' => settings['key'],
-      'value' => settings['value']
-    })
-    powershell_script = node[:set_value_in_properties_file_powershell_script]
-    source(powershell_script)
-    sleep 10
-  end
 # copy updated configuration over
 end
 log "Copying final #{staging_properties_file} to #{node[:properties_file]}"
