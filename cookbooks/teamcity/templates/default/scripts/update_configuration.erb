@@ -10,8 +10,8 @@ begin
 
 token_values.each do |token, value|
   token_match = token  + '\s*=.*$'
-  result = token + ' = ' + value
-  matcher = Regexp.new('(' + token_match.gsub(/\/,'\\\\') + ')')
+  result = token + ' = ' + value.gsub(/\/,'\\\\')
+  matcher = Regexp.new('(' + token_match + ')')
   if matcher.match(contents)
     contents = contents.gsub(matcher, result)
     else
