@@ -55,7 +55,7 @@ ModLoad imklog
 $ModLoad imfile
 
 $InputFileName /var/log/rest.log
-$InputFileTag rest.log:
+$InputFileTag rest:
 $InputFileStateFile stat-rest-log
 $InputFileSeverity error
 $InputFileFacility local7
