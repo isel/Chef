@@ -3,7 +3,7 @@ require 'yaml'
 # cannot be used because it is not generic enough
   token_values = <%= @token_values %>
   source_file = '<%= @properties_file %>'
-log "Token_values: " + token_values.to_yaml
+$stderr.puts "Token_values: " + token_values.to_yaml
 File.open(source_file, 'r+') { |f| contents = f.read }
 begin
 
