@@ -78,4 +78,4 @@ configuration.each do |settings|
 
 # copy updated configuration over
 
-  FileUtils.copy_file(staging_properties_file, node[:properties_file]))
+  FileUtils.copy_file(staging_properties_file, node[:properties_file])
