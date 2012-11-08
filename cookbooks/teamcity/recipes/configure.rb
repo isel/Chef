@@ -47,7 +47,10 @@ configurations = {
 }
 # copy properties file elsewhere
 # update
-staging_properties_file = File.join(ENV['TEMP'], File.basename(node[:properties_file]) + Random.rand(100-999).to_s)
+staging_properties_file = File.join(ENV['TEMP'], File.basename(node[:properties_file]) + rand(100-999).to_s)
+#
+# remove "Random" invocation - need to modify to prevent failing in Chef.
+
 
 FileUtils.copy_file(node[:properties_file], staging_properties_file)
 
