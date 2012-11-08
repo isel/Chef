@@ -1,9 +1,12 @@
+require 'yaml'
 # Helpers.update_properties
 # cannot be used because it is not generic enough
   token_values = <%= @token_values %>
   source_file = '<%= @properties_file %>'
-
+log "Token_values: " + token_values.to_yaml
 File.open(source_file, 'r+') { |f| contents = f.read }
+begin
+
 token_values.each do |token, value|
   token_match = token  + '\s*=.*$'
   result = token + ' = ' + value
@@ -14,5 +17,7 @@ token_values.each do |token, value|
     contents = contents + "\n" + result
   end
 
+end
+rescue=>e
 end
 File.open(target_file, 'w') { |f| f.puts contents }
