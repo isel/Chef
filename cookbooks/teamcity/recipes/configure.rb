@@ -47,7 +47,7 @@ configurations = {
 }
 # copy properties file elsewhere
 # update
-staging_properties_file = File.join(ENV['TEMP'], File.basename(node[:properties_file]) + rand(100-999).to_s)
+staging_properties_file = File.join(ENV['TEMP'], File.basename(node[:properties_file]) + '.' + rand(100-999).to_s).gsub(/\\/,'/')
 #
 # remove "Random" invocation - need to modify to prevent failing in Chef.
 log "Copying vanilla #{node[:properties_file]} to #{staging_properties_file}."
@@ -72,7 +72,10 @@ tc_agent_type =  'integration'
 configuration = configurations[tc_agent_type]
 
 configuration.each do |settings|
-  puts settings['description']
+  $stderr.puts "Updating #{settings['description']}"
+  $stderr.puts  settings.to_yaml
+
+
   powershell 'update properties : '+ staging_properties_file do
     parameters ({
       'properties_file' => staging_properties_file,
