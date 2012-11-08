@@ -67,7 +67,7 @@ configuration = configurations[tc_agent_type]
 template "#{ruby_scripts_dir}/update_configuration.rb" do
   source 'scripts/update_configuration.erb'
   variables(
-    :token_values => configuration,
+    :token_values => configuration.to_yaml.to_s,
     :source_file => staging_properties_file,
    :target_file =>  staging_properties_file
   )
