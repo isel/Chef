@@ -23,7 +23,7 @@ configurations = {
     {
       'description' => 'Set fxcop path',
       'key' => 'system.FxCopRoot',
-      'value' => 'C:/Program Files (x86)/Microsoft Visual Studio 10.0/Team Tools\\\Static Analysis Tools\\\FxCop',
+      'value' => 'C:/Program Files (x86)/Microsoft Visual Studio 10.0/Team Tools/Static Analysis Tools/FxCop',
     },
     { 'description' => 'Set gallio path',
       'key' => 'env.GallioPath',
