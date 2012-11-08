@@ -31,7 +31,7 @@ bash 'Setup website' do
     cp -r #{node[:infrastructure_directory]}/InfrastructureServices/* /var/www/api
 
     echo "" >> /var/www/api/log/production.log
-    echo "" >> /var/www/api/log/rest.log
+    echo "" >> /var/log/rest.log
     chmod --recursive 0666 /var/www/api/log
     chown --recursive www-data:www-data /var/www/api/log
 
@@ -49,20 +49,29 @@ end
 
 ruby_block 'Processing rest.log via logs' do
   block do
-    File.open('/etc/rsyslog.conf', 'a') do |f|
-      f.puts '$ModLoad imfile'
-      f.puts ''
-      f.puts '$InputFileName /var/www/api/log/rest.log'
-      f.puts '$InputFileTag rest.log:'
-      f.puts '$InputFileStateFile stat-rest-log'
-      f.puts '$InputFileSeverity error'
-      f.puts '$InputFileFacility local7'
-      f.puts '$InputRunFileMonitor'
-      f.puts ''
-      f.puts '$InputFilePollingInterval 10'
-    end
+    config_file = '/etc/rsyslog.conf'
+    target = <<-'eof'
+ModLoad imklog
+$ModLoad imfile
+
+$InputFileName /var/log/rest.log
+$InputFileTag rest:
+$InputFileStateFile stat-rest-log
+$InputFileSeverity error
+$InputFileFacility local7
+$InputRunFileMonitor
+
+$InputFilePollingInterval 10
+
+    eof
+
+    text = File.read(config_file)
+    modified = text.gsub(/#{'ModLoad imklog'}/, target)
+    File.open(config_file, 'w') { |f| f.puts(modified) }
   end
   not_if { File.read('/etc/rsyslog.conf').include?('rest.log') }
 end
+
+logging("default") { action :restart }
 
 rightscale_marker :end
