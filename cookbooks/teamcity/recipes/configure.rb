@@ -50,7 +50,7 @@ configurations = {
 # update
 staging_properties_file = File.join(ENV['TEMP'], File.basename(node[:properties_file]) + Random.rand(100-999).to_s)
 
-FileUtils.copy_file(node[:properties_file]), staging_properties_file)
+FileUtils.copy_file(node[:properties_file] , staging_properties_file)
 
 
 # keyed by agent_type
