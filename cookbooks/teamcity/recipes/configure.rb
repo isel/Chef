@@ -63,8 +63,9 @@ TC_AGENT_TYPE => text:env.AgentType=integration (from ServerTemplate)
 tc_agent_type = node[:teamcity][:tc_agent_type]
 
 # strip legacy prefix
-tc_agent_type.gsub('env.AgentType=', '')
-
+tc_agent_type = tc_agent_type.gsub('env.AgentType=', '')
+$stderr.puts tc_agent_type
+tc_agent_type =  'integration'
 configuration = configurations[tc_agent_type]
 
 configuration.each do |settings|
