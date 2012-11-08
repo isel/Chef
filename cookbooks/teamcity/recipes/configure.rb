@@ -50,6 +50,7 @@ configurations = {
 staging_properties_file = File.join(ENV['TEMP'], File.basename(node[:properties_file]) + rand(100-999).to_s)
 #
 # remove "Random" invocation - need to modify to prevent failing in Chef.
+log "Copying vanilla #{node[:properties_file]} to #{staging_properties_file}."
 
 
 FileUtils.copy_file(node[:properties_file], staging_properties_file)
@@ -64,13 +65,15 @@ tc_agent_type = node[:teamcity][:tc_agent_type]
 
 # strip legacy prefix
 tc_agent_type = tc_agent_type.gsub('env.AgentType=', '')
-$stderr.puts tc_agent_type
+log "Setting properties for current TC_AGENT_TYPE: #{tc_agent_type}"
+
+
 tc_agent_type =  'integration'
 configuration = configurations[tc_agent_type]
 
 configuration.each do |settings|
   puts settings['description']
-  powershell 'update properties' do
+  powershell 'update properties : '+ staging_properties_file do
     parameters ({
       'properties_file' => staging_properties_file,
       'key' => settings['key'],
@@ -81,4 +84,5 @@ configuration.each do |settings|
 
 # copy updated configuration over
 end
+log "Copying final #{staging_properties_file} to #{node[:properties_file]}"
 FileUtils.copy_file(staging_properties_file, node[:properties_file])
