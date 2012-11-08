@@ -48,32 +48,22 @@ configurations = {
 # copy properties file elsewhere
 # update
 staging_properties_file = File.join(ENV['TEMP'], File.basename(node[:properties_file]) + '.' + rand(100-999).to_s).gsub(/\\/,'/')
-#
-# remove "Random" invocation - need to modify to prevent failing in Chef.
-log "Copying vanilla #{node[:properties_file]} to #{staging_properties_file}."
 
+log "Copying vanilla #{node[:properties_file]} to #{staging_properties_file}."
 
 FileUtils.copy_file(node[:properties_file], staging_properties_file)
 
 
-# keyed by agent_type
-=begin
-TC_AGENT_TYPE => text:env.AgentType=integration (from ServerTemplate)
-=end
 
 tc_agent_type = node[:teamcity][:tc_agent_type]
 
 # strip legacy prefix
 tc_agent_type = tc_agent_type.gsub('env.AgentType=', '')
 log "Setting properties for current TC_AGENT_TYPE: #{tc_agent_type}"
-
-
-tc_agent_type =  'integration'
 configuration = configurations[tc_agent_type]
 
 configuration.each do |settings|
-  $stderr.puts "Updating #{settings['description']}"
-  $stderr.puts  settings.to_yaml
+  Log "Updating #{settings['description']}" + "\n" + settings.to_yaml.to_s
 
 
   powershell 'update properties : '+ staging_properties_file do
@@ -82,9 +72,10 @@ configuration.each do |settings|
       'key' => settings['key'],
       'value' => settings['value']
     })
-    source(node[:set_value_in_properties_file_powershell_script])
+    powershell_script = node[:set_value_in_properties_file_powershell_script]
+    source(powershell_script)
+    sleep 10
   end
-
 # copy updated configuration over
 end
 log "Copying final #{staging_properties_file} to #{node[:properties_file]}"
