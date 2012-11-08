@@ -8,7 +8,7 @@ configurations = {
     {
       'description' => 'Set ncover path',
       'key' => 'env.ncoverPath',
-      'value' => 'C\\:\\\\Program Files\\\\NCover'
+      'value' => 'C:/Program Files/NCover'
     },
     {
       'description' => 'Set administrator password for mongo',
@@ -23,7 +23,7 @@ configurations = {
     {
       'description' => 'Set fxcop path',
       'key' => 'system.FxCopRoot',
-      'value' => 'C\\:\\\\Program Files (x86)\\\\Microsoft Visual Studio 10.0\\\\Team Tools\\\Static Analysis Tools\\\FxCop',
+      'value' => 'C:/Program Files (x86)/Microsoft Visual Studio 10.0/Team Tools\\\Static Analysis Tools\\\FxCop',
     },
     { 'description' => 'Set gallio path',
       'key' => 'env.GallioPath',
@@ -37,7 +37,7 @@ configurations = {
     {
       'description' => 'Set ruby path',
       'key' => 'env.RubyPath',
-      'value' => 'c\\:\\\\ruby192\\\\bin\\\\ruby.exe',
+      'value' => 'c:/ruby192/bin/ruby.exe',
     }
 
   ],

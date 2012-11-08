@@ -1,7 +1,7 @@
 script = "#{node[:ruby_scripts_dir]}/get_deployment_settings.rb"
 
 template script do
-  source 'scripts/get_deployment_settings.erb'
+  source 'scripts/update_configuration.erb'
   variables(
     :api_infrastructure_url => node['core']['api_infrastructure_url'],
     :deployment_uri => node['core']['deployment_uri']
