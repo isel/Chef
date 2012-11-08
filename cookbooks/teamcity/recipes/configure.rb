@@ -76,6 +76,5 @@ powershell 'Configuring mongo' do
 end
 
 # copy updated configuration over
-end
 log "Copying final #{staging_properties_file} to #{node[:properties_file]}"
 FileUtils.copy_file(staging_properties_file, node[:properties_file])
