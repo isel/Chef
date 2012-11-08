@@ -3,7 +3,7 @@ require 'yaml'
 
 configurations = {
 
-
+# note weird number of back slashes.
   'integration' => [
     {
       'description' => 'Set ncover path',
@@ -20,7 +20,6 @@ configurations = {
       'key' => 'env.AdminUserMongo',
       'value' => node[:teamcity][:admin_user_mongo]
     },
-
     {
       'description' => 'Set fxcop path',
       'key' => 'system.FxCopRoot',
@@ -50,7 +49,7 @@ configurations = {
 # update
 staging_properties_file = File.join(ENV['TEMP'], File.basename(node[:properties_file]) + Random.rand(100-999).to_s)
 
-FileUtils.copy_file(node[:properties_file] , staging_properties_file)
+FileUtils.copy_file(node[:properties_file], staging_properties_file)
 
 
 # keyed by agent_type
@@ -77,5 +76,5 @@ configuration.each do |settings|
   end
 
 # copy updated configuration over
-
-  FileUtils.copy_file(staging_properties_file, node[:properties_file])
+end
+FileUtils.copy_file(staging_properties_file, node[:properties_file])
