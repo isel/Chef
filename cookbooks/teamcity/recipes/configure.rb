@@ -67,8 +67,9 @@ configuration = configurations[tc_agent_type]
 template "#{ruby_scripts_dir}/update_configuration.rb" do
   source 'scripts/update_configuration.erb'
   variables(
-    :properties_file => staging_properties_file,
-    :token_value => configuration
+    :token_values => configuration,
+    :source_file => staging_properties_file,
+   :target_file =>  staging_properties_file
   )
 end
 powershell 'Configuring mongo' do

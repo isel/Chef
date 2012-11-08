@@ -2,7 +2,8 @@ require 'yaml'
 # Helpers.update_properties
 # cannot be used because it is not generic enough
   token_values = <%= @token_values %>
-  source_file = '<%= @properties_file %>'
+  source_file = '<%= @source_file %>'
+  target_file  = '<%= @target_file %>'
 $stderr.puts "Token_values: " + token_values.to_yaml
 File.open(source_file, 'r+') { |f| contents = f.read }
 begin
