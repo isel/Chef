@@ -16,7 +16,7 @@ template "#{node[:ruby_scripts_dir]}/download_rsyslog.rb" do
     :version => '1.1.120',
     :artifacts => 'rsyslogwa.exe',
     :target_directory => '/installs',
-    :unzip => false
+    :unzip => true
   )
   not_if { File.exist?('/installs/rsyslogwa.exe') }
 end
