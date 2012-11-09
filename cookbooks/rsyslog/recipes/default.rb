@@ -14,22 +14,22 @@ template "#{node[:ruby_scripts_dir]}/download_rsyslog.rb" do
     :s3_repository => 'Vendor',
     :product => 'rsyslog',
     :version => '1.1.120',
-    :artifacts => 'rsyslogwa.exe',
+    :artifacts => 'rsyslogwa',
     :target_directory => '/installs',
     :unzip => true
   )
-  not_if { File.exist?('/installs/rsyslogwa.exe') }
+  not_if { File.exist?('/installs/rsyslogwa/rsyslogwa.exe') }
 end
 
 powershell 'Download rsyslog' do
   source("ruby #{node[:ruby_scripts_dir]}/download_rsyslog.rb")
-  not_if { File.exist?('/installs/rsyslogwa.exe') }
+  not_if { File.exist?('/installs/rsyslogwa/rsyslogwa.exe') }
 end
 
 agent_dir = "#{ENV['ProgramFiles(x86)']}\\RSyslog\\Agent"
 
 powershell 'Install rsyslog' do
-  source('c:\\installs\\rsyslogwa.exe -i /S /v /qn')
+  source('c:\\installs\\rsyslogwa\\rsyslogwa.exe -i /S /v /qn')
   not_if { File.exist?(agent_dir) }
 end
 
