@@ -164,21 +164,11 @@ configurations = {
 
   ]
 }
-# copy properties file elsewhere
-# update
-backup_properties_file = File.join(ENV['TEMP'], File.basename(node[:properties_file]) + '.' + rand(100-999).to_s).gsub(/\\/, '/')
-log "Copying vanilla #{node[:properties_file]} to #{backup_properties_file}."
-
-FileUtils.copy_file(node[:properties_file], backup_properties_file)
-
 
 agent_type = node[:teamcity][:agent_type]
 
-# strip legacy prefix
-agent_type = agent_type.gsub('env.AgentType=', '')
 log "Setting properties for current agent type: #{agent_type}"
 configuration = configurations[agent_type]
-
 
 template "#{ruby_scripts_dir}/update_configuration.rb" do
   source 'scripts/update_configuration.erb'
