@@ -63,7 +63,18 @@
       "display_name": "agent type",
       "required": "required",
       "recipes": [
-        "teamcity::configure",
+        "teamcity::configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "teamcity/web_server_ip": {
+      "display_name": "web server ip",
+      "required": "required",
+      "recipes": [
         "teamcity::configure"
       ],
       "choice": [

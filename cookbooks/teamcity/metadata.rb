@@ -32,4 +32,9 @@ attribute "teamcity/gallio_path",
 attribute "teamcity/tc_agent_type",
   :display_name => "agent type",
   :required => "required",
-  :recipes => ["teamcity::configure", "teamcity::configure"]
+  :recipes => ["teamcity::configure"]
+
+attribute "teamcity/web_server_ip",
+  :display_name => "web server ip",
+  :required => "required",
+  :recipes => ["teamcity::configure"]

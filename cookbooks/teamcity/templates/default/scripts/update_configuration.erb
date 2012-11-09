@@ -9,19 +9,20 @@ target_file  = '<%= @target_file %>'
 
 contents = File.read(source_file)
 
-contents = File.read(source_file)
-
 token_values.each do |entry|
 token = entry['key']
-token_match =  token + '\s*=.*$'
+token_match =  '^' + token + '\s*=.*$'
 # The result is sensitive to backslashes!
 
 value = entry['value'].gsub(/\\/,'\\\\\\\\').gsub('\\\\:','\\:')
 result = token + ' = ' + value
 matcher = Regexp.new('(' + token_match + ')')
+$stderr.puts entry['description']
+
 if matcher.match(contents)
+
 # The result is sensitive to backslashes!
-# This translation needs to be done twice
+# NOTE: backslash replacement done below for the second time for a reason
 
  result = result.gsub(/\\/,'\\\\\\\\').gsub('\\\\:','\\:')
 

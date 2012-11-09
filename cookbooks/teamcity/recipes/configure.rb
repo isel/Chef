@@ -1,9 +1,13 @@
 # consolidated recipes from teamcity cookbook
 require 'yaml'
+require 'fileutils'
+ruby_scripts_dir = node[:ruby_scripts_dir]
 
+# NOTE: please follow the pattern below
+# with weird number of back slashes.
+#
 configurations = {
 
-# note weird number of back slashes.
   'integration' => [
     {
       'description' => 'Set ncover path',
@@ -25,7 +29,8 @@ configurations = {
       'key' => 'system.FxCopRoot',
       'value' => 'C\:\\\Program Files (x86)\\\Microsoft Visual Studio 10.0\\\Team Tools\\\Static Analysis Tools\\\FxCop',
     },
-    { 'description' => 'Set gallio path',
+    {
+      'description' => 'Set gallio path',
       'key' => 'env.GallioPath',
       'value' => node[:teamcity][:gallio_path]
     },
@@ -38,8 +43,12 @@ configurations = {
       'description' => 'Set ruby path',
       'key' => 'env.RubyPath',
       'value' => 'c\:\\\ruby192\\\bin\\\ruby.exe',
+    },
+    {
+      'description' => 'Set Web Server Url',
+      'key' => 'serverUrl',
+      'value' => 'http\://' + node[:teamcity][:web_server_ip]
     }
-
   ],
   'ui' => [
     # TBD
@@ -47,13 +56,11 @@ configurations = {
 }
 # copy properties file elsewhere
 # update
-staging_properties_file = File.join(ENV['TEMP'], File.basename(node[:properties_file]) + '.' + rand(100-999).to_s).gsub(/\\/, '/')
+backup_properties_file = File.join(ENV['TEMP'], File.basename(node[:properties_file]) + '.' + rand(100-999).to_s).gsub(/\\/, '/')
+log "Copying vanilla #{node[:properties_file]} to #{backup_properties_file}."
 
-log "Copying vanilla #{node[:properties_file]} to #{staging_properties_file}."
+FileUtils.copy_file(node[:properties_file], backup_properties_file)
 
-FileUtils.copy_file(node[:properties_file], staging_properties_file)
-
-ruby_scripts_dir = node[:ruby_scripts_dir]
 
 tc_agent_type = node[:teamcity][:tc_agent_type]
 
@@ -67,14 +74,10 @@ template "#{ruby_scripts_dir}/update_configuration.rb" do
   source 'scripts/update_configuration.erb'
   variables(
     :token_values => configuration.to_yaml.to_s,
-    :source_file => staging_properties_file,
-   :target_file =>  staging_properties_file
+    :source_file => node[:properties_file],
+    :target_file => node[:properties_file]
   )
 end
 powershell 'Update configuration' do
   source("ruby #{ruby_scripts_dir}/update_configuration.rb")
 end
-
-# copy updated configuration over
-log "Copying final #{staging_properties_file} to #{node[:properties_file]}"
-FileUtils.copy_file(staging_properties_file, node[:properties_file])
