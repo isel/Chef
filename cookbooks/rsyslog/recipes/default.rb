@@ -38,19 +38,19 @@ template "#{agent_dir}\\settings.xml" do
   variables(:remote_log_server => node[:rsyslog][:remote_log_server])
 end
 
-powershell 'Import settings' do
-  parameters( { 'AGENT_DIR' => agent_dir } )
-  script = <<'EOF'
-    cd "$env:AGENT_DIR"
-    RSyslogConfigClient.exe "settings.xml" /f
-EOF
-  source( script )
-  not_if { File.exist?(agent_dir) }
-end
-
-service 'rsyslogcl.exe' do
-  action :start
-end
+#powershell 'Import settings' do
+#  parameters( { 'AGENT_DIR' => agent_dir } )
+#  script = <<'EOF'
+#    cd "$env:AGENT_DIR"
+#    RSyslogConfigClient.exe "settings.xml" /f
+#EOF
+#  source( script )
+#  not_if { File.exist?(agent_dir) }
+#end
+#
+#service 'rsyslogcl.exe' do
+#  action :start
+#end
 
 rightscale_marker :end
 
