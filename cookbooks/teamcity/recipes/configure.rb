@@ -1,8 +1,9 @@
-# consolidated recipes and RightScripts from teamcity cookbook
-
+# consolidated recipes and RightScripts to configure  build agent properties file
 require 'yaml'
 require 'fileutils'
 ruby_scripts_dir = node[:ruby_scripts_dir]
+
+rightscale_marker :begin
 
 # NOTE: please follow the weird back slash repetinion pattern below
 
@@ -32,12 +33,12 @@ configurations = {
     },
     {
       'description' => 'Set administrator user for mongo',
-      'key' => 'env.AdminUserMongo',
+      'key' => 'env.db.user',
       'value' => node[:teamcity][:admin_user_mongo]
     },
     {
       'description' => 'Set administrator password for mongo',
-      'key' => 'env.AdminPasswordMongo',
+      'key' => 'env.db.password',
       'value' => node[:teamcity][:admin_password_mongo]
     },
     {
@@ -60,10 +61,7 @@ configurations = {
       'key' => 'env.RightScale.Instance.Name',
       'value' => node[:teamcity][:instance_name]
     }
-
-
   ],
-
 
   'unit' => [
     {
@@ -93,12 +91,12 @@ configurations = {
     },
     {
       'description' => 'Set administrator user for mongo',
-      'key' => 'env.AdminUserMongo',
+      'key' => 'env.db.user',
       'value' => node[:teamcity][:admin_user_mongo]
     },
     {
       'description' => 'Set administrator password for mongo',
-      'key' => 'env.AdminPasswordMongo',
+      'key' => 'env.db.password',
       'value' => node[:teamcity][:admin_password_mongo]
     },
     {
@@ -133,7 +131,7 @@ configurations = {
     {
       'description' => 'Set ruby path',
       'key' => 'env.RubyPath',
-      'value' => 'c\:\\\ruby192\\\bin\\\ruby.exe',
+      'value' => 'c\:\\\ruby192\\\bin\\\ruby.exe'
     },
     {
       'description' => 'Configure locale',
@@ -155,29 +153,27 @@ configurations = {
       'key' => 'env.WebIP',
       'value' => node[:teamcity][:web_ip]
     },
-
     {
       'description' => 'Set Instance Name',
       'key' => 'env.RightScale.Instance.Name',
       'value' => node[:teamcity][:instance_name]
     }
-
   ]
 }
 
 agent_type = node[:teamcity][:agent_type]
 
-log "Setting properties for current agent type: #{agent_type}"
-configuration = configurations[agent_type]
-
 template "#{ruby_scripts_dir}/update_configuration.rb" do
   source 'scripts/update_configuration.erb'
   variables(
-    :token_values => configuration.to_yaml.to_s,
+    :token_values => configurations[agent_type].to_yaml.to_s,
     :source_file => node[:properties_file],
     :target_file => node[:properties_file]
   )
 end
-powershell 'Update configuration' do
+
+powershell "Setting properties for #{agent_type}" do
   source("ruby #{ruby_scripts_dir}/update_configuration.rb")
 end
+
+rightscale_marker :end

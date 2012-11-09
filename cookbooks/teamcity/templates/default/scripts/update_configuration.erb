@@ -13,7 +13,8 @@ token_values.each do |entry|
   token = entry['key']
   token_match = '^' + token + '\s*=.*$'
   # The result is sensitive to backslashes!
-  value = entry['value'].gsub(/\\/, '\\\\\\\\').gsub('\\\\:', '\\:')
+  value = entry['value']
+  value = value.gsub(/\\/, '\\\\\\\\').gsub('\\\\:', '\\:') unless value.nil?
   result = token + ' = ' + value
 
   matcher = Regexp.new('(' + token_match + ')')
@@ -26,5 +27,6 @@ token_values.each do |entry|
     contents = contents + "\n" + result
   end
 end
+
 
 File.open(target_file, 'w') { |f| f.puts contents }
