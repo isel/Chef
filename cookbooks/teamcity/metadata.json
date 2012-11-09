@@ -59,7 +59,7 @@
       "type": "string"
     },
     "teamcity/web_server_ip": {
-      "display_name": "web server ip",
+      "display_name": "teamcity server ip",
       "required": "required",
       "recipes": [
         "teamcity::configure"
@@ -111,14 +111,7 @@
   "groupings": {
   },
   "recipes": {
-    "teamcity::configure": "Configure build agent properties file",
-    "teamcity::set_admin_password_mongo": "Sets administrator password for mongo in the build agent properties file",
-    "teamcity::set_admin_user_mongo": "Sets administrator user for mongo in the build agent properties file",
-    "teamcity::set_fxcop_path": "Sets fxcop path in the build agent properties file",
-    "teamcity::set_gallio_path": "Sets gallio path in the build agent properties file",
-    "teamcity::set_ncover_path": "Sets ncover path in the build agent properties file",
-    "teamcity::set_ruby_path": "Sets ruby path in the build agent properties file",
-    "teamcity::update_buildagent_configuration": "Updates TC configuration"
+    "teamcity::configure": "Configure build agent properties file"
   },
   "version": "0.0.1"
 }

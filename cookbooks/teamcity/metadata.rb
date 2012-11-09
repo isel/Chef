@@ -1,51 +1,44 @@
-maintainer "Cloud Infrastructure"
-maintainer_email "ugf_ci@ultimatesoftware.com"
-license "our license"
-description "Configures TeamCity"
-long_description ""
-version "0.0.1"
+maintainer 'Cloud Infrastructure'
+maintainer_email 'ugf_ci@ultimatesoftware.com'
+license 'our license'
+description 'Configures TeamCity'
+long_description ''
+version '0.0.1'
 
-recipe "teamcity::configure", "Configure build agent properties file"
-recipe "teamcity::set_admin_password_mongo", "Sets administrator password for mongo in the build agent properties file"
-recipe "teamcity::set_admin_user_mongo", "Sets administrator user for mongo in the build agent properties file"
-recipe "teamcity::set_fxcop_path", "Sets fxcop path in the build agent properties file"
-recipe "teamcity::set_gallio_path", "Sets gallio path in the build agent properties file"
-recipe "teamcity::set_ncover_path", "Sets ncover path in the build agent properties file"
-recipe "teamcity::set_ruby_path", "Sets ruby path in the build agent properties file"
-recipe "teamcity::update_buildagent_configuration", "Updates TC configuration"
+recipe 'teamcity::configure', 'Configure build agent properties file'
 
-attribute "teamcity/admin_password_mongo",
-  :display_name => "administrator password for mongo",
-  :required => "required",
-  :recipes => ["teamcity::configure", "teamcity::set_admin_password_mongo"]
+attribute 'teamcity/admin_password_mongo',
+  :display_name => 'administrator password for mongo',
+  :required => 'required',
+  :recipes => ['teamcity::configure', 'teamcity::set_admin_password_mongo']
 
-attribute "teamcity/admin_user_mongo",
-  :display_name => "administrator user for mongo",
-  :required => "required",
-  :recipes => ["teamcity::configure", "teamcity::set_admin_user_mongo"]
+attribute 'teamcity/admin_user_mongo',
+  :display_name => 'administrator user for mongo',
+  :required => 'required',
+  :recipes => ['teamcity::configure', 'teamcity::set_admin_user_mongo']
 
-attribute "teamcity/agent_type",
-  :display_name => "agent type",
-  :required => "required",
-  :recipes => ["teamcity::configure"]
+attribute 'teamcity/agent_type',
+  :display_name => 'agent type',
+  :required => 'required',
+  :recipes => ['teamcity::configure']
 
-attribute "teamcity/web_server_ip",
-  :display_name => "web server ip",
-  :required => "required",
-  :recipes => ["teamcity::configure"]
+attribute 'teamcity/web_server_ip',
+  :display_name => 'teamcity server ip',
+  :required => 'required',
+  :recipes => ['teamcity::configure']
 
-attribute "teamcity/agent_name",
-  :display_name => "build agent name",
-  :required => "required",
-  :recipes => ["teamcity::configure"]
+attribute 'teamcity/agent_name',
+  :display_name => 'build agent name',
+  :required => 'required',
+  :recipes => ['teamcity::configure']
 
-attribute "teamcity/instance_name",
-  :display_name => "instance name",
-  :required => "required",
-  :recipes => ["teamcity::configure"]
+attribute 'teamcity/instance_name',
+  :display_name => 'instance name',
+  :required => 'required',
+  :recipes => ['teamcity::configure']
 
-attribute "teamcity/web_ip",
-  :display_name => "web ip",
-  :required => "optional",
-  :default  => "",
-  :recipes => ["teamcity::configure"]
+attribute 'teamcity/web_ip',
+  :display_name => 'web ip',
+  :required => 'optional',
+  :default => '',
+  :recipes => ['teamcity::configure']
