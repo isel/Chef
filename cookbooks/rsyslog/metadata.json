@@ -60,6 +60,18 @@
       ],
       "calculated": false,
       "type": "string"
+    },
+    "rsyslog/remote_log_server": {
+      "display_name": "remote log server",
+      "required": "required",
+      "recipes": [
+        "rsyslog::default"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
     }
   },
   "groupings": {

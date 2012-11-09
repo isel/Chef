@@ -28,3 +28,8 @@ attribute "core/s3_bucket",
   :required => "optional",
   :default  => "ugfgate1",
   :recipes => ["rsyslog::default"]
+
+attribute "rsyslog/remote_log_server",
+  :display_name => "remote log server",
+  :required => "required",
+  :recipes => ["rsyslog::default"]
