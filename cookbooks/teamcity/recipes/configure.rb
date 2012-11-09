@@ -43,27 +43,22 @@ configurations = {
       'description' => 'Set ruby path',
       'key' => 'env.RubyPath',
       'value' => 'c\:\\\ruby192\\\bin\\\ruby.exe',
-    }
-,
+    },
     {
       'description' => 'Set Web Server Url',
       'key' => 'serverUrl',
       'value' => 'http\://' + node[:teamcity][:web_server_ip]
-    }
-,
+    },
     {
       'description' => 'Set Agent Name',
       'key' => 'name',
       'value' => node[:teamcity][:agent_name]
-    }
-,
+    },
     {
       'description' => 'Set Agent Type',
       'key' => 'env.AgentType',
       'value' => node[:teamcity][:agent_type]
-    }
-
-,
+    },
     {
       'description' => 'Set Instance Name',
       'key' => 'env.RightScale.Instance.Name',
@@ -87,9 +82,9 @@ FileUtils.copy_file(node[:properties_file], backup_properties_file)
 agent_type = node[:teamcity][:agent_type]
 
 # strip legacy prefix
-tc_agent_type = tc_agent_type.gsub('env.AgentType=', '')
-log "Setting properties for current TC_AGENT_TYPE: #{tc_agent_type}"
-configuration = configurations[tc_agent_type]
+agent_type = agent_type.gsub('env.AgentType=', '')
+log "Setting properties for current agent type: #{agent_type}"
+configuration = configurations[agent_type]
 
 
 template "#{ruby_scripts_dir}/update_configuration.rb" do
