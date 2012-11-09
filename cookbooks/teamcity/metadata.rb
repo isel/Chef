@@ -24,11 +24,6 @@ attribute "teamcity/admin_user_mongo",
   :required => "required",
   :recipes => ["teamcity::configure", "teamcity::set_admin_user_mongo"]
 
-attribute "teamcity/gallio_path",
-  :display_name => "gallio path",
-  :required => "required",
-  :recipes => ["teamcity::configure", "teamcity::set_gallio_path"]
-
 attribute "teamcity/agent_type",
   :display_name => "agent type",
   :required => "required",
@@ -45,7 +40,12 @@ attribute "teamcity/agent_name",
   :recipes => ["teamcity::configure"]
 
 attribute "teamcity/instance_name",
-  :display_name => "instance name name",
+  :display_name => "instance name",
   :required => "required",
   :recipes => ["teamcity::configure"]
 
+attribute "teamcity/web_ip",
+  :display_name => "web ip",
+  :required => "optional",
+  :default  => "",
+  :recipes => ["teamcity::configure"]
