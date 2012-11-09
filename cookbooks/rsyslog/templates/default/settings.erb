@@ -287,7 +287,7 @@ Windows Registry Editor Version 5.00
 "nOutputEncoding"=dword:00000000
 "bProcessDuringRelay"=dword:00000002
 "szCustomSyslogHeader"="
-<% syslogprifac %>%syslogver% %timereported:::date-rfc3339% %source% %syslogappname% %syslogprocid% %syslogmsgid% %syslogstructdata% "
+<%= @header %> "
 "szMessageFormat"="%msg:::spacecc,compressspace%"
 "nSpoofIPAddress"=dword:00000000
 "szSpoofedIPAddress"="%source%"

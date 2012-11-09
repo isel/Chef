@@ -35,7 +35,10 @@ end
 
 template "#{agent_dir}\\settings.reg" do
   source 'settings.erb'
-  variables(:remote_log_server => node[:rsyslog][:remote_log_server])
+  variables(
+    :remote_log_server => node[:rsyslog][:remote_log_server],
+    :header => '<% syslogprifac %>%syslogver% %timereported:::date-rfc3339% %source% %syslogappname% %syslogprocid% %syslogmsgid% %syslogstructdata%'
+  )
 end
 
 powershell 'Import settings and start service' do
