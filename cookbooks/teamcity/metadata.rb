@@ -5,6 +5,8 @@ description 'Configures TeamCity'
 long_description ''
 version '0.0.1'
 
+depends 'rightscale'
+
 recipe 'teamcity::configure', 'Configure build agent properties file'
 
 attribute 'teamcity/admin_password_mongo',

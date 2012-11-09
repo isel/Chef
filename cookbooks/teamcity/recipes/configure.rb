@@ -1,7 +1,6 @@
 # consolidated recipes and RightScripts to configure  build agent properties file
 require 'yaml'
 require 'fileutils'
-require 'rightscale'
 
 ruby_scripts_dir = node[:ruby_scripts_dir]
 
