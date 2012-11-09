@@ -33,24 +33,20 @@ powershell 'Install rsyslog' do
   not_if { File.exist?(agent_dir) }
 end
 
-template "#{agent_dir}\\settings.xml" do
+template "#{agent_dir}\\settings.reg" do
   source 'settings.erb'
   variables(:remote_log_server => node[:rsyslog][:remote_log_server])
 end
 
-#powershell 'Import settings' do
-#  parameters( { 'AGENT_DIR' => agent_dir } )
-#  script = <<'EOF'
-#    cd "$env:AGENT_DIR"
-#    RSyslogConfigClient.exe "settings.xml" /f
-#EOF
-#  source( script )
-#  not_if { File.exist?(agent_dir) }
-#end
-#
-#service 'rsyslogcl.exe' do
-#  action :start
-#end
+powershell 'Import settings and start service' do
+  parameters( { 'AGENT_DIR' => agent_dir } )
+  script = <<'EOF'
+    regedit /S "$env:AGENT_DIR\\settings.reg"
+    net start rsyslogcl
+EOF
+  source( script )
+  not_if { File.exist?(agent_dir) }
+end
 
 rightscale_marker :end
 
