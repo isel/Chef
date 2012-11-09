@@ -8,7 +8,7 @@ configurations = {
     {
       'description' => 'Set ncover path',
       'key' => 'env.ncoverPath',
-      'value' => 'C:/Program Files/NCover'
+      'value' => 'C\:\\\Program Files\\\NCover'
     },
     {
       'description' => 'Set administrator password for mongo',
@@ -23,11 +23,11 @@ configurations = {
     {
       'description' => 'Set fxcop path',
       'key' => 'system.FxCopRoot',
-      'value' => 'C:/Program Files (x86)/Microsoft Visual Studio 10.0/Team Tools/Static Analysis Tools/FxCop',
+      'value' => 'C\:\\\Program Files (x86)\\\Microsoft Visual Studio 10.0\\\Team Tools\\\Static Analysis Tools\\\FxCop',
     },
     { 'description' => 'Set gallio path',
       'key' => 'env.GallioPath',
-      'value' => node[:teamcity][:gallio_path].gsub(/\\/,'/'),
+      'value' => node[:teamcity][:gallio_path]
     },
     {
       'description' => 'Configure locale',
@@ -37,7 +37,8 @@ configurations = {
     {
       'description' => 'Set ruby path',
       'key' => 'env.RubyPath',
-      'value' => 'c:/ruby192/bin/ruby.exe',
+      'value' => 'c\:\\\ruby192\\\bin\\\ruby.exe
+      ',
     }
 
   ],
@@ -52,7 +53,6 @@ staging_properties_file = File.join(ENV['TEMP'], File.basename(node[:properties_
 log "Copying vanilla #{node[:properties_file]} to #{staging_properties_file}."
 
 FileUtils.copy_file(node[:properties_file], staging_properties_file)
-
 
 ruby_scripts_dir = node[:ruby_scripts_dir]
 
@@ -72,7 +72,7 @@ template "#{ruby_scripts_dir}/update_configuration.rb" do
    :target_file =>  staging_properties_file
   )
 end
-powershell 'Configuring mongo' do
+powershell 'Update configuration' do
   source("ruby #{ruby_scripts_dir}/update_configuration.rb")
 end
 

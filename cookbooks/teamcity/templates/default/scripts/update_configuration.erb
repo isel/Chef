@@ -1,38 +1,30 @@
 require 'yaml'
-# Helpers.update_properties
-# cannot be used because it is not generic enough
-  token_values_str = '<%= @token_values %>'
-  token_values = YAML.load(token_values_str)
-  source_file = '<%= @source_file %>'
-  target_file  = '<%= @target_file %>'
-$stderr.puts "Token_values: " + token_values.to_yaml
-# File.open(source_file, 'r+') { |f| contents = f.read }
-contents = File.read(source_file)
-token_values = YAML.load(token_values_str)
-source_file = 'C:/Windows/TEMP/buildAgent.properties.109'
-target_file  = 'C:/Windows/TEMP/buildAgent.properties.109'
-$stderr.puts "Token_values: " + token_values.to_yaml
-contents = File.read(source_file)
-# File.open(source_file, 'r+') { |f| contents = f.read }
-$stderr.puts contents
+require 'fileutils'
 
+# derivative of Helpers.update_properties
 
+token_values = YAML.load('<%= @token_values %>')
+source_file = '<%= @source_file %>'
+target_file  = '<%= @target_file %>'
+
+contents = File.read(source_file)
 
 token_values.each do |entry|
 token = entry['key']
 token_match =  token + '\s*=.*$'
-value = entry['value'].gsub(/\//,'\\\\').gsub(':','\\:')
-$stderr.puts token_match
+value = entry['value']
 result = token + ' = ' + value
 matcher = Regexp.new('(' + token_match + ')')
 if matcher.match(contents)
-  contents = contents.gsub(matcher, result)
-  else
-  contents = contents + "\n" + result
+# The result is sensitive to backslashes!
+
+result = result.gsub(/\\/,'\\\\\\\\').gsub('\\\\:','\\:')
+
+contents = contents.gsub(matcher, result)
+else
+contents = contents + "\n" + result
 end
 
 end
-
-$stderr.puts contents
 
 File.open(target_file, 'w') { |f| f.puts contents }
