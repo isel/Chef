@@ -21,19 +21,35 @@ template "#{node[:ruby_scripts_dir]}/download_rsyslog.rb" do
   not_if { File.exist?('/installs/rsyslogwa.exe') }
 end
 
-powershell 'Install rsyslog' do
-  source('c:\\installs\\rsyslogwa.exe -i /S /v /qn')
-  not_if { File.exist?("#{ENV['ProgramFiles(x86)']}\\RSyslog\\Agent") }
+powershell 'Download rsyslog' do
+  source("ruby #{node[:ruby_scripts_dir]}/download_rsyslog.rb")
+  not_if { File.exist?('/installs/rsyslogwa.exe') }
 end
 
-template "#{ENV['ProgramFiles(x86)']}\\RSyslog\\Agent\\settings.xml" do
+agent_dir = "#{ENV['ProgramFiles(x86)']}\\RSyslog\\Agent"
+
+powershell 'Install rsyslog' do
+  source('c:\\installs\\rsyslogwa.exe -i /S /v /qn')
+  not_if { File.exist?(agent_dir) }
+end
+
+template "#{agent_dir}\\settings.xml" do
   source 'settings.erb'
   variables(:remote_log_server => node[:rsyslog][:remote_log_server])
 end
 
-powershell 'Install rsyslog' do
-  source('c:\\installs\\rsyslogwa.exe -i /S /v /qn')
-  not_if { File.exist?("#{ENV['ProgramFiles(x86)']}\\RSyslog\\Agent") }
+powershell 'Import settings' do
+  parameters( { 'AGENT_DIR' => agent_dir } )
+  script = <<'EOF'
+    cd "$env:AGENT_DIR"
+    RSyslogConfigClient.exe "settings.xml" /f
+EOF
+  source( script )
+  not_if { File.exist?(agent_dir) }
+end
+
+service 'rsyslogcl.exe' do
+  action :start
 end
 
 rightscale_marker :end
