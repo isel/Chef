@@ -27,7 +27,7 @@ configurations = {
     },
     { 'description' => 'Set gallio path',
       'key' => 'env.GallioPath',
-      'value' => node[:teamcity][:gallio_path],
+      'value' => node[:teamcity][:gallio_path].gsub(/\\/,'/'),
     },
     {
       'description' => 'Configure locale',
