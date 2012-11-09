@@ -37,8 +37,7 @@ configurations = {
     {
       'description' => 'Set ruby path',
       'key' => 'env.RubyPath',
-      'value' => 'c\:\\\ruby192\\\bin\\\ruby.exe
-      ',
+      'value' => 'c\:\\\ruby192\\\bin\\\ruby.exe',
     }
 
   ],
