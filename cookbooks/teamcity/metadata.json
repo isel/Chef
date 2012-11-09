@@ -59,7 +59,7 @@
       "calculated": false,
       "type": "string"
     },
-    "teamcity/tc_agent_type": {
+    "teamcity/agent_type": {
       "display_name": "agent type",
       "required": "required",
       "recipes": [
@@ -73,6 +73,30 @@
     },
     "teamcity/web_server_ip": {
       "display_name": "web server ip",
+      "required": "required",
+      "recipes": [
+        "teamcity::configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "teamcity/agent_name": {
+      "display_name": "build agent name",
+      "required": "required",
+      "recipes": [
+        "teamcity::configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "teamcity/instance_name": {
+      "display_name": "instance name name",
       "required": "required",
       "recipes": [
         "teamcity::configure"
