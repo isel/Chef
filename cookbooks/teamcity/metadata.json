@@ -8,6 +8,7 @@
   "platforms": {
   },
   "dependencies": {
+    "rightscale": ">= 0.0.0"
   },
   "recommendations": {
   },
@@ -24,7 +25,7 @@
       "display_name": "administrator password for mongo",
       "required": "required",
       "recipes": [
-        "teamcity::set_admin_password_mongo"
+        "teamcity::configure"
       ],
       "choice": [
 
@@ -36,7 +37,7 @@
       "display_name": "administrator user for mongo",
       "required": "required",
       "recipes": [
-        "teamcity::set_admin_user_mongo"
+        "teamcity::configure"
       ],
       "choice": [
 
@@ -44,11 +45,60 @@
       "calculated": false,
       "type": "string"
     },
-    "teamcity/gallio_path": {
-      "display_name": "gallio path",
+    "teamcity/agent_name": {
+      "display_name": "build agent name",
       "required": "required",
       "recipes": [
-        "teamcity::set_gallio_path"
+        "teamcity::configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "teamcity/agent_type": {
+      "display_name": "agent type",
+      "required": "required",
+      "recipes": [
+        "teamcity::configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "teamcity/instance_name": {
+      "display_name": "instance name",
+      "required": "required",
+      "recipes": [
+        "teamcity::configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "teamcity/web_ip": {
+      "display_name": "web ip",
+      "required": "optional",
+      "default": "",
+      "recipes": [
+        "teamcity::configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "teamcity/web_server_ip": {
+      "display_name": "teamcity server ip",
+      "required": "required",
+      "recipes": [
+        "teamcity::configure"
       ],
       "choice": [
 
@@ -60,13 +110,7 @@
   "groupings": {
   },
   "recipes": {
-    "teamcity::set_admin_password_mongo": "Sets administrator password for mongo in the build agent properties file",
-    "teamcity::set_admin_user_mongo": "Sets administrator user for mongo in the build agent properties file",
-    "teamcity::set_fxcop_path": "Sets fxcop path in the build agent properties file",
-    "teamcity::set_gallio_path": "Sets gallio path in the build agent properties file",
-    "teamcity::set_ncover_path": "Sets ncover path in the build agent properties file",
-    "teamcity::set_ruby_path": "Sets ruby path in the build agent properties file",
-    "teamcity::update_buildagent_configuration": "Updates TC configuration"
+    "teamcity::configure": "Configures TeamCity build agent properties file"
   },
   "version": "0.0.1"
 }

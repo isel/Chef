@@ -1,0 +1,32 @@
+require 'yaml'
+require 'fileutils'
+
+token_values = YAML.load('<%= @token_values %>')
+source_file = '<%= @source_file %>'
+target_file = '<%= @target_file %>'
+
+contents = File.read(source_file)
+
+token_values.each do |entry|
+
+  $stderr.puts entry['description']
+  token = entry['key']
+  token_match = '^' + token + '\s*=.*$'
+  # The result is sensitive to backslashes!
+  value = entry['value']
+  value = value.gsub(/\\/, '\\\\\\\\').gsub('\\\\:', '\\:') unless value.nil?
+  result = token + ' = ' + value
+
+  matcher = Regexp.new('(' + token_match + ')')
+  if matcher.match(contents)
+    # The result is sensitive to backslashes!
+    # NOTE: backslash replacement done below for the second time for a reason
+    result = result.gsub(/\\/, '\\\\\\\\').gsub('\\\\:', '\\:')
+    contents = contents.gsub(matcher, result)
+  else
+    contents = contents + "\n" + result
+  end
+end
+
+
+File.open(target_file, 'w') { |f| f.puts contents }
