@@ -1,6 +1,6 @@
-ruby_scripts_dir = node[:ruby_scripts_dir]
+rightscale_marker :begin
 
-template "#{ruby_scripts_dir}/local_web.rb" do
+template "#{node[:ruby_scripts_dir]}/local_web.rb" do
   source 'scripts/local_web.erb'
   variables(
     :app_server => node[:deploy][:app_server],
@@ -11,6 +11,8 @@ end
 
 bash 'Running local smoke tests' do
   code <<-EOF
-    rake --rakefile #{ruby_scripts_dir}/local_web.rb
+    rake --rakefile #{node[:ruby_scripts_dir]}/local_web.rb
   EOF
 end
+
+rightscale_marker :end
