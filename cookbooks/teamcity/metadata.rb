@@ -12,12 +12,12 @@ recipe 'teamcity::configure', 'Configures TeamCity build agent properties file'
 attribute 'teamcity/admin_password_mongo',
   :display_name => 'administrator password for mongo',
   :required => 'required',
-  :recipes => ['teamcity::configure', 'teamcity::set_admin_password_mongo']
+  :recipes => ['teamcity::configure']
 
 attribute 'teamcity/admin_user_mongo',
   :display_name => 'administrator user for mongo',
   :required => 'required',
-  :recipes => ['teamcity::configure', 'teamcity::set_admin_user_mongo']
+  :recipes => ['teamcity::configure']
 
 attribute 'teamcity/agent_name',
   :display_name => 'build agent name',
