@@ -49,8 +49,8 @@ powershell 'Import rsyslog settings' do
 
     do {
       regedit /s "$env:AGENT_DIR\\settings.reg"
-      $general_options = Get-ChildItem "hklm:\software\Wow6432Node\Adiscon\RSyslogAgent\General"
-      $done = $general_options.count -gt 1
+      $general_options = Get-Item -Path Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Adiscon\RSyslogAgent\General | Select-Object -ExpandProperty Property
+      $done = $general_options.count -gt 2
       if (!$done) {
         $tries += 1
         start-sleep -s 1
