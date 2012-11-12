@@ -47,32 +47,20 @@
       "calculated": false,
       "type": "string"
     },
-    "teamcity/agent_type": {
-      "display_name": "agent type",
-      "required": "required",
-      "recipes": [
-        "teamcity::configure"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "teamcity/web_server_ip": {
-      "display_name": "teamcity server ip",
-      "required": "required",
-      "recipes": [
-        "teamcity::configure"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
     "teamcity/agent_name": {
       "display_name": "build agent name",
+      "required": "required",
+      "recipes": [
+        "teamcity::configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "teamcity/agent_type": {
+      "display_name": "agent type",
       "required": "required",
       "recipes": [
         "teamcity::configure"
@@ -107,12 +95,24 @@
       ],
       "calculated": false,
       "type": "string"
+    },
+    "teamcity/web_server_ip": {
+      "display_name": "teamcity server ip",
+      "required": "required",
+      "recipes": [
+        "teamcity::configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
     }
   },
   "groupings": {
   },
   "recipes": {
-    "teamcity::configure": "Configure build agent properties file"
+    "teamcity::configure": "Configures TeamCity build agent properties file"
   },
   "version": "0.0.1"
 }
