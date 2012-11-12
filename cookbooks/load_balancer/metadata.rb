@@ -7,6 +7,8 @@ version          "0.0.1"
 
 supports "ubuntu"
 
+depends "rightscale"
+
 recipe "load_balancer::configure_load_balancer_forwarding", "Adds an entry vhost (frontend) that forwards requests to the next target"
 recipe "load_balancer::disconnect_from_haproxy", "Disconnects from each load balancer"
 recipe "load_balancer::deregister_with_route53", "Deregisters an ip address with a domain in Route53"
