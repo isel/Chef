@@ -44,10 +44,10 @@ end
 powershell 'Import rsyslog settings' do
   parameters( { 'AGENT_DIR' => agent_dir } )
   source('regedit /s "$env:AGENT_DIR\\settings.reg"')
-  not_if { File.exist?(agent_dir) }
+  #not_if { File.exist?(agent_dir) }
 end
 
-powershell('Start rsyslog service') { source('Restart-Service "RSyslogWindowsAgent"') }
+#powershell('Start rsyslog service') { source('Restart-Service "RSyslogWindowsAgent"') }
 
 rightscale_marker :end
 
