@@ -43,11 +43,31 @@ end
 
 powershell 'Import rsyslog settings' do
   parameters( { 'AGENT_DIR' => agent_dir } )
-  source('regedit /s "$env:AGENT_DIR\\settings.reg"')
-  #not_if { File.exist?(agent_dir) }
+  script = <<EOF
+    $done = $false
+    $tries = 1
+
+    do {
+      regedit /s "$env:AGENT_DIR\\settings.reg"
+      $general_options = Get-ChildItem "hklm:\software\Wow6432Node\Adiscon\RSyslogAgent\General"
+      $done = $general_options.count -gt 1
+      if (!$done) {
+        $tries += 1
+        start-sleep -s 1
+      }
+    }
+    until ($done -or $tries -gt 20)
+
+    if (!$done) {
+      write-host "Could not import rsyslog settings after $tries retries"
+      exit 1
+    } else { $Error.clear() }
+EOF
+  source(script)
+  not_if { File.exist?(agent_dir) }
 end
 
-#powershell('Start rsyslog service') { source('Restart-Service "RSyslogWindowsAgent"') }
+powershell('Start rsyslog service') { source('Restart-Service "RSyslogWindowsAgent"') }
 
 rightscale_marker :end
 
