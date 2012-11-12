@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 script = "#{node[:ruby_scripts_dir]}/get_deployment_settings.rb"
 
 template script do
@@ -14,3 +16,4 @@ else
   powershell('Getting deployment settings') { source("ruby #{script}") }
 end
 
+rightscale_marker :end

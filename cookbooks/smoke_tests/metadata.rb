@@ -7,6 +7,8 @@ version "0.0.1"
 
 supports "ubuntu"
 
+depends "rightscale"
+
 recipe "smoke_tests::global", "Runs global smoke tests"
 
 recipe "smoke_tests::local_app", "Runs local app server smoke tests"

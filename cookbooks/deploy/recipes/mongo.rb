@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
 if File.exists?('/usr/local/mongodb')
@@ -29,3 +31,5 @@ else
     EOF
   end
 end
+
+rightscale_marker :end
