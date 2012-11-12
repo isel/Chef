@@ -44,8 +44,8 @@ end
 powershell 'Import settings and start service' do
   parameters( { 'AGENT_DIR' => agent_dir } )
   script = <<'EOF'
-    regedit /S "$env:AGENT_DIR\\settings.reg"
-    net start rsyslogcl
+    regedit /s "$env:AGENT_DIR\\settings.reg"
+    net start RSyslogWindowsAgent
 EOF
   source( script )
   not_if { File.exist?(agent_dir) }
