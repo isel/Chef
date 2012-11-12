@@ -41,15 +41,13 @@ template "#{agent_dir}\\settings.reg" do
   )
 end
 
-powershell 'Import settings and start service' do
+powershell 'Import rsyslog settings' do
   parameters( { 'AGENT_DIR' => agent_dir } )
-  script = <<'EOF'
-    regedit /s "$env:AGENT_DIR\\settings.reg"
-    net start RSyslogWindowsAgent
-EOF
-  source( script )
+  source('regedit /s "$env:AGENT_DIR\\settings.reg"')
   not_if { File.exist?(agent_dir) }
 end
+
+powershell('Start rsyslog service') { source('Restart-Service "RSyslogWindowsAgent"') }
 
 rightscale_marker :end
 
