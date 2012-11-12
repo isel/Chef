@@ -48,7 +48,7 @@ powershell 'Import settings and start service' do
     net start RSyslogWindowsAgent
 EOF
   source( script )
-  #not_if { File.exist?(agent_dir) }
+  not_if { File.exist?(agent_dir) }
 end
 
 rightscale_marker :end
