@@ -12,15 +12,17 @@ template "#{agent_dir}\\settings.reg" do
   )
 end
 
-powershell 'Import rsyslog settings and start service' do
+powershell 'Import rsyslog settings' do
   parameters( { 'AGENT_DIR' => agent_dir } )
   script = <<EOF
     $general_options = Get-Item -Path Registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Adiscon\\RSyslogAgent\\General | Select-Object -ExpandProperty Property
     if ($general_options.count -lt 2) { regedit /s "$env:AGENT_DIR\\settings.reg" }
-
-    Restart-Service "RSyslogWindowsAgent"
 EOF
   source(script)
+end
+
+powershell 'Restart service' do
+  source('Restart-Service "RSyslogWindowsAgent"')
 end
 
 rightscale_marker :end
