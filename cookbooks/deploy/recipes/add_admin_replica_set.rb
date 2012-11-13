@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 template "#{node[:ruby_scripts_dir]}/add_admin_replica_set.rb" do
   source 'scripts/add_admin_replica_set.erb'
   variables(
@@ -13,3 +15,5 @@ bash 'Add admin user for mongo with replica set' do
   EOF
   only_if { node[:deploy][:is_primary_db] == 'true' && node[:deploy][:use_replication] == 'true' }
 end
+
+rightscale_marker :end

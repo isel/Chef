@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 template "#{node[:ruby_scripts_dir]}/wait_for_secondary_dbs.rb" do
   source 'scripts/wait_for_secondary_dbs.erb'
   variables(
@@ -13,3 +15,5 @@ bash 'Waiting for secondary dbs to be operational' do
   EOF
   only_if { node[:deploy][:is_primary_db] == 'true' }
 end
+
+rightscale_marker :end

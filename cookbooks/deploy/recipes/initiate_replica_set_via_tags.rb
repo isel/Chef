@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 template "#{node[:ruby_scripts_dir]}/initiate_replica_set_via_tags.rb" do
   source 'scripts/initiate_replica_set_via_tags.erb'
   variables(
@@ -14,3 +16,5 @@ bash 'Initiate replica set via tags' do
   EOF
   only_if { node[:deploy][:is_primary_db] == 'true' && node[:deploy][:use_replication] == 'true' }
 end
+
+rightscale_marker :end

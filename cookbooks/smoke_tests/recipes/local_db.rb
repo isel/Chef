@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 ruby_scripts_dir = node[:ruby_scripts_dir]
 
 template "#{ruby_scripts_dir}/local_db.rb" do
@@ -16,3 +18,5 @@ bash 'Running local smoke tests' do
   EOF
   only_if { node[:deploy][:is_primary_db] == 'true' }
 end
+
+rightscale_marker :end

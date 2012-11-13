@@ -13,12 +13,12 @@ configurations = {
     {
       'description' => 'Set Administrator password for Mongo',
       'key' => 'env.db.password',
-      'value' => node[:teamcity][:admin_password_mongo]
+      'value' => node[:deploy][:admin_password_mongo]
     },
     {
       'description' => 'Set Administrator user for Mongo',
       'key' => 'env.db.user',
-      'value' => node[:teamcity][:admin_user_mongo]
+      'value' => node[:deploy][:admin_user_mongo]
     },
     {
       'description' => 'Set Agent Name',
@@ -61,12 +61,12 @@ configurations = {
     {
       'description' => 'Set Administrator password for mongo',
       'key' => 'env.db.password',
-      'value' => node[:teamcity][:admin_password_mongo]
+      'value' => node[:deploy][:admin_password_mongo]
     },
     {
       'description' => 'Set Administrator user for mongo',
       'key' => 'env.db.user',
-      'value' => node[:teamcity][:admin_user_mongo]
+      'value' => node[:deploy][:admin_user_mongo]
     },
     {
       'description' => 'Set Agent Name',
