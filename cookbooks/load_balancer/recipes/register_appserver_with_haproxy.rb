@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 template "#{node[:ruby_scripts_dir]}/wait_for_load_balancers.rb" do
   source 'scripts/wait_for_load_balancers.erb'
   variables(
@@ -135,3 +137,5 @@ for ($i = 0; $i -le $listener_names.Length - 1; $i++) {
 
   source(script)
 end
+
+rightscale_marker :end

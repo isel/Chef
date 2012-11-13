@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 require 'rake'
 require 'fileutils'
 
@@ -115,4 +117,4 @@ powershell 'Launch websites' do
   source(script)
 end
 
-
+rightscale_marker :end

@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 powershell "Setup AppFabric shared folder" do
   parameters (
     {
@@ -155,4 +157,4 @@ POWERSHELL_SCRIPT
    source(powershell_script)
 end
 
-
+rightscale_marker :end

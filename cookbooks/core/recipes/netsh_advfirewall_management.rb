@@ -1,9 +1,7 @@
-require 'rake'
-require 'fileutils'
+rightscale_marker :begin
 
 powershell 'Disable firewall' do
-  parameters()
-powershell_script = <<-'EOF'
+  powershell_script = <<-'EOF'
 write-output "Probing RS_REBOOT=${env:RS_REBOOT}"
 
 if ( (${Env:RS_REBOOT} -ne $null) -and (${Env:RS_REBOOT} -match 'true'))  {
@@ -71,4 +69,4 @@ EOF
   source(powershell_script)
 end
 
-
+rightscale_marker :end

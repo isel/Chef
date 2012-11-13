@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 powershell "Clearing caches" do
   parameters(
     {
@@ -16,3 +18,5 @@ powershell "Clearing caches" do
 POWERSHELL_SCRIPT
    source(powershell_script)
 end
+
+rightscale_marker :end

@@ -7,6 +7,7 @@ version          "0.0.1"
 
 supports "windows"
 
+depends 'rightscale'
 depends 'core'
 
 recipe "access_database_engine::default", "Downloads and installs the access database engine"
