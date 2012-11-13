@@ -6,15 +6,16 @@ long_description ''
 version '0.0.1'
 
 depends 'rightscale'
+depends 'deploy'
 
 recipe 'teamcity::configure', 'Configures TeamCity build agent properties file'
 
-attribute 'teamcity/admin_password_mongo',
+attribute 'deploy/admin_password_mongo',
   :display_name => 'administrator password for mongo',
   :required => 'required',
   :recipes => ['teamcity::configure']
 
-attribute 'teamcity/admin_user_mongo',
+attribute 'deploy/admin_user_mongo',
   :display_name => 'administrator user for mongo',
   :required => 'required',
   :recipes => ['teamcity::configure']

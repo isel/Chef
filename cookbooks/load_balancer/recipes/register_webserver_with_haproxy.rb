@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 template "#{node[:ruby_scripts_dir]}/wait_for_load_balancers.rb" do
   source 'scripts/wait_for_load_balancers.erb'
   variables(
@@ -102,3 +104,5 @@ ruby_block "Register web server with HAProxy" do
   end
   only_if { node[:load_balancer][:should_register_with_lb] == 'true' }
 end
+
+rightscale_marker :end
