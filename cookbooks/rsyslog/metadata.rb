@@ -11,6 +11,7 @@ depends 'rightscale'
 depends 'core'
 
 recipe "rsyslog::default", "Downloads and installs rsyslog on windows"
+recipe "rsyslog::configure", "Configures rsyslog on windows"
 
 attribute "core/aws_access_key_id",
   :display_name => "aws access key id",
@@ -32,4 +33,4 @@ attribute "core/s3_bucket",
 attribute "rsyslog/remote_log_server",
   :display_name => "remote log server",
   :required => "required",
-  :recipes => ["rsyslog::default"]
+  :recipes => ["rsyslog::configure"]
