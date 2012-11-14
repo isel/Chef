@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 database_port = '27017'
 ruby_scripts_dir = node[:ruby_scripts_dir]
 
@@ -16,7 +18,11 @@ else
     )
   end
   powershell 'Initializing the replica set' do
-    source("ruby #{ruby_scripts_dir}/initiate_replica_set.rb")
+    powershell_script = <<'POWERSHELL_SCRIPT'
+      ruby #{ruby_scripts_dir}/initiate_replica_set.rb
+      sleep -s 60
+POWERSHELL_SCRIPT
+    source(powershell_script)
   end
 
   template "#{ruby_scripts_dir}/add_mongo_auth.rb" do
@@ -32,3 +38,5 @@ else
   end
 
 end
+
+rightscale_marker :end

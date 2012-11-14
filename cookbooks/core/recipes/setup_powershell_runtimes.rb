@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 ruby_scripts_dir = node[:ruby_scripts_dir]
 Dir.mkdir(ruby_scripts_dir) unless File.exist? ruby_scripts_dir
 
@@ -8,3 +10,5 @@ Dir.mkdir(ruby_scripts_dir) unless File.exist? ruby_scripts_dir
     end
   end
 end
+
+rightscale_marker :end

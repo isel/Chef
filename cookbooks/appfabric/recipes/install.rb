@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
 template "#{node[:ruby_scripts_dir]}/download_appfabric.rb" do
@@ -61,3 +63,4 @@ POWERSHELL_SCRIPT
   source(powershell_script)
 end
 
+rightscale_marker :end

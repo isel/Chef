@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 require 'json'
 require 'fileutils'
 
@@ -72,3 +74,5 @@ else
     not_if { File.exist?(install_directory) }
   end
 end
+
+rightscale_marker :end

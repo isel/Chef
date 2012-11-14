@@ -9,6 +9,7 @@ supports "ubuntu"
 supports "windows"
 
 depends 'core'
+depends "rightscale"
 
 recipe "jdk::default", "Downloads and installs the jdk"
 

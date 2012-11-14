@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 require 'rake'
 require 'fileutils'
 
@@ -71,4 +73,5 @@ EOF
   source(powershell_script)
 end
 
+rightscale_marker :end
 

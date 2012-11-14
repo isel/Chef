@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
 artifacts = node[:platform] == 'ubuntu' ? 'jdk_ubuntu' : 'jdk_windows'
@@ -70,3 +72,5 @@ else
     value 'C:\jdk\bin'
   end
 end
+
+rightscale_marker :end

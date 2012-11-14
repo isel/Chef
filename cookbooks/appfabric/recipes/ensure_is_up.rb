@@ -1,3 +1,4 @@
+rightscale_marker :begin
 
 powershell "Ensuring AppFabric caches are available" do
   parameters(
@@ -63,4 +64,4 @@ POWERSHELL_SCRIPT
    source(powershell_script)
 end
 
-
+rightscale_marker :end

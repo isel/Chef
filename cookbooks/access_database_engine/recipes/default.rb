@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
 template "#{node[:ruby_scripts_dir]}/download_access_database_engine.rb" do
@@ -26,3 +28,5 @@ powershell 'Install Access Database Engine' do
   source('cmd /c "/installs/accessdatabaseengine/AccessDatabaseEngine_x64.exe /log:c:\accessdbengine.log /quiet /norestart"')
   not_if { File.exist?('/accessdbengine.log') }
 end
+
+rightscale_marker :end

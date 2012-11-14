@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 powershell 'Enable MSMQ' do
   parameters ({ 'SERVER_MANAGER_FEATURES' => node[:msmq_features] })
   powershell_script = <<-'EOF'
@@ -25,3 +27,5 @@ powershell 'Enable MSMQ' do
   EOF
   source(powershell_script)
 end
+
+rightscale_marker :end

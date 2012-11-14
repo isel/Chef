@@ -9,6 +9,7 @@ supports "ubuntu"
 supports "windows"
 
 depends 'core'
+depends "rightscale"
 
 recipe "mongo::default", "Downloads and installs the mongo"
 recipe "mongo::configure" , "Configures mongodb"

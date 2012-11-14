@@ -10,7 +10,8 @@
     "windows": ">= 0.0.0"
   },
   "dependencies": {
-    "core": ">= 0.0.0"
+    "core": ">= 0.0.0",
+    "rightscale": ">= 0.0.0"
   },
   "recommendations": {
   },
