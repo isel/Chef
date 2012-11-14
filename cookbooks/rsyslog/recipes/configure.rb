@@ -13,8 +13,7 @@ template "#{agent_dir}\\settings.reg" do
 end
 
 powershell 'Import rsyslog settings' do
-  parameters( { 'AGENT_DIR' => agent_dir } )
-  source('regedit /s "$env:AGENT_DIR\\settings.reg"')
+  source("regedit /s \"#{agent_dir}\\settings.reg\"")
 end
 
 powershell 'Restart service' do
