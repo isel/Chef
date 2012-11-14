@@ -1,0 +1,17 @@
+require 'rake'
+
+if ENV['RS_REBOOT'] =~ /true/
+  $stderr.puts 'Skipping initiate replica set during reboot.'
+  exit 0
+end
+
+mongo_members="{_id: 0, host: 'localhost:<%= @db_port %>'}"
+
+puts "Initiating the replica set with the following members: #{mongo_members}"
+
+command="mongo --eval \"printjson(rs.initiate({_id: '<%= @db_replica_set_name %>', members: [#{mongo_members}]}))\""
+
+puts command
+
+system(command)
+

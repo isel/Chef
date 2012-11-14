@@ -8,16 +8,26 @@ if node[:platform] == 'ubuntu'
     EOF
   end
 else
+  template "#{ruby_scripts_dir}/initiate_replica_set.rb" do
+    source 'scripts/initiate_replica_set.erb'
+    variables(
+      :db_port => database_port,
+      :db_replica_set_name => node[:deploy][:db_replica_set_name]
+    )
+  end
+  powershell 'Initializing the replica set' do
+    source("ruby #{ruby_scripts_dir}/initiate_replica_set.rb")
+  end
+
   template "#{ruby_scripts_dir}/add_mongo_auth.rb" do
     source 'scripts/add_mongo_auth.erb'
     variables(
-      :binaries_directory => node[:binaries_directory],
       :admin_user_mongo => node[:deploy][:admin_user_mongo],
       :admin_password_mongo => node[:deploy][:admin_password_mongo],
       :db_port => database_port
     )
   end
-  powershell 'Configuring mongo' do
+  powershell 'Adding admin credentials to mongo' do
     source("ruby #{ruby_scripts_dir}/add_mongo_auth.rb")
   end
 

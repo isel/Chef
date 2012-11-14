@@ -85,6 +85,19 @@
       "calculated": false,
       "type": "string"
     },
+    "deploy/db_replica_set_name": {
+      "display_name": "db replica set name",
+      "required": "required",
+      "recipes": [
+        "mongo::configure",
+        "mongo::default"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "deploy/mongo_version": {
       "display_name": "mongo version",
       "required": "optional",

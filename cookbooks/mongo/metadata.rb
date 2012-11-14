@@ -40,6 +40,11 @@ attribute "deploy/admin_user_mongo",
   :required => "required",
   :recipes  => ["mongo::configure"]
 
+attribute "deploy/db_replica_set_name",
+  :display_name => "db replica set name",
+  :required => "required",
+  :recipes => ["mongo::configure", "mongo::default"]
+
 attribute "deploy/mongo_version",
   :display_name => "mongo version",
   :required => "optional",

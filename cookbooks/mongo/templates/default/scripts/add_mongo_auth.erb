@@ -1,8 +1,6 @@
 require 'rake'
 require 'mongo'
 
-require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/process'
-
 if ENV['RS_REBOOT'] =~ /true/
   $stderr.puts 'Skipping configuring mongo during reboot.'
   exit 0
