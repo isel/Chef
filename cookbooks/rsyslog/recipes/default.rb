@@ -29,13 +29,12 @@ end
 agent_dir = "#{ENV['ProgramFiles(x86)']}\\RSyslog\\Agent"
 
 powershell 'Install rsyslog' do
-  script = <<EOF
-    c:\\installs\\rsyslogwa\\rsyslogwa.exe -i /S /v /qn
-
-    Set-Service "RSyslogWindowsAgent" -startupType manual
-EOF
-  source(script)
+  source('c:\\installs\\rsyslogwa\\rsyslogwa.exe -i /S /v /qn')
   not_if { File.exist?(agent_dir) }
+end
+
+powershell 'Set service startup type' do
+  source('Set-Service "RSyslogWindowsAgent" -startupType manual')
 end
 
 rightscale_marker :end
