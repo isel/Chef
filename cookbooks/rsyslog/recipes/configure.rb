@@ -14,11 +14,7 @@ end
 
 powershell 'Import rsyslog settings' do
   parameters( { 'AGENT_DIR' => agent_dir } )
-  script = <<EOF
-    $general_options = Get-Item -Path Registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Adiscon\\RSyslogAgent\\General | Select-Object -ExpandProperty Property
-    if ($general_options.count -lt 2) { regedit /s "$env:AGENT_DIR\\settings.reg" }
-EOF
-  source(script)
+  source('regedit /s "$env:AGENT_DIR\\settings.reg"')
 end
 
 powershell 'Restart service' do
