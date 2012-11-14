@@ -61,7 +61,7 @@
       "calculated": false,
       "type": "string"
     },
-    "rsyslog/remote_log_server": {
+    "logging/remote_server": {
       "display_name": "remote log server",
       "required": "required",
       "recipes": [
