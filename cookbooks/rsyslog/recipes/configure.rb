@@ -16,8 +16,12 @@ powershell 'Import rsyslog settings' do
   source("regedit /s \"#{agent_dir}\\settings.reg\"")
 end
 
-powershell 'Restart service' do
-  source('Restart-Service "RSyslogWindowsAgent"')
+powershell 'Start service' do
+  script = <<EOF
+    Set-Service "RSyslogWindowsAgent" -startupType automatic
+    Restart-Service "RSyslogWindowsAgent"
+EOF
+  source(script)
 end
 
 rightscale_marker :end

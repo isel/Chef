@@ -29,7 +29,12 @@ end
 agent_dir = "#{ENV['ProgramFiles(x86)']}\\RSyslog\\Agent"
 
 powershell 'Install rsyslog' do
-  source('c:\\installs\\rsyslogwa\\rsyslogwa.exe -i /S /v /qn')
+  script = <<EOF
+    c:\\installs\\rsyslogwa\\rsyslogwa.exe -i /S /v /qn
+
+    Set-Service "RSyslogWindowsAgent" -startupType manual
+EOF
+  source(script)
   not_if { File.exist?(agent_dir) }
 end
 
