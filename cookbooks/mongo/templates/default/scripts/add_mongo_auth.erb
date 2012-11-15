@@ -1,11 +1,6 @@
 require 'rake'
 require 'mongo'
 
-if ENV['RS_REBOOT'] =~ /true/
-  $stderr.puts 'Skipping admin credentials during reboot.'
-  exit 0
-end
-
 database = 'admin'
 admin_user_mongo = '<%= @admin_user_mongo %>'
 admin_password_mongo = '<%= @admin_password_mongo %>'

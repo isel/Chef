@@ -1,8 +1,27 @@
 require 'rake'
+require 'fileutils'
+require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/process'
 
 if ENV['RS_REBOOT'] =~ /true/
-  $stderr.puts 'Skipping initiate replica set during reboot.'
-  exit 0
+  service_display_name = '<%= @service_name %>'
+  data_directory = '<%= @install_directory %>/data/db'
+  launch_wait_timeout = <%= @timeout %>
+
+  result = `sc.exe stop "#{service_display_name}"`
+
+  FileUtils.rmdir(data_directory)
+  FileUtils.mkdir_p(data_directory)
+
+  result = `sc.exe start "#{service_display_name}"`
+
+  Helpers::Process.new.run("wait for #{service_display_name} to start", launch_wait_timeout) do
+    begin
+      result = `sc.exe query "#{service_display_name}"`
+      result.match Regexp.new('STATE\s+:\s+\d+\s+RUNNING', Regexp::IGNORECASE)
+    rescue
+      false
+    end
+  end
 end
 
 mongo_members="{_id: 0, host: 'localhost:<%= @db_port %>'}"
@@ -15,5 +34,12 @@ puts command
 
 system(command)
 
-sleep 60
+Helpers::Process.new.run("wait for replica set to initialize", launch_wait_timeout) do
+  begin
+    result = `mongo --eval \"printjson(rs.status())\"`
+    result.match Regexp.new('"STATESTR"\s+:\s+"PRIMARY"', Regexp::IGNORECASE)
+  rescue
+    false
+  end
+end
 
