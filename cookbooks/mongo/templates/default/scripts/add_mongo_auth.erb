@@ -2,7 +2,7 @@ require 'rake'
 require 'mongo'
 
 if ENV['RS_REBOOT'] =~ /true/
-  $stderr.puts 'Skipping configuring mongo during reboot.'
+  $stderr.puts 'Skipping admin credentials during reboot.'
   exit 0
 end
 

@@ -18,11 +18,7 @@ else
     )
   end
   powershell 'Initializing the replica set' do
-    powershell_script = <<'POWERSHELL_SCRIPT'
-      ruby #{ruby_scripts_dir}/initiate_replica_set.rb
-      sleep -s 60
-POWERSHELL_SCRIPT
-    source(powershell_script)
+    source("ruby #{ruby_scripts_dir}/initiate_replica_set.rb")
   end
 
   template "#{ruby_scripts_dir}/add_mongo_auth.rb" do
