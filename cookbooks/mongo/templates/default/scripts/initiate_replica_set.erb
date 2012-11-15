@@ -2,11 +2,11 @@ require 'rake'
 require 'fileutils'
 require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/process'
 
-if ENV['RS_REBOOT'] =~ /true/
-  service_display_name = '<%= @service_name %>'
-  data_directory = '<%= @install_directory %>/data/db'
-  launch_wait_timeout = <%= @timeout %>
+service_display_name = '<%= @service_name %>'
+data_directory = '<%= @install_directory %>/data/db'
+launch_wait_timeout = <%= @timeout %>
 
+if ENV['RS_REBOOT'] =~ /true/
   result = `sc.exe stop "#{service_display_name}"`
 
   FileUtils.rmdir(data_directory)
