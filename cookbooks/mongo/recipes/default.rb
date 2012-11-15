@@ -73,6 +73,12 @@ else
     source("ruby #{ruby_scripts_dir}/install_mongo.rb")
     not_if { File.exist?(install_directory) }
   end
+
+  env('PATH') do
+    action :modify
+    delim ::File::PATH_SEPARATOR
+    value 'C:\mongodb\bin'
+  end
 end
 
 rightscale_marker :end
