@@ -7,7 +7,18 @@ data_directory = '<%= @install_directory %>/data/db'
 launch_wait_timeout = <%= @timeout %>
 
 if ENV['RS_REBOOT'] =~ /true/
+  puts "In reboot, clearing data directory: #{data_directory}"
+
   result = `sc.exe stop "#{service_display_name}"`
+
+  Helpers::Process.new.run("wait for #{service_display_name} to stop", launch_wait_timeout) do
+    begin
+      result = `sc.exe query "#{service_display_name}"`
+      result.match Regexp.new('STATE\s+:\s+\d+\s+STOPPED', Regexp::IGNORECASE)
+    rescue
+      false
+    end
+  end
 
   FileUtils.rmdir(data_directory)
   FileUtils.mkdir_p(data_directory)
