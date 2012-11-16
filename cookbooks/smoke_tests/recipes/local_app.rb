@@ -1,6 +1,6 @@
-ruby_scripts_dir = node[:ruby_scripts_dir]
+rightscale_marker :begin
 
-template "#{ruby_scripts_dir}/local_app.rb" do
+template "#{node[:ruby_scripts_dir]}/local_app.rb" do
   source 'scripts/local_app.erb'
   variables(
     :app_server => node[:deploy][:app_server],
@@ -10,5 +10,7 @@ template "#{ruby_scripts_dir}/local_app.rb" do
 end
 
 powershell "Running local smoke tests" do
-  source("rake --rakefile #{ruby_scripts_dir}/local_app.rb")
+  source("rake --rakefile #{node[:ruby_scripts_dir]}/local_app.rb")
 end
+
+rightscale_marker :end

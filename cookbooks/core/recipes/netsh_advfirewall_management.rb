@@ -1,11 +1,7 @@
 rightscale_marker :begin
 
-require 'rake'
-require 'fileutils'
-
 powershell 'Disable firewall' do
-  parameters()
-powershell_script = <<-'EOF'
+  powershell_script = <<-'EOF'
 write-output "Probing RS_REBOOT=${env:RS_REBOOT}"
 
 if ( (${Env:RS_REBOOT} -ne $null) -and (${Env:RS_REBOOT} -match 'true'))  {
@@ -74,4 +70,3 @@ EOF
 end
 
 rightscale_marker :end
-

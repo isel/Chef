@@ -7,8 +7,8 @@ version          "0.0.1"
 
 supports "windows"
 
+depends 'rightscale'
 depends 'core'
-depends "rightscale"
 
 recipe "appfabric::clear_all_caches", "Clears all AppFabric caches"
 recipe "appfabric::configure", "Configures AppFabric"
