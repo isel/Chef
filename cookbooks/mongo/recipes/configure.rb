@@ -19,7 +19,7 @@ else
       :db_replica_set_name => node[:deploy][:db_replica_set_name],
       :install_directory => install_directory,
       :service_name => 'mongoDB',
-      :timeout => 120
+      :timeout => 300
     )
   end
   powershell 'Initializing the replica set' do
