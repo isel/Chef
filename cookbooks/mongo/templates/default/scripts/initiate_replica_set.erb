@@ -19,7 +19,7 @@ Helpers::Process.new.run("wait for #{service_display_name} to stop", launch_wait
 end
 
 puts "Clearing data directory: #{data_directory}"
-FileUtils.rmdir(data_directory)
+FileUtils.rm_rf(data_directory)
 FileUtils.mkdir_p(data_directory)
 
 puts "Starting service: #{service_display_name}"
