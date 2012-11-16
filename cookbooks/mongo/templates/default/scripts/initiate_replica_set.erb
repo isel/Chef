@@ -1,9 +1,11 @@
 require 'rake'
 require 'fileutils'
+require 'mongo'
 require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/process'
 
 service_display_name = '<%= @service_name %>'
 data_directory = '<%= @install_directory %>/data/db'
+db_port = '<%= @db_port %>'
 launch_wait_timeout = <%= @timeout %>
 
 puts "Stopping service: #{service_display_name}"
@@ -34,7 +36,17 @@ Helpers::Process.new.run("wait for #{service_display_name} to start", launch_wai
   end
 end
 
-mongo_members="{_id: 0, host: 'localhost:<%= @db_port %>'}"
+Helpers::Process.new.run('wait for mongo shell to become available', launch_wait_timeout) do
+  begin
+    connection = Mongo::Connection.new('localhost', db_port, { :safe => true })
+    db = connection.db('test')
+    db.class.to_s.match(/Mongo::DB/)
+  rescue
+    false
+  end
+end
+
+mongo_members="{_id: 0, host: 'localhost:#{db_port}'}"
 
 puts "Initiating the replica set with the following members: #{mongo_members}"
 
