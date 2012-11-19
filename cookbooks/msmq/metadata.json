@@ -9,6 +9,7 @@
     "windows": ">= 0.0.0"
   },
   "dependencies": {
+    "rightscale": ">= 0.0.0"
   },
   "recommendations": {
   },

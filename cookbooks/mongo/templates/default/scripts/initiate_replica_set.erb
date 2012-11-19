@@ -1,0 +1,67 @@
+require 'rake'
+require 'fileutils'
+require 'mongo'
+require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/process'
+
+service_display_name = '<%= @service_name %>'
+data_directory = '<%= @install_directory %>/data/db'
+db_port = '<%= @db_port %>'
+launch_wait_timeout = <%= @timeout %>
+
+puts "Stopping service: #{service_display_name}"
+result = `sc.exe stop "#{service_display_name}"`
+
+Helpers::Process.new.run("wait for #{service_display_name} to stop", launch_wait_timeout) do
+  begin
+    result = `sc.exe query "#{service_display_name}"`
+    result.match Regexp.new('STATE\s+:\s+\d+\s+STOPPED', Regexp::IGNORECASE)
+  rescue
+    false
+  end
+end
+
+puts "Clearing data directory: #{data_directory}"
+FileUtils.rm_rf(data_directory)
+FileUtils.mkdir_p(data_directory)
+
+puts "Starting service: #{service_display_name}"
+result = `sc.exe start "#{service_display_name}"`
+
+Helpers::Process.new.run("wait for #{service_display_name} to start", launch_wait_timeout) do
+  begin
+    result = `sc.exe query "#{service_display_name}"`
+    result.match Regexp.new('STATE\s+:\s+\d+\s+RUNNING', Regexp::IGNORECASE)
+  rescue
+    false
+  end
+end
+
+Helpers::Process.new.run('wait for mongo shell to become available', launch_wait_timeout) do
+  begin
+    connection = Mongo::Connection.new('localhost', db_port, { :safe => true })
+    db = connection.db('test')
+    db.class.to_s.match(/Mongo::DB/)
+  rescue
+    false
+  end
+end
+
+mongo_members="{_id: 0, host: 'localhost:#{db_port}'}"
+
+puts "Initiating the replica set with the following members: #{mongo_members}"
+
+command="mongo --eval \"printjson(rs.initiate({_id: '<%= @db_replica_set_name %>', members: [#{mongo_members}]}))\""
+
+puts command
+
+system(command)
+
+Helpers::Process.new.run("wait for replica set to initialize", launch_wait_timeout) do
+  begin
+    result = `mongo --eval \"printjson(rs.status())\"`
+    result.match Regexp.new('"STATESTR"\s+:\s+"PRIMARY"', Regexp::IGNORECASE)
+  rescue
+    false
+  end
+end
+

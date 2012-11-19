@@ -9,6 +9,7 @@ supports "ubuntu"
 supports "windows"
 
 depends 'core'
+depends "rightscale"
 
 recipe "mongo::default", "Downloads and installs the mongo"
 recipe "mongo::configure" , "Configures mongodb"
@@ -39,6 +40,11 @@ attribute "deploy/admin_user_mongo",
   :display_name => "admin user for mongo",
   :required => "required",
   :recipes  => ["mongo::configure"]
+
+attribute "deploy/db_replica_set_name",
+  :display_name => "db replica set name",
+  :required => "required",
+  :recipes => ["mongo::configure", "mongo::default"]
 
 attribute "deploy/mongo_version",
   :display_name => "mongo version",

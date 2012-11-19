@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 require 'json'
 require 'fileutils'
 
@@ -46,6 +48,7 @@ else
     source 'mongod_conf.erb'
     variables(
       :db_port => database_port,
+      :db_replica_set_name => node[:deploy][:db_replica_set_name],
       :install_directory => install_directory.gsub(/\//, '\\\\')
     )
     not_if { File.exist?(install_directory) }
@@ -70,4 +73,12 @@ else
     source("ruby #{ruby_scripts_dir}/install_mongo.rb")
     not_if { File.exist?(install_directory) }
   end
+
+  env('PATH') do
+    action :modify
+    delim ::File::PATH_SEPARATOR
+    value 'C:\mongodb\bin'
+  end
 end
+
+rightscale_marker :end

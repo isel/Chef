@@ -10,7 +10,8 @@
     "windows": ">= 0.0.0"
   },
   "dependencies": {
-    "core": ">= 0.0.0"
+    "core": ">= 0.0.0",
+    "rightscale": ">= 0.0.0"
   },
   "recommendations": {
   },
@@ -78,6 +79,19 @@
       "required": "required",
       "recipes": [
         "mongo::configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "deploy/db_replica_set_name": {
+      "display_name": "db replica set name",
+      "required": "required",
+      "recipes": [
+        "mongo::configure",
+        "mongo::default"
       ],
       "choice": [
 

@@ -7,5 +7,7 @@ version          "0.0.1"
 
 supports "windows"
 
+depends "rightscale"
+
 recipe "msmq::default", "Enables msmq"
 
