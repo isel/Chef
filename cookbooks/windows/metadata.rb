@@ -7,7 +7,7 @@ version          "0.0.1"
 
 supports "windows"
 
-recipe "windows::execute_batch", "executes a batch file"
+recipe "windows::change_administrator_password", "executes a batch file"
 
 attribute "windows/administrator_password",
   :display_name => "administrator password",
