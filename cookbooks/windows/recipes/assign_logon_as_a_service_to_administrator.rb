@@ -1,4 +1,8 @@
-cookbook_file "tools/ntrights.exe" do
+directory '/tools' do
+  action :create
+end
+
+cookbook_file "/tools/ntrights.exe" do
   source "ntrights.exe"
 end
 
