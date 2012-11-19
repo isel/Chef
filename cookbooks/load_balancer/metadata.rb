@@ -13,8 +13,8 @@ recipe "load_balancer::configure_load_balancer_forwarding", "Adds an entry vhost
 recipe "load_balancer::disconnect_from_haproxy", "Disconnects from each load balancer"
 recipe "load_balancer::deregister_with_route53", "Deregisters an ip address with a domain in Route53"
 recipe "load_balancer::disconnect_instance_from_haproxy", "Disconnects an instance from the haproxy"
-recipe "load_balancer::register_appserver_with_haproxy", "Registers an app server with each load balancer"
-recipe "load_balancer::register_webserver_with_haproxy", "Registers a web server with each load balancer"
+recipe "load_balancer::register_instance_with_haproxy", "Registers an instance with haproxy"
+recipe "load_balancer::register_with_haproxy", "Registers with each load balancer"
 recipe "load_balancer::register_with_route53", "Registers an ip address with a domain in Route53"
 recipe "load_balancer::tag_lb_role", "Tags the load balancer role"
 
@@ -23,9 +23,8 @@ attribute "load_balancer/backend_name",
   :description => "A unique name for each back end e.g. (RS_INSTANCE_UUID)",
   :required => "optional",
   :recipes  => [
-    "load_balancer::register_appserver_with_haproxy",
-    "load_balancer::register_webserver_with_haproxy",
-    "load_balancer::disconnect_from_haproxy"
+    "load_balancer::disconnect_from_haproxy",
+    "load_balancer::register_with_haproxy"
   ]
 
 attribute "load_balancer/domain",
@@ -47,14 +46,24 @@ attribute "load_balancer/forwarding_ports",
   :required => "required",
   :recipes  => [
     "load_balancer::configure_load_balancer_forwarding",
-    "load_balancer::disconnect_instance_from_haproxy"
+    "load_balancer::disconnect_instance_from_haproxy",
+    "load_balancer::register_instance_with_haproxy"
   ]
 
 attribute "load_balancer/instance_backend_name",
   :display_name => "instance backend name",
   :description => "instance backend name to be disconnected from haproxy",
   :required => "required",
-  :recipes  => ["load_balancer::disconnect_instance_from_haproxy"]
+  :recipes  => [
+    "load_balancer::disconnect_instance_from_haproxy",
+    "load_balancer::register_instance_with_haproxy",
+  ]
+
+attribute "load_balancer/instance_ip",
+  :display_name => "instance ip",
+  :description => "instance ip to be registered with haproxy",
+  :required => "required",
+  :recipes  => ["load_balancer::register_instance_with_haproxy"]
 
 attribute "load_balancer/prefix",
   :display_name => "prefix",
@@ -62,12 +71,12 @@ attribute "load_balancer/prefix",
   :required    => "optional",
   :recipes     => [
     "load_balancer::configure_load_balancer_forwarding",
-    "load_balancer::register_with_route53",
     "load_balancer::deregister_with_route53",
     "load_balancer::disconnect_from_haproxy",
     "load_balancer::disconnect_instance_from_haproxy",
-    "load_balancer::register_appserver_with_haproxy",
-    "load_balancer::register_webserver_with_haproxy",
+    "load_balancer::register_instance_with_haproxy",
+    "load_balancer::register_with_haproxy",
+    "load_balancer::register_with_route53",
     "load_balancer::tag_lb_role"
   ]
 
@@ -95,15 +104,19 @@ attribute "load_balancer/route53_additional_ip",
     "load_balancer::register_with_route53"
   ]
 
+attribute "load_balancer/server_ip",
+  :display_name => "server ip",
+  :required => "required",
+  :recipes  => ["load_balancer::register_with_haproxy"]
+
 attribute "load_balancer/should_register_with_lb",
   :display_name => "should register with load balancer",
   :description => "This environment uses loadbalancers (true/false)",
   :required => "optional",
   :default => "false",
   :recipes => [
-    "load_balancer::register_appserver_with_haproxy",
-    "load_balancer::register_webserver_with_haproxy",
-    "load_balancer::disconnect_from_haproxy"
+    "load_balancer::disconnect_from_haproxy",
+    "load_balancer::register_with_haproxy"
   ]
 
 attribute "load_balancer/ssl_certificate",
@@ -120,17 +133,11 @@ attribute "load_balancer/ssl_key",
 
 
 ### attributes used from other cookbooks
-attribute "deploy/app_server",
-  :display_name => "app server",
-  :required => "required",
-  :recipes  => ["load_balancer::register_appserver_with_haproxy"]
-
 attribute "deploy/deployment_name",
   :display_name => "deployment name",
   :required => "required",
   :recipes  => [
-     "load_balancer::register_appserver_with_haproxy",
-     "load_balancer::register_webserver_with_haproxy",
-     "load_balancer::deregister_with_haproxy"
+    "load_balancer::deregister_with_haproxy",
+    "load_balancer::register_with_haproxy"
   ]
 

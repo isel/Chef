@@ -1,0 +1,15 @@
+require '<%= node[:binaries_directory] %>/CI/BuildScripts/Cloud/deployment'
+
+servers = Cloud::Deployment.new.discover_servers('<%= @deployment_name %>')
+
+lbs = servers.select { |name, server| server.tags['lb:prefix'] == '<%= @prefix %>' }
+lbs.each_value do |lb|
+  lb.run_recipe('load_balancer::register_instance_with_haproxy', {
+    'load_balancer/instance_backend_name' => 'text:<%= @instance_backend_name %>',
+    'load_balancer/instance_ip' => 'text:<%= @instance_ip %>'
+  })
+end
+
+
+
+
