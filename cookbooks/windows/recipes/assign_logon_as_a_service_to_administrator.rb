@@ -1,6 +1,4 @@
-directory '/tools' do
-  action :create
-end
+Dir.mkdir('/tools') unless File.exist? '/tools'
 
 cookbook_file "/tools/ntrights.exe" do
   source "ntrights.exe"
