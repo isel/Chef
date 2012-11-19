@@ -25,7 +25,7 @@
       "display_name": "administrator password",
       "required": "required",
       "recipes": [
-        "windows::change_administrator_password"
+        "windows::set_administrator_password"
       ],
       "choice": [
 
@@ -37,7 +37,8 @@
   "groupings": {
   },
   "recipes": {
-    "windows::change_administrator_password": "executes a batch file"
+    "windows::assign_logon_as_a_service_to_administrator": "assign logon as a service to administrator",
+    "windows::set_administrator_password": "sets the administrator password"
   },
   "version": "0.0.1"
 }
