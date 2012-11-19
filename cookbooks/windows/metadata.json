@@ -37,7 +37,7 @@
   "groupings": {
   },
   "recipes": {
-    "windows::execute_batch": "executes a batch file"
+    "windows::change_administrator_password": "executes a batch file"
   },
   "version": "0.0.1"
 }
