@@ -1,16 +1,14 @@
 {
-  "name": "infrastructure",
+  "name": "windows",
   "description": "Deploys the UGF software to the environment",
   "long_description": "",
   "maintainer": "Cloud Infrastructure",
   "maintainer_email": "csf@ultimatesoftware.com",
   "license": "our license",
   "platforms": {
-    "ubuntu": ">= 0.0.0"
+    "windows": ">= 0.0.0"
   },
   "dependencies": {
-    "rightscale": ">= 0.0.0",
-    "logging": ">= 0.0.0"
   },
   "recommendations": {
   },
@@ -23,12 +21,23 @@
   "replacing": {
   },
   "attributes": {
+    "windows/administrator_password": {
+      "display_name": "administrator password",
+      "required": "required",
+      "recipes": [
+        "windows::change_administrator_password"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    }
   },
   "groupings": {
   },
   "recipes": {
-    "infrastructure::api": "Deploys Infrastructure api services",
-    "infrastructure::smoke_tests": "Smoke tests"
+    "windows::execute_batch": "executes a batch file"
   },
   "version": "0.0.1"
 }

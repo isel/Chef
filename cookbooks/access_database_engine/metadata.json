@@ -3,7 +3,7 @@
   "description": "Installs basic tools to manage any instance",
   "long_description": "",
   "maintainer": "Cloud Infrastructure",
-  "maintainer_email": "ugf_ci@ultimatesoftware.com",
+  "maintainer_email": "csf@ultimatesoftware.com",
   "license": "our license",
   "platforms": {
     "windows": ">= 0.0.0"

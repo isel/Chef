@@ -1,5 +1,5 @@
 maintainer       "Cloud Infrastructure"
-maintainer_email "ugf_ci@ultimatesoftware.com"
+maintainer_email "csf@ultimatesoftware.com"
 license          "our license"
 description      "Installs MSMQ with a default set of features"
 long_description ""
