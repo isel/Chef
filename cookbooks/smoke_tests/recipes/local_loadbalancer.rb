@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 ruby_scripts_dir = node[:ruby_scripts_dir]
 
 template "#{ruby_scripts_dir}/local_loadbalancer.rb" do
@@ -10,3 +12,5 @@ bash 'Running local smoke tests' do
     rake --rakefile #{ruby_scripts_dir}/local_loadbalancer.rb
   EOF
 end
+
+rightscale_marker :end

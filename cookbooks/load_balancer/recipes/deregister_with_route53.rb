@@ -1,3 +1,4 @@
+rightscale_marker :begin
 
 template "#{node[:ruby_scripts_dir]}/deregister_with_route53.rb" do
   source 'scripts/route53.erb'
@@ -27,4 +28,4 @@ else
   end
 end
 
-
+rightscale_marker :end

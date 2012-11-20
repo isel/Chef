@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 template "#{node[:ruby_scripts_dir]}/register_with_haproxy.rb" do
   source 'scripts/register_with_haproxy.erb'
   variables(
@@ -21,3 +23,5 @@ else
     only_if { node[:load_balancer][:should_register_with_lb] == 'true' }
   end
 end
+
+rightscale_marker :end

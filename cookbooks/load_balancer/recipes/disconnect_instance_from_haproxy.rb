@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 forwarding_ports = node[:load_balancer][:forwarding_ports].split(',').reject{|port| port == '443'}
 forwarding_ports.each do |port|
   listener_name = "#{node[:load_balancer][:prefix]}#{port}"
@@ -16,3 +18,5 @@ forwarding_ports.each do |port|
     EOF
   end
 end
+
+rightscale_marker :end

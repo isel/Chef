@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 bash 'Set HAProxy timeout' do
   code <<-EOF
     sed -i "s@srvtimeout[ \t]*[0-9]*@srvtimeout      #{node[:server_timeout]}@" /home/haproxy/rightscale_lb.cfg
@@ -94,3 +96,5 @@ logger -t RightScale "Vhost configuration done."
     EOF
   end
 end
+
+rightscale_marker :end
