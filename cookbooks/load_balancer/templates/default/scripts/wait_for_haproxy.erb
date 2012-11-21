@@ -1,0 +1,18 @@
+require '<%= @binaries_directory %>/CI/BuildScripts/Helpers/process'
+
+launch_wait_timeout = <%= @timeout %>
+service_display_name = 'haproxy'
+
+# Inspect the service status
+Helpers::Process.new.run("wait for #{service_display_name} to start", launch_wait_timeout) do
+  begin
+    result = `service "#{service_display_name}" status`
+    result.match Regexp.new("#{service_display_name}\s+IS\s+RUNNING", Regexp::IGNORECASE)
+  rescue
+    false
+  end
+end
+
+
+
+

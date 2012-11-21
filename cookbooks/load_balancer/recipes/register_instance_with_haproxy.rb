@@ -10,12 +10,26 @@ forwarding_ports.each do |port|
       script="/opt/rightscale/lb/bin/haproxy_config_server.rb"
       args1="-a add -w -s #{node[:load_balancer][:instance_backend_name]}"
       args2="-l #{listener_name} -t #{node[:load_balancer][:instance_ip]}:#{port}"
-      args3="-e inter 3000 rise 2 fall 3 maxconn #{node[:max_connections_per_lb]} -k on"
+      args3="-e \\"inter 3000 rise 2 fall 3 maxconn #{node[:max_connections_per_lb]}\\" -k on"
 
       echo /opt/rightscale/sandbox/bin/ruby $script $args1 $args2 $args3
       /opt/rightscale/sandbox/bin/ruby $script $args1 $args2 $args3
     EOF
   end
+end
+
+template "#{node[:ruby_scripts_dir]}/wait_for_haproxy.rb" do
+  source 'scripts/wait_for_haproxy.erb'
+  variables(
+    :binaries_directory => node[:binaries_directory],
+    :timeout => 300
+  )
+end
+
+bash 'Waiting for haproxy to start' do
+  code <<-EOF
+      ruby #{node[:ruby_scripts_dir]}/wait_for_haproxy.rb
+  EOF
 end
 
 rightscale_marker :end
