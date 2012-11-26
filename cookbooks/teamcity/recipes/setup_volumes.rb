@@ -108,6 +108,7 @@ try
 
         if ($env:NUMBER_STRIPES -eq 1)
         {
+            write-host 'Creating volumes via EbsCreateAttachVolume'
             EbsCreateAttachVolume $dataDriveLetter $env:DATA_VOLUME_SIZE
             EbsCreateAttachVolume $logsDriveLetter $env:LOGS_VOLUME_SIZE
             $dataDevices = "xvd${dataDriveLetter}".ToLower()
