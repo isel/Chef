@@ -1,6 +1,6 @@
-powershell('setting sa password') do
+powershell('Setting sa password') do
   parameters ({ 'PASSWORD' => node[:mssql][:sa_password] })
-  script <<-EOF
+  script = <<-EOF
     add-pssnapin sqlserverCmdletSnapin100
 
     Invoke-Sqlcmd -Query "ALTER LOGIN [sa] WITH PASSWORD='$env:PASSWORD'"
