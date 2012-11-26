@@ -1,9 +1,7 @@
 powershell('Setting up volumes') do
   parameters(
     {
-      'DATA_VOLUME' => 'D',
       'DATA_VOLUME_SIZE' => '300',
-      'LOGS_VOLUME' => 'E',
       'LOGS_VOLUME_SIZE' => '300',
       'FORCE_CREATE_VOLUMES' => 'True',
       'LINEAGE_NAME' => 'TeamCity Web',
@@ -37,23 +35,23 @@ function SetDrivesEnvVars($dataLetter, $logsLetter, $dataDevices, $logsDevices)
     $logsDevices = $logsDevices -join ','
 
     Write-Host "Setting environment variables:"
-    [Environment]::SetEnvironmentVariable("DATA_VOLUME", $dataLetter, "Machine")
-    [Environment]::SetEnvironmentVariable("DATA_VOLUME", $dataLetter, "Process")
+    [Environment]::SetEnvironmentVariable("RS_SQLS_DATA_VOLUME", $dataLetter, "Machine")
+    [Environment]::SetEnvironmentVariable("RS_SQLS_DATA_VOLUME", $dataLetter, "Process")
     [Environment]::SetEnvironmentVariable("DATA_DEVICES", $dataDevices, "Machine")
-    Write-Host "DATA_VOLUME=${dataLetter}"
+    Write-Host "RS_SQLS_DATA_VOLUME=${dataLetter}"
     Write-Host "DATA_DEVICES=${dataDevices}"
 
-    [Environment]::SetEnvironmentVariable("LOGS_VOLUME", $logsLetter, "Machine")
-    [Environment]::SetEnvironmentVariable("LOGS_VOLUME", $logsLetter, "Process")
+    [Environment]::SetEnvironmentVariable("RS_SQLS_LOGS_VOLUME", $logsLetter, "Machine")
+    [Environment]::SetEnvironmentVariable("RS_SQLS_LOGS_VOLUME", $logsLetter, "Process")
     [Environment]::SetEnvironmentVariable("LOGS_DEVICES", $logsDevices, "Machine")
-    Write-Host "LOGS_VOLUME=${logsLetter}"
+    Write-Host "RS_SQLS_LOGS_VOLUME=${logsLetter}"
     Write-Host "LOGS_DEVICES=${logsDevices}"
 }
 
 try
 {
-    $dataVolExists = $env:DATA_VOLUME -and (Test-Path "${env:DATA_VOLUME}:\")
-    $logsVolExists = $env:LOGS_VOLUME -and (Test-Path "${env:LOGS_VOLUME}:\")
+    $dataVolExists = $env:RS_SQLS_DATA_VOLUME -and (Test-Path "${env:RS_SQLS_DATA_VOLUME}:\")
+    $logsVolExists = $env:RS_SQLS_LOGS_VOLUME -and (Test-Path "${env:RS_SQLS_LOGS_VOLUME}:\")
     if ($dataVolExists -or $logsVolExists)
     {
         Write-Host "Skipping: data and/or log volumes exist already."
@@ -99,7 +97,7 @@ try
     }
 
     # Create volumes if not restored
-    if (!$env:DATA_VOLUME -and !$env:LOGS_VOLUME)
+    if (!$env:RS_SQLS_DATA_VOLUME -and !$env:RS_SQLS_LOGS_VOLUME)
     {
         Write-Host "Creating new data and log volumes..."
         CheckInputInt 'DATA_VOLUME_SIZE' $False 1 | Out-Null
