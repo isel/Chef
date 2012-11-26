@@ -135,7 +135,8 @@
   "groupings": {
   },
   "recipes": {
-    "teamcity::configure": "Configures TeamCity build agent properties file"
+    "teamcity::configure": "Configures TeamCity build agent properties file",
+    "teamcity::setup_volumes": "Sets up TeamCity web server volumes"
   },
   "version": "0.0.1"
 }

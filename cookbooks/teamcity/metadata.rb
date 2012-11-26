@@ -9,6 +9,7 @@ depends 'rightscale'
 depends 'deploy'
 
 recipe 'teamcity::configure', 'Configures TeamCity build agent properties file'
+recipe 'teamcity::setup_volumes', 'Sets up TeamCity web server volumes'
 
 attribute "core/aws_access_key_id",
   :display_name => "aws access key id",
