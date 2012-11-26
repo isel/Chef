@@ -18,17 +18,17 @@ powershell('Setting up volumes') do
 $errorActionPreference = "Stop"
 
 # load library functions
-$rsLibDstDirPath = "$env:rs_sandbox_home\RightScript\lib"
-. "$rsLibDstDirPath\tools\ResolveError.ps1"
-. "$rsLibDstDirPath\tools\Checks.ps1"
-. "$rsLibDstDirPath\tools\RepartitionDisk.ps1"
-. "$rsLibDstDirPath\tools\Text.ps1"
-. "$rsLibDstDirPath\tools\ExtractReturn.ps1"
-. "$rsLibDstDirPath\ros\Ros.ps1"
-. "$rsLibDstDirPath\ros\RosBackups.ps1"
-. "$rsLibDstDirPath\ebs\EbsRestoreVolumes.ps1"
-. "$rsLibDstDirPath\ebs\EbsCreateAttachVolume.ps1"
-. "$rsLibDstDirPath\ebs\EbsCreateAttachStripe.ps1"
+$rsLibDstDirPath = "$env:rs_sandbox_home\\RightScript\\lib"
+. "$rsLibDstDirPath\\tools\\ResolveError.ps1"
+. "$rsLibDstDirPath\\tools\\Checks.ps1"
+. "$rsLibDstDirPath\\tools\\RepartitionDisk.ps1"
+. "$rsLibDstDirPath\\tools\\Text.ps1"
+. "$rsLibDstDirPath\\tools\\ExtractReturn.ps1"
+. "$rsLibDstDirPath\\ros\\Ros.ps1"
+. "$rsLibDstDirPath\\ros\\RosBackups.ps1"
+. "$rsLibDstDirPath\\ebs\\EbsRestoreVolumes.ps1"
+. "$rsLibDstDirPath\\ebs\\EbsCreateAttachVolume.ps1"
+. "$rsLibDstDirPath\\ebs\\EbsCreateAttachStripe.ps1"
 
 # Helper function to create env variables
 function SetDrivesEnvVars($dataLetter, $logsLetter, $dataDevices, $logsDevices)
