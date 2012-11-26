@@ -9,20 +9,19 @@ forwarding_ports.each do |port|
 
       script="/opt/rightscale/lb/bin/haproxy_config_server.rb"
 
-      set +e
       count=0
-      /opt/rightscale/sandbox/bin/ruby $script -a add -w -s #{node[:load_balancer][:instance_backend_name]} -l #{listener_name} -t #{node[:load_balancer][:instance_ip]}:#{port} -e " inter 3000 rise 2 fall 3 maxconn #{node[:max_connections_per_lb]}" -k on
-      while [ $? != 0 ]; do
+      result=`/opt/rightscale/sandbox/bin/ruby $script -a add -w -s #{node[:load_balancer][:instance_backend_name]} -l #{listener_name} -t #{node[:load_balancer][:instance_ip]}:#{port} -e " inter 3000 rise 2 fall 3 maxconn #{node[:max_connections_per_lb]}" -k on`
+      failtest=`echo $result | grep fail`
+      while [ "$failtest" != "" ]; do
         if [ "$count" -gt 10 ]; then
           exit 1
         fi
         count=$[$count + 1]
         echo "waiting for $script to finish successfully"
         sleep 5
-        /opt/rightscale/sandbox/bin/ruby $script -a add -w -s #{node[:load_balancer][:instance_backend_name]} -l #{listener_name} -t #{node[:load_balancer][:instance_ip]}:#{port} -e " inter 3000 rise 2 fall 3 maxconn #{node[:max_connections_per_lb]}" -k on
+        result=`/opt/rightscale/sandbox/bin/ruby $script -a add -w -s #{node[:load_balancer][:instance_backend_name]} -l #{listener_name} -t #{node[:load_balancer][:instance_ip]}:#{port} -e " inter 3000 rise 2 fall 3 maxconn #{node[:max_connections_per_lb]}" -k on`
+        failtest=`echo $result | grep fail`
       done
-      set -e
-
     EOF
   end
 end
