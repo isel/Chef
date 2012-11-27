@@ -48,6 +48,11 @@ attribute 'teamcity/agent_type',
   :required => 'required',
   :recipes => ['teamcity::configure']
 
+attribute 'teamcity/database_server',
+  :display_name => 'database server',
+  :required => 'required',
+  :recipes => ['teamcity::setup_database_server']
+
 attribute 'teamcity/data_volume_size',
   :display_name => 'data volume size',
   :required => 'optional',

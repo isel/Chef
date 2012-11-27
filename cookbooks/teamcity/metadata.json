@@ -106,6 +106,18 @@
       "calculated": false,
       "type": "string"
     },
+    "teamcity/database_server": {
+      "display_name": "database server",
+      "required": "required",
+      "recipes": [
+        "teamcity::setup_database_server"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "teamcity/data_volume_size": {
       "display_name": "data volume size",
       "required": "optional",
