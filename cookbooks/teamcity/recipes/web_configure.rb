@@ -17,4 +17,8 @@ template "#{teamcity_path}\\config\\database.properties" do
   )
 end
 
+template "#{teamcity_path}\\config\\license.keys" do
+  source 'license.keys.erb'
+end
+
 rightscale_marker :end
