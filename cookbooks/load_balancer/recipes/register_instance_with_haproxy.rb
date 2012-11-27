@@ -10,9 +10,15 @@ forwarding_ports.each do |port|
       script="/opt/rightscale/lb/bin/haproxy_config_server.rb"
 
       /opt/rightscale/sandbox/bin/ruby $script -a add -w -s #{node[:load_balancer][:instance_backend_name]} -l #{listener_name} -t #{node[:load_balancer][:instance_ip]}:#{port} -e " inter 3000 rise 2 fall 3 maxconn #{node[:max_connections_per_lb]}" -k on
-      exit 0
+      service haproxy restart
     EOF
   end
+end
+
+bash 'Restarting haproxy service' do
+  code <<-EOF
+      service haproxy restart
+  EOF
 end
 
 template "#{node[:ruby_scripts_dir]}/wait_for_haproxy.rb" do
