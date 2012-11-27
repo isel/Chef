@@ -26,7 +26,7 @@
       "display_name": "aws access key id",
       "required": "required",
       "recipes": [
-        "teamcity::setup_volumes"
+        "teamcity::web_setup_volumes"
       ],
       "choice": [
 
@@ -38,7 +38,7 @@
       "display_name": "aws secret access key",
       "required": "required",
       "recipes": [
-        "teamcity::setup_volumes"
+        "teamcity::web_setup_volumes"
       ],
       "choice": [
 
@@ -70,11 +70,23 @@
       "calculated": false,
       "type": "string"
     },
+    "mssql/sa_password": {
+      "display_name": "sa password",
+      "required": "required",
+      "recipes": [
+        "teamcity::db_configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "windows/administrator_password": {
       "display_name": "administrator password",
       "required": "required",
       "recipes": [
-        "teamcity::schedule_backups"
+        "teamcity::web_schedule_backups"
       ],
       "choice": [
 
@@ -110,7 +122,7 @@
       "display_name": "database server",
       "required": "required",
       "recipes": [
-        "teamcity::setup_database_server"
+        "teamcity::web_configure"
       ],
       "choice": [
 
@@ -122,7 +134,8 @@
       "display_name": "database user",
       "required": "required",
       "recipes": [
-        "teamcity::setup_database_server"
+        "teamcity::web_configure",
+        "teamcity::db_configure"
       ],
       "choice": [
 
@@ -134,7 +147,8 @@
       "display_name": "database password",
       "required": "required",
       "recipes": [
-        "teamcity::setup_database_server"
+        "teamcity::web_configure",
+        "teamcity::db_configure"
       ],
       "choice": [
 
@@ -147,7 +161,7 @@
       "required": "optional",
       "default": "300",
       "recipes": [
-        "teamcity::setup_volumes"
+        "teamcity::web_setup_volumes"
       ],
       "choice": [
 
@@ -160,7 +174,7 @@
       "required": "optional",
       "default": "False",
       "recipes": [
-        "teamcity::setup_volumes"
+        "teamcity::web_setup_volumes"
       ],
       "choice": [
 
@@ -173,7 +187,7 @@
       "required": "optional",
       "default": "TeamCity Web",
       "recipes": [
-        "teamcity::setup_volumes"
+        "teamcity::web_setup_volumes"
       ],
       "choice": [
 
@@ -186,7 +200,7 @@
       "required": "optional",
       "default": "300",
       "recipes": [
-        "teamcity::setup_volumes"
+        "teamcity::web_setup_volumes"
       ],
       "choice": [
 
@@ -236,10 +250,11 @@
   },
   "recipes": {
     "teamcity::configure": "Configures TeamCity build agent properties file",
-    "teamcity::backup_volumes": "Backups up TeamCity web server",
-    "teamcity::schedule_backups": "Schedules backups for the TeamCity web server",
-    "teamcity::setup_database_server": "Configures the web server to use a database server",
-    "teamcity::setup_volumes": "Sets up TeamCity web server volumes"
+    "teamcity::web_configure": "Configures the web server to use a database server",
+    "teamcity::web_backup_volumes": "Backups up TeamCity web server",
+    "teamcity::web_schedule_backups": "Schedules backups for the TeamCity web server",
+    "teamcity::web_setup_volumes": "Sets up TeamCity web server volumes",
+    "teamcity::db_configure": "Configures the database"
   },
   "version": "0.0.1"
 }
