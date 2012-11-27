@@ -21,4 +21,8 @@ template "#{teamcity_path}\\config\\license.keys" do
   source 'license.keys.erb'
 end
 
+template "#{teamcity_path}\\config\\ldap-config.properties" do
+  source 'ldap-config.properties.erb'
+end
+
 rightscale_marker :end
