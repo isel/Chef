@@ -48,6 +48,30 @@ attribute 'teamcity/agent_type',
   :required => 'required',
   :recipes => ['teamcity::configure']
 
+attribute 'teamcity/data_volume_size',
+  :display_name => 'data volume size',
+  :required => 'optional',
+  :default => '300',
+  :recipes => ['teamcity::setup_volumes']
+
+attribute 'teamcity/force_create_volumes',
+  :display_name => 'force create volumes',
+  :required => 'optional',
+  :default => 'False',
+  :recipes => ['teamcity::setup_volumes']
+
+attribute 'teamcity/lineage_name',
+  :display_name => 'lineage name',
+  :required => 'optional',
+  :default => 'TeamCity Web',
+  :recipes => ['teamcity::setup_volumes']
+
+attribute 'teamcity/logs_volume_size',
+  :display_name => 'logs volume size',
+  :required => 'optional',
+  :default => '300',
+  :recipes => ['teamcity::setup_volumes']
+
 attribute 'teamcity/instance_name',
   :display_name => 'instance name',
   :required => 'required',

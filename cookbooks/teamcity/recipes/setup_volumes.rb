@@ -3,10 +3,10 @@ rightscale_marker :begin
 powershell('Setup volumes') do
   parameters(
     {
-      'DATA_VOLUME_SIZE' => '300',
-      'LOGS_VOLUME_SIZE' => '300',
-      'FORCE_CREATE_VOLUMES' => 'True',
-      'LINEAGE_NAME' => 'TeamCity Web',
+      'DATA_VOLUME_SIZE' => node[:teamcity][:data_volume_size],
+      'LOGS_VOLUME_SIZE' => node[:teamcity][:logs_volume_size],
+      'FORCE_CREATE_VOLUMES' => node[:teamcity][:force_create_volumes],
+      'LINEAGE_NAME' => node[:teamcity][:lineage_name],
       'RESTORE_TIMESTAMP' => '',
       'AWS_ACCESS_KEY_ID' => node[:core][:aws_access_key_id],
       'AWS_SECRET_ACCESS_KEY' => node[:core][:aws_secret_access_key],
