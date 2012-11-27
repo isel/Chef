@@ -4,9 +4,7 @@ require 'fileutils'
 
 teamcity_path = 'd:\TeamCity'
 
-FileUtils.mkdir_p("#{teamcity_path}\\lib\\jdbc")
-
-cookbook_file "#{"#{teamcity_path}\\lib\\jdbc"}\\jtds-1.2.5.jar" do
+cookbook_file "#{teamcity_path}\\lib\\jdbc\\jtds-1.2.5.jar" do
   source "jtds-1.2.5.jar"
 end
 
