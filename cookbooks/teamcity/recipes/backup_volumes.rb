@@ -3,11 +3,8 @@ powershell('Backup volumes') do
   script = <<-EOF
     $errorActionPreference="Stop"
 
-    # load library functions
     $rsLibDstDirPath = "$env:rs_sandbox_home\RightScript\lib"
     . "$rsLibDstDirPath\tools\ResolveError.ps1"
-    #. "$rsLibDstDirPath\tools\Checks.ps1"
-    #. "$rsLibDstDirPath\tools\ExtractReturn.ps1"
     . "$rsLibDstDirPath\ebs\EbsBackupVolumes.ps1"
 
     try
