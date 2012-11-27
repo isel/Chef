@@ -118,6 +118,30 @@
       "calculated": false,
       "type": "string"
     },
+    "teamcity/database_user": {
+      "display_name": "database user",
+      "required": "required",
+      "recipes": [
+        "teamcity::setup_database_server"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "teamcity/database_password": {
+      "display_name": "database password",
+      "required": "required",
+      "recipes": [
+        "teamcity::setup_database_server"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "teamcity/data_volume_size": {
       "display_name": "data volume size",
       "required": "optional",
@@ -214,6 +238,7 @@
     "teamcity::configure": "Configures TeamCity build agent properties file",
     "teamcity::backup_volumes": "Backups up TeamCity web server",
     "teamcity::schedule_backups": "Schedules backups for the TeamCity web server",
+    "teamcity::setup_database_server": "Configures the web server to use a database server",
     "teamcity::setup_volumes": "Sets up TeamCity web server volumes"
   },
   "version": "0.0.1"

@@ -11,6 +11,7 @@ depends 'windows'
 recipe 'teamcity::configure', 'Configures TeamCity build agent properties file'
 recipe 'teamcity::backup_volumes', 'Backups up TeamCity web server'
 recipe 'teamcity::schedule_backups', 'Schedules backups for the TeamCity web server'
+recipe 'teamcity::setup_database_server', 'Configures the web server to use a database server'
 recipe 'teamcity::setup_volumes', 'Sets up TeamCity web server volumes'
 
 attribute 'core/aws_access_key_id',
@@ -50,6 +51,16 @@ attribute 'teamcity/agent_type',
 
 attribute 'teamcity/database_server',
   :display_name => 'database server',
+  :required => 'required',
+  :recipes => ['teamcity::setup_database_server']
+
+attribute 'teamcity/database_user',
+  :display_name => 'database user',
+  :required => 'required',
+  :recipes => ['teamcity::setup_database_server']
+
+attribute 'teamcity/database_password',
+  :display_name => 'database password',
   :required => 'required',
   :recipes => ['teamcity::setup_database_server']
 
