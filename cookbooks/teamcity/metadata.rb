@@ -6,20 +6,20 @@ long_description ''
 version '0.0.1'
 
 depends 'rightscale'
-depends 'deploy'
 
 recipe 'teamcity::configure', 'Configures TeamCity build agent properties file'
+recipe 'teamcity::backup_volumes', 'Backups up TeamCity web server volumes'
 recipe 'teamcity::setup_volumes', 'Sets up TeamCity web server volumes'
 
-attribute "core/aws_access_key_id",
-  :display_name => "aws access key id",
-  :required => "required",
-  :recipes => ["teamcity::setup_volumes"]
+attribute 'core/aws_access_key_id',
+  :display_name => 'aws access key id',
+  :required => 'required',
+  :recipes => ['teamcity::setup_volumes']
 
-attribute "core/aws_secret_access_key",
-  :display_name => "aws secret access key",
-  :required => "required",
-  :recipes => ["teamcity::setup_volumes"]
+attribute 'core/aws_secret_access_key',
+  :display_name => 'aws secret access key',
+  :required => 'required',
+  :recipes => ['teamcity::setup_volumes']
 
 attribute 'deploy/admin_password_mongo',
   :display_name => 'administrator password for mongo',

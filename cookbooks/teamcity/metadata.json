@@ -8,8 +8,7 @@
   "platforms": {
   },
   "dependencies": {
-    "rightscale": ">= 0.0.0",
-    "deploy": ">= 0.0.0"
+    "rightscale": ">= 0.0.0"
   },
   "recommendations": {
   },
@@ -136,6 +135,7 @@
   },
   "recipes": {
     "teamcity::configure": "Configures TeamCity build agent properties file",
+    "teamcity::backup_volumes": "Backups up TeamCity web server volumes",
     "teamcity::setup_volumes": "Sets up TeamCity web server volumes"
   },
   "version": "0.0.1"

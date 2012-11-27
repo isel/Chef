@@ -1,4 +1,4 @@
-powershell('Setting up volumes') do
+powershell('Setup volumes') do
   parameters(
     {
       'DATA_VOLUME_SIZE' => '300',
