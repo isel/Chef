@@ -8,7 +8,7 @@ version          "0.0.1"
 supports "ubuntu"
 supports "windows"
 
-depends "rightscale"
+#depends "rightscale"
 depends 'core'
 
 recipe "ruby::default", "Downloads and installs ruby"
