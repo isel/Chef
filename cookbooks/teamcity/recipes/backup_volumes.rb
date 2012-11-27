@@ -3,9 +3,9 @@ powershell('Backup volumes') do
   script = <<-EOF
     $errorActionPreference="Stop"
 
-    $rsLibDstDirPath = "$env:rs_sandbox_home\RightScript\lib"
-    . "$rsLibDstDirPath\tools\ResolveError.ps1"
-    . "$rsLibDstDirPath\ebs\EbsBackupVolumes.ps1"
+    $rsLibDstDirPath = "$env:rs_sandbox_home\\RightScript\\lib"
+    . "$rsLibDstDirPath\\tools\\ResolveError.ps1"
+    . "$rsLibDstDirPath\\ebs\\EbsBackupVolumes.ps1"
 
     try
     {
