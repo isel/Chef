@@ -6,9 +6,11 @@ long_description ''
 version '0.0.1'
 
 depends 'rightscale'
+depends 'windows'
 
 recipe 'teamcity::configure', 'Configures TeamCity build agent properties file'
-recipe 'teamcity::backup_volumes', 'Backups up TeamCity web server volumes'
+recipe 'teamcity::backup_volumes', 'Backups up TeamCity web server'
+recipe 'teamcity::schedule_backups', 'Schedules backups for the TeamCity web server'
 recipe 'teamcity::setup_volumes', 'Sets up TeamCity web server volumes'
 
 attribute 'core/aws_access_key_id',
@@ -30,6 +32,11 @@ attribute 'deploy/admin_user_mongo',
   :display_name => 'administrator user for mongo',
   :required => 'required',
   :recipes => ['teamcity::configure']
+
+attribute 'windows/administrator_password',
+  :display_name => 'administrator password',
+  :required => 'required',
+  :recipes => ['teamcity::schedule_backups']
 
 attribute 'teamcity/agent_name',
   :display_name => 'build agent name',

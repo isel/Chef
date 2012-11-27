@@ -8,7 +8,8 @@
   "platforms": {
   },
   "dependencies": {
-    "rightscale": ">= 0.0.0"
+    "rightscale": ">= 0.0.0",
+    "windows": ">= 0.0.0"
   },
   "recommendations": {
   },
@@ -62,6 +63,18 @@
       "required": "required",
       "recipes": [
         "teamcity::configure"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "windows/administrator_password": {
+      "display_name": "administrator password",
+      "required": "required",
+      "recipes": [
+        "teamcity::schedule_backups"
       ],
       "choice": [
 
@@ -135,7 +148,8 @@
   },
   "recipes": {
     "teamcity::configure": "Configures TeamCity build agent properties file",
-    "teamcity::backup_volumes": "Backups up TeamCity web server volumes",
+    "teamcity::backup_volumes": "Backups up TeamCity web server",
+    "teamcity::schedule_backups": "Schedules backups for the TeamCity web server",
     "teamcity::setup_volumes": "Sets up TeamCity web server volumes"
   },
   "version": "0.0.1"

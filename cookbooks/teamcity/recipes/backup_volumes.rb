@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 powershell('Backup volumes') do
   parameters({ 'LINEAGE_NAME' => 'TeamCity Web' })
   script = <<-EOF
@@ -30,3 +32,5 @@ powershell('Backup volumes') do
   EOF
   source(script)
 end
+
+rightscale_marker :end

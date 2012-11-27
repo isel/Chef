@@ -1,3 +1,5 @@
+rightscale_marker :begin
+
 powershell('Setup volumes') do
   parameters(
     {
@@ -132,3 +134,5 @@ catch
   EOF
   source(script)
 end
+
+rightscale_marker :end
