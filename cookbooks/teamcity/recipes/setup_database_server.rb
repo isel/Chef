@@ -9,7 +9,7 @@ cookbook_file "#{teamcity_path}\\lib\\jdbc\\jtds-1.2.5.jar" do
 end
 
 template "#{teamcity_path}\\config\\database.properties" do
-  source 'database.properties'
+  source 'database.properties.erb'
   variables(
     :database_server => node[:teamcity][:database_server],
     :database_user => node[:teamcity][:database_user],
