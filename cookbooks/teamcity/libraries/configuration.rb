@@ -4,8 +4,8 @@ module Configuration
 
   def change_authorization(file)
     xs = XmlSimple.new({
-      RootName: 'server',
-      XmlDeclaration: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE server SYSTEM \"main-config.dtd\">"
+      :RootName => 'server',
+      :XmlDeclaration => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE server SYSTEM \"main-config.dtd\">"
     })
 
     ref = xs.xml_in(File.read(file))
