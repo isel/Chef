@@ -9,7 +9,7 @@ template "d:\\create_database.sql" do
 end
 
 windows_batch 'Create TeamCity database' do
-  code "sqlcmd -Usa -P#{node[:mssql][:sa_password]} -id:\\create_database.sql"
+  code "sqlcmd -E -id:\\create_database.sql"
 end
 
 rightscale_marker :end

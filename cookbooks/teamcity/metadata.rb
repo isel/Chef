@@ -40,11 +40,6 @@ attribute 'deploy/admin_user_mongo',
   :required => 'required',
   :recipes => ['teamcity::configure']
 
-attribute 'mssql/sa_password',
-  :display_name => 'sa password',
-  :required => 'required',
-  :recipes => ['teamcity::db_configure']
-
 attribute 'windows/administrator_password',
   :display_name => 'administrator password',
   :required => 'required',
