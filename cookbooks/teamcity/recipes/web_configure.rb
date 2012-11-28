@@ -38,7 +38,7 @@ ruby_block 'Setup ldap' do
     modified = text.gsub(/'<\/server>'/, target)
     File.open(config_file, 'w') { |f| f.puts(modified) }
   end
-  not_if { File.read("#{teamcity_path}\\config\\main-config.xml").include?('<auth-type>') }
+  #not_if { File.read("#{teamcity_path}\\config\\main-config.xml").include?('<auth-type>') }
 end
 
 template "#{teamcity_path}\\config\\ldap-config.properties" do
