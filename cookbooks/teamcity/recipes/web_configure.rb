@@ -3,9 +3,26 @@ rightscale_marker :begin
 require 'fileutils'
 
 teamcity_path = 'd:\TeamCity'
+webapps = 'C:\TeamCity\webapps\ROOT\WEB-INF\lib'
+
+cookbook_file "#{webapps}\\antlr-2.7.7.jar" do
+  source 'antlr-2.7.7.jar'
+end
+
+cookbook_file "#{webapps}\\asm-2.2.3.jar" do
+  source 'asm-2.2.3.jar'
+end
+
+cookbook_file "#{webapps}\\groovy-1.6.4.jar" do
+  source 'groovy-1.6.4.jar'
+end
+
+cookbook_file "#{teamcity_path}\\plugins\\groovyPlug.zip" do
+  source 'groovyPlug.zip'
+end
 
 cookbook_file "#{teamcity_path}\\lib\\jdbc\\jtds-1.2.5.jar" do
-  source "jtds-1.2.5.jar"
+  source 'jtds-1.2.5.jar'
 end
 
 template "#{teamcity_path}\\config\\database.properties" do

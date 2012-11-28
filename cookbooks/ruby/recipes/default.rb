@@ -1,4 +1,4 @@
-rightscale_marker :begin
+#rightscale_marker :begin
 
 include_recipe 'core::download_vendor_artifacts_prereqs'
 
@@ -111,5 +111,5 @@ EOF
   end
 end
 
-rightscale_marker :end
+#rightscale_marker :end
 
