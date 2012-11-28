@@ -7,6 +7,8 @@ version          "0.0.1"
 
 supports "windows"
 
+depends "windows"
+
 recipe "mssql::set_sa_password", "sets sa password"
 
 attribute "mssql/sa_password",
