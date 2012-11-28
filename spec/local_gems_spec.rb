@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require_relative '../cookbooks/core/libraries/local_gems'
+require_relative '../cookbooks/ruby/libraries/local_gems'
 
 include LocalGems
 

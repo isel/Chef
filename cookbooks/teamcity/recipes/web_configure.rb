@@ -21,24 +21,16 @@ template "#{teamcity_path}\\config\\license.keys" do
   source 'license.keys.erb'
 end
 
+class Chef::Resource
+  include Configuration
+end
+
 ruby_block 'Setup ldap' do
   block do
     config_file = "#{teamcity_path}\\config\\main-config.xml"
-    target = <<-'eof'
-  <auth-type>
-    <login-module class="jetbrains.buildServer.serverSide.impl.auth.LDAPLoginModule" />
-    <login-description />
-    <guest-login allowed="true" guest-username="guest" />
-    <free-registration allowed="false" />
-  </auth-type>
-</server>
-    eof
-
-    text = File.read(config_file)
-    modified = text.gsub(/'<\/server>'/, target)
-    File.open(config_file, 'w') { |f| f.puts(modified) }
+    change_authorization(config_file)
   end
-  #not_if { File.read("#{teamcity_path}\\config\\main-config.xml").include?('<auth-type>') }
+  not_if { File.read("#{teamcity_path}\\config\\main-config.xml").include?('login-module') }
 end
 
 template "#{teamcity_path}\\config\\ldap-config.properties" do
