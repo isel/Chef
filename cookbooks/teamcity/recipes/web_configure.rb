@@ -37,4 +37,8 @@ template "#{teamcity_path}\\config\\ldap-config.properties" do
   source 'ldap-config.properties.erb'
 end
 
+powershell('Restart TeamCity') do
+  source('Restart-Service TeamCity')
+end
+
 rightscale_marker :end
