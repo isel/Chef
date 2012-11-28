@@ -1,0 +1,19 @@
+require 'xmlsimple'
+
+config_file = '<%= @config_file %>'
+
+xs = XmlSimple.new({
+  :RootName => 'server',
+  :XmlDeclaration => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE server SYSTEM \"main-config.dtd\">"
+})
+
+ref = xs.xml_in(File.read(config_file))
+authorization = ref['auth-type']
+
+authorization[0]['free-registration'][0]['allowed'] ='false'
+authorization[0]['guest-login'] = [{ 'allowed' => 'true', 'guest-username' => 'guest' }]
+authorization[0]['login-description'] = [{}]
+authorization[0]['login-module'] = [{ 'class' => 'jetbrains.buildServer.serverSide.impl.auth.LDAPLoginModule' }]
+
+File.open(config_file, 'w+') { |f| f.puts xs.xml_out(ref) }
+

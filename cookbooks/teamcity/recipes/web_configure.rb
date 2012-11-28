@@ -42,11 +42,13 @@ class Chef::Resource
   include Configuration
 end
 
-ruby_block 'Setup ldap' do
-  block do
-    config_file = "#{teamcity_path}\\config\\main-config.xml"
-    change_authorization(config_file)
-  end
+template "#{node[:ruby_scripts_dir]}/setup_ldap.rb" do
+  source 'scripts/setup_ldap.erb'
+  variables(:config_file => "#{teamcity_path}\\config\\main-config.xml")
+end
+
+powershell('Setup ldap') do
+  source("ruby #{node[:ruby_scripts_dir]}/setup_ldap.rb")
   not_if { File.read("#{teamcity_path}\\config\\main-config.xml").include?('login-module') }
 end
 
