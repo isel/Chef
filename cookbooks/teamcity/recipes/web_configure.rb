@@ -25,14 +25,6 @@ class Chef::Resource
   include Configuration
 end
 
-powershell 'Install xml-simple' do
-  script = <<'EOF'
-  cd "c:\\Program Files (x86)\\RightScale\\RightLink\\sandbox\\ruby\\bin"
-  cmd /c gem install xml-simple -v 1.1.1 --no-rdoc --no-ri
-EOF
-  source(script)
-end
-
 ruby_block 'Setup ldap' do
   block do
     config_file = "#{teamcity_path}\\config\\main-config.xml"

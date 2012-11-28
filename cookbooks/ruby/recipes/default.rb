@@ -31,6 +31,7 @@ if node[:platform] == "ubuntu"
       block do
         ENV['RUBYGEMS_BINARY_PATH'] ||= 'gem'
         system("/opt/rightscale/sandbox/bin/gem install fog -v 1.1.1 --no-rdoc --no-ri")
+        system("/opt/rightscale/sandbox/bin/gem install xml-simple -v 1.1.1 --no-rdoc --no-ri")
       end
     end
 
@@ -97,6 +98,7 @@ else
     script = <<'EOF'
     cd "c:\\Program Files (x86)\\RightScale\\RightLink\\sandbox\\ruby\\bin"
     cmd /c gem install fog -v 1.1.1 --no-rdoc --no-ri
+    cmd /c gem install xml-simple -v 1.1.1 --no-rdoc --no-ri
     cmd /c ruby -rubygems c:\\RubyScripts\\download_ruby.rb
 EOF
     source(script)
