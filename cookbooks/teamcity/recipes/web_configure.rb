@@ -38,10 +38,6 @@ template "#{teamcity_path}\\config\\license.keys" do
   source 'license.keys.erb'
 end
 
-class Chef::Resource
-  include Configuration
-end
-
 template "#{node[:ruby_scripts_dir]}/setup_ldap.rb" do
   source 'scripts/setup_ldap.erb'
   variables(:config_file => "#{teamcity_path}\\config\\main-config.xml")
