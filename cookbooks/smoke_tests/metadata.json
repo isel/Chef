@@ -3,7 +3,7 @@
   "description": "Contains local and global smoke tests for UGF cloud environments",
   "long_description": "",
   "maintainer": "Cloud Infrastructure",
-  "maintainer_email": "ugf_ci@ultimatesoftware.com",
+  "maintainer_email": "csf@ultimatesoftware.com",
   "license": "our license",
   "platforms": {
     "ubuntu": ">= 0.0.0"

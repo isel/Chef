@@ -1,0 +1,44 @@
+{
+  "name": "mssql",
+  "description": "Deploys the UGF software to the environment",
+  "long_description": "",
+  "maintainer": "Cloud Infrastructure",
+  "maintainer_email": "csf@ultimatesoftware.com",
+  "license": "our license",
+  "platforms": {
+    "windows": ">= 0.0.0"
+  },
+  "dependencies": {
+    "windows": ">= 0.0.0"
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+    "mssql/sa_password": {
+      "display_name": "sa password",
+      "required": "required",
+      "recipes": [
+        "mssql::set_sa_password"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    }
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "mssql::set_sa_password": "sets sa password"
+  },
+  "version": "0.0.1"
+}

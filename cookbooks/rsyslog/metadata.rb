@@ -1,5 +1,5 @@
 maintainer       "Cloud Infrastructure"
-maintainer_email "ugf_ci@ultimatesoftware.com"
+maintainer_email "csf@ultimatesoftware.com"
 license          "our license"
 description      "Installs rsyslog to windows"
 long_description ""
@@ -30,7 +30,7 @@ attribute "core/s3_bucket",
   :default  => "ugfgate1",
   :recipes => ["rsyslog::default"]
 
-attribute "rsyslog/remote_log_server",
+attribute "logging/remote_server",
   :display_name => "remote log server",
   :required => "required",
   :recipes => ["rsyslog::configure"]

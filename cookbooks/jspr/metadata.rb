@@ -1,5 +1,5 @@
 maintainer       "Cloud Infrastructure"
-maintainer_email "ugf_ci@ultimatesoftware.com"
+maintainer_email "csf@ultimatesoftware.com"
 license          "our license"
 description      "Deploys the UGF software to the environment"
 long_description ""
