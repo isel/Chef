@@ -53,7 +53,14 @@ template "#{teamcity_path}\\config\\ldap-config.properties" do
 end
 
 powershell('Restart TeamCity') do
-  source('Restart-Service TeamCity')
+  script = <<'EOF'
+    $service = 'TeamCity'
+
+    Set-Service -name $service -startupType manual
+    sc.exe failure $service reset= 86400 actions= restart/5000
+    Restart-Service $service
+EOF
+  source(script)
 end
 
 rightscale_marker :end
