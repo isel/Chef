@@ -1,4 +1,4 @@
-#rightscale_marker :begin
+rightscale_marker :begin
 
 gems = {
   'bundle' => '0.0.1',
@@ -40,4 +40,4 @@ else
   end
 end
 
-#rightscale_marker :end
+rightscale_marker :end
